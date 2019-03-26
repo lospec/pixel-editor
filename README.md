@@ -1,20 +1,47 @@
-# Lospec Procedural Pixel Art Generator
+# Lospec Pixel Editor
 
-This is a browser based tool used to create a template which can generate randomized pixel art.
+This is a browser based software for creating pixel art
 
-The tool can be viewed online here: https://lospec.com/procedural-pixel-art-generator/
+The tool can be viewed online here: https://lospec.com/pixel-editor
 
 ## What to Contribute
 
 Any changes that fix bugs or add features are welcome.
 
+The next version is mostly focused on adding missing essential features and porting to mobile.
+
 Suggestions / Planned features:
 
-- Mobile support
-- Variable canvas size
-- More Layers
-- More Colors
-- Color variations (choose a color randomly)
+- Mobile 
+    - Touch equivalent for mouse clicks 
+    - Hide or scale ui 
+    - Maybe rearrange UI on portrait 
+    - Stack colors when too many 
+    - Fix popups 
+
+- Selections 
+    - New selection tool 
+    - New canvas layer above the drawing layer 
+    - Move when click and drag 
+    - Merge with canvas when click outside 
+
+- Copy/paste 
+    - Add as selection 
+    - Show colors which would need to be added to palette 
+
+- Transparency 
+    - New layer with checkerboard behind drawing
+    - Add eraser tool 
+
+- Palette option remove unused colors 
+- Pixel Grid 
+    - Another canvas 
+    - Must be rescaled each zoom 
+
+- Possibly add collaborate function using together.js 
+- Bug fix 
+    - Alt + scroll broken 
+    - Add edge support?
 
 ## How to Contribute
 
