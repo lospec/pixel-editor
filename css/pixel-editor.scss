@@ -1,0 +1,719 @@
+@import 'colors';
+@import 'zindex';
+body {
+  background: color(indent-dark);
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 14px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer */
+  -khtml-user-select: none;
+  /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none;
+  /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none;
+  /* Disable Android and iOS callouts*/
+}
+
+//don't let svg handle click events, just send to parents
+svg {
+  pointer-events: none;
+  path {
+    pointer-events: none;
+  }
+}
+
+//remove blue outline in chrome
+*:focus {
+  outline: 0 !important;
+}
+
+#pixel-canvas {
+  cursor: url('/pixel-art-where-to-start/pencil-tool-cursor.png');
+  
+  border: solid 1px #fff;
+  image-rendering:optimizeSpeed;             /* Legal fallback */
+  image-rendering:-moz-crisp-edges;          /* Firefox        */
+  image-rendering:-o-crisp-edges;            /* Opera          */
+  image-rendering:-webkit-optimize-contrast; /* Safari         */
+  image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+  image-rendering:crisp-edges;               /* CSS4 Proposed  */
+  image-rendering:pixelated;                 /* CSS4 Proposed  */
+  -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+  width: 400px;
+  height: 400px;
+  display: none;
+  position: fixed;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.64);
+}
+
+#eyedropper-preview {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border-radius: 30px;
+  border: solid 10px red;
+  z-index: 1200;
+  display: none;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25), inset 0 0 6px 0 rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  &.dark {
+    box-shadow: 0 0 8px 0 rgba(255, 255, 255, 0.5), inset 0 0 6px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+#brush-preview {
+  position: absolute;
+  border: solid 1px #fff;
+  z-index: 1200;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 0 2px 0 rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  left: -500px;
+  &.dark {
+    border: solid 1px #000;
+    box-shadow: 0 0 3px 0 rgba(255, 255, 255, 0.8), inset 0 0 3px 0 rgba(255, 255, 255, 0.8);
+  }
+}
+
+#canvas-view {
+  background: color(indent-dark);
+  bottom: 0px;
+  left: 64px;
+  right: 48px;
+  top: 48px;
+  cursor: none;
+  position: fixed;
+  display: block;
+}
+
+#canvas-view-shadow {
+  box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4);
+  position: fixed;
+  bottom: 0px;
+  left: 64px;
+  right: 48px;
+  top: 48px;
+  display: block;
+  pointer-events: none;
+}
+
+#main-menu {
+  height: 48px;
+  left: 0;
+  right: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: color(base);
+  position: fixed;
+  z-index: 1110;
+  overflow: visible;
+  &>li {
+    float: left;
+    height: 100%;
+  }
+  li button {
+    color: color(menu, foreground);
+    height: 100%;
+    padding: 17px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  li.selected {
+    background-color: color(menu);
+    &>button {
+      color: color(menu, foreground, hover);
+    }
+    ul {
+      display: block;
+    }
+  }
+  li ul {
+    display: none;
+    position: absolute;
+    top: 48px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: color(menu);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    padding-bottom: 2px;
+    li {
+      width: 100%;
+      button {
+        width: 100%;
+        text-align: left;
+        padding: 8px 32px 8px 16px;
+        &:hover {
+          background-color: color(menu, background, hover);
+          color: color(menu, foreground, hover);
+        }
+      }
+    }
+  }
+  .disabled {
+    color: #6f6e70 !important;
+  }
+}
+
+
+/*app title*/
+
+.logo {
+  color: #6f6873;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 17px 10px 0;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+#data-holders {
+  display: none;
+}
+
+#tools-menu,
+#colors-menu {
+  list-style-type: none;
+  top: 48px;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  background-color: color(base);
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 1120;
+}
+
+#tools-menu {
+  left: 0;
+  width: 64px;
+}
+
+#colors-menu {
+  right: 0;
+  width: 48px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  li {
+    width: 48px;
+    flex-basis: 48px;
+    
+    &:not(.noshrink) {
+      flex-grow: 1;
+    }
+    &.noshrink {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }  
+}
+
+//added when the color is a duplicate of another
+#duplicate-color-warning {
+  display: inline-block;
+  visibility: hidden;
+  margin-left: 5px;
+  opacity: 0.75;
+  cursor: help;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.shake {
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+  position: relative;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(1px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+//floating button to open jscolor picker
+.color-edit-button {
+  position: absolute;
+  top: 3px;
+  left: 0px;
+  background: color(base);
+  padding: 6px 10px 3px 6px;
+  border-radius: 4px 0 0 4px;
+  cursor: pointer;
+  transition: left 0.25s;
+  z-index: -1;
+  box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.2);
+  path {
+    fill: color(base, foreground);
+  }
+  &:hover {
+    background: color(base, background, hover);
+    path {
+      fill: color(base, foreground, hover);
+    }
+  }
+  //class added when jscolor is opened
+  &.hidden {
+    left: 0px !important;
+  }
+}
+
+#colors-menu li:hover .color-edit-button {
+  display: block;
+  left: -32px;
+}
+
+#colors-menu li.selected:hover .color-edit-button {
+  display: block;
+  left: -35px;
+}
+
+#tools-menu li,
+#colors-menu li {
+  position: relative;
+}
+
+#colors-menu li button {
+  height: 100%;
+  display: block;
+}
+
+.color-value {
+  display: none;
+}
+
+#add-color-button {
+  background: color(base);
+  
+  path {
+    fill: #6f6873;
+  }
+}
+
+#tools-menu li button:first-child {
+  text-align: center;
+  border: none;
+  background: none;
+  width: 100%;
+  padding: 0;
+  cursor: pointer;
+  height: 64px;
+}
+
+#tools-menu li button path {
+  fill: color(base, foreground);
+}
+
+#tools-menu li:hover button:first-child path {
+  fill: color(base, foreground, hover);
+}
+
+#colors-menu li {
+  button {
+    border: none;
+    width: 100%;
+    cursor: url('/pixel-editor/eyedropper.png'), auto;
+  }
+  //white outline
+  &.selected button::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    border: solid 3px #fff;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+  }
+  //inner outline
+  &.selected button::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: solid 1px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+}
+
+#colors-menu li.noshrink button {
+  cursor: pointer;
+}
+
+#tools-menu li.selected {
+  background: color(selectedTool, background) !important;
+}
+
+#tools-menu li.selected button:first-child path {
+  fill: color(selectedTool, foreground);
+}
+
+#tools-menu li.selected.expanded {
+  padding-bottom: 10px;
+}
+
+#tools-menu li:hover,
+#main-menu li button:hover,
+#add-color-button:hover,
+#main-menu li.open {
+  background: color(base, background, hover);
+}
+
+.tools-menu-sub-button {
+  text-align: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 50%;
+  height: 22px;
+  display: none;
+  line-height: 0;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+
+  path {
+    fill: color(subbutton, foreground) !important;
+  }
+  &:hover {
+    background: color(subbutton, background, hover) !important;
+    path {
+      fill: color(subbutton, foreground, hover) !important;
+    }
+  }
+}
+
+#tools-menu li button#pencil-bigger-button,
+#tools-menu li button#zoom-in-button {
+  left: 0;
+}
+
+#tools-menu li button#pencil-smaller-button,
+#tools-menu li button#zoom-out-button {
+  right: 0;
+}
+
+#tools-menu li.selected button#pencil-bigger-button,
+#tools-menu li.selected button#pencil-smaller-button,
+#tools-menu li.selected button#zoom-in-button,
+#tools-menu li.selected button#zoom-out-button {
+  display: block;
+}
+
+#pop-up-container {
+  position: fixed;
+  z-index: 2000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(35, 32, 36, 0.75);
+  display: none;
+  color: color(base, foreground, text);
+  cursor: default;
+  &>div {
+    background: color(base);
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    width: 400px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+  }
+  h1 {
+    margin: 0 0 10px;
+    color: color(base, foreground, h1);
+    text-transform: uppercase;
+    font-size: 1.5em;
+  }
+  h2 {
+    margin: 25px 0 10px;
+    color: color(base, foreground, h2);
+    text-transform: uppercase;
+    font-size: 1em;
+  }
+  a {
+    color: color(base, foreground, link);
+    border-bottom: dotted 1px transparent;
+    text-decoration: none;
+    &:hover {
+      border-bottom: dotted 1px color(base, foreground, text);
+    }
+  }
+  
+  .close-button {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    border: none;
+    color: color(base, foreground);
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 0 3px 0 0;
+    path {
+      fill: color(base, foreground);
+    }
+    &:hover {
+      background: color(base, background, hover);
+      path {
+        fill: color(base, foreground, hover);
+      }
+    }
+  }
+  
+  button.default {
+    float: right;
+    background: color(button);
+    border: none;
+    border-radius: 4px;
+    color: color(button, foreground);
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 20px 0 0 10px;
+    &:hover {
+      background: color(button, background, hover);
+    }
+  }
+  
+  input {
+    background: color(indent);
+    border: none;
+    border-radius: 4px;
+    color: color(indent, foreground);
+    padding: 10px 20px;
+    margin: 0;
+    width: 60px;
+    text-align: center;
+  }
+  
+  .dropdown-button {
+    background: color(button) url('/pixel-editor/dropdown-arrow.png') right center no-repeat;
+    border: none;
+    border-radius: 4px;
+    color: color(button, foreground);
+    padding: 5px 20px 5px 5px;
+    cursor: pointer;
+    margin: 0;
+    width: 200px;
+    text-align: left;
+    &:hover {
+      background: color(button, background, hover) url('/pixel-editor/dropdown-arrow-hover.png') right center no-repeat;
+    }
+    &.selected {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+  
+  .dropdown-menu {
+    background: color(button);
+    border: none;
+    color: color(button, foreground);
+    padding: 0;
+    margin: -1px 0 0 0;
+    width: 200px;
+    text-align: left;
+    position: absolute;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    display: none;
+    &.selected {
+      display: block;
+    }
+    
+    button {
+      background: color(button);
+      border: none;
+      color: color(button, foreground);
+      padding: 5px 20px 5px 5px;
+      cursor: pointer;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      &:hover {
+        background: color(button, background, hover);
+      }
+    }
+  }
+}
+
+.keyboard-key {
+  background: lighten($base-color, 20%);
+  box-shadow: 0 3px 0 2px lighten($base-color, 12%);
+  padding: 0 4px;
+  border-radius: 2px;
+  margin: 6px;
+  display: inline-block;
+  color: #c0bfc1;
+}
+
+#settings-container {
+  display: flex;
+  align-items: baseline;
+  label {
+    flex: 1;
+  }
+  input {
+    width: 90px !important;
+    display: block;
+    box-sizing: border-box;
+  }
+}
+
+.preload {
+  display: none;
+}
+
+#new-pixel-warning {
+  display: none;
+  text-align: center;
+  margin: 20px 0 0;
+  font-style: italic;
+}
+
+.dimentions-x {
+  margin: -2px 7px;
+  path {
+    fill: color(base, foreground)
+  }
+}
+
+.jscolor-picker-bottom {
+  display: none;
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: -7px;
+  color: color(base, foreground, text);
+  span {
+    margin-left: 5px;
+  }
+  input {
+    width: 64px;
+    background: color(indent);
+    color: color(indent, foreground);
+    border-radius: 4px;
+    border: none;
+    margin: 0;
+    padding: 3px 12px;
+    margin-left: 5px;
+  }
+}
+
+.delete-color-button {
+  background: none;
+  padding: 0px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  float: right;
+  path {
+    fill: color(base, foreground);
+  }
+  &:hover path {
+    fill: color(base, foreground, hover);
+  }
+  &.disabled {
+    cursor: not-allowed;
+    & path {
+      fill: color(base, foreground, disabled) !important;
+    }
+  }
+}
+
+#no-palette-button {
+  display: none;
+}
+
+#cookies-disabled-warning {
+  display: none;
+  color: color(base, foreground, weak);
+  font-style: italic;
+}
+
+#compatibility-warning {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  z-index: 3000;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(35, 32, 36, 0.92);
+  color: color(base, foreground, text);
+  div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+    div {
+      width: 400px;
+      background-color: color(base);
+      padding: 20px;
+      width: 400px;
+      height: 200px;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    
+      margin: -120px 0 0 -220px;
+    }
+  }
+  a {
+    color: color(base, foreground, link);
+    border-bottom: dotted 1px transparent;
+    text-decoration: none;
+    &:hover {
+      border-bottom: dotted 1px color(base, foreground, text);
+    }
+  }
+  button {
+    background: color(button);
+    border: none;
+    border-radius: 4px;
+    color: color(button, foreground);
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    &:hover {
+      background: color(button, background, hover);
+    }
+  }
+}

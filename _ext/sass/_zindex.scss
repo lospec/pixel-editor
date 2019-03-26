@@ -1,0 +1,67 @@
+// this function is used whenever you need to define a z-index
+@function -z($key, $mod: 0) {
+
+  $index: -index($layers, $key) * 10;
+
+  @if $mod {
+    @return $index + $mod;
+  }
+
+  @return $index;
+}
+
+// dependency for the other function
+@function -index($list, $value) {
+  @for $i from 1 through length($list) {
+    @if nth($list, $i) == $value {
+      @return $i;
+    }
+  }
+
+  @return null;
+}
+
+
+/*
+
+define your layers from bottom to top:
+
+$layers: (
+  background,
+  content,
+  dropdown,
+  subnav,
+  mobile-nav,
+  header,
+  overlay,
+  modal,
+  modal-background,
+  modal-content
+);
+
+
+
+//////////use:
+
+.test {
+  z-index: -z(content);
+}
+
+
+
+
+//////////go one layer above content
+
+.test-2 {
+  z-index: -z(content, 1);
+}
+
+
+
+///////////go one layer below content
+
+.test-2 {
+  z-index: -z(content, -1)
+}
+
+*/

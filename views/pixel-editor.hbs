@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,900" rel="stylesheet"> 
+    <link rel='stylesheet' href='/pixel-editor/pixel-editor.css' />
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+    {{{google-analytics}}}
+    {{{favicons}}}
+    
+</head>
+
+<body oncontextmenu="return false;">
+    
+    <div id="compatibility-warning">
+      <div><div>
+        <p><strong>Warning: a modern, desktop, web browser is required to use this tool.</strong></p>
+        <p>We detected that you may have an out of date or unsupported web browser. This tool, like many others on this site and across the web uses features only available in new web browsers. We reccommend updating your current browser or downloading <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> or <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome</a>. </p>
+        <button onclick="closeCompatibilityWarning()">Continue</button>
+      </div></div>
+    </div>
+  <script src="/javascripts/checkCompatibilityPixelEditor.js"></script>
+  
+    <div class="preload">
+        <img src="/pixel-editor/dropdown-arrow.png" />
+        <img src="/pixel-editor/dropdown-arrow-hover.png" />
+        <img src="/pixel-editor/eyedropper.png" />
+        <img src="/pixel-editor/fill.png" />
+        <img src="/pixel-editor/pan.png" />
+        <img src="/pixel-editor/pan-held.png" />
+        <img src="/pixel-editor/pencil.png" />
+        <img src="/pixel-editor/zoom-in.png" />
+    </div>
+    <ul id="main-menu">
+        <li class="logo">Lospec Pixel Editor</li>
+        <li>
+            <button>File</button>
+            <ul>
+                <li><button>New</button></li>
+                <li><button>Open</button></li>
+                <li><button id="save-as-button" class="disabled">Save as...</button></li>
+                <li><button>Exit</button></li>
+            </ul>
+        </li>
+        <li>
+            <button>Edit</button>
+            <ul>
+                <li><button id="undo-button" class="disabled">Undo</button></li>
+                <li><button id="redo-button" class="disabled">Redo</button></li>
+            </ul>
+        </li>
+        <li>
+            <button>Help</button>
+            <ul>
+                <li><button>Settings</button></li>
+                <li><button>Help</button></li>
+                <li><button>About</button></li>
+                <li><button>Changelog</button></li>
+            </ul>
+        </li>
+    </ul>
+
+    <ul id="tools-menu">
+        <li class="selected expanded">
+            <button title="Pencil Tool (B)" id="pencil-button">{{svg "pencil.svg" width="32" height="32"}}</button>
+            <button title="Increase Brush Size" id="pencil-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Decrease Brush Size" id="pencil-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+        <li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>
+        <li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="32" height="32"}}</button></li>
+        <li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="32" height="32"}}</button></li>
+        <li class="expanded">
+            <button title="Zoom Tool (Z)" id="zoom-button">{{svg "zoom.svg" width="32" height="32"}}</button>
+            <button title="Zoom In" id="zoom-in-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Zoom Out" id="zoom-out-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+    </ul>
+
+    <ul id="colors-menu">
+      
+        {{!
+        <li class="noshrink"><button id="current-color" class="jscolor {valueElement: 'current-color-value', styleElement: 'current-color-preview', onFineChange:'setColor(this)', width:151, position: 'left', padding:0, 
+    borderWidth:14, borderColor: '#332f35',backgroundColor: '#332f35', insetColor:'transparent'}"><div id="current-color-preview"></div></button><input id="current-color-value" class="color-value" value="#000000" autocomplete="off" /></li>
+        }}
+        
+        <li class="noshrink"><button title="Add Current Color To Palette" id="add-color-button">{{svg "./plus.svg" width="30" height="30"}}</button></li>
+    </ul>
+    <div id="eyedropper-preview"></div>
+    <div id="brush-preview"></div>
+
+    <div id="canvas-view">
+        <canvas id="pixel-canvas"></canvas>
+    </div>
+    <div id="canvas-view-shadow"></div>
+
+    <div id="data-holders">
+      <a id="save-image-link-holder" href="#">dl</a>
+      <input id="open-image-browse-holder" type="file" accept="image/png, image/gif"/>
+      <input id="load-palette-browse-holder" type="file" accept="image/png, image/gif"/>
+      <canvas id="load-palette-canvas-holder"></canvas>
+    </div>
+    
+
+    
+    <div class="jscolor-picker-bottom">
+      <span>#</span><input type="text" id="jscolor-hex-input"/>
+      <div id="duplicate-color-warning" title="Color is a duplicate of another in palette">{{svg "warning.svg" width="14" height="12" }}</div>
+      <button class="delete-color-button">{{svg "trash.svg" width="20" height="20" }}</button>
+    </div>
+    
+    <div class="color-edit-button">
+      {{svg "adjust.svg" width="20" height="20" }}
+    </div>
+    
+    <div id="pop-up-container">
+        <div id="new-pixel">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>New Pixel</h1>
+            
+            <h2>Preset</h2>
+            <button id="preset-button" class="dropdown-button">Choose a preset...</button>
+            <div id="preset-menu" class="dropdown-menu"></div>
+
+            <h2>Size</h2>
+            <input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+            <h2>Palette</h2>
+            <button id="palette-button" class="dropdown-button">Choose a palette...</button>
+            <div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
+
+            <div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
+            <div>
+                <button id="create-button" class="default">Create</button>
+            </div>
+        </div>
+        <div id="help">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Help</h1>
+            <h2>Palette</h2>
+            <ul>
+                <li>Left Click - Choose Color</li>
+                <li>Right Click - Edit Color</li>
+            </ul>
+            <h2>Hotkeys</h2>
+            <ul>
+                <li>Pencil: <span class="keyboard-key">B</span> or <span class="keyboard-key">1</span></li>
+                <li>Fill: <span class="keyboard-key">F</span> or <span class="keyboard-key">2</span></li>
+                <li>Eyedropper: <span class="keyboard-key">E</span> or <span class="keyboard-key">3</span></li>
+                <li>Pan: <span class="keyboard-key">P</span> or <span class="keyboard-key">M</span> or <span class="keyboard-key">4</span></li>
+                <li>Zoom: <span class="keyboard-key">Z</span> or <span class="keyboard-key">5</span></li>
+                <li>Undo: Ctrl + <span class="keyboard-key">Z</span></li>
+                <li>Redo: Ctrl + <span class="keyboard-key">Y</span> or Ctrl + Alt + <span class="keyboard-key">Z</span></li>
+            </ul>
+            <h2>Mouse Shortcuts</h2>
+            <ul>
+                <li>Alt + Click - Eyedropper</li>
+                <li>Space + Click - Pan</li>
+                <li>Alt + Scroll Wheel - Zoom</li>
+            </ul>
+        </div>
+        <div id="about">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>About Lospec Pixel Editor</h1>
+            <div>version 1.0.0</div>
+            <p>This is a web-based tool for creating and editing pixel art.</p>
+            <p>The goal of this tool is to be an accessible and intuitive tool that's simple enough for a first time pixel artist while still being usable enough for a veteran. </p>
+            <p>In the future I hope to add enough features to become a full fledged pixel art editor, with everything an artist could need.</p>
+            <h1>About Lospec</h1>
+            <p>Lospec is a website created to host tools for pixel artists. To see more of our tools, visit our <a href="/">homepage</a>. To hear about any updates or new tools, follow us on <a href="http://twitter.com/lospecofficial">Twitter</a>.</p>
+        </div>
+        <div id="changelog">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Changelog</h1>
+            <h2>Version 1.0.0</h2>
+            <ul>
+                <li>Initial Release</li>
+            </ul>
+        </div>
+        <div id="credits">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Credits</h1>
+            <h2>Icons</h2>
+            <ul>
+                <li><div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div></li>
+                <li><div>Font Awesome by Dave Gandy - <a href="http://fontawesome.io">http://fontawesome.io</a></div></li>
+                <li><div>Icons made by <a href="http://www.flaticon.com/authors/those-icons" title="Those Icons">Those Icons</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div></li>
+            </ul>
+        </div>
+        <div id="settings">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Settings</h1>
+            
+            <div id="settings-container">
+              <label for="setting-numberOfHistoryStates">Number of History States</label> <input id="setting-numberOfHistoryStates" value="20" autocomplete="off" />
+            </div>
+            
+            <p id="cookies-disabled-warning">Your browsers cookies are disabled, settings will be lost upon closing this page.</p>
+
+            <div>
+                <button id="save-settings" class="default">Save</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+      palettes = { {{#palettes}}
+          '{{name}}': {
+            colors: '{{colors}}'.split(',')
+          },
+        {{/palettes}}
+        {{#specifiedPalette}}
+        '{{name}}': {
+          colors: '{{colors}}'.split(','),
+          specified: true
+        }
+        {{/specifiedPalette}}
+      }
+      {{#if width}}
+      var specifiedDimentions = true;
+      {{else}}
+      var specifiedDimentions = false;
+      {{/if}}
+      
+      {{#specifiedPalette}}
+      var keepUrl = true;
+      {{/specifiedPalette}}
+    </script>
+    <script src="/pixel-editor/pixel-editor.js"></script>
+</body>
+</html>

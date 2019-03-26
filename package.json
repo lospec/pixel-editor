@@ -1,0 +1,24 @@
+{
+  "name": "pixel-editor",
+  "version": "1.0.0",
+  "description": "Online pixel art creation tool",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lospec",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "glob": "^7.1.3",
+    "gulp": "^4.0.0",
+    "gulp-include": "^2.3.1",
+    "handlebars-helper-svg": "^2.0.1",
+    "hbs": "^4.0.3",
+    "opn": "^6.0.0",
+    "sass": "^1.17.3",
+    "hbs-register-helpers": "git+https://skeddles@bitbucket.org/skeddles/hbs-register-helpers.git",
+    "hbs-register-partials": "git+https://skeddles@bitbucket.org/skeddles/hbs-register-partials.git"
+  }
+}

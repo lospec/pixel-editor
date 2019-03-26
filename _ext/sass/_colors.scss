@@ -1,0 +1,160 @@
+$base-color: #332f35;
+$shop: #b63831;
+$red: #e3474a;
+
+$palettes: (
+    base: (
+        background: (
+            default: $base-color,
+            hover: lighten($base-color, 5%),
+            lighthover: lighten($base-color, 4%),
+        ),
+        foreground: (
+            default: lighten($base-color, 20%),
+            text: lighten($base-color, 50%),
+            bold: lighten($base-color, 60%),
+            weak: lighten($base-color, 30%),
+            link: lighten($base-color, 100%),
+            h1: lighten($base-color, 100%),
+            h2: lighten($base-color, 70%),
+            h3: lighten($base-color, 60%),
+            surveyQuestion: lighten($base-color, 60%),
+            hover: lighten($base-color, 40%),
+            separator: lighten($base-color, 5%),
+            disabled: lighten($base-color, 10%),
+        )
+    ),
+    user-menu: (
+        background: (
+            default: darken($base-color, 3%),
+            hover: darken($base-color, 1.5%),
+        ),
+        foreground: (
+            default: lighten($base-color, 50%),
+            hover: lighten($base-color, 100%),
+        )
+    ),
+    menu: (
+        background: (
+            default: lighten($base-color, 5%),
+            hover: lighten($base-color, 15%),
+        ),
+        foreground: (
+            default: lighten($base-color, 50%),
+            hover: lighten($base-color, 100%),
+        )
+    ),
+    button: (
+        background: (
+            default: lighten($base-color, 10%),
+            hover: lighten($base-color, 15%),
+        ),
+        foreground: (
+            default: lighten($base-color, 80%),
+            text: lighten($base-color, 100%),
+        )
+    ),
+    selectedTool: (
+        background: (
+            default: lighten($base-color, 10%),
+        ),
+        foreground: (
+            default: lighten($base-color, 50%),
+        )
+    ),
+    subbutton: (
+        background: (
+            hover: lighten($base-color, 15%),
+        ),
+        foreground: (
+            default: lighten($base-color, 30%),
+            hover:  lighten($base-color, 50%),
+        )
+    ),
+    indent: (
+        background: (
+            default: darken($base-color, 4%),
+            separator: darken($base-color, 8%),
+            hover: lighten($base-color, 5%),
+        ),
+        foreground: (
+            default: #fff,
+            symbol: lighten($base-color, 5%),
+            symbol-hover: lighten($base-color, 20%),
+            weak: lighten($base-color, 20%),
+            form: lighten($base-color, 50%),
+        )
+    ),
+    indent-dark: (
+        background: (
+            default: darken($base-color, 6%),
+            separator: darken($base-color, 11%),
+            button: lighten($base-color, 2.5%),
+            button-hover: lighten($base-color, 5%),
+        ),
+        foreground: (
+          default: lighten($base-color, 30%),
+          link: lighten($base-color, 40%),
+          hover: lighten($base-color, 50%),
+          button: lighten($base-color, 50%),
+          button-hover: lighten($base-color, 70%),
+        )
+    ),
+    footer: (
+        background: (
+            default: darken($base-color, 9%),
+        ),
+        foreground: (
+            default: lighten($base-color, 20%),
+            hover: lighten($base-color, 35%),
+            symbol: lighten($base-color, 7.5%),
+        ),
+    ),
+    warning-banner: (
+        background: (
+            default: lighten($base-color, 10%),
+            button: lighten($base-color, 20%),
+            button-hover: lighten($base-color, 25%),
+        ),
+        foreground: (
+            default: lighten($base-color, 50%),
+            button: lighten($base-color, 40%),
+            button-hover: lighten($base-color, 45%),
+        ),
+    ),
+    image-label: (
+        background: (
+            default: lighten($base-color, 15%),
+        ),
+        foreground: (
+            default: lighten($base-color, 80%),
+        ),
+        triangle: (
+            default: lighten($base-color, 6%),
+        ),
+    ),
+    shop: (
+        background: (
+            default: $shop,
+            hover: lighten($shop, 5%),
+        ),
+        foreground: (
+            default: lighten($shop, 65%),
+        ),
+    ),
+);
+
+@function color($element: 'base', $location: 'background', $hover: 'default') {
+    @return map-get(map-get(map-get($palettes, $element), $location), $hover);
+}
+
+$twitter: #00b6f1;
+$patreon: #F96854;
+$facebook: #3b5998;
+$reddit: #ff5700;
+$youtube: #b31217;
+$pintrest: #cb2027;
+$tumblr: #2c4762;
+$deviantart: #4a5d4e;
+$instagram: #c2368a;
+$pixeljoint: #73d731;
