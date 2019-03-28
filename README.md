@@ -53,7 +53,7 @@ Requirements: you must have node.js and git installed.
 4. Make any changes you would like to suggest.
 5. In command prompt run **node build.js** which will compile it to the */build* folder, where you can make sure it works
 6. Add, Commit and Push your changes to your fork.
-7. On this page, click **New Pull Request** above the file list.
+7. On the github page for your fork, click **New Pull Request** above the file list.
 8. Change the **head repository** dropdown to your fork.
 9. Add a title and description explaining your changes.
 10. Click create pull request.
