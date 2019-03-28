@@ -45,6 +45,8 @@ Suggestions / Planned features:
 
 ## How to Contribute
 
+Requirements: you must have node.js and git installed.
+
 1. Click **Fork** above. It will automatically create a copy of this repository and add it to your account.
 2. Clone the repository to your computer.
 3. Open the folder in command prompt and run **npm install**
