@@ -1,0 +1,16 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    {{#title}}<title>{{this}}</title>{{/title}}
+    {{#css}}<link rel="stylesheet" href="{{this}}">{{/css}}
+</head>
+
+<body>
+    <section class="wrapper">
+        {{{body}}}
+    </section>
+    {{#js}}<script src="{{this}}"></script>{{/js}}
+</body>
+</html>
