@@ -12,6 +12,7 @@ var prevEraserSize = 1;
 var menuOpen = false;
 var dialogueOpen = false;
 var documentCreated = false;
+var layers = 
 
 // Checkerboard management
 var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
