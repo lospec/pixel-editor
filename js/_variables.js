@@ -12,6 +12,9 @@ var prevEraserSize = 1;
 var menuOpen = false;
 var dialogueOpen = false;
 var documentCreated = false;
+var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
+var secondCheckerBoardColor = 'rgba(105, 105, 105, 1)';
+var checkerBoardSquareSize = 16;
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");

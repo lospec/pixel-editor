@@ -12,6 +12,7 @@ function updateCursor () {
         brushPreview.style.display = 'block';
         brushPreview.style.width = eraserSize * zoom + 'px';
         brushPreview.style.height = eraserSize * zoom + 'px';
+        context.fillStyle = 'rgba(255, 0, 0, 0)';
 	} else
 		brushPreview.style.display = 'none';
 	
@@ -32,6 +33,6 @@ function updateCursor () {
 	if (currentTool == 'zoom') 
 		canvasView.style.cursor = "url('/pixel-editor/zoom-in.png'), auto";
 		
-	if (currentTool == 'resize-brush') 
+	if (currentTool == 'resize-brush')
 		canvasView.style.cursor = 'default';
 }

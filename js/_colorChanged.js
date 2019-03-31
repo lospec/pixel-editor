@@ -24,9 +24,6 @@ on('input', 'jscolor-hex-input', function (e) {
 //changes all of one color to another after being changed from color picker
 function colorChanged(e) {
   console.log('colorChanged()');
-  
-
-  
 	//get colors
 	var newColor = hexToRgb(e.target.value);
 	var oldColor = e.target.oldColor;

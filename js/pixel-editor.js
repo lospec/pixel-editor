@@ -40,7 +40,8 @@
 //=include _fill.js 
 //=include _history.js 
 //=include _deleteColor.js 
-//=include _replaceAllOfColor.js 
+//=include _replaceAllOfColor.js
+//=include _checkerboard.js
 
 
 /**load file**/

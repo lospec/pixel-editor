@@ -56,10 +56,13 @@ function newPixel (width, height, palette) {
 	  addColor(defaultBackgroundColor);
     
     //fill background of canvas with bg color
+		fillCheckerboard();
+		/*
 		context.fillStyle = '#'+defaultBackgroundColor;
 		context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
 		
 		console.log('#'+defaultBackgroundColor)
+		*/
 		
 		//set current drawing color as foreground color
 		context.fillStyle = '#'+defaultForegroundColor;

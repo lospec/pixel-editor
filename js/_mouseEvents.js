@@ -17,7 +17,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			currentTool = 'pan';
 		else if (mouseEvent.altKey) 
 			currentTool = 'eyedropper';
-		else if (mouseEvent.target == canvas && currentTool == 'pencil')
+		else if (mouseEvent.target == canvas && (currentTool == 'pencil' || currentTool == 'eraser'))
 		    new HistoryStateEditCanvas();
 		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 		
@@ -29,6 +29,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		currentTool = 'resize-brush';
 		prevBrushSize=brushSize;
 	}
+	// TODO add eraser resize for scroll wheel
 	
 	if (currentTool == 'eyedropper' && mouseEvent.target == canvas)
 	    eyedropperPreview.style.display = 'block';
@@ -144,6 +145,26 @@ function draw (mouseEvent) {
 		//for the darkest 50% of colors, change the brush preview to dark mode
 		if (colorLightness>127) brushPreview.classList.remove('dark');
 		else brushPreview.classList.add('dark');
+	}
+	// Decided to write a different implementation in case of differences between the brush and the eraser tool
+	else if (currentTool == 'eraser') {
+        //move the brush preview
+        brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - brushSize * zoom / 2 + 'px';
+        brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
+
+        //hide brush preview outside of canvas / canvas view
+        if (mouseEvent.target == canvas || mouseEvent.target == canvasView)
+            brushPreview.style.visibility = 'visible';
+        else
+            brushPreview.style.visibility = 'hidden';
+
+        //draw line to current pixel
+        if (dragging) {
+            if (mouseEvent.target == canvas || mouseEvent.target == canvasView) {
+                line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
+                lastPos = cursorLocation;
+            }
+        }
 	}
 	else if (currentTool == 'pan' && dragging) {
 

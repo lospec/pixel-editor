@@ -6,11 +6,15 @@ function line(x0,y0,x1,y1) {
 	var sx = (x0 < x1 ? 1 : -1);
 	var sy = (y0 < y1 ? 1 : -1);
 	var err = dx-dy;
-	var breaker = 0;
 
 	while (true) {
+		console.log("drawing line");
 	    //set pixel
-		context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+		if (currentTool == 'pencil') {
+			context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+		} else if (currentTool == 'eraser') {
+            context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+		}
 		
 		//if we've reached the end goal, exit the loop
 		if ((x0==x1) && (y0==y1)) break;
