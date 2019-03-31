@@ -94,8 +94,17 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		fill(cursorLocation);
 	}
 	else if (currentTool == 'zoom' && mouseEvent.target == currentLayer.canvas) {
-		if (mouseEvent.which == 1) changeZoom('in', getCursorPosition(mouseEvent));
-		else if (mouseEvent.which == 3) changeZoom('out', getCursorPosition(mouseEvent))
+		let mode;
+		if (mouseEvent.which == 1){
+			mode = "in";
+        }
+		else if (mouseEvent.which == 3){
+			mode = "out";
+        }
+
+        for (let i=0; i<layers.length; i++) {
+            changeZoom(layers[i], mode, getCursorPosition(mouseEvent))
+        }
 	}
 
 	dragging = false;
@@ -168,8 +177,9 @@ function draw (mouseEvent) {
 	}
 	else if (currentTool == 'pan' && dragging) {
 
-		
-		setCanvasOffset(currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
+		for (let i=0; i<layers.length; i++) {
+            setCanvasOffset(layers[i].canvas, layers[i].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[i].canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
+        }
 		/*
 		if 	(
 			//right
@@ -224,8 +234,17 @@ function draw (mouseEvent) {
 canvasView.addEventListener("wheel", function(mouseEvent){
 	
 	if (currentTool == 'zoom' || mouseEvent.altKey) {
-		if (mouseEvent.deltaY < 0) changeZoom('in', getCursorPosition(mouseEvent));
-		else if (mouseEvent.deltaY > 0) changeZoom('out', getCursorPosition(mouseEvent))
+		let mode;
+		if (mouseEvent.deltaY < 0){
+			mode = 'in';
+        }
+		else if (mouseEvent.deltaY > 0) {
+			mode = 'out';
+        }
+
+        for (let i=0; i<layers.length; i++) {
+            changeZoom(layers[i], mode, getCursorPosition(mouseEvent))
+		}
 	}
 		
 });

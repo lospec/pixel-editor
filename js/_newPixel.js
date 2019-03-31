@@ -3,10 +3,14 @@ function newPixel (width, height, palette) {
     currentLayer = new Canvas(width, height, canvas);
     currentLayer.initialize();
 
-    checkerBoard = new Canvas(width, height, checkerBoard);
+    checkerBoard = new Canvas(width, height, checkerBoardCanvas);
     checkerBoard.initialize();
 
 	canvasSize = currentLayer.canvasSize;
+
+	layers.push(currentLayer);
+	layers.push(checkerBoard);
+
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
 	while (colors.length > 0) {

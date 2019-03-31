@@ -17,7 +17,7 @@ var documentCreated = false;
 var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
 var secondCheckerBoardColor = 'rgba(105, 105, 105, 1)';
 var checkerBoardSquareSize = 16;
-var checkerBoard = document.getElementById("checkerboard");
+var checkerBoardCanvas = document.getElementById("checkerboard");
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");

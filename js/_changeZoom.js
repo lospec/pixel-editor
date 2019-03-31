@@ -1,5 +1,5 @@
 
-function changeZoom (direction, cursorLocation) {
+function changeZoom (layer, direction, cursorLocation) {
 
 	var oldWidth = canvasSize[0] * zoom;
 	var oldHeight = canvasSize[1] * zoom;
@@ -13,7 +13,7 @@ function changeZoom (direction, cursorLocation) {
 		newHeight = canvasSize[1] * zoom;
 		
 		//adjust canvas position
-		setCanvasOffset(canvas.offsetLeft + (oldWidth - newWidth) *cursorLocation[0]/oldWidth, canvas.offsetTop + (oldHeight - newHeight) *cursorLocation[1]/oldWidth)
+		setCanvasOffset(layer.canvas, layer.canvas.offsetLeft + (oldWidth - newWidth) *cursorLocation[0]/oldWidth, layer.canvas.offsetTop + (oldHeight - newHeight) *cursorLocation[1]/oldWidth)
 	}
 	//if you want to zoom in
 	else if (direction == 'in' && zoom + Math.ceil(zoom/10) < window.innerHeight/4){
@@ -22,12 +22,13 @@ function changeZoom (direction, cursorLocation) {
 		newHeight = canvasSize[1] * zoom;
 		
 		//adjust canvas position
-		setCanvasOffset(canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight))
+		setCanvasOffset(layer.canvas, canvas, layer.canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), layer.canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight))
 	}
 	
 	//resize canvas
-	canvas.style.width = (canvas.width*zoom)+'px';
-	canvas.style.height = (canvas.height*zoom)+'px';
+	for (let i=0; i<layers.length; i++) {
+        layer.resize();
+    }
 
 	// adjust brush size
 	updateCursor();

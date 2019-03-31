@@ -54,11 +54,15 @@ on('click',"zoom-button", function(){
 
 //zoom in button
 on('click',"zoom-in-button", function(){
-	//changeZoom('in',[window.innerWidth/2-canvas.offsetLeft,window.innerHeight/2-canvas.offsetTop]); 
-	changeZoom('in',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]); 
+	//changeZoom('in',[window.innerWidth/2-canvas.offsetLeft,window.innerHeight/2-canvas.offsetTop]);
+    for (let i=0; i<layers.length; i++) {
+        changeZoom(layers[i],'in', [canvasSize[0] * zoom / 2, canvasSize[1] * zoom / 2]);
+    }
 }, false);
 
 //zoom out button
 on('click',"zoom-out-button", function(){
-	changeZoom('out',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]); 
+    for (let i=0; i<layers.length; i++) {
+        changeZoom(layers[i],'out',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]);
+    }
 }, false);
