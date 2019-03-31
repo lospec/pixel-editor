@@ -178,9 +178,9 @@ function draw (mouseEvent) {
         }
 	}
 	else if (currentTool == 'pan' && dragging) {
-
-		for (let i=0; i<layers.length; i++) {
-            setCanvasOffset(layers[i].canvas, layers[i].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[i].canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
+        setCanvasOffset(layers[0].canvas, layers[0].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastPos[1]));
+		for (let i=1; i<layers.length; i++) {
+            layers[i].copyData(layers[0]);
         }
     }
     else if (currentTool == 'eyedropper' && dragging && mouseEvent.target == currentLayer.canvas) {
