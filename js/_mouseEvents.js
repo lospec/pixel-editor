@@ -93,7 +93,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
     //fill starting at the location
 		fill(cursorLocation);
 	}
-	else if (currentTool == 'zoom' && mouseEvent.target == currentLayer.canvas) {
+	else if (currentTool == 'zoom') {
 		let mode;
 		if (mouseEvent.which == 1){
 			mode = "in";
@@ -102,8 +102,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 			mode = "out";
         }
 
-        for (let i=0; i<layers.length; i++) {
-            changeZoom(layers[i], mode, getCursorPosition(mouseEvent))
+        changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+
+        for (let i=1; i<layers.length; i++) {
+			layers[i].copyData(layers[0]);
         }
 	}
 
@@ -180,21 +182,6 @@ function draw (mouseEvent) {
 		for (let i=0; i<layers.length; i++) {
             setCanvasOffset(layers[i].canvas, layers[i].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[i].canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
         }
-		/*
-		if 	(
-			//right
-			currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) < window.innerWidth - currentLayer.canvasSize[0]*zoom*0.25 - 48 &&
-			//left
-			currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) > -canvasSize[0]*zoom*0.75 + 64)
-				canvas.style.left = canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) +'px';
-			
-		if (
-			//bottom
-			canvas.offsetTop + (cursorLocation[1] - lastPos[1]) < window.innerHeight-canvasSize[1]*zoom*0.25 &&
-			//top
-			currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]) > -canvasSize[0]*zoom*0.75 + 48)
-				currentLayer.canvas.style.top = currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]) +'px';
-    	*/
     }
     else if (currentTool == 'eyedropper' && dragging && mouseEvent.target == currentLayer.canvas) {
         var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
@@ -242,8 +229,10 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 			mode = 'out';
         }
 
-        for (let i=0; i<layers.length; i++) {
-            changeZoom(layers[i], mode, getCursorPosition(mouseEvent))
+        changeZoom(layers[0], mode, getCursorPosition(mouseEvent))
+
+        for (let i=1; i<layers.length; i++) {
+            layers[i].copyData(layers[0]);
 		}
 	}
 		

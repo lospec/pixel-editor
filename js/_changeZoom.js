@@ -1,6 +1,5 @@
 
 function changeZoom (layer, direction, cursorLocation) {
-
 	var oldWidth = canvasSize[0] * zoom;
 	var oldHeight = canvasSize[1] * zoom;
 	var newWidth, newHeight;
@@ -22,13 +21,11 @@ function changeZoom (layer, direction, cursorLocation) {
 		newHeight = canvasSize[1] * zoom;
 		
 		//adjust canvas position
-		setCanvasOffset(layer.canvas, canvas, layer.canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), layer.canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight))
+		setCanvasOffset(layer.canvas, layer.canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), layer.canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight))
 	}
 	
 	//resize canvas
-	for (let i=0; i<layers.length; i++) {
-        layer.resize();
-    }
+	layer.resize();
 
 	// adjust brush size
 	updateCursor();

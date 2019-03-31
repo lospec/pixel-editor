@@ -23,10 +23,17 @@ function Canvas(width, height, canvas) {
         this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
     },
     this.resize = function() {
-        let newWidth = (this.canvas.width*zoom)+'px';
-        let newHeight = (this.canvas.height*zoom)+'px';
+        let newWidth = (this.canvas.width * zoom) + 'px';
+        let newHeight = (this.canvas.height *zoom)+ 'px';
+
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
+    },
+    this.copyData = function(otherCanvas) {
+        this.canvas.style.width = otherCanvas.canvas.style.width;
+        this.canvas.style.height = otherCanvas.canvas.style.height;
 
+        this.canvas.style.left = otherCanvas.canvas.style.left;
+        this.canvas.style.top = otherCanvas.canvas.style.top;
     }
 }
