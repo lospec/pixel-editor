@@ -33,6 +33,7 @@
         <img src="/pixel-editor/pan-held.png" />
         <img src="/pixel-editor/pencil.png" />
         <img src="/pixel-editor/zoom-in.png" />
+        <img src = "/pixel-editor/eraser.png"/>
     </div>
     <ul id="main-menu">
         <li class="logo">Lospec Pixel Editor</li>
@@ -76,6 +77,11 @@
             <button title="Zoom Tool (Z)" id="zoom-button">{{svg "zoom.svg" width="32" height="32"}}</button>
             <button title="Zoom In" id="zoom-in-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Zoom Out" id="zoom-out-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+        <li class = "expanded">
+            <button title="Eraser tool (R)" id="eraser-button">{{svg "eraser.svg" width="32" height="32"}}</button>
+            <button title="Increase Eraser Size" id="eraser-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Decrease Eraser Size" id="eraser-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
     </ul>
 

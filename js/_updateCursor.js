@@ -6,7 +6,13 @@ function updateCursor () {
 		brushPreview.style.display = 'block';
 		brushPreview.style.width = brushSize * zoom + 'px';
 		brushPreview.style.height = brushSize * zoom + 'px';
-	} else 
+	} else if (currentTool == 'eraser') {
+		console.log("Eraser size: " + eraserSize);
+        canvasView.style.cursor = 'crosshair';
+        brushPreview.style.display = 'block';
+        brushPreview.style.width = eraserSize * zoom + 'px';
+        brushPreview.style.height = eraserSize * zoom + 'px';
+	} else
 		brushPreview.style.display = 'none';
 	
 	if (currentTool == 'eyedropper') {
@@ -28,5 +34,4 @@ function updateCursor () {
 		
 	if (currentTool == 'resize-brush') 
 		canvasView.style.cursor = 'default';
-
 }

@@ -1,19 +1,36 @@
 //pencil
 on('click',"pencil-button", function(){
-	changeTool('pencil');
-}, false);		
+    changeTool('pencil');
+}, false);
 
 //pencil bigger
 on('click',"pencil-bigger-button", function(){
-	brushSize++;
-	updateCursor();
-}, false);		
+    brushSize++;
+    updateCursor();
+}, false);
 
 //pencil smaller
-on('click',"pencil-smaller-button", function(e){
-	if(brushSize > 1) brushSize--;
-	updateCursor();
-}, false);		
+on('click',"pencil-smaller-button", function(){
+    if(brushSize > 1) brushSize--;
+    updateCursor();
+}, false);
+
+//eraser
+on('click',"eraser-button", function(){
+    changeTool('eraser');
+}, false);
+
+//eraser bigger
+on('click',"eraser-bigger-button", function(){
+    eraserSize++;
+    updateCursor();
+}, false);
+
+//eraser smaller
+on('click',"eraser-smaller-button", function(e){
+    if(eraserSize > 1) eraserSize--;
+    updateCursor();
+}, false);
 
 //fill
 on('click',"fill-button", function(){

@@ -414,19 +414,23 @@ svg {
 }
 
 #tools-menu li button#pencil-bigger-button,
-#tools-menu li button#zoom-in-button {
+#tools-menu li button#zoom-in-button,
+#tools-menu li button#eraser-bigger-button{
   left: 0;
 }
 
 #tools-menu li button#pencil-smaller-button,
-#tools-menu li button#zoom-out-button {
+#tools-menu li button#zoom-out-button,
+#tools-menu li button#eraser-smaller-button{
   right: 0;
 }
 
 #tools-menu li.selected button#pencil-bigger-button,
 #tools-menu li.selected button#pencil-smaller-button,
 #tools-menu li.selected button#zoom-in-button,
-#tools-menu li.selected button#zoom-out-button {
+#tools-menu li.selected button#zoom-out-button,
+#tools-menu li.selected button#eraser-bigger-button,
+#tools-menu li.selected button#eraser-smaller-button{
   display: block;
 }
 

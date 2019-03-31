@@ -16,9 +16,9 @@
     "gulp-include": "^2.3.1",
     "handlebars-helper-svg": "git+https://bitbucket.org/skeddles/npm-handlebars-helper-svg-lospec-open-source.git",
     "hbs": "^4.0.3",
-    "opn": "^6.0.0",
-    "sass": "^1.17.3",
     "hbs-register-helpers": "git+https://skeddles@bitbucket.org/skeddles/hbs-register-helpers.git",
-    "hbs-register-partials": "git+https://skeddles@bitbucket.org/skeddles/hbs-register-partials.git"
+    "hbs-register-partials": "git+https://skeddles@bitbucket.org/skeddles/hbs-register-partials.git",
+    "opn": "^6.0.0",
+    "sass": "^1.17.3"
   }
 }
