@@ -98,8 +98,8 @@
     <div id="brush-preview"></div>
 
     <div id="canvas-view">
-        <canvas id="pixel-canvas"></canvas>
-        <canvas id="checkerboard"></canvas>
+        <canvas id="pixel-canvas" class = "drawingCanvas"></canvas>
+        <canvas id="checkerboard" class = "drawingCanvas"></canvas>
     </div>
     <div id="canvas-view-shadow"></div>
 
@@ -109,9 +109,7 @@
       <input id="load-palette-browse-holder" type="file" accept="image/png, image/gif"/>
       <canvas id="load-palette-canvas-holder"></canvas>
     </div>
-    
 
-    
     <div class="jscolor-picker-bottom">
       <span>#</span><input type="text" id="jscolor-hex-input"/>
       <div id="duplicate-color-warning" title="Color is a duplicate of another in palette">{{svg "warning.svg" width="14" height="12" }}</div>

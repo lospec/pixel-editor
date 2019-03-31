@@ -547,7 +547,7 @@ var jsc = {
 				//console.log(e.target,'=====================================')
 				//if they clicked on the delete button [lospec]
 				if (e.target.className == 'delete-color-button') {
-				  //saveHistoryState({type: 'deletecolor', colorValue: jsc.picker.owner.toString(), canvas: currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
+				  //saveHistoryState({type: 'deletecolor', colorValue: jsc.picker.owner.toString(), canvas: canvas.context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 				  new HistoryStateDeleteColor(jsc.picker.owner.toString());
 				  
 				  deleteColor(jsc.picker.owner.styleElement);
@@ -784,15 +784,15 @@ var jsc = {
 			// Canvas implementation for modern browsers
 
 			var canvas = document.createElement('canvas');
-			var ctx = currentLayer.canvas.getContext('2d');
+			var ctx = canvas.getContext('2d');
 
 			var drawFunc = function (width, height, type) {
-				currentLayer.canvas.width = width;
-				currentLayer.canvas.height = height;
+				canvas.width = width;
+				canvas.height = height;
 
-				ctx.clearRect(0, 0, currentLayer.canvas.width, currentLayer.canvas.height);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-				var hGrad = ctx.createLinearGradient(0, 0, currentLayer.canvas.width, 0);
+				var hGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
 				hGrad.addColorStop(0 / 6, '#F00');
 				hGrad.addColorStop(1 / 6, '#FF0');
 				hGrad.addColorStop(2 / 6, '#0F0');
@@ -802,9 +802,9 @@ var jsc = {
 				hGrad.addColorStop(6 / 6, '#F00');
 
 				ctx.fillStyle = hGrad;
-				ctx.fillRect(0, 0, currentLayer.canvas.width, currentLayer.canvas.height);
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-				var vGrad = ctx.createLinearGradient(0, 0, 0, currentLayer.canvas.height);
+				var vGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
 				switch (type.toLowerCase()) {
 				case 's':
 					vGrad.addColorStop(0, 'rgba(255,255,255,0)');
@@ -816,7 +816,7 @@ var jsc = {
 					break;
 				}
 				ctx.fillStyle = vGrad;
-				ctx.fillRect(0, 0, currentLayer.canvas.width, canvas.height);
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
 			};
 
 			paletteObj.elm = canvas;

@@ -93,7 +93,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
     //fill starting at the location
 		fill(cursorLocation);
 	}
-	else if (currentTool == 'zoom') {
+	else if (currentTool == 'zoom' && mouseEvent.target == canvasView) {
 		let mode;
 		if (mouseEvent.which == 1){
 			mode = "in";
