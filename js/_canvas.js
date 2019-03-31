@@ -1,6 +1,7 @@
 function Canvas(width, height, canvas) {
     this.canvasSize = [width, height],
     this.canvas = canvas,
+    this.context = canvas.getContext("2d"),
     this.initialize = function() {
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
         var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);

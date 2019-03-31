@@ -73,7 +73,7 @@ function deleteColor (color) {
     
     //set current color TO LIGHTEST COLOR
     lightestColor[1].parentElement.classList.add('selected');
-    context.fillStyle = '#'+lightestColor[1].jscolor.toString();
+    currentLayer.context.fillStyle = '#'+lightestColor[1].jscolor.toString();
   }
   
   //delete the element

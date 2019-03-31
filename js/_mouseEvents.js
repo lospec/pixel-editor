@@ -17,7 +17,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			currentTool = 'pan';
 		else if (mouseEvent.altKey) 
 			currentTool = 'eyedropper';
-		else if (mouseEvent.target == canvas && (currentTool == 'pencil' || currentTool == 'eraser'))
+		else if (mouseEvent.target == currentLayer.canvas && (currentTool == 'pencil' || currentTool == 'eraser'))
 		    new HistoryStateEditCanvas();
 		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 		
@@ -31,7 +31,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	}
 	// TODO add eraser resize for scroll wheel
 	
-	if (currentTool == 'eyedropper' && mouseEvent.target == canvas)
+	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas)
 	    eyedropperPreview.style.display = 'block';
 	
 	return false;
@@ -46,7 +46,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 	if (!documentCreated || dialogueOpen) return;
 	
-	if (currentTool == 'eyedropper' && mouseEvent.target == canvas) {
+	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas) {
 		var cursorLocation = getCursorPosition(mouseEvent);
 		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
 		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
@@ -78,10 +78,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		
 		
 	}
-	else if (currentTool == 'fill' && mouseEvent.target == canvas) {
+	else if (currentTool == 'fill' && mouseEvent.target == currentLayer.canvas) {
 	  console.log('filling')
 	  //if you clicked on anything but the canvas, do nothing
-		if (!mouseEvent.target == canvas) return;
+		if (!mouseEvent.target == currentLayer.canvas) return;
 		
 		//get cursor postion
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -93,7 +93,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
     //fill starting at the location
 		fill(cursorLocation);
 	}
-	else if (currentTool == 'zoom' && mouseEvent.target == canvas) {
+	else if (currentTool == 'zoom' && mouseEvent.target == currentLayer.canvas) {
 		if (mouseEvent.which == 1) changeZoom('in', getCursorPosition(mouseEvent));
 		else if (mouseEvent.which == 3) changeZoom('out', getCursorPosition(mouseEvent))
 	}
@@ -121,18 +121,18 @@ function draw (mouseEvent) {
 	if (currentTool == 'pencil') {
 	
 		//move the brush preview
-		brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-		brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
+		brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
+		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
 		
 		//hide brush preview outside of canvas / canvas view
-		if (mouseEvent.target == canvas || mouseEvent.target == canvasView)
+		if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView)
 		  brushPreview.style.visibility = 'visible';
 		else
 		  brushPreview.style.visibility = 'hidden';
 
 		//draw line to current pixel
 		if (dragging) {
-			if (mouseEvent.target == canvas || mouseEvent.target == canvasView) {
+			if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView) {
 				line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
 				lastPos = cursorLocation;
 			}
@@ -153,14 +153,14 @@ function draw (mouseEvent) {
         brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
 
         //hide brush preview outside of canvas / canvas view
-        if (mouseEvent.target == canvas || mouseEvent.target == canvasView)
+        if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView)
             brushPreview.style.visibility = 'visible';
         else
             brushPreview.style.visibility = 'hidden';
 
         //draw line to current pixel
         if (dragging) {
-            if (mouseEvent.target == canvas || mouseEvent.target == canvasView) {
+            if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView) {
                 line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
                 lastPos = cursorLocation;
             }
@@ -169,30 +169,30 @@ function draw (mouseEvent) {
 	else if (currentTool == 'pan' && dragging) {
 
 		
-		setCanvasOffset(canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
+		setCanvasOffset(currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]))
 		/*
 		if 	(
 			//right
-			canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) < window.innerWidth - canvasSize[0]*zoom*0.25 - 48 &&
+			currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) < window.innerWidth - currentLayer.canvasSize[0]*zoom*0.25 - 48 &&
 			//left
-			canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) > -canvasSize[0]*zoom*0.75 + 64) 
+			currentLayer.canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) > -canvasSize[0]*zoom*0.75 + 64)
 				canvas.style.left = canvas.offsetLeft + (cursorLocation[0] - lastPos[0]) +'px';
 			
 		if (
 			//bottom
 			canvas.offsetTop + (cursorLocation[1] - lastPos[1]) < window.innerHeight-canvasSize[1]*zoom*0.25 &&
 			//top
-			canvas.offsetTop + (cursorLocation[1] - lastPos[1]) > -canvasSize[0]*zoom*0.75 + 48) 
-				canvas.style.top = canvas.offsetTop + (cursorLocation[1] - lastPos[1]) +'px';
+			currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]) > -canvasSize[0]*zoom*0.75 + 48)
+				currentLayer.canvas.style.top = currentLayer.canvas.offsetTop + (cursorLocation[1] - lastPos[1]) +'px';
     	*/
     }
-    else if (currentTool == 'eyedropper' && dragging && mouseEvent.target == canvas) {
+    else if (currentTool == 'eyedropper' && dragging && mouseEvent.target == currentLayer.canvas) {
         var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
         eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
         eyedropperPreview.style.display = 'block';
        
-        eyedropperPreview.style.left = cursorLocation[0] + canvas.offsetLeft - 30 + 'px';
-        eyedropperPreview.style.top = cursorLocation[1] + canvas.offsetTop - 30 + 'px';
+        eyedropperPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - 30 + 'px';
+        eyedropperPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - 30 + 'px';
         
         var colorLightness = Math.max(selectedColor[0],selectedColor[1],selectedColor[2]);
         
@@ -213,8 +213,8 @@ function draw (mouseEvent) {
 		brushSize = Math.max(1,newBrushSize);
 		
 		//fix offset so the cursor stays centered
-		brushPreview.style.left = lastPos[0] + canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-		brushPreview.style.top = lastPos[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
+		brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
+		brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
 
 		updateCursor();
 	}

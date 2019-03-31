@@ -36,10 +36,10 @@ function createColorPalette(selectedPalette, fillBackground) {
 	
 	//fill bg with lightest color
 	if (fillBackground) {
-		context.fillStyle = lightestColor;
-		context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
+		currentLayer.context.fillStyle = lightestColor;
+		currentLayer.context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
 	}
 	
 	//set as current color
-	context.fillStyle = darkestColor;
+	currentLayer.context.fillStyle = darkestColor;
 }

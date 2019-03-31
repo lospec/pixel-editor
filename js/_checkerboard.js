@@ -6,6 +6,8 @@ var nSquaresFilled = 0;
  */
 
 function fillCheckerboard() {
+    var context = checkerBoard.context;
+
     for (var i=0; i<canvasSize[0] / checkerBoardSquareSize; i++) {
         nSquaresFilled = 0;
 

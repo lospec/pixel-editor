@@ -10,9 +10,9 @@ function line(x0,y0,x1,y1) {
 	while (true) {
 	    //set pixel
 		if (currentTool == 'pencil') {
-			context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+			currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
 		} else if (currentTool == 'eraser') {
-            context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+            currentLayer.context.clearRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), eraserSize, eraserSize);
 		}
 		
 		//if we've reached the end goal, exit the loop

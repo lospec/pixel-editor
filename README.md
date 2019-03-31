@@ -21,9 +21,9 @@ Suggestions / Planned features:
 
 - Selections 
     - New selection tool 
-    - New canvas layer above the drawing layer 
+    - New currentLayer.canvas layer above the drawing layer 
     - Move when click and drag 
-    - Merge with canvas when click outside 
+    - Merge with currentLayer.canvas when click outside 
 
 - Copy/paste 
     - Add as selection 
@@ -35,7 +35,7 @@ Suggestions / Planned features:
 
 - Palette option remove unused colors 
 - Pixel Grid 
-    - Another canvas 
+    - Another currentLayer.canvas 
     - Must be rescaled each zoom 
 
 - Possibly add collaborate function using together.js 

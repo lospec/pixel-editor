@@ -15,10 +15,10 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
 					newPixel(this.width, this.height, []);
 					
 					//draw the image onto the canvas
-					context.drawImage(img, 0, 0);
+					currentLayer.context.drawImage(img, 0, 0);
 					
 					var colorPalette = {};
-					var imagePixelData = context.getImageData(0,0,this.width, this.height).data;
+					var imagePixelData = currentLayer.context.getImageData(0,0,this.width, this.height).data;
 					
 					var imagePixelDataLength = imagePixelData.length;
 					

@@ -54,11 +54,11 @@ canvas {
 }
 
 #checkerboard {
-  z-index:1000;
+  z-index:1;
 }
 
 #pixel-canvas {
-  z-index:1;
+  z-index:2;
   background:transparent;
 }
 

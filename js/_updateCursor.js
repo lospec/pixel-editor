@@ -12,7 +12,7 @@ function updateCursor () {
         brushPreview.style.display = 'block';
         brushPreview.style.width = eraserSize * zoom + 'px';
         brushPreview.style.height = eraserSize * zoom + 'px';
-        context.fillStyle = 'rgba(255, 0, 0, 0)';
+        currentLayer.context.fillStyle = 'rgba(255, 0, 0, 0)';
 	} else
 		brushPreview.style.display = 'none';
 	

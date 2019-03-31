@@ -5,19 +5,19 @@ const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
 //prototype for undoing canvas changes
 function HistoryStateEditCanvas () {
-  this.canvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+  this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
   
   this.undo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     this.canvas = currentCanvas;
     redoStates.push(this);
   }
   
   this.redo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     this.canvas = currentCanvas;
     undoStates.push(this);
@@ -48,11 +48,11 @@ function HistoryStateAddColor (colorValue) {
 //prototype for undoing deleted colors
 function HistoryStateDeleteColor (colorValue) {
   this.colorValue = colorValue;
-  this.canvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+  this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
   
   this.undo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     addColor(this.colorValue);
     
@@ -61,8 +61,8 @@ function HistoryStateDeleteColor (colorValue) {
   }
   
   this.redo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     deleteColor(this.colorValue);
   
@@ -78,11 +78,11 @@ function HistoryStateDeleteColor (colorValue) {
 function HistoryStateEditColor (newColorValue, oldColorValue) {
   this.newColorValue = newColorValue;
   this.oldColorValue = oldColorValue;
-  this.canvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+  this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
   
   this.undo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     //find new color in palette and change it back to old color
     var colors = document.getElementsByClassName('color-button');
@@ -99,8 +99,8 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
   }
   
   this.redo = function () {
-    var currentCanvas = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-    context.putImageData(this.canvas, 0, 0);
+    var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    currentLayer.context.putImageData(this.canvas, 0, 0);
     
     //find old color in palette and change it back to new color
     var colors = document.getElementsByClassName('color-button');

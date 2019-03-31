@@ -12,13 +12,12 @@ var prevEraserSize = 1;
 var menuOpen = false;
 var dialogueOpen = false;
 var documentCreated = false;
-var layers = 
 
 // Checkerboard management
 var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
 var secondCheckerBoardColor = 'rgba(105, 105, 105, 1)';
 var checkerBoardSquareSize = 16;
-//var checkerBoard = document.getElementById("checkerboard").getContext("2d");
+var checkerBoard = document.getElementById("checkerboard");
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");
@@ -31,4 +30,10 @@ var popUpContainer = document.getElementById("pop-up-container");
 //html canvas
 var canvas = document.getElementById("pixel-canvas");
 var context = canvas.getContext("2d");
+
+// Layers
+var layers = [];
+var currentLayer;
+
+//TODO all layers must be moved and resized at the same time
 

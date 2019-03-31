@@ -1,9 +1,12 @@
 
 function newPixel (width, height, palette) {
-	var main = new Canvas(width, height, canvas);
-	main.initialize();
+    currentLayer = new Canvas(width, height, canvas);
+    currentLayer.initialize();
 
-	canvasSize = main.canvasSize;
+    checkerBoard = new Canvas(width, height, checkerBoard);
+    checkerBoard.initialize();
+
+	canvasSize = currentLayer.canvasSize;
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
 	while (colors.length > 0) {
@@ -40,14 +43,14 @@ function newPixel (width, height, palette) {
     //fill background of canvas with bg color
 		fillCheckerboard();
 		/*
-		context.fillStyle = '#'+defaultBackgroundColor;
-		context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
+		currentLayer.context.fillStyle = '#'+defaultBackgroundColor;
+		currentLayer.context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
 		
 		console.log('#'+defaultBackgroundColor)
 		*/
 		
 		//set current drawing color as foreground color
-		context.fillStyle = '#'+defaultForegroundColor;
+		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
 		selectedPalette = 'none';
 	}
 		

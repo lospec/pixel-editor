@@ -7,7 +7,7 @@ function replaceAllOfColor (oldColor, newColor) {
   if (typeof newColor === 'string') newColor = hexToRgb(newColor);
     
   //create temporary image from canvas to search through
-	var tempImage = context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+	var tempImage = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 	
 	//loop through all pixels
 	for (var i=0;i<tempImage.data.length;i+=4) {
@@ -21,5 +21,5 @@ function replaceAllOfColor (oldColor, newColor) {
 	}
 	
 	//put temp image back onto canvas
-	context.putImageData(tempImage,0,0);
+	currentLayer.context.putImageData(tempImage,0,0);
 }
