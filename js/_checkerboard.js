@@ -1,4 +1,5 @@
 var currentColor = firstCheckerBoardColor;
+var nSquaresFilled = 0;
 
 /* TODO add check for canvas dimentions (right now negative values can be inserted and a canvas will be generated, it is just
     necessary to add a conversion from negative to positive values.
@@ -6,23 +7,44 @@ var currentColor = firstCheckerBoardColor;
 
 function fillCheckerboard() {
     for (var i=0; i<canvasSize[0] / checkerBoardSquareSize; i++) {
-        for (var j=0; j<canvasSize[1] / checkerBoardSquareSize; j++) {
-            context.fillStyle = currentColor;
-            context.fillRect(i * checkerBoardSquareSize, j * checkerBoardSquareSize, checkerBoardSquareSize, checkerBoardSquareSize);
+        nSquaresFilled = 0;
 
-            changeCheckerboardColor(false);
+        for (var j=0; j<canvasSize[1] / checkerBoardSquareSize; j++) {
+            var rectX;
+            var rectY;
+
+            if (i * checkerBoardSquareSize < canvasSize[0]) {
+                rectX = i * checkerBoardSquareSize;
+            }
+            else {
+                rectX = canvasSize[0];
+            }
+
+            if (j * checkerBoardSquareSize < canvasSize[1]) {
+                rectY = j * checkerBoardSquareSize;
+            }
+            else {
+                rectY = canvasSize[1];
+            }
+
+            context.fillStyle = currentColor;
+            context.fillRect(rectX, rectY, checkerBoardSquareSize, checkerBoardSquareSize);
+
+            changeCheckerboardColor();
+
+            nSquaresFilled++;
         }
 
-        changeCheckerboardColor(false);
+        if ((nSquaresFilled % 2) == 0) {
+            changeCheckerboardColor();
+        }
     }
 }
 
-function changeCheckerboardColor(rowEndReached) {
-    if (!rowEndReached) {
-        if (currentColor == firstCheckerBoardColor) {
-            currentColor = secondCheckerBoardColor;
-        } else if (currentColor == secondCheckerBoardColor) {
-            currentColor = firstCheckerBoardColor;
-        }
+function changeCheckerboardColor(isVertical) {
+    if (currentColor == firstCheckerBoardColor) {
+        currentColor = secondCheckerBoardColor;
+    } else if (currentColor == secondCheckerBoardColor) {
+        currentColor = firstCheckerBoardColor;
     }
 }

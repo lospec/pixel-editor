@@ -8,7 +8,6 @@ function line(x0,y0,x1,y1) {
 	var err = dx-dy;
 
 	while (true) {
-		console.log("drawing line");
 	    //set pixel
 		if (currentTool == 'pencil') {
 			context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
