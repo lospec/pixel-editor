@@ -229,9 +229,11 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 			mode = 'out';
         }
 
+        // Changing zoom and position of the first layer
         changeZoom(layers[0], mode, getCursorPosition(mouseEvent))
 
         for (let i=1; i<layers.length; i++) {
+			// Copying first layer's data into the other layers
             layers[i].copyData(layers[0]);
 		}
 	}

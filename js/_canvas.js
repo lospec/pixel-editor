@@ -2,6 +2,7 @@ function Canvas(width, height, canvas) {
     this.canvasSize = [width, height],
     this.canvas = canvas,
     this.context = this.canvas.getContext("2d"),
+    // Initializes the canvas
     this.initialize = function() {
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
         var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);
@@ -29,6 +30,7 @@ function Canvas(width, height, canvas) {
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
     },
+    // Copies the otherCanvas' position and size
     this.copyData = function(otherCanvas) {
         this.canvas.style.width = otherCanvas.canvas.style.width;
         this.canvas.style.height = otherCanvas.canvas.style.height;
