@@ -35,9 +35,9 @@ svg {
   outline: 0 !important;
 }
 
-#pixel-canvas {
+canvas {
   cursor: url('/pixel-art-where-to-start/pencil-tool-cursor.png');
-  
+
   border: solid 1px #fff;
   image-rendering:optimizeSpeed;             /* Legal fallback */
   image-rendering:-moz-crisp-edges;          /* Firefox        */
@@ -49,9 +49,17 @@ svg {
   -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
   width: 400px;
   height: 400px;
-  display: none;
   position: fixed;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.64);
+}
+
+#checkerboard {
+  z-index:1000;
+}
+
+#pixel-canvas {
+  z-index:1;
+  background:transparent;
 }
 
 #eyedropper-preview {
@@ -83,7 +91,6 @@ svg {
 }
 
 #canvas-view {
-  background: color(indent-dark);
   bottom: 0px;
   left: 64px;
   right: 48px;

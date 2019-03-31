@@ -42,6 +42,7 @@
 //=include _deleteColor.js 
 //=include _replaceAllOfColor.js
 //=include _checkerboard.js
+//=include _canvas.js
 
 
 /**load file**/

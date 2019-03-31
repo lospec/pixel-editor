@@ -12,9 +12,12 @@ var prevEraserSize = 1;
 var menuOpen = false;
 var dialogueOpen = false;
 var documentCreated = false;
+
+// Checkerboard management
 var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
 var secondCheckerBoardColor = 'rgba(105, 105, 105, 1)';
 var checkerBoardSquareSize = 16;
+//var checkerBoard = document.getElementById("checkerboard").getContext("2d");
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");
