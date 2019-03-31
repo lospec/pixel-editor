@@ -34,8 +34,9 @@ function KeyPress(e) {
 		  changeTool('zoom');
 		  break;
 		 // eraser -6, r
-	     case 54: case 72:
-	     	changeTool('eraser');
+	     case 54: case 82:
+	         console.log("Pressed r");
+            changeTool('eraser');
 	     	break;
 		//Z
 		case 90:
