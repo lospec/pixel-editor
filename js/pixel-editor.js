@@ -43,7 +43,6 @@
 //=include _replaceAllOfColor.js
 //=include _checkerboard.js
 //=include _canvas.js
-//=include _layers.js
 
 
 /**load file**/
