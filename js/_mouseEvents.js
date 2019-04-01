@@ -160,8 +160,8 @@ function draw (mouseEvent) {
 	else if (currentTool == 'eraser') {
 	    // Uses the same preview as the brush
         //move the brush preview
-        brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-        brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
+        brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - eraserSize * zoom / 2 + 'px';
+        brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - eraserSize * zoom / 2 + 'px';
 
         //hide brush preview outside of canvas / canvas view
         if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView)
