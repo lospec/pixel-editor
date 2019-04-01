@@ -29,7 +29,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		currentTool = 'resize-brush';
 		prevBrushSize=brushSize;
 	}
-	// TODO add eraser resize for scroll wheel
 	
 	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas)
 	    eyedropperPreview.style.display = 'block';
@@ -159,6 +158,7 @@ function draw (mouseEvent) {
 	}
 	// Decided to write a different implementation in case of differences between the brush and the eraser tool
 	else if (currentTool == 'eraser') {
+	    // Uses the same preview as the brush
         //move the brush preview
         brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - brushSize * zoom / 2 + 'px';
         brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - brushSize * zoom / 2 + 'px';
@@ -178,8 +178,10 @@ function draw (mouseEvent) {
         }
 	}
 	else if (currentTool == 'pan' && dragging) {
+	    // Setting first layer position
         setCanvasOffset(layers[0].canvas, layers[0].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastPos[1]));
-		for (let i=1; i<layers.length; i++) {
+		// Copying that position to the other layers
+        for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
         }
     }
@@ -198,7 +200,6 @@ function draw (mouseEvent) {
 		else eyedropperPreview.classList.add('dark');
     }
     else if (currentTool == 'resize-brush' && dragging) {
-       
         //get new brush size based on x distance from original clicking location
         var distanceFromClick = cursorLocation[0] - lastPos[0];
         //var roundingAmount = 20 - Math.round(distanceFromClick/10);

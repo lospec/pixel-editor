@@ -1,3 +1,9 @@
+/** Handler class for a single canvas (a single layer)
+ *
+ * @param width Canvas width
+ * @param height Canvas height
+ * @param canvas HTML canvas element
+ */
 function Canvas(width, height, canvas) {
     this.canvasSize = [width, height],
     this.canvas = canvas,
@@ -23,6 +29,7 @@ function Canvas(width, height, canvas) {
         this.canvas.style.left = 64+canvasView.clientWidth/2-(this.canvasSize[0]*zoom/2)+'px';
         this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
     },
+    // Resizes canvas
     this.resize = function() {
         let newWidth = (this.canvas.width * zoom) + 'px';
         let newHeight = (this.canvas.height *zoom)+ 'px';
