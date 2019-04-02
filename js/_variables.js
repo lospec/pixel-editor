@@ -7,6 +7,7 @@ var currentToolTemp = 'pencil';
 var brushSize = 1;
 var eraserSize = 1;
 var prevBrushSize = 1;
+var prevEraserSize = 1;
 var dialogueOpen = false;
 var documentCreated = false;
 

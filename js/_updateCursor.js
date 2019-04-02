@@ -6,7 +6,7 @@ function updateCursor () {
 		brushPreview.style.display = 'block';
 		brushPreview.style.width = brushSize * zoom + 'px';
 		brushPreview.style.height = brushSize * zoom + 'px';
-	} else if (currentTool == 'eraser') {
+	} else if (currentTool == 'eraser' || currentTool == 'resize-eraser') {
 	    // Size management for the eraser
 		console.log("Eraser size: " + eraserSize);
         canvasView.style.cursor = 'crosshair';
@@ -33,6 +33,6 @@ function updateCursor () {
 	if (currentTool == 'zoom') 
 		canvasView.style.cursor = "url('/pixel-editor/zoom-in.png'), auto";
 		
-	if (currentTool == 'resize-brush')
+	if (currentTool == 'resize-brush' || currentTool == 'resize-eraser')
 		canvasView.style.cursor = 'default';
 }

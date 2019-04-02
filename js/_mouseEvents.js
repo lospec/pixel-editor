@@ -27,8 +27,12 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	}
 	else if (currentTool == 'pencil' && mouseEvent.which == 3) {
 		currentTool = 'resize-brush';
-		prevBrushSize=brushSize;
+		prevBrushSize = brushSize;
 	}
+	else if (currentTool == 'eraser' && mouseEvent.which == 3) {
+	    currentTool = 'resize-eraser';
+	    prevEraserSize = eraserSize;
+    }
 	
 	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas)
 	    eyedropperPreview.style.display = 'block';
@@ -205,17 +209,34 @@ function draw (mouseEvent) {
         //var roundingAmount = 20 - Math.round(distanceFromClick/10);
         //this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
         var brushSizeChange = Math.round(distanceFromClick/10);
-		var newBrushSize = prevBrushSize + brushSizeChange;
-		
-		//set the brush to the new size as long as its bigger than 1
-		brushSize = Math.max(1,newBrushSize);
-		
-		//fix offset so the cursor stays centered
-		brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-		brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
+        var newBrushSize = prevBrushSize + brushSizeChange;
 
-		updateCursor();
-	}
+        //set the brush to the new size as long as its bigger than 1
+        brushSize = Math.max(1,newBrushSize);
+
+        //fix offset so the cursor stays centered
+        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
+        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
+
+        updateCursor();
+    }
+    else if (currentTool == 'resize-eraser' && dragging) {
+        //get new brush size based on x distance from original clicking location
+        var distanceFromClick = cursorLocation[0] - lastPos[0];
+        //var roundingAmount = 20 - Math.round(distanceFromClick/10);
+        //this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
+        var eraserSizeChange = Math.round(distanceFromClick/10);
+        var newEraserSizeChange = prevEraserSize + eraserSizeChange;
+
+        //set the brush to the new size as long as its bigger than 1
+        eraserSize = Math.max(1,newEraserSizeChange);
+
+        //fix offset so the cursor stays centered
+        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - eraserSize * zoom / 2 + 'px';
+        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - eraserSize * zoom / 2 + 'px';
+
+        updateCursor();
+    }
 }
 
 //mousewheel scrroll
