@@ -13,9 +13,9 @@ var documentCreated = false;
 
 // Checkerboard management
 // Checkerboard color 1
-var firstCheckerBoardColor = 'rgba(139, 139, 139, 1)';
+var firstCheckerBoardColor = 'rgba(179, 173, 182, 1)';
 // Checkerboard color 2
-var secondCheckerBoardColor = 'rgba(105, 105, 105, 1)';
+var secondCheckerBoardColor = 'rgba(204, 200, 206, 1)';
 // Square size for the checkerboard
 var checkerBoardSquareSize = 16;
 // Checkerboard canvas

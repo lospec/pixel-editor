@@ -7,8 +7,6 @@ function updateCursor () {
 		brushPreview.style.width = brushSize * zoom + 'px';
 		brushPreview.style.height = brushSize * zoom + 'px';
 	} else if (currentTool == 'eraser' || currentTool == 'resize-eraser') {
-	    // Size management for the eraser
-		console.log("Eraser size: " + eraserSize);
         canvasView.style.cursor = 'crosshair';
         brushPreview.style.display = 'block';
         brushPreview.style.width = eraserSize * zoom + 'px';
