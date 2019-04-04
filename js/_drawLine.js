@@ -6,11 +6,17 @@ function line(x0,y0,x1,y1) {
 	var sx = (x0 < x1 ? 1 : -1);
 	var sy = (y0 < y1 ? 1 : -1);
 	var err = dx-dy;
-	var breaker = 0;
 
 	while (true) {
 	    //set pixel
-		context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+		// If the current tool is the brush
+		if (currentTool == 'pencil') {
+			// I fill the rect
+			currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+		} else if (currentTool == 'eraser') {
+			// In case I'm using the eraser I must clear the rect
+            currentLayer.context.clearRect(x0-Math.floor(eraserSize/2), y0-Math.floor(eraserSize/2), eraserSize, eraserSize);
+		}
 		
 		//if we've reached the end goal, exit the loop
 		if ((x0==x1) && (y0==y1)) break;

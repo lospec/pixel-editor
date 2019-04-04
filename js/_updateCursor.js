@@ -6,7 +6,12 @@ function updateCursor () {
 		brushPreview.style.display = 'block';
 		brushPreview.style.width = brushSize * zoom + 'px';
 		brushPreview.style.height = brushSize * zoom + 'px';
-	} else 
+	} else if (currentTool == 'eraser' || currentTool == 'resize-eraser') {
+        canvasView.style.cursor = 'crosshair';
+        brushPreview.style.display = 'block';
+        brushPreview.style.width = eraserSize * zoom + 'px';
+        brushPreview.style.height = eraserSize * zoom + 'px';
+	} else
 		brushPreview.style.display = 'none';
 	
 	if (currentTool == 'eyedropper') {
@@ -26,7 +31,6 @@ function updateCursor () {
 	if (currentTool == 'zoom') 
 		canvasView.style.cursor = "url('/pixel-editor/zoom-in.png'), auto";
 		
-	if (currentTool == 'resize-brush') 
+	if (currentTool == 'resize-brush' || currentTool == 'resize-eraser')
 		canvasView.style.cursor = 'default';
-
 }

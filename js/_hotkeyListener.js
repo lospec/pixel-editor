@@ -33,6 +33,11 @@ function KeyPress(e) {
 		case 53:
 		  changeTool('zoom');
 		  break;
+		 // eraser -6, r
+	     case 54: case 82:
+	         console.log("Pressed r");
+            changeTool('eraser');
+	     	break;
 		//Z
 		case 90:
 		  console.log('PRESSED Z ', keyboardEvent.ctrlKey)

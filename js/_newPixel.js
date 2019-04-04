@@ -1,26 +1,15 @@
 
 function newPixel (width, height, palette) {
-  
-	canvasSize = [width,height];
+    currentLayer = new Canvas(width, height, canvas);
+    currentLayer.initialize();
 
-	var maxHorizontalZoom = Math.floor(window.innerWidth/canvasSize[0]*0.75);
-	var maxVerticalZoom = Math.floor(window.innerHeight/canvasSize[1]*0.75);
+    checkerBoard = new Canvas(width, height, checkerBoardCanvas);
+    checkerBoard.initialize();
 
-	zoom = Math.min(maxHorizontalZoom,maxVerticalZoom);
-	if (zoom < 1) zoom = 1;
-	
-	//resize canvas
-	canvas.width = canvasSize[0];
-	canvas.height = canvasSize[1];
-	canvas.style.width = (canvas.width*zoom)+'px';
-	canvas.style.height = (canvas.height*zoom)+'px';
-	
-	//unhide canvas
-	canvas.style.display = 'block';
-	
-	//center canvas in window
-	canvas.style.left = 64+canvasView.clientWidth/2-(canvasSize[0]*zoom/2)+'px';
-	canvas.style.top = 48+canvasView.clientHeight/2-(canvasSize[1]*zoom/2)+'px';
+	canvasSize = currentLayer.canvasSize;
+
+	layers.push(currentLayer);
+	layers.push(checkerBoard);
 
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
@@ -56,13 +45,16 @@ function newPixel (width, height, palette) {
 	  addColor(defaultBackgroundColor);
     
     //fill background of canvas with bg color
-		context.fillStyle = '#'+defaultBackgroundColor;
-		context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
+		fillCheckerboard();
+		/*
+		currentLayer.context.fillStyle = '#'+defaultBackgroundColor;
+		currentLayer.context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
 		
 		console.log('#'+defaultBackgroundColor)
+		*/
 		
 		//set current drawing color as foreground color
-		context.fillStyle = '#'+defaultForegroundColor;
+		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
 		selectedPalette = 'none';
 	}
 		

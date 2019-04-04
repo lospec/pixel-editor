@@ -9,7 +9,7 @@ function clickedColor (e){
       if (selectedColor) selectedColor.classList.remove("selected");
 
     	//set current color
-    	context.fillStyle = this.style.backgroundColor;
+    	currentLayer.context.fillStyle = this.style.backgroundColor;
     	
     	//make color selected
     	e.target.parentElement.classList.add('selected');

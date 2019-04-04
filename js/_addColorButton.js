@@ -52,6 +52,7 @@ on('click', 'add-color-button', function(){
   
   //show color picker
   addedColor.firstElementChild.jscolor.show();
+  console.log("showing picker");
   
   //hide edit button
   addedColor.lastChild.classList.add('hidden');
