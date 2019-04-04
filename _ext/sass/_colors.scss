@@ -51,6 +51,7 @@ $palettes: (
         ),
         foreground: (
             default: lighten($base-color, 80%),
+            dropdown: lighten($base-color, 50%),
             text: lighten($base-color, 100%),
         )
     ),
@@ -76,6 +77,7 @@ $palettes: (
             default: darken($base-color, 4%),
             separator: darken($base-color, 8%),
             hover: lighten($base-color, 5%),
+            outline: lighten($base-color, 10%),
         ),
         foreground: (
             default: #fff,
