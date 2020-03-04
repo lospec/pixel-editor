@@ -63,6 +63,11 @@ svg {
   background:transparent;
 }
 
+#tmp-canvas {
+  z-index:1;
+  background:transparent;
+}
+
 #vfx-canvas {
   z-index:-5000;
   background:transparent;

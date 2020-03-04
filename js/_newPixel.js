@@ -12,6 +12,9 @@ function newPixel (width, height, palette) {
     VFXLayer = new Layer(width, height, VFXCanvas);
     VFXLayer.initialize();
 
+    TMPLayer = new Layer(width, height, TMPCanvas);
+    TMPLayer.initialize();
+
 	canvasSize = currentLayer.canvasSize;
 
 	// Adding the first layer and the checkerboard to the list of layers

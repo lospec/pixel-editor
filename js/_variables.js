@@ -42,3 +42,8 @@ var currentLayer;
 var VFXLayer;
 // VFX canvas
 var VFXCanvas = document.getElementById("vfx-canvas");
+
+// TMP layer
+var TMPLayer;
+// TMP canvas
+var TMPCanvas = document.getElementById("tmp-canvas");

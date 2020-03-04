@@ -1,3 +1,10 @@
+/** TODO LIST FOR LAYERS
+    - move the tmp layer so that it's always right below the active layer
+    - when the move tool is selected (to move a selection), the tmp layer must be put right above the 
+        active layer to show a preview
+*/
+
+
 /** Handler class for a single canvas (a single layer)
  *
  * @param width Canvas width
