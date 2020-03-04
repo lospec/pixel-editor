@@ -33,4 +33,6 @@ function updateCursor () {
 		
 	if (currentTool == 'resize-brush' || currentTool == 'resize-eraser')
 		canvasView.style.cursor = 'default';
+	if (currentTool == 'rectselect')
+		canvasView.style.cursor = 'crosshair';
 }
