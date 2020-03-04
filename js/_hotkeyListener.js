@@ -25,8 +25,8 @@ function KeyPress(e) {
 		case 51: case 69:
 			changeTool('eyedropper');
 			break;
-		//pan - 4, p, m
-		case 52: case 80: case 77:
+		//pan - 4, p,
+		case 52: case 80:
 			changeTool('pan');
 			break;
 		//zoom - 5
@@ -34,10 +34,14 @@ function KeyPress(e) {
 		  changeTool('zoom');
 		  break;
 		 // eraser -6, r
-	     case 54: case 82:
+	    case 54: case 82:
 	         console.log("Pressed r");
             changeTool('eraser');
 	     	break;
+	    // Rectangular selection	
+	    case 77: case 109:
+			changeTool('rectselect');
+			break;
 		//Z
 		case 90:
 		  console.log('PRESSED Z ', keyboardEvent.ctrlKey)

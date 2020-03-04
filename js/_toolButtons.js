@@ -70,3 +70,8 @@ on('click',"zoom-out-button", function(){
         layers[i].copyData(layers[0]);
     }
 }, false);
+
+//rectangular selection button
+on('click', "rectselect-button", function(){
+    changeTool('rectselect');
+}, false);
