@@ -61,6 +61,7 @@
 //=include _fileMenu.js 
 //=include _createButton.js 
 //=include _rectSelect.js
+//=include _move.js
 
 
 /**onload**/

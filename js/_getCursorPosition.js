@@ -20,6 +20,8 @@ function getCursorPosition(e) {
 
 // TODO: apply the function below to every getCursorPosition call
 
+// TODO: FIX THIS BELOW
+
 //get cursor position relative to canvas
 function getCursorPositionRelative(e, layer) {
 	var x;
