@@ -57,29 +57,27 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		console.log(newColor);
 		
 		var colors = document.getElementsByClassName('color-button');
-    for (var i = 0; i < colors.length; i++) {
-      console.log(colors[i].jscolor.toString());
-      
-      //if picked color matches this color
-      if (newColor == colors[i].jscolor.toString()) {
-        console.log('color found');
-        
-        //remove current color selection
-        var selectedColor = document.querySelector("#colors-menu li.selected")
-        if (selectedColor) selectedColor.classList.remove("selected");
-        
-      	//set current color
-      	context.fillStyle = '#'+newColor;
-      	
-      	//make color selected
-      	colors[i].parentElement.classList.add('selected');
-        
-        //hide eyedropper
-        eyedropperPreview.style.display = 'none';
-      }
-    }
-		
-		
+	    for (var i = 0; i < colors.length; i++) {
+	      console.log(colors[i].jscolor.toString());
+	      
+	      //if picked color matches this color
+	      if (newColor == colors[i].jscolor.toString()) {
+	        console.log('color found');
+	        
+	        //remove current color selection
+	        var selectedColor = document.querySelector("#colors-menu li.selected")
+	        if (selectedColor) selectedColor.classList.remove("selected");
+	        
+	      	//set current color
+	      	context.fillStyle = '#'+newColor;
+	      	
+	      	//make color selected
+	      	colors[i].parentElement.classList.add('selected');
+	        
+	        //hide eyedropper
+	        eyedropperPreview.style.display = 'none';
+	      }
+	    }
 	}
 	else if (currentTool == 'fill' && mouseEvent.target == currentLayer.canvas) {
 	  console.log('filling')
@@ -110,6 +108,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
         for (let i=1; i<layers.length; i++) {
 			layers[i].copyData(layers[0]);
         }
+	}
+	else if (currentTool == 'rectselect') {
+		endRectSelection();
 	}
 
 	dragging = false;
@@ -236,6 +237,15 @@ function draw (mouseEvent) {
         brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - eraserSize * zoom / 2 + 'px';
 
         updateCursor();
+    }
+    else if (currentTool == 'rectselect') {
+    	if (dragging && !isRectSelecting) {
+    		isRectSelecting = true;
+    		startRectSelection();
+    	}
+    	else if (dragging && isRectSelecting) {
+    		updateRectSelection();
+    	}
     }
 }
 

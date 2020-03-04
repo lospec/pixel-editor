@@ -63,6 +63,11 @@ svg {
   background:transparent;
 }
 
+#pixel-canvas {
+  z-index:1000;
+  background:transparent;
+}
+
 #eyedropper-preview {
   position: absolute;
   width: 45px;

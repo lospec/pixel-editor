@@ -59,6 +59,7 @@
 //=include _clickedColor.js 
 //=include _fileMenu.js 
 //=include _createButton.js 
+//=include _rectSelect.js
 
 
 /**onload**/
