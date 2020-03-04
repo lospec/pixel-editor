@@ -42,4 +42,3 @@ var currentLayer;
 var VFXLayer;
 // VFX canvas
 var VFXCanvas = document.getElementById("vfx-canvas");
-

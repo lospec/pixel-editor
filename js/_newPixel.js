@@ -1,15 +1,15 @@
 
 function newPixel (width, height, palette) {
 	// Setting the current layer
-    currentLayer = new Canvas(width, height, canvas);
+    currentLayer = new Layer(width, height, canvas);
     currentLayer.initialize();
 
     // Adding the checkerboard behind it
-    checkerBoard = new Canvas(width, height, checkerBoardCanvas);
+    checkerBoard = new Layer(width, height, checkerBoardCanvas);
     checkerBoard.initialize();
 
     // Creating the vfx layer on top of everything
-    VFXLayer = new Canvas(width, height, VFXCanvas);
+    VFXLayer = new Layer(width, height, VFXCanvas);
     VFXLayer.initialize();
 
 	canvasSize = currentLayer.canvasSize;

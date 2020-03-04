@@ -110,7 +110,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
         }
 	}
 	else if (currentTool == 'rectselect') {
-		endRectSelection();
+		endRectSelection(mouseEvent);
 	}
 
 	dragging = false;
@@ -241,10 +241,10 @@ function draw (mouseEvent) {
     else if (currentTool == 'rectselect') {
     	if (dragging && !isRectSelecting) {
     		isRectSelecting = true;
-    		startRectSelection();
+    		startRectSelection(mouseEvent);
     	}
     	else if (dragging && isRectSelecting) {
-    		updateRectSelection();
+    		updateRectSelection(mouseEvent);
     	}
     }
 }
