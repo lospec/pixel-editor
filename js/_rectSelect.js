@@ -1,6 +1,8 @@
 var isRectSelecting = false;
 let startX;
 let startY;
+let endX;
+let endY;
 let workingLayer;
 let imageData;
 
@@ -29,13 +31,24 @@ function updateRectSelection(mouseEvent) {
 function endRectSelection(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
-	let x = currentPos[0] / zoom;
-	let y = currentPos[1] / zoom;
+	endX = currentPos[0] / zoom;
+	endY = currentPos[1] / zoom;
 
 	// Putting the vfx layer behind everything
 	isRectSelecting = false;
 	// Getting the selected pixels
-	imageData = currentLayer.context.createImageData(x - startX, y - startY);
+	imageData = currentLayer.context.createImageData(endX - startX, endY - startY);
+
+	// Selecting the move tool
+	currentTool = 'moveselection';
+	currentToolTemp = currentTool;
+	// Updating the cursor 
+	updateCursor();
+
+	// TODO: find out why the imagedata is blank
+	for (i=0; i<imageData.data.length; i++) {
+		console.log("rgba(" + imageData.data[i] + ',' + imageData.data[i + 1] + ',' + imageData.data[i + 2] + ','  + imageData.data[i + 3] + ')');
+	}
 
 	// NOW
 	// Select the move tool
@@ -48,7 +61,7 @@ function endRectSelection(mouseEvent) {
 			// the image data must be copied to a temporary layer
 			// the image data is added to the original layer when the move tool is disabled
 
-	workingLayer.context.putImageData(imageData, startX, startY);
+	currentLayer.context.putImageData(imageData, startX, startY);
 }
 
 function drawRect(x, y) {
@@ -72,4 +85,27 @@ function drawRect(x, y) {
 
 function applyChanges() {
 	VFXCanvas.style.zIndex = MIN_Z_INDEX;
+}
+
+// Checks whether the pointer is inside the selected area or not
+function cursorInSelectedArea() {
+	let cursorPos = getCursorPosition(currentMouseEvent);
+	let x = cursorPos[0] / zoom;
+	let y = cursorPos[1] / zoom;
+
+	let leftX = Math.min(startX, endX);
+	let rightX = Math.max(startX, endX);
+	let topY = Math.max(startY, endY);
+	let bottomY = Math.min(startY, endY);
+
+	// ISSUE: is it <= or <? test it
+	if (leftX <= x && x <= rightX) {
+		if (bottomY <= y && y <= topY) {
+			return true;
+		}
+
+		return false;
+	}
+
+	return false;
 }

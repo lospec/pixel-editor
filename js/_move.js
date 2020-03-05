@@ -1,1 +1,5 @@
 var imageDataToMove;
+
+function updateMovePreview() {
+	
+}

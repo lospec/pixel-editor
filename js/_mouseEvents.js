@@ -1,6 +1,9 @@
+var currentMouseEvent;
 
 //mousedown - start drawing
 window.addEventListener("mousedown", function (mouseEvent) {
+	// Saving the event in case something else needs it
+	currentMouseEvent = mouseEvent;
 	
 	//if no document has been created yet, or this is a dialog open
 	if (!documentCreated || dialogueOpen) return;
@@ -44,7 +47,9 @@ window.addEventListener("mousedown", function (mouseEvent) {
 
 //mouseup - end drawing
 window.addEventListener("mouseup", function (mouseEvent) {
-	
+	// Saving the event in case something else needs it
+	currentMouseEvent = mouseEvent;
+
 	closeMenu();
 	
 	if (!documentCreated || dialogueOpen) return;
@@ -125,6 +130,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 //mouse is moving on canvas		
 window.addEventListener("mousemove", draw, false);
 function draw (mouseEvent) {
+	// Saving the event in case something else needs it
+	currentMouseEvent = mouseEvent;
+
 	var cursorLocation = getCursorPosition(mouseEvent);
 	
 	//if a document hasnt yet been created, exit this function
@@ -246,6 +254,11 @@ function draw (mouseEvent) {
     	else if (dragging && isRectSelecting) {
     		updateRectSelection(mouseEvent);
     	}
+    }
+    else if (currentTool == 'moveselection') {
+    	console.log("Aggiorno il cursore");
+    	updateCursor();
+    	updateMovePreview();
     }
 }
 

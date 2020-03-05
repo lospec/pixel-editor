@@ -11,7 +11,18 @@ function updateCursor () {
         brushPreview.style.display = 'block';
         brushPreview.style.width = eraserSize * zoom + 'px';
         brushPreview.style.height = eraserSize * zoom + 'px';
-	} else
+	} else if (currentTool == 'moveselection') {
+		if (cursorInSelectedArea()) {
+			canvasView.style.cursor = 'move';
+			brushPreview.style.display = 'none';
+		}
+		else {
+			canvasView.style.cursor = 'crosshair';
+		}
+	}
+	else if (currentTool == 'rectselect')
+		canvasView.style.cursor = 'crosshair';
+	else
 		brushPreview.style.display = 'none';
 	
 	if (currentTool == 'eyedropper') {
@@ -33,6 +44,4 @@ function updateCursor () {
 		
 	if (currentTool == 'resize-brush' || currentTool == 'resize-eraser')
 		canvasView.style.cursor = 'default';
-	if (currentTool == 'rectselect')
-		canvasView.style.cursor = 'crosshair';
 }
