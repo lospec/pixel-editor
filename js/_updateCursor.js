@@ -13,6 +13,7 @@ function updateCursor () {
         brushPreview.style.height = eraserSize * zoom + 'px';
 	} else if (currentTool == 'moveselection') {
 		if (cursorInSelectedArea()) {
+			canMoveSelection = true;
 			canvasView.style.cursor = 'move';
 			brushPreview.style.display = 'none';
 		}

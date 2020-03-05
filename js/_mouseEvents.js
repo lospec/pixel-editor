@@ -15,12 +15,11 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	dragging = true;
 	//left or right click
 	if (mouseEvent.which == 1) {
-						
 		if (spacePressed) 
 			currentTool = 'pan';
 		else if (mouseEvent.altKey) 
 			currentTool = 'eyedropper';
-		else if (mouseEvent.target == currentLayer.canvas && (currentTool == 'pencil' || currentTool == 'eraser'))
+		else if (mouseEvent.target.className == 'drawingCanvas' && (currentTool == 'pencil' || currentTool == 'eraser'))
 		    new HistoryStateEditCanvas();
 		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 		
@@ -37,7 +36,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	    prevEraserSize = eraserSize;
     }
 	
-	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas)
+	if (currentTool == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas')
 	    eyedropperPreview.style.display = 'block';
 	
 	return false;
@@ -54,7 +53,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 	if (!documentCreated || dialogueOpen) return;
 	
-	if (currentTool == 'eyedropper' && mouseEvent.target == currentLayer.canvas) {
+	if (currentTool == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
 		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
 		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
@@ -84,10 +83,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	      }
 	    }
 	}
-	else if (currentTool == 'fill' && mouseEvent.target == currentLayer.canvas) {
+	else if (currentTool == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
 	  console.log('filling')
-	  //if you clicked on anything but the canvas, do nothing
-		if (!mouseEvent.target == currentLayer.canvas) return;
 		
 		//get cursor postion
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -99,7 +96,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
     //fill starting at the location
 		fill(cursorLocation);
 	}
-	else if (currentTool == 'zoom' && mouseEvent.target == canvasView) {
+	else if (currentTool == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
 		let mode;
 		if (mouseEvent.which == 1){
 			mode = "in";
@@ -148,14 +145,14 @@ function draw (mouseEvent) {
 		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
 		
 		//hide brush preview outside of canvas / canvas view
-		if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView)
+		if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
 		  brushPreview.style.visibility = 'visible';
 		else
 		  brushPreview.style.visibility = 'hidden';
 
 		//draw line to current pixel
 		if (dragging) {
-			if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView) {
+			if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
 				line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
 				lastPos = cursorLocation;
 			}
@@ -177,14 +174,14 @@ function draw (mouseEvent) {
         brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - eraserSize * zoom / 2 + 'px';
 
         //hide brush preview outside of canvas / canvas view
-        if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView)
+        if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas')
             brushPreview.style.visibility = 'visible';
         else
             brushPreview.style.visibility = 'hidden';
 
         //draw line to current pixel
         if (dragging) {
-            if (mouseEvent.target == currentLayer.canvas || mouseEvent.target == canvasView) {
+            if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
                 line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
                 lastPos = cursorLocation;
             }
@@ -198,7 +195,7 @@ function draw (mouseEvent) {
             layers[i].copyData(layers[0]);
         }
     }
-    else if (currentTool == 'eyedropper' && dragging && mouseEvent.target == currentLayer.canvas) {
+    else if (currentTool == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
         var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
         eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
         eyedropperPreview.style.display = 'block';
@@ -256,9 +253,13 @@ function draw (mouseEvent) {
     	}
     }
     else if (currentTool == 'moveselection') {
-    	console.log("Aggiorno il cursore");
+    	// Updating the cursor (move if inside rect, cross if not)
     	updateCursor();
-    	updateMovePreview();
+
+    	// If I'm dragging, I move the preview
+    	if (dragging && cursorInSelectedArea()) {
+    		updateMovePreview(mouseEvent);
+    	}
     }
 }
 

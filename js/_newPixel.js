@@ -1,4 +1,3 @@
-
 function newPixel (width, height, palette) {
 	// Setting the current layer
     currentLayer = new Layer(width, height, canvas);
@@ -19,6 +18,7 @@ function newPixel (width, height, palette) {
 
 	// Adding the first layer and the checkerboard to the list of layers
 	layers.push(VFXLayer);
+	layers.push(TMPLayer);
 	layers.push(currentLayer);
 	layers.push(checkerBoard);
 

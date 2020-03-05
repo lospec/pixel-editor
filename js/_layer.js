@@ -2,6 +2,9 @@
     - move the tmp layer so that it's always right below the active layer
     - when the move tool is selected (to move a selection), the tmp layer must be put right above the 
         active layer to show a preview
+    - mouse events will always have at least a canvas target, so evey time there's an event, we'll have to check
+        the actual element type instead of the current layer and then apply the tool on the currentLayer, not on
+        the first one in order of z-index   
 */
 
 
