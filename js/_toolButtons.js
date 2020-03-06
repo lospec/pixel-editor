@@ -32,6 +32,34 @@ on('click',"eraser-smaller-button", function(e){
     updateCursor();
 }, false);
 
+// rectangle
+on('click',"rectangle-button", function(){
+    // If the user clicks twice on the button, they change the draw mode
+    if (currentTool == 'rectangle') {
+        if (drawMode == 'empty') {
+            drawMode = 'full';
+        }
+        else {
+            drawMode = 'empty';
+        }
+    }
+    else {
+        changeTool('rectangle');
+    }
+}, false);
+
+// rectangle bigger
+on('click',"rectangle-bigger-button", function(){
+    rectangleSize++;
+    updateCursor();
+}, false);
+
+// rectangle smaller
+on('click',"rectangle-smaller-button", function(e){
+    if(rectangleSize > 1) rectangleSize--;
+    updateCursor();
+}, false);
+
 //fill
 on('click',"fill-button", function(){
     changeTool('fill');

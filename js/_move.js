@@ -1,6 +1,5 @@
 var imageDataToMove;
 var canMoveSelection = false;
-let lastMousePos;
 
 // TODO: move with arrows
 function updateMovePreview(mouseEvent) {

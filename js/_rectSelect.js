@@ -3,13 +3,10 @@ let startX;
 let startY;
 let endX;
 let endY;
-let workingLayer;
 
 function startRectSelection(mouseEvent) {
 	// Putting the vfx layer on top of everything
 	VFXCanvas.style.zIndex = MAX_Z_INDEX;
-	// Saving the layer the user is working on
-	workingLayer = currentLayer;
 
 	// Saving the start coords of the rect
 	let cursorPos = getCursorPosition(mouseEvent);
@@ -92,6 +89,7 @@ function drawRect(x, y) {
 	// Clearing the vfx canvas
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 	vfxContext.lineWidth = 1;
+	vfxContext.fillStyle = "black";
 	vfxContext.setLineDash([4]);
 
 	// Drawing the rect

@@ -32,6 +32,7 @@ var popUpContainer = document.getElementById("pop-up-container");
 // main canvas
 var canvas = document.getElementById("pixel-canvas");
 var context = canvas.getContext("2d");
+var currentGlobalColor;
 
 // Layers
 var layers = [];

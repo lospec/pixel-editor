@@ -66,6 +66,7 @@ function newPixel (width, height, palette) {
 		
 		//set current drawing color as foreground color
 		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
+		currentGlobalColor = '#' + defaultForegroundColor;
 		selectedPalette = 'none';
 	}
 		

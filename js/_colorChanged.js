@@ -28,9 +28,6 @@ function colorChanged(e) {
 	var newColor = hexToRgb(e.target.value);
 	var oldColor = e.target.oldColor;
 	
-	console.log('newColor',newColor)
-	console.log('oldColor',oldColor)
-	
 	//save undo state
 	//saveHistoryState({type: 'colorchange', newColor: e.target.value, oldColor: rgbToHex(oldColor), canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 	new HistoryStateEditColor(e.target.value.toLowerCase(), rgbToHex(oldColor));
@@ -50,15 +47,14 @@ function colorChanged(e) {
   
   //loop through all colors in palette
   for (var i = 0; i < colors.length; i++) {
-    console.log('%c'+newColorHex +' '+ colors[i].jscolor.toString(), colorCheckingStyle)
     
     //if generated color matches this color
     if (newColorHex == colors[i].jscolor.toString()) {
-      console.log('%ccolor already exists'+(colors[i].parentElement.classList.contains('jscolor-active')?' (but is the current color)':''), colorCheckingStyle);
+      //console.log('%ccolor already exists'+(colors[i].parentElement.classList.contains('jscolor-active')?' (but is the current color)':''), colorCheckingStyle);
 
       //if the color isnt the one that has the picker currently open
       if (!colors[i].parentElement.classList.contains('jscolor-active')) {
-        console.log('%cColor is duplicate', colorCheckingStyle)
+        //console.log('%cColor is duplicate', colorCheckingStyle)
         
         //show the duplicate color warning
         duplicateColorWarning.style.visibility = 'visible';
@@ -83,13 +79,12 @@ function colorChanged(e) {
 	
 	//set new old color to changed color
 	e.target.oldColor = newColor;
-	
-	console.log(e.target.colorElement);
+
 	
 	//if this is the current color, update the drawing color
 	if (e.target.colorElement.parentElement.classList.contains('selected')) {
-	  console.log('this color is the current color');
-	  context.fillStyle = '#'+ rgbToHex(newColor.r,newColor.g,newColor.b);
+	  //console.log('this color is the current color');
+	  context.fillStyle = currentColor;
 	}
 	/* this is wrong and bad
 	if (settings.switchToChangedColor) {

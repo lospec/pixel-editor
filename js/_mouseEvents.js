@@ -1,4 +1,6 @@
 var currentMouseEvent;
+// TODO: replace every position calculation with lastMousePos
+var lastMousePos;
 
 //mousedown - start drawing
 window.addEventListener("mousedown", function (mouseEvent) {
@@ -56,9 +58,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	if (currentTool == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
 		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
-		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
-		
-		console.log(newColor);
+		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);	
+
+		currentGlobalColor = "#" + newColor;
 		
 		var colors = document.getElementsByClassName('color-button');
 	    for (var i = 0; i < colors.length; i++) {
@@ -114,6 +116,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	else if (currentTool == 'rectselect') {
 		endRectSelection(mouseEvent);
 	}
+	else if (currentTool == 'rectangle') {
+		endRectDrawing(mouseEvent);
+	}
 
 	dragging = false;
 	currentTool = currentToolTemp;
@@ -127,10 +132,11 @@ window.addEventListener("mouseup", function (mouseEvent) {
 //mouse is moving on canvas		
 window.addEventListener("mousemove", draw, false);
 function draw (mouseEvent) {
+	lastMousePos = getCursorPosition(mouseEvent);
 	// Saving the event in case something else needs it
 	currentMouseEvent = mouseEvent;
 
-	var cursorLocation = getCursorPosition(mouseEvent);
+	var cursorLocation = lastMousePos;
 	
 	//if a document hasnt yet been created, exit this function
 	if (!documentCreated || dialogueOpen) return;
@@ -187,6 +193,15 @@ function draw (mouseEvent) {
             }
         }
 	}
+	else if (currentTool == 'rectangle')
+	{
+		if (!isDrawingRect && dragging) {
+			startRectDrawing(mouseEvent);
+		}
+		else if (dragging){
+			updateRectDrawing(mouseEvent);
+		}
+	}
 	else if (currentTool == 'pan' && dragging) {
 	    // Setting first layer position
         setCanvasOffset(layers[0].canvas, layers[0].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastPos[1]));
@@ -197,6 +212,7 @@ function draw (mouseEvent) {
     }
     else if (currentTool == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
         var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
+
         eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
         eyedropperPreview.style.display = 'block';
        

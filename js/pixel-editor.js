@@ -62,6 +62,7 @@
 //=include _createButton.js 
 //=include _rectSelect.js
 //=include _move.js
+//=include _rectangle.js
 
 
 /**onload**/

@@ -21,7 +21,7 @@ function updateCursor () {
 			canvasView.style.cursor = 'crosshair';
 		}
 	}
-	else if (currentTool == 'rectselect')
+	else if (currentTool == 'rectselect' || currentTool == 'rectangle')
 		canvasView.style.cursor = 'crosshair';
 	else
 		brushPreview.style.display = 'none';

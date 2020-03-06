@@ -10,6 +10,7 @@ function clickedColor (e){
 
     	//set current color
     	currentLayer.context.fillStyle = this.style.backgroundColor;
+      currentGlobalColor = this.style.backgroundColor;
     	
     	//make color selected
     	e.target.parentElement.classList.add('selected');
