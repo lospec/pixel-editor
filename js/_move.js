@@ -18,6 +18,13 @@ function updateMovePreview(mouseEvent) {
 }
 
 function endSelection() {
+	// We have to make something smarter:
+		// Take the selected data
+		// Take the data underlying the selected data
+		// for every element in the selected data
+			// if the current pixel is empty
+				// copy the pixel in the selected data
+		
 	TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
 	VFXLayer.context.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
 
