@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <title>{{title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,900" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,900" rel="stylesheet">
     <link rel='stylesheet' href='/pixel-editor/pixel-editor.css' />
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     {{{google-analytics}}}
@@ -19,7 +19,7 @@
 </head>
 
 <body oncontextmenu="return false;">
-    
+
     <div id="compatibility-warning">
       <div><div>
         <p><strong>Warning: a modern, desktop, web browser is required to use this tool.</strong></p>
@@ -28,7 +28,7 @@
       </div></div>
     </div>
   <script src="/javascripts/checkCompatibilityPixelEditor.js"></script>
-  
+
     <div class="preload">
         <img src="/pixel-editor/dropdown-arrow.png" />
         <img src="/pixel-editor/dropdown-arrow-hover.png" />
@@ -51,7 +51,7 @@
                 <li><button>New</button></li>
                 <li><button>Open</button></li>
                 <li><button id="save-as-button" class="disabled">Save as...</button></li>
-                <li><button>Exit</button></li>
+                <li><a href="/pixel-editor">Exit</a></li>
             </ul>
         </li>
         <li>
@@ -107,12 +107,12 @@
     </ul>
 
     <ul id="colors-menu">
-      
+
         {{!
-        <li class="noshrink"><button id="current-color" class="jscolor {valueElement: 'current-color-value', styleElement: 'current-color-preview', onFineChange:'setColor(this)', width:151, position: 'left', padding:0, 
+        <li class="noshrink"><button id="current-color" class="jscolor {valueElement: 'current-color-value', styleElement: 'current-color-preview', onFineChange:'setColor(this)', width:151, position: 'left', padding:0,
     borderWidth:14, borderColor: '#332f35',backgroundColor: '#332f35', insetColor:'transparent'}"><div id="current-color-preview"></div></button><input id="current-color-value" class="color-value" value="#000000" autocomplete="off" /></li>
         }}
-        
+
         <li class="noshrink"><button title="Add Current Color To Palette" id="add-color-button">{{svg "./plus.svg" width="30" height="30"}}</button></li>
     </ul>
     <div id="eyedropper-preview"></div>
@@ -138,16 +138,16 @@
       <div id="duplicate-color-warning" title="Color is a duplicate of another in palette">{{svg "warning.svg" width="14" height="12" }}</div>
       <button class="delete-color-button">{{svg "trash.svg" width="20" height="20" }}</button>
     </div>
-    
+
     <div class="color-edit-button">
       {{svg "adjust.svg" width="20" height="20" }}
     </div>
-    
+
     <div id="pop-up-container">
         <div id="new-pixel">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>New Pixel</h1>
-            
+
             <h2>Preset</h2>
             <button id="preset-button" class="dropdown-button">Choose a preset...</button>
             <div id="preset-menu" class="dropdown-menu"></div>
@@ -221,11 +221,11 @@
         <div id="settings">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>Settings</h1>
-            
+
             <div id="settings-container">
               <label for="setting-numberOfHistoryStates">Number of History States</label> <input id="setting-numberOfHistoryStates" value="20" autocomplete="off" />
             </div>
-            
+
             <p id="cookies-disabled-warning">Your browsers cookies are disabled, settings will be lost upon closing this page.</p>
 
             <div>
@@ -238,12 +238,12 @@
 
     <script>
       palettes = { {{#palettes}}
-          '{{name}}': {
+          '{{title}}': {
             colors: '{{colors}}'.split(',')
           },
         {{/palettes}}
         {{#specifiedPalette}}
-        '{{name}}': {
+        '{{title}}': {
           colors: '{{colors}}'.split(','),
           specified: true
         }
@@ -254,7 +254,7 @@
       {{else}}
       var specifiedDimentions = false;
       {{/if}}
-      
+
       {{#specifiedPalette}}
       var keepUrl = true;
       {{/specifiedPalette}}
