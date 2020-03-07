@@ -1,4 +1,6 @@
 var rectangleSize = 1;
+var prevRectangleSie = rectangleSize;
+
 var drawMode = 'empty';
 var isDrawingRect = false;
 
@@ -54,29 +56,33 @@ function endRectDrawing(mouseEvent) {
 
 	// Resetting this
 	isDrawingRect = false;
+	// Drawing the rect
+	startRectY -= 0.5;
+	endRectY -= 0.5;
+	endRectX -= 0.5;
+	startRectX -= 0.5;
+
+	currentLayer.context.lineWidth = rectangleSize;
+	currentLayer.context.fillStyle = currentGlobalColor;
+
+	line(startRectX, startRectY, endRectX, startRectY, rectangleSize);
+	line(endRectX, startRectY, endRectX, endRectY, rectangleSize);
+	line(endRectX, endRectY, startRectX, endRectY, rectangleSize);
+	line(startRectX, endRectY, startRectX, startRectY, rectangleSize);
+
+/*
 	// Drawing the final rectangle
 	currentLayer.context.lineWidth = rectangleSize;
 	currentLayer.context.strokeStyle = currentGlobalColor;
 
 	// Drawing the rect
 	currentLayer.context.beginPath();
+	console.log("Coords: " + startRectX + ", " + startRectY);
+	currentLayer.context.imageSmoothingEnabled = false;
 	currentLayer.context.rect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
 	currentLayer.context.setLineDash([]);
 	currentLayer.context.stroke();
-
-	// Drawing on the corners
-	var id = currentLayer.context.createImageData(1,1);
-	var d  = id.data;
-	d[0]   = hexColor.r;
-	d[1]   = hexColor.g;
-	d[2]   = hexColor.b;
-	d[3]   = 255;
-
-	currentLayer.context.putImageData(id, startRectX, startRectY); 
-	currentLayer.context.putImageData(id, startRectX, endRectY); 
-	currentLayer.context.putImageData(id, endRectX, startRectY); 
-	currentLayer.context.putImageData(id, endRectX, endRectY);
-
+*/
 	// Clearing the vfx canvas
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 }

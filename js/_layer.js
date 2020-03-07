@@ -38,6 +38,8 @@ function Layer(width, height, canvas) {
         //center canvas in window
         this.canvas.style.left = 64+canvasView.clientWidth/2-(this.canvasSize[0]*zoom/2)+'px';
         this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
+        
+        this.context.imageSmoothingEnabled = false;
     },
     // Resizes canvas
     this.resize = function() {

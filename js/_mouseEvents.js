@@ -15,7 +15,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	lastPos = getCursorPosition(mouseEvent);
 	
 	dragging = true;
-	//left or right click
+	//left or right click ?
 	if (mouseEvent.which == 1) {
 		if (spacePressed) 
 			currentTool = 'pan';
@@ -31,13 +31,17 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	}
 	else if (currentTool == 'pencil' && mouseEvent.which == 3) {
 		currentTool = 'resize-brush';
-		prevBrushSize = brushSize;
+		prevBrushSize = pencilSize;
 	}
 	else if (currentTool == 'eraser' && mouseEvent.which == 3) {
 	    currentTool = 'resize-eraser';
 	    prevEraserSize = eraserSize;
     }
-	
+	else if (currentTool == 'rectangle' && mouseEvent.which == 3) {
+		currentTool = 'resize-rectangle';
+		prevRectangleSize = rectangleSize;
+	}
+
 	if (currentTool == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas')
 	    eyedropperPreview.style.display = 'block';
 	
@@ -145,10 +149,9 @@ function draw (mouseEvent) {
 	eyedropperPreview.style.display = 'none';
 	
 	if (currentTool == 'pencil') {
-	
 		//move the brush preview
-		brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
+		brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - pencilSize * zoom / 2 + 'px';
+		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - pencilSize * zoom / 2 + 'px';
 		
 		//hide brush preview outside of canvas / canvas view
 		if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
@@ -159,7 +162,7 @@ function draw (mouseEvent) {
 		//draw line to current pixel
 		if (dragging) {
 			if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-				line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
+				line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom), pencilSize);
 				lastPos = cursorLocation;
 			}
 		}
@@ -188,13 +191,23 @@ function draw (mouseEvent) {
         //draw line to current pixel
         if (dragging) {
             if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-                line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
+                line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom), eraserSize);
                 lastPos = cursorLocation;
             }
         }
 	}
 	else if (currentTool == 'rectangle')
 	{
+		//move the brush preview
+		brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - rectangleSize * zoom / 2 + 'px';
+		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - rectangleSize * zoom / 2 + 'px';
+
+		//hide brush preview outside of canvas / canvas view
+		if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
+		  brushPreview.style.visibility = 'visible';
+		else
+		  brushPreview.style.visibility = 'hidden';
+
 		if (!isDrawingRect && dragging) {
 			startRectDrawing(mouseEvent);
 		}
@@ -234,11 +247,11 @@ function draw (mouseEvent) {
         var newBrushSize = prevBrushSize + brushSizeChange;
 
         //set the brush to the new size as long as its bigger than 1
-        brushSize = Math.max(1,newBrushSize);
+        pencilSize = Math.max(1,newBrushSize);
 
         //fix offset so the cursor stays centered
-        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
+        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - pencilSize * zoom / 2 + 'px';
+        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - pencilSize * zoom / 2 + 'px';
 
         updateCursor();
     }
@@ -256,6 +269,23 @@ function draw (mouseEvent) {
         //fix offset so the cursor stays centered
         brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - eraserSize * zoom / 2 + 'px';
         brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - eraserSize * zoom / 2 + 'px';
+
+        updateCursor();
+    }
+    else if (currentTool == 'resize-rectangle' && dragging) {
+    	//get new brush size based on x distance from original clicking location
+        var distanceFromClick = cursorLocation[0] - lastPos[0];
+        //var roundingAmount = 20 - Math.round(distanceFromClick/10);
+        //this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
+        var rectangleSizeChange = Math.round(distanceFromClick/10);
+        var newRectangleSize = prevRectangleSize + rectangleSizeChange;
+
+        //set the brush to the new size as long as its bigger than 1
+        rectangleSize = Math.max(1,newRectangleSize);
+
+        //fix offset so the cursor stays centered
+        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - rectangleSize * zoom / 2 + 'px';
+        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - rectangleSize * zoom / 2 + 'px';
 
         updateCursor();
     }
