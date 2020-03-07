@@ -37,10 +37,12 @@ on('click',"rectangle-button", function(){
     // If the user clicks twice on the button, they change the draw mode
     if (currentTool == 'rectangle') {
         if (drawMode == 'empty') {
-            drawMode = 'full';
+            drawMode = 'fill';
+            setRectToolSvg();
         }
         else {
             drawMode = 'empty';
+            setRectToolSvg();
         }
     }
     else {

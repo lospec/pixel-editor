@@ -73,11 +73,6 @@ function endRectSelection(mouseEvent) {
 	// Updating the cursor 
 	updateCursor();
 
-	// NOW
-		// the move tool stops working when esc is pressed
-		// when the move tool is disabled, the control is given to the brush tool
-			// the image data is added to the original layer when the move tool is disabled
-
 	//currentLayer.context.putImageData(imageData, startX, startY);
 }
 
@@ -89,7 +84,7 @@ function drawRect(x, y) {
 	// Clearing the vfx canvas
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 	vfxContext.lineWidth = 1;
-	vfxContext.fillStyle = "black";
+	vfxContext.strokeStyle = "black";
 	vfxContext.setLineDash([4]);
 
 	// Drawing the rect

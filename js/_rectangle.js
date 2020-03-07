@@ -1,5 +1,7 @@
 var rectangleSize = 1;
 var prevRectangleSie = rectangleSize;
+var emptySVG = document.getElementById("empty-button-svg");
+var fullSVG = document.getElementById("full-button-svg");
 
 var drawMode = 'empty';
 var isDrawingRect = false;
@@ -70,19 +72,10 @@ function endRectDrawing(mouseEvent) {
 	line(endRectX, endRectY, startRectX, endRectY, rectangleSize);
 	line(startRectX, endRectY, startRectX, startRectY, rectangleSize);
 
-/*
-	// Drawing the final rectangle
-	currentLayer.context.lineWidth = rectangleSize;
-	currentLayer.context.strokeStyle = currentGlobalColor;
+	if (drawMode == 'fill') {
+		currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
+	}
 
-	// Drawing the rect
-	currentLayer.context.beginPath();
-	console.log("Coords: " + startRectX + ", " + startRectY);
-	currentLayer.context.imageSmoothingEnabled = false;
-	currentLayer.context.rect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
-	currentLayer.context.setLineDash([]);
-	currentLayer.context.stroke();
-*/
 	// Clearing the vfx canvas
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 }
@@ -104,6 +97,17 @@ function drawRectangle(x, y) {
 	vfxContext.setLineDash([]);
 
 	vfxContext.stroke();
+}
+
+function setRectToolSvg() {
+	if (drawMode == 'empty') {
+		emptySVG.setAttribute("display", "visible");
+		fullSVG.setAttribute("display", "none");
+	}
+	else {
+		emptySVG.setAttribute("display", "none");
+		fullSVG.setAttribute("display", "visible");
+	}
 }
 
 function applyChanges() {
