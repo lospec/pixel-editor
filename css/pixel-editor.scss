@@ -127,7 +127,7 @@ svg {
     float: left;
     height: 100%;
   }
-  li button {
+  li button, li a {
     color: color(menu, foreground);
     height: 100%;
     padding: 17px;
@@ -156,14 +156,20 @@ svg {
     padding-bottom: 2px;
     li {
       width: 100%;
-      button {
+      button, a {
         width: 100%;
         text-align: left;
         padding: 8px 32px 8px 16px;
+        font-size: 1em;
         &:hover {
           background-color: color(menu, background, hover);
           color: color(menu, foreground, hover);
         }
+      }
+      a {
+      	display: block;
+      	text-decoration: none;
+      	box-sizing: border-box;
       }
     }
   }
@@ -215,7 +221,7 @@ svg {
   li {
     width: 48px;
     flex-basis: 48px;
-    
+
     &:not(.noshrink) {
       flex-grow: 1;
     }
@@ -223,7 +229,7 @@ svg {
       flex-grow: 0;
       flex-shrink: 0;
     }
-  }  
+  }
 }
 
 //added when the color is a duplicate of another
@@ -316,7 +322,7 @@ svg {
 
 #add-color-button {
   background: color(base);
-  
+
   path {
     fill: #6f6873;
   }
@@ -483,7 +489,7 @@ svg {
       border-bottom: dotted 1px color(base, foreground, text);
     }
   }
-  
+
   .close-button {
     width: 32px;
     height: 32px;
@@ -507,7 +513,7 @@ svg {
       }
     }
   }
-  
+
   button.default {
     float: right;
     background: color(button);
@@ -521,7 +527,7 @@ svg {
       background: color(button, background, hover);
     }
   }
-  
+
   input {
     background: color(indent);
     border: none;
@@ -532,7 +538,7 @@ svg {
     width: 60px;
     text-align: center;
   }
-  
+
   .dropdown-button {
     background: color(button) url('/pixel-editor/dropdown-arrow.png') right center no-repeat;
     border: none;
@@ -550,7 +556,7 @@ svg {
       border-radius: 4px 4px 0 0;
     }
   }
-  
+
   .dropdown-menu {
     background: color(button);
     border: none;
@@ -566,7 +572,7 @@ svg {
     &.selected {
       display: block;
     }
-    
+
     button {
       background: color(button);
       border: none;
@@ -692,7 +698,7 @@ svg {
     position: relative;
     width: 100%;
     height: 100%;
-    
+
     div {
       width: 400px;
       background-color: color(base);
@@ -703,7 +709,7 @@ svg {
       position: absolute;
       top: 50%;
       left: 50%;
-    
+
       margin: -120px 0 0 -220px;
     }
   }

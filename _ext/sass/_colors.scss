@@ -1,6 +1,8 @@
 $base-color: #332f35;
 $shop: #b63831;
 $red: #e3474a;
+$orange: #df7c25;
+$green: #70a630;
 
 $palettes: (
     base: (
@@ -28,9 +30,13 @@ $palettes: (
         background: (
             default: darken($base-color, 3%),
             hover: darken($base-color, 1.5%),
+            highlight: lighten($base-color, 3%),
+            highlight-hover: lighten($base-color, 5%),
         ),
         foreground: (
             default: lighten($base-color, 50%),
+            symbol: lighten($base-color, 8%),
+            text: lighten($base-color, 50%),
             hover: lighten($base-color, 100%),
         )
     ),
@@ -48,11 +54,16 @@ $palettes: (
         background: (
             default: lighten($base-color, 10%),
             hover: lighten($base-color, 15%),
+            weak: lighten($base-color, 5%),
         ),
         foreground: (
-            default: lighten($base-color, 80%),
+            default: lighten($base-color, 50%),
             dropdown: lighten($base-color, 50%),
-            text: lighten($base-color, 100%),
+            text: lighten($base-color, 60%),
+            symbol: lighten($base-color, 50%),
+            indent: lighten($base-color, 5%),
+            weak: lighten($base-color, 25%),
+            hover: lighten($base-color, 75%),
         )
     ),
     selectedTool: (
@@ -81,6 +92,7 @@ $palettes: (
         ),
         foreground: (
             default: #fff,
+            text: lighten($base-color, 40%),
             symbol: lighten($base-color, 5%),
             symbol-hover: lighten($base-color, 20%),
             weak: lighten($base-color, 20%),
@@ -102,9 +114,19 @@ $palettes: (
           button-hover: lighten($base-color, 70%),
         )
     ),
+    indent-darker: (
+        background: (
+            default: darken($base-color, 8%),
+
+        ),
+        foreground: (
+          default: lighten($base-color, 15%),
+        )
+    ),
     footer: (
         background: (
             default: darken($base-color, 9%),
+            hover: darken($base-color, 2%),
         ),
         foreground: (
             default: lighten($base-color, 20%),
