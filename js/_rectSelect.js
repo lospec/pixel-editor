@@ -30,6 +30,7 @@ function startRectSelection(mouseEvent) {
 
 	// Drawing the rect
 	drawRect(startX, startY);
+	selectionCanceled = false;
 }
 
 function updateRectSelection(mouseEvent) {

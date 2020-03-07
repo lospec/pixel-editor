@@ -1,6 +1,6 @@
 function changeTool (selectedTool) {
 	// Ending any selection in progress
-    if (currentTool.includes("select") && !selectedTool.includes("select")) {
+    if (currentTool.includes("select") && !selectedTool.includes("select") && !selectionCanceled) {
     	endSelection();
     }
     //set tool and temp tje tje tpp;

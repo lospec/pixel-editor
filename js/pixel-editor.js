@@ -13,6 +13,7 @@
 //=include utilities/rgbToHsl.js
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
+//=include _pixelEditorUtility.js
 
 
 
