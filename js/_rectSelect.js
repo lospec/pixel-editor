@@ -71,10 +71,10 @@ function endRectSelection(mouseEvent) {
 	// Selecting the move tool
 	currentTool = 'moveselection';
 	currentToolTemp = currentTool;
+
+	originalDataPosition = [startX, startY];
 	// Updating the cursor 
 	updateCursor();
-
-	//currentLayer.context.putImageData(imageData, startX, startY);
 }
 
 function drawRect(x, y) {

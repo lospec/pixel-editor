@@ -23,6 +23,12 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			currentTool = 'eyedropper';
 		else if (mouseEvent.target.className == 'drawingCanvas' && (currentTool == 'pencil' || currentTool == 'eraser'))
 		    new HistoryStateEditCanvas();
+		else if (currentTool == 'moveselection') {
+			if (!cursorInSelectedArea()) {
+				changeTool('pencil');
+				undo();
+			}
+		}
 		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 		
 		updateCursor();
