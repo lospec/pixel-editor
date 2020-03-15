@@ -10,8 +10,8 @@ function startRectSelection(mouseEvent) {
 
 	// Saving the start coords of the rect
 	let cursorPos = getCursorPosition(mouseEvent);
-	startX = Math.round(cursorPos[0] / zoom) + 0.5;
-	startY = Math.round(cursorPos[1] / zoom) + 0.5;
+	startX = Math.round(cursorPos[0] / zoom) - 0.5;
+	startY = Math.round(cursorPos[1] / zoom) - 0.5;
 
 	// Avoiding external selections
 	if (startX < 0) {
@@ -43,8 +43,8 @@ function updateRectSelection(mouseEvent) {
 function endRectSelection(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
-	endX = Math.round(currentPos[0] / zoom);
-	endY = Math.round(currentPos[1] / zoom);
+	endX = Math.round(currentPos[0] / zoom) + 0.5;
+	endY = Math.round(currentPos[1] / zoom) + 0.5;
 
 	// Inverting end and start (start must always be the top left corner)
 	if (endX < startX) {
@@ -62,9 +62,9 @@ function endRectSelection(mouseEvent) {
 	// Resetting this
 	isRectSelecting = false;
 	// Getting the selected pixels
-	imageDataToMove = currentLayer.context.getImageData(startX, startY, endX - startX, endY - startY);
+	imageDataToMove = currentLayer.context.getImageData(startX, startY, endX - startX + 1, endY - startY + 1);
 	
-	currentLayer.context.clearRect(startX, startY, endX - startX - 1, endY - startY - 1);
+	currentLayer.context.clearRect(startX - 1, startY - 1, endX - startX + 1, endY - startY + 1);
 	// Moving those pixels from the current layer to the tmp layer
 	TMPLayer.context.putImageData(imageDataToMove, startX, startY);
 
@@ -78,7 +78,6 @@ function endRectSelection(mouseEvent) {
 }
 
 function drawRect(x, y) {
-	console.log("Currently selecting");
 	// Getting the vfx context
 	let vfxContext = VFXCanvas.getContext("2d");
 

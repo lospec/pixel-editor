@@ -93,7 +93,13 @@ function drawRectangle(x, y) {
 
 	// Drawing the rect
 	vfxContext.beginPath();
-	vfxContext.rect(startRectX, startRectY, x - startRectX, y - startRectY);
+	if ((rectangleSize % 2 ) == 0) {
+		vfxContext.rect(startRectX - 0.5, startRectY - 0.5, x - startRectX, y - startRectY);
+	}
+	else {
+		vfxContext.rect(startRectX, startRectY, x - startRectX, y - startRectY);
+	}
+	
 	vfxContext.setLineDash([]);
 
 	vfxContext.stroke();

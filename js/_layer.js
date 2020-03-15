@@ -40,6 +40,7 @@ function Layer(width, height, canvas) {
         this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
         
         this.context.imageSmoothingEnabled = false;
+        this.context.mozImageSmoothingEnabled = false;
     },
     // Resizes canvas
     this.resize = function() {

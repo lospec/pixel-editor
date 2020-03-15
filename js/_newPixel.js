@@ -21,7 +21,7 @@ function newPixel (width, height, palette) {
 	layers.push(TMPLayer);
 	layers.push(currentLayer);
 	layers.push(checkerBoard);
-
+	
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
 	while (colors.length > 0) {
