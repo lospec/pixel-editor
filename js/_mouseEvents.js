@@ -6,6 +6,7 @@ var lastMousePos;
 window.addEventListener("mousedown", function (mouseEvent) {
 	// Saving the event in case something else needs it
 	currentMouseEvent = mouseEvent;
+	canDraw = true;
 	
 	//if no document has been created yet, or this is a dialog open
 	if (!documentCreated || dialogueOpen) return;
@@ -27,14 +28,16 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		else if (currentTool == 'moveselection') {
 			if (!cursorInSelectedArea()) {
 				changeTool('pencil');
-				undo();
+				canDraw = false;
 			}
 		}
 		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
 		
 		updateCursor();
 		
-		draw(mouseEvent);
+		if (canDraw) {
+			draw(mouseEvent);
+		}
 	}
 	else if (currentTool == 'pencil' && mouseEvent.which == 3) {
 		currentTool = 'resize-brush';
