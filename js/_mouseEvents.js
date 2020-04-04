@@ -144,6 +144,19 @@ window.addEventListener('mouseup', function (mouseEvent) {
 
 }, false);
 
+function setPreviewPosition(preview, cursor, size){
+    preview.style.left = (
+        currentLayer.canvas.offsetLeft
+        + Math.floor(cursor[0]/zoom) * zoom
+        - Math.floor(size / 2) * zoom
+    ) + 'px';
+    preview.style.top = (
+        currentLayer.canvas.offsetTop
+        + Math.floor(cursor[1]/zoom) * zoom
+        - Math.floor(size / 2) * zoom
+    ) + 'px';
+}
+
 
 // OPTIMIZABLE: redundant || mouseEvent.target.className in currentTool ifs
 
@@ -164,8 +177,7 @@ function draw (mouseEvent) {
 
     if (currentTool == 'pencil') {
         //move the brush preview
-        brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - brushSize * zoom / 2 + 'px';
-        brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - brushSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, brushSize);
 
         //hide brush preview outside of canvas / canvas view
         if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
@@ -193,8 +205,7 @@ function draw (mouseEvent) {
     else if (currentTool == 'eraser') {
         // Uses the same preview as the brush
         //move the brush preview
-        brushPreview.style.left = cursorLocation[0] + canvas.offsetLeft - eraserSize * zoom / 2 + 'px';
-        brushPreview.style.top = cursorLocation[1] + canvas.offsetTop - eraserSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, eraserSize);
 
         //hide brush preview outside of canvas / canvas view
         if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas')
@@ -264,8 +275,7 @@ function draw (mouseEvent) {
         pencilSize = Math.max(1,newBrushSize);
 
         //fix offset so the cursor stays centered
-        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - pencilSize * zoom / 2 + 'px';
-        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - pencilSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, pencilSize);
 
         updateCursor();
     }
@@ -281,8 +291,7 @@ function draw (mouseEvent) {
         eraserSize = Math.max(1,newEraserSizeChange);
 
         //fix offset so the cursor stays centered
-        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - eraserSize * zoom / 2 + 'px';
-        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - eraserSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, eraserSize);
 
         updateCursor();
     }
@@ -298,8 +307,7 @@ function draw (mouseEvent) {
         rectangleSize = Math.max(1,newRectangleSize);
 
         //fix offset so the cursor stays centered
-        brushPreview.style.left = lastPos[0] + currentLayer.canvas.offsetLeft - rectangleSize * zoom / 2 + 'px';
-        brushPreview.style.top = lastPos[1] + currentLayer.canvas.offsetTop - rectangleSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, rectangleSize);
 
         updateCursor();
     }
