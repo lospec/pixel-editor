@@ -2,7 +2,6 @@ function changeTool (selectedTool) {
 	// Ending any selection in progress
     if (currentTool.includes("select") && !selectedTool.includes("select") && !selectionCanceled) {
     	endSelection();
-    	console.log("FINISCO");
     }
     //set tool and temp tje tje tpp;
     currentTool = selectedTool;

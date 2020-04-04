@@ -21,7 +21,8 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			currentTool = 'pan';
 		else if (mouseEvent.altKey) 
 			currentTool = 'eyedropper';
-		else if (mouseEvent.target.className == 'drawingCanvas' && (currentTool == 'pencil' || currentTool == 'eraser'))
+		else if (mouseEvent.target.className == 'drawingCanvas' && 
+			(currentTool == 'pencil' || currentTool == 'eraser' || currentTool == 'rectangle'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool == 'moveselection') {
 			if (!cursorInSelectedArea()) {
