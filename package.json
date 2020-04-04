@@ -4,7 +4,9 @@
   "description": "Online pixel art creation tool",
   "main": "build.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node ./build.js ./build",
+    "serve": "node ./server.js ./build 3000",
+    "test": "npm run build && npm run serve"
   },
   "author": "Lospec",
   "license": "ISC",
