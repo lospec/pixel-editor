@@ -1,5 +1,3 @@
-
-
 /**utilities**/
 //=include utilities/on.js 
 //=include utilities/onChildren.js 
@@ -14,8 +12,6 @@
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
 //=include _pixelEditorUtility.js
-
-
 
 /**init**/
 //=include _consts.js
@@ -46,7 +42,6 @@
 //=include _checkerboard.js
 //=include _layer.js
 
-
 /**load file**/
 //=include _loadImage.js 
 //=include _loadPalette.js 
@@ -64,7 +59,6 @@
 //=include _rectSelect.js
 //=include _move.js
 //=include _rectangle.js
-
 
 /**onload**/
 //=include _onLoad.js 

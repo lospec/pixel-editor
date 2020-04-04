@@ -1,21 +1,21 @@
 //get cursor position relative to canvas
 function getCursorPosition(e) {
-	var x;
-	var y;
+    var x;
+    var y;
 
-	if (e.pageX != undefined && e.pageY != undefined) {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	else {
-		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
-	}
+    if (e.pageX != undefined && e.pageY != undefined) {
+        x = e.pageX;
+        y = e.pageY;
+    }
+    else {
+        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
+    }
 
-	x -= canvas.offsetLeft;
-	y -= canvas.offsetTop;
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
 
-	return [x,y];
+    return [x,y];
 }
 
 // TODO: apply the function below to every getCursorPosition call
@@ -24,20 +24,20 @@ function getCursorPosition(e) {
 
 //get cursor position relative to canvas
 function getCursorPositionRelative(e, layer) {
-	var x;
-	var y;
-	
-	if (e.pageX != undefined && e.pageY != undefined) {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	else {
-		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
-	}
+    var x;
+    var y;
 
-	x -= layer.canvas.offsetLeft;
-	y -= layer.canvas.offsetTop;
+    if (e.pageX != undefined && e.pageY != undefined) {
+        x = e.pageX;
+        y = e.pageY;
+    }
+    else {
+        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
+    }
 
-	return [x,y];
+    x -= layer.canvas.offsetLeft;
+    y -= layer.canvas.offsetTop;
+
+    return [x,y];
 }
