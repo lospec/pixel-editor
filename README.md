@@ -12,6 +12,10 @@ The next version is mostly focused on adding missing essential features and port
 
 Suggestions / Planned features:
 
+- Custom color picker
+    - custom code without dependencies
+    - more features such as sliders / color modes
+
 - Mobile 
     - Touch equivalent for mouse clicks 
     - Hide or scale ui 
@@ -28,10 +32,6 @@ Suggestions / Planned features:
 - Copy/paste 
     - Add as selection 
     - Show colors which would need to be added to palette 
-
-- Transparency 
-    - New layer with checkerboard behind drawing
-    - Add eraser tool 
 
 - Palette option remove unused colors 
 - Pixel Grid 
