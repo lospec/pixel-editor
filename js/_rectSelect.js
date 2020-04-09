@@ -5,6 +5,8 @@ let endX;
 let endY;
 
 function startRectSelection(mouseEvent) {
+	// Saving the canvas
+	new HistoryStateEditCanvas();
 	// Putting the vfx layer on top of everything
 	VFXCanvas.style.zIndex = MAX_Z_INDEX;
 
@@ -59,8 +61,18 @@ function endRectSelection(mouseEvent) {
 		startY = tmp;
 	}
 
+	// Selecting the move tool
+	currentTool = 'moveselection';
+	currentToolTemp = currentTool;
+
 	// Resetting this
 	isRectSelecting = false;
+
+	// Updating the cursor 
+	updateCursor();
+}
+
+function cutSelection(mouseEvent) {
 	// Getting the selected pixels
 	imageDataToMove = currentLayer.context.getImageData(startX, startY, endX - startX + 1, endY - startY + 1);
 	
@@ -68,13 +80,7 @@ function endRectSelection(mouseEvent) {
 	// Moving those pixels from the current layer to the tmp layer
 	TMPLayer.context.putImageData(imageDataToMove, startX, startY);
 
-	// Selecting the move tool
-	currentTool = 'moveselection';
-	currentToolTemp = currentTool;
-
-	originalDataPosition = [startX, startY];
-	// Updating the cursor 
-	updateCursor();
+	//originalDataPosition = [currentPos[0], currentPos[1]];
 }
 
 function drawRect(x, y) {
@@ -111,7 +117,6 @@ function cursorInSelectedArea() {
 	let topY = Math.max(startY, endY);
 	let bottomY = Math.min(startY, endY);
 
-	// ISSUE: is it <= or <? test it
 	if (leftX <= x && x <= rightX) {
 		if (bottomY <= y && y <= topY) {
 			return true;

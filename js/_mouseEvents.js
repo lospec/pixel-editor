@@ -127,7 +127,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 			layers[i].copyData(layers[0]);
         }
 	}
-	else if (currentTool == 'rectselect') {
+	else if (currentTool == 'rectselect' && isRectSelecting) {
 		endRectSelection(mouseEvent);
 	}
 	else if (currentTool == 'rectangle') {
@@ -142,6 +142,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 }, false);
 
+
+// OPTIMIZABLE: redundant || mouseEvent.target.className in currentTool ifs
 
 //mouse is moving on canvas		
 window.addEventListener("mousemove", draw, false);
@@ -300,12 +302,16 @@ function draw (mouseEvent) {
         updateCursor();
     }
     else if (currentTool == 'rectselect') {
-    	if (dragging && !isRectSelecting) {
+    	if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
     		isRectSelecting = true;
+    		console.log("cominciata selezione su " + mouseEvent.target.className);
     		startRectSelection(mouseEvent);
     	}
     	else if (dragging && isRectSelecting) {
     		updateRectSelection(mouseEvent);
+    	}
+    	else if (isRectSelecting) {
+    		endRectSelection();
     	}
     }
     else if (currentTool == 'moveselection') {

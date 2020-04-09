@@ -2,10 +2,20 @@ var imageDataToMove;
 var originalDataPosition;
 var canMoveSelection = false;
 var lastMovePos;
-var selectionCanceled = false;
+var selectionCanceled = true;
+var firstTimeMove = true;
 
 // TODO: move with arrows
 function updateMovePreview(mouseEvent) {
+	// ISSUE
+	selectionCanceled = false;
+
+	if (firstTimeMove) {
+		cutSelection(mouseEvent);
+	}
+
+	firstTimeMove = false;
+
 	lastMousePos = getCursorPosition(mouseEvent);
 	// clear the entire tmp layer
 	TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
@@ -23,42 +33,40 @@ function endSelection() {
 	TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
 	VFXLayer.context.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
 
-	let underlyingImageData = currentLayer.context.getImageData(startX, startY, endX - startX, endY - startY);
+	if (imageDataToMove !== undefined) {
+		let underlyingImageData = currentLayer.context.getImageData(startX, startY, endX - startX, endY - startY);
+		
+		for (let i=0; i<underlyingImageData.data.length; i+=4) {
+			let currentMovePixel = [
+				imageDataToMove.data[i], imageDataToMove.data[i+1], 
+				imageDataToMove.data[i+2], imageDataToMove.data[i+3]
+			];
 
-	for (let i=0; i<underlyingImageData.data.length; i+=4) {
-		let currentMovePixel = [
-			imageDataToMove.data[i], imageDataToMove.data[i+1], 
-			imageDataToMove.data[i+2], imageDataToMove.data[i+3]
-		];
+			let currentUnderlyingPixel = [
+				underlyingImageData.data[i], underlyingImageData.data[i+1], 
+				underlyingImageData.data[i+2], underlyingImageData.data[i+3]
+			];
 
-		let currentUnderlyingPixel = [
-			underlyingImageData.data[i], underlyingImageData.data[i+1], 
-			underlyingImageData.data[i+2], underlyingImageData.data[i+3]
-		];
-
-		if (isPixelEmpty(currentMovePixel)) {
-			if (!isPixelEmpty(underlyingImageData)) {
-				imageDataToMove.data[i] = currentUnderlyingPixel[0];
-				imageDataToMove.data[i+1] = currentUnderlyingPixel[1];
-				imageDataToMove.data[i+2] = currentUnderlyingPixel[2];
-				imageDataToMove.data[i+3] = currentUnderlyingPixel[3];
+			if (isPixelEmpty(currentMovePixel)) {
+				if (!isPixelEmpty(underlyingImageData)) {
+					imageDataToMove.data[i] = currentUnderlyingPixel[0];
+					imageDataToMove.data[i+1] = currentUnderlyingPixel[1];
+					imageDataToMove.data[i+2] = currentUnderlyingPixel[2];
+					imageDataToMove.data[i+3] = currentUnderlyingPixel[3];
+				}
 			}
 		}
-	}
 
-	if (lastMovePos !== undefined) {
-		currentLayer.context.putImageData(
-		imageDataToMove, 
-		Math.round(lastMovePos[0] / zoom - imageDataToMove.width / 2), 
-		Math.round(lastMovePos[1] / zoom - imageDataToMove.height / 2));
-	}
-	else {
-		currentLayer.context.putImageData(
-		imageDataToMove, 
-		originalDataPosition[0], 
-		originalDataPosition[1]);
+		if (lastMovePos !== undefined) {
+			currentLayer.context.putImageData(
+			imageDataToMove, 
+			Math.round(lastMovePos[0] / zoom - imageDataToMove.width / 2), 
+			Math.round(lastMovePos[1] / zoom - imageDataToMove.height / 2));
+		}
 	}
 
 	selectionCanceled = true;
 	isRectSelecting = false;
+	firstTimeMove = true;
+	imageDataToMove = undefined;
 }

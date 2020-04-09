@@ -13,8 +13,10 @@ function KeyPress(e) {
 
 	//
 	if (e.key === "Escape") {
-		endSelection();
-		changeTool('pencil');
+		if (!selectionCanceled) {
+			endSelection();
+			changeTool('pencil');
+		}
 	}
 	else {
 	  	switch (keyboardEvent.keyCode) {
@@ -53,9 +55,18 @@ function KeyPress(e) {
 			  //CTRL+ALT+Z redo
 			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey) 
 			    redo();
+				if (!selectionCanceled) {
+			    		endSelection();
+			    		changeTool('pencil');
+			    	}
 			  //CTRL+Z undo
-			  else if (keyboardEvent.ctrlKey) 
-			    undo();
+			  else if (keyboardEvent.ctrlKey) {
+			    	undo();
+			    	if (!selectionCanceled) {
+			    		endSelection();
+			    		changeTool('pencil');
+			    	}
+			    }
 				//Z switch to zoom tool
 				else 
 				  changeTool('zoom');
