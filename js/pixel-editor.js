@@ -13,10 +13,12 @@
 //=include utilities/rgbToHsl.js
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
+//=include _pixelEditorUtility.js
 
 
 
 /**init**/
+//=include _consts.js
 //=include _variables.js 
 //=include _settings.js 
 
@@ -42,7 +44,7 @@
 //=include _deleteColor.js 
 //=include _replaceAllOfColor.js
 //=include _checkerboard.js
-//=include _canvas.js
+//=include _layer.js
 
 
 /**load file**/
@@ -59,6 +61,9 @@
 //=include _clickedColor.js 
 //=include _fileMenu.js 
 //=include _createButton.js 
+//=include _rectSelect.js
+//=include _move.js
+//=include _rectangle.js
 
 
 /**onload**/

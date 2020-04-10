@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--todo: credit RECTANGULAR SELECTION ICON BY https://www.flaticon.com/authors/pixel-perfect or 
+    design an original icon (this is just a placeholder)
+
+    Must also credit this guy for the rectangle tool
+    Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+-->
 <html>
 
 <head>
@@ -10,7 +16,6 @@
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     {{{google-analytics}}}
     {{{favicons}}}
-
 </head>
 
 <body oncontextmenu="return false;">
@@ -34,7 +39,10 @@
         <img src="/pixel-editor/pencil.png" />
         <img src="/pixel-editor/zoom-in.png" />
         <img src = "/pixel-editor/eraser.png"/>
+        <img src = "/pixel-editor/rectselect.png"/>
+        <img src= "/pixel-editor/rectangle.png">
     </div>
+
     <ul id="main-menu">
         <li class="logo">Lospec Pixel Editor</li>
         <li>
@@ -70,19 +78,32 @@
             <button title="Increase Brush Size" id="pencil-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Decrease Brush Size" id="pencil-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
+
+        <li class = "expanded">
+            <button title="Eraser tool (R)" id="eraser-button">{{svg "eraser.svg" width="32" height="32"}}</button>
+            <button title="Increase Eraser Size" id="eraser-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Decrease Eraser Size" id="eraser-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+
+        <li class="expanded">
+            <button title="Rectangle Tool (U)" id="rectangle-button">{{svg "rectangle.svg" width="32" height="32" id = "empty-button-svg"}}
+            {{svg "fullrect.svg" width="32" height="32" id = "full-button-svg" display = "none"}}</button>
+            <button title="Increase Brush Size" id="rectangle-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Decrease Brush Size" id="rectangle-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+
         <li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>
+
         <li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="32" height="32"}}</button></li>
+
         <li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="32" height="32"}}</button></li>
         <li class="expanded">
             <button title="Zoom Tool (Z)" id="zoom-button">{{svg "zoom.svg" width="32" height="32"}}</button>
             <button title="Zoom In" id="zoom-in-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Zoom Out" id="zoom-out-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
-        <li class = "expanded">
-            <button title="Eraser tool (R)" id="eraser-button">{{svg "eraser.svg" width="32" height="32"}}</button>
-            <button title="Increase Eraser Size" id="eraser-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
-            <button title="Decrease Eraser Size" id="eraser-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
-        </li>
+        
+        <li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
     </ul>
 
     <ul id="colors-menu">
@@ -98,6 +119,8 @@
     <div id="brush-preview"></div>
 
     <div id="canvas-view">
+        <canvas id="vfx-canvas" class = "drawingCanvas"></canvas>
+        <canvas id = "tmp-canvas" class = "drawingCanvas"></canvas>
         <canvas id="pixel-canvas" class = "drawingCanvas"></canvas>
         <canvas id="checkerboard" class = "drawingCanvas"></canvas>
     </div>

@@ -52,6 +52,7 @@ svg {
   position: fixed;
   display:none;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.64);
+  background-color:transparent;
 }
 
 #checkerboard {
@@ -60,6 +61,16 @@ svg {
 
 #pixel-canvas {
   z-index:2;
+  background:transparent;
+}
+
+#tmp-canvas {
+  z-index:3;
+  background:transparent;
+}
+
+#vfx-canvas {
+  z-index:-5000;
   background:transparent;
 }
 
@@ -429,13 +440,15 @@ svg {
 
 #tools-menu li button#pencil-bigger-button,
 #tools-menu li button#zoom-in-button,
-#tools-menu li button#eraser-bigger-button{
+#tools-menu li button#eraser-bigger-button,
+#tools-menu li button#rectangle-bigger-button{
   left: 0;
 }
 
 #tools-menu li button#pencil-smaller-button,
 #tools-menu li button#zoom-out-button,
-#tools-menu li button#eraser-smaller-button{
+#tools-menu li button#eraser-smaller-button,
+#tools-menu li button#rectangle-smaller-button{
   right: 0;
 }
 
@@ -444,7 +457,9 @@ svg {
 #tools-menu li.selected button#zoom-in-button,
 #tools-menu li.selected button#zoom-out-button,
 #tools-menu li.selected button#eraser-bigger-button,
-#tools-menu li.selected button#eraser-smaller-button{
+#tools-menu li.selected button#eraser-smaller-button,
+#tools-menu li.selected button#rectangle-bigger-button,
+#tools-menu li.selected button#rectangle-smaller-button{
   display: block;
 }
 

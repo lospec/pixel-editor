@@ -4,14 +4,32 @@ function updateCursor () {
 	if (currentTool == 'pencil' || currentTool == 'resize-brush') {
 		canvasView.style.cursor = 'crosshair';
 		brushPreview.style.display = 'block';
-		brushPreview.style.width = brushSize * zoom + 'px';
-		brushPreview.style.height = brushSize * zoom + 'px';
+		brushPreview.style.width = pencilSize * zoom + 'px';
+		brushPreview.style.height = pencilSize * zoom + 'px';
 	} else if (currentTool == 'eraser' || currentTool == 'resize-eraser') {
         canvasView.style.cursor = 'crosshair';
         brushPreview.style.display = 'block';
         brushPreview.style.width = eraserSize * zoom + 'px';
         brushPreview.style.height = eraserSize * zoom + 'px';
-	} else
+	} else if (currentTool == 'rectangle' || currentTool == 'resize-rectangle') {
+		canvasView.style.cursor = 'crosshair';
+        brushPreview.style.display = 'block';
+        brushPreview.style.width = rectangleSize * zoom + 'px';
+        brushPreview.style.height = rectangleSize * zoom + 'px';
+	}
+	else if (currentTool == 'moveselection') {
+		if (cursorInSelectedArea()) {
+			canMoveSelection = true;
+			canvasView.style.cursor = 'move';
+			brushPreview.style.display = 'none';
+		}
+		else {
+			canvasView.style.cursor = 'crosshair';
+		}
+	}
+	else if (currentTool == 'rectselect')
+		canvasView.style.cursor = 'crosshair';
+	else
 		brushPreview.style.display = 'none';
 	
 	if (currentTool == 'eyedropper') {

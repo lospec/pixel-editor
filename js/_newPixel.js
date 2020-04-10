@@ -1,16 +1,27 @@
-
 function newPixel (width, height, palette) {
-    currentLayer = new Canvas(width, height, canvas);
+	// Setting the current layer
+    currentLayer = new Layer(width, height, canvas);
     currentLayer.initialize();
 
-    checkerBoard = new Canvas(width, height, checkerBoardCanvas);
+    // Adding the checkerboard behind it
+    checkerBoard = new Layer(width, height, checkerBoardCanvas);
     checkerBoard.initialize();
+
+    // Creating the vfx layer on top of everything
+    VFXLayer = new Layer(width, height, VFXCanvas);
+    VFXLayer.initialize();
+
+    TMPLayer = new Layer(width, height, TMPCanvas);
+    TMPLayer.initialize();
 
 	canvasSize = currentLayer.canvasSize;
 
+	// Adding the first layer and the checkerboard to the list of layers
+	layers.push(VFXLayer);
+	layers.push(TMPLayer);
 	layers.push(currentLayer);
 	layers.push(checkerBoard);
-
+	
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
 	while (colors.length > 0) {
@@ -55,6 +66,7 @@ function newPixel (width, height, palette) {
 		
 		//set current drawing color as foreground color
 		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
+		currentGlobalColor = '#' + defaultForegroundColor;
 		selectedPalette = 'none';
 	}
 		
