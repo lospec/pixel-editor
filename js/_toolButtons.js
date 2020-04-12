@@ -5,13 +5,13 @@ on('click','pencil-button', function(){
 
 //pencil bigger
 on('click','pencil-bigger-button', function(){
-    brushSize++;
+    pencilSize++;
     updateCursor();
 }, false);
 
 //pencil smaller
 on('click','pencil-smaller-button', function(){
-    if(brushSize > 1) brushSize--;
+    if(pencilSize > 1) pencilSize--;
     updateCursor();
 }, false);
 

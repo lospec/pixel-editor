@@ -177,7 +177,7 @@ function draw (mouseEvent) {
 
     if (currentTool == 'pencil') {
         //move the brush preview
-        setPreviewPosition(brushPreview, cursorLocation, brushSize);
+        setPreviewPosition(brushPreview, cursorLocation, pencilSize);
 
         //hide brush preview outside of canvas / canvas view
         if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
@@ -188,7 +188,11 @@ function draw (mouseEvent) {
         //draw line to current pixel
         if (dragging) {
             if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-                line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom));
+                line(
+                    Math.floor(lastPos[0]/zoom), Math.floor(lastPos[1]/zoom),
+                    Math.floor(cursorLocation[0]/zoom), Math.floor(cursorLocation[1]/zoom),
+                    pencilSize
+                );
                 lastPos = cursorLocation;
             }
         }
@@ -216,7 +220,11 @@ function draw (mouseEvent) {
         //draw line to current pixel
         if (dragging) {
             if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-                line(Math.floor(lastPos[0]/zoom),Math.floor(lastPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom), eraserSize);
+                line(
+                    Math.floor(lastPos[0]/zoom), Math.floor(lastPos[1]/zoom),
+                    Math.floor(cursorLocation[0]/zoom), Math.floor(cursorLocation[1]/zoom),
+                    eraserSize
+                );
                 lastPos = cursorLocation;
             }
         }
@@ -224,8 +232,7 @@ function draw (mouseEvent) {
     else if (currentTool == 'rectangle')
     {
         //move the brush preview
-        brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - rectangleSize * zoom / 2 + 'px';
-        brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - rectangleSize * zoom / 2 + 'px';
+        setPreviewPosition(brushPreview, cursorLocation, rectangleSize)
 
         //hide brush preview outside of canvas / canvas view
         if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
@@ -272,7 +279,7 @@ function draw (mouseEvent) {
         var newBrushSize = prevBrushSize + brushSizeChange;
 
         //set the brush to the new size as long as its bigger than 1
-        pencilSize = Math.max(1,newBrushSize);
+        pencilSize = Math.max(1, newBrushSize);
 
         //fix offset so the cursor stays centered
         setPreviewPosition(brushPreview, cursorLocation, pencilSize);
