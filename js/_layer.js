@@ -15,9 +15,9 @@
  * @param canvas HTML canvas element
  */
 function Layer(width, height, canvas) {
-    this.canvasSize = [width, height],
-    this.canvas = canvas,
-    this.context = this.canvas.getContext("2d"),
+    this.canvasSize = [width, height];
+    this.canvas = canvas;
+    this.context = this.canvas.getContext('2d');
     // Initializes the canvas
     this.initialize = function() {
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
@@ -38,10 +38,10 @@ function Layer(width, height, canvas) {
         //center canvas in window
         this.canvas.style.left = 64+canvasView.clientWidth/2-(this.canvasSize[0]*zoom/2)+'px';
         this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
-        
+
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
-    },
+    };
     // Resizes canvas
     this.resize = function() {
         let newWidth = (this.canvas.width * zoom) + 'px';
@@ -49,7 +49,7 @@ function Layer(width, height, canvas) {
 
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
-    },
+    };
     // Copies the otherCanvas' position and size
     this.copyData = function(otherCanvas) {
         this.canvas.style.width = otherCanvas.canvas.style.width;
@@ -57,5 +57,5 @@ function Layer(width, height, canvas) {
 
         this.canvas.style.left = otherCanvas.canvas.style.left;
         this.canvas.style.top = otherCanvas.canvas.style.top;
-    }
+    };
 }
