@@ -1,5 +1,5 @@
 function newPixel (width, height, palette) {
-	// Setting the current layer
+    // Setting the current layer
     currentLayer = new Layer(width, height, canvas);
     currentLayer.initialize();
 

@@ -13,7 +13,7 @@ var secondCheckerBoardColor = 'rgba(204, 200, 206, 1)';
 // Square size for the checkerboard
 var checkerBoardSquareSize = 16;
 // Checkerboard canvas
-var checkerBoardCanvas = document.getElementById("checkerboard");
+var checkerBoardCanvas = document.getElementById('checkerboard');
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");
@@ -24,8 +24,8 @@ var colorsMenu = document.getElementById("colors-menu");
 var popUpContainer = document.getElementById("pop-up-container");
 
 // main canvas
-var canvas = document.getElementById("pixel-canvas");
-var context = canvas.getContext("2d");
+var canvas = document.getElementById('pixel-canvas');
+var context = canvas.getContext('2d');
 var currentGlobalColor;
 
 // Layers
@@ -36,9 +36,9 @@ var currentLayer;
 // VFX layer used to draw previews of the selection and things like that
 var VFXLayer;
 // VFX canvas
-var VFXCanvas = document.getElementById("vfx-canvas");
+var VFXCanvas = document.getElementById('vfx-canvas');
 
 // TMP layer
 var TMPLayer;
 // TMP canvas
-var TMPCanvas = document.getElementById("tmp-canvas");
+var TMPCanvas = document.getElementById('tmp-canvas');

@@ -1,4 +1,3 @@
-
 function changeZoom (layer, direction, cursorLocation) {
 	var oldWidth = canvasSize[0] * zoom;
 	var oldHeight = canvasSize[1] * zoom;

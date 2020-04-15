@@ -118,14 +118,35 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		if (mouseEvent.which == 1){
 			mode = "in";
         }
-		else if (mouseEvent.which == 3){
-			mode = "out";
+    }
+    else if (currentTool == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
+        console.log('filling');
+        //if you clicked on anything but the canvas, do nothing
+        if (!mouseEvent.target == currentLayer.canvas) return;
+
+        //get cursor postion
+        var cursorLocation = getCursorPosition(mouseEvent);
+
+        //offset to match cursor point
+        cursorLocation[0] += 2;
+        cursorLocation[1] += 12;
+
+        //fill starting at the location
+        fill(cursorLocation);
+    }
+    else if (currentTool == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
+        let mode;
+        if (mouseEvent.which == 1){
+            mode = 'in';
+        }
+        else if (mouseEvent.which == 3){
+            mode = 'out';
         }
 
         changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
-			layers[i].copyData(layers[0]);
+            layers[i].copyData(layers[0]);
         }
 	}
 	else if (currentTool.name == 'rectselect' && isRectSelecting) {
@@ -142,6 +163,19 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 
 }, false);
+
+function setPreviewPosition(preview, cursor, size){
+    preview.style.left = (
+        currentLayer.canvas.offsetLeft
+        + Math.floor(cursor[0]/zoom) * zoom
+        - Math.floor(size / 2) * zoom
+    ) + 'px';
+    preview.style.top = (
+        currentLayer.canvas.offsetTop
+        + Math.floor(cursor[1]/zoom) * zoom
+        - Math.floor(size / 2) * zoom
+    ) + 'px';
+}
 
 
 // OPTIMIZABLE: redundant || mouseEvent.target.className in currentTool ifs
@@ -231,7 +265,7 @@ function draw (mouseEvent) {
 	else if (currentTool.name == 'pan' && dragging) {
 	    // Setting first layer position
         setCanvasOffset(layers[0].canvas, layers[0].canvas.offsetLeft + (cursorLocation[0] - lastPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastPos[1]));
-		// Copying that position to the other layers
+        // Copying that position to the other layers
         for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
         }
@@ -248,8 +282,8 @@ function draw (mouseEvent) {
         var colorLightness = Math.max(selectedColor[0],selectedColor[1],selectedColor[2]);
 
         //for the darkest 50% of colors, change the eyedropper preview to dark mode
-		if (colorLightness>127) eyedropperPreview.classList.remove('dark');
-		else eyedropperPreview.classList.add('dark');
+        if (colorLightness>127) eyedropperPreview.classList.remove('dark');
+        else eyedropperPreview.classList.add('dark');
     }
     else if (currentTool.name == 'resizebrush' && dragging) {
         //get new brush size based on x distance from original clicking location
@@ -319,10 +353,10 @@ function draw (mouseEvent) {
     	// Updating the cursor (move if inside rect, cross if not)
     	currentTool.updateCursor();
 
-    	// If I'm dragging, I move the preview
-    	if (dragging && cursorInSelectedArea()) {
-    		updateMovePreview(mouseEvent);
-    	}
+        // If I'm dragging, I move the preview
+        if (dragging && cursorInSelectedArea()) {
+            updateMovePreview(mouseEvent);
+        }
     }
 }
 
@@ -334,15 +368,15 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 		if (mouseEvent.deltaY < 0){
 			mode = 'in';
         }
-		else if (mouseEvent.deltaY > 0) {
-			mode = 'out';
+        else if (mouseEvent.deltaY > 0) {
+            mode = 'out';
         }
 
         // Changing zoom and position of the first layer
-        changeZoom(layers[0], mode, getCursorPosition(mouseEvent))
+        changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
-			// Copying first layer's data into the other layers
+            // Copying first layer's data into the other layers
             layers[i].copyData(layers[0]);
 		}
 	}

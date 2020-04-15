@@ -12,17 +12,17 @@ let endRectY;
 
 
 function startRectDrawing(mouseEvent) {
-	// Putting the vfx layer on top of everything
-	VFXCanvas.style.zIndex = MAX_Z_INDEX;
-	// Updating flag
-	isDrawingRect = true;
+    // Putting the vfx layer on top of everything
+    VFXCanvas.style.zIndex = MAX_Z_INDEX;
+    // Updating flag
+    isDrawingRect = true;
 
-	// Saving the start coords of the rect
-	let cursorPos = getCursorPosition(mouseEvent);
-	startRectX = Math.round(cursorPos[0] / zoom) - 0.5;
-	startRectY = Math.round(cursorPos[1] / zoom) - 0.5;
+    // Saving the start coords of the rect
+    let cursorPos = getCursorPosition(mouseEvent);
+    startRectX = Math.floor(cursorPos[0] / zoom) + 0.5;
+    startRectY = Math.floor(cursorPos[1] / zoom) + 0.5;
 
-	drawRectangle(startRectX, startRectY);
+    drawRectangle(startRectX, startRectY);
 }
 
 function updateRectDrawing(mouseEvent) {
@@ -101,20 +101,20 @@ function drawRectangle(x, y) {
 
 	vfxContext.setLineDash([]);
 
-	vfxContext.stroke();
+    vfxContext.stroke();
 }
 
 function setRectToolSvg() {
-	if (drawMode == 'empty') {
-		emptySVG.setAttribute("display", "visible");
-		fullSVG.setAttribute("display", "none");
-	}
-	else {
-		emptySVG.setAttribute("display", "none");
-		fullSVG.setAttribute("display", "visible");
-	}
+    if (drawMode == 'empty') {
+        emptySVG.setAttribute('display', 'visible');
+        fullSVG.setAttribute('display', 'none');
+    }
+    else {
+        emptySVG.setAttribute('display', 'none');
+        fullSVG.setAttribute('display', 'visible');
+    }
 }
 
 function applyChanges() {
-	VFXCanvas.style.zIndex = MIN_Z_INDEX;
+    VFXCanvas.style.zIndex = MIN_Z_INDEX;
 }

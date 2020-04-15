@@ -1,15 +1,15 @@
 var spacePressed = false;
 
 function KeyPress(e) {
-	var keyboardEvent = window.event? event : e;
+    var keyboardEvent = window.event? event : e;
 
-	//if the user is typing in an input field, ignore these hotkeys
-	if (document.activeElement.tagName == 'INPUT') return;
+    //if the user is typing in an input field, ignore these hotkeys
+    if (document.activeElement.tagName == 'INPUT') return;
 
-	//if no document has been created yet,
-	//orthere is a dialog box open
-	//ignore hotkeys
-	if (!documentCreated || dialogueOpen) return;
+    //if no document has been created yet,
+    //orthere is a dialog box open
+    //ignore hotkeys
+    if (!documentCreated || dialogueOpen) return;
 
 	//
 	if (e.key === "Escape") {
