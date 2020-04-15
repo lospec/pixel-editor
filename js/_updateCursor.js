@@ -1,23 +1,27 @@
 
+
 //set the correct cursor for the current tool
-function updateCursor () {
-	if (currentTool == 'pencil' || currentTool == 'resize-brush') {
-		canvasView.style.cursor = 'crosshair';
+Tool.prototype.updateCursor = function () {
+
+	console.log('updateCursor()', currentTool)
+
+	//switch to that tools cursor
+	canvasView.style.cursor = this.cursor || 'default';
+
+	//if the tool uses a brush preview, make it visible and update the size
+	if (this.brushPreview) {
+		console.log('brush size',this.currentBrushSize)
 		brushPreview.style.display = 'block';
-		brushPreview.style.width = pencilSize * zoom + 'px';
-		brushPreview.style.height = pencilSize * zoom + 'px';
-	} else if (currentTool == 'eraser' || currentTool == 'resize-eraser') {
-        canvasView.style.cursor = 'crosshair';
-        brushPreview.style.display = 'block';
-        brushPreview.style.width = eraserSize * zoom + 'px';
-        brushPreview.style.height = eraserSize * zoom + 'px';
-	} else if (currentTool == 'rectangle' || currentTool == 'resize-rectangle') {
-		canvasView.style.cursor = 'crosshair';
-        brushPreview.style.display = 'block';
-        brushPreview.style.width = rectangleSize * zoom + 'px';
-        brushPreview.style.height = rectangleSize * zoom + 'px';
+        brushPreview.style.width = this.currentBrushSize * zoom + 'px';
+        brushPreview.style.height = this.currentBrushSize * zoom + 'px';
 	}
-	else if (currentTool == 'moveselection') {
+
+	//show / hide eyedropper color preview
+	if (this.eyedropperPreview) eyedropperPreview.style.display = 'block';
+	else eyedropperPreview.style.display = 'none';
+
+	//moveSelection
+	if (currentTool.name == 'moveselection') {
 		if (cursorInSelectedArea()) {
 			canMoveSelection = true;
 			canvasView.style.cursor = 'move';
@@ -27,28 +31,6 @@ function updateCursor () {
 			canvasView.style.cursor = 'crosshair';
 		}
 	}
-	else if (currentTool == 'rectselect')
-		canvasView.style.cursor = 'crosshair';
-	else
-		brushPreview.style.display = 'none';
-	
-	if (currentTool == 'eyedropper') {
-		canvasView.style.cursor = "url('/pixel-editor/eyedropper.png'), auto";
-	} else 
-		eyedropperPreview.style.display = 'none';
-	
-	if (currentTool == 'pan') 
-		if (dragging)
-			canvasView.style.cursor = "url('/pixel-editor/pan-held.png'), auto";
-		else
-			canvasView.style.cursor = "url('/pixel-editor/pan.png'), auto";
-		
-	if (currentTool == 'fill') 
-		canvasView.style.cursor = "url('/pixel-editor/fill.png'), auto";
-		
-	if (currentTool == 'zoom') 
-		canvasView.style.cursor = "url('/pixel-editor/zoom-in.png'), auto";
-		
-	if (currentTool == 'resize-brush' || currentTool == 'resize-eraser')
-		canvasView.style.cursor = 'default';
 }
+
+/*global Tool, dragging, canvasView, brushPreview, canMoveSelection, cursorInSelectedArea, eyedropperPreview, zoom, currentTool */

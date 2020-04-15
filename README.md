@@ -16,32 +16,25 @@ Suggestions / Planned features:
     - custom code without dependencies
     - more features such as sliders / color modes
 
-- Mobile 
-    - Touch equivalent for mouse clicks 
-    - Hide or scale ui 
-    - Maybe rearrange UI on portrait 
-    - Stack colors when too many 
-    - Fix popups 
+- Mobile
+    - Touch equivalent for mouse clicks
+    - Hide or scale ui
+    - Maybe rearrange UI on portrait
+    - Stack colors when too many
+    - Fix popups
 
-- Selections 
-    - New selection tool 
-    - New currentLayer.canvas layer above the drawing layer 
-    - Move when click and drag 
-    - Merge with currentLayer.canvas when click outside 
+- Copy/paste
+    - Add as selection
+    - Show colors which would need to be added to palette
 
-- Copy/paste 
-    - Add as selection 
-    - Show colors which would need to be added to palette 
+- Palette option remove unused colors
+- Pixel Grid
+    - Another currentLayer.canvas
+    - Must be rescaled each zoom
 
-- Palette option remove unused colors 
-- Pixel Grid 
-    - Another currentLayer.canvas 
-    - Must be rescaled each zoom 
-
-- Possibly add collaborate function using together.js 
-- Bug fix 
-    - Alt + scroll broken 
-    - Add edge support?
+- Possibly add collaborate function using together.js
+- Bug fix
+    - Alt + scroll broken
 
 ## How to Contribute
 

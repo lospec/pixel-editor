@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--todo: credit RECTANGULAR SELECTION ICON BY https://www.flaticon.com/authors/pixel-perfect or 
+<!--todo: credit RECTANGULAR SELECTION ICON BY https://www.flaticon.com/authors/pixel-perfect or
     design an original icon (this is just a placeholder)
 
     Must also credit this guy for the rectangle tool
@@ -102,7 +102,7 @@
             <button title="Zoom In" id="zoom-in-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Zoom Out" id="zoom-out-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
-        
+
         <li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
     </ul>
 
@@ -200,13 +200,14 @@
         </div>
         <div id="changelog">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
-            <h1>Changelog</h1>
-            <h2>Version 1.1.0 - 4/4/19</h2>
-            <p>Added transparency / eraser tool</p>
-            <h2>Version 1.1.0</h2>
-            <ul>
-                <li>Initial Release</li>
-            </ul>
+
+			<h1>Changelog</h1>
+            {{#each changelog}}
+            	<h2>Version {{@key}}</h2>
+            	<ul>{{#each this}}
+                	<li>{{change}} <span class="weak">- {{author}}</span></li>
+            	{{/each}}</ul>
+            {{/each}}
         </div>
         <div id="credits">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>

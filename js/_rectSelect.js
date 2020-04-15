@@ -37,7 +37,7 @@ function startRectSelection(mouseEvent) {
 
 function updateRectSelection(mouseEvent) {
 	let pos = getCursorPosition(mouseEvent);
-	
+
 	// Drawing the rect
 	drawRect(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
 }
@@ -62,21 +62,21 @@ function endRectSelection(mouseEvent) {
 	}
 
 	// Selecting the move tool
-	currentTool = 'moveselection';
+	currentTool = tool.moveselection;
 	currentToolTemp = currentTool;
 
 	// Resetting this
 	isRectSelecting = false;
 
-	// Updating the cursor 
-	updateCursor();
+	// Updating the cursor
+	currentTool.updateCursor();
 }
 
 function cutSelection(mouseEvent) {
 	console.log("Coordinate: start x, y: " + startX + ", " + startY + " end x, y: " + endX + ", " + endY);
 	// Getting the selected pixels
 	imageDataToMove = currentLayer.context.getImageData(startX, startY, endX - startX + 1, endY - startY + 1);
-	
+
 	currentLayer.context.clearRect(startX - 0.5, startY - 0.5, endX - startX + 1, endY - startY + 1);
 	// Moving those pixels from the current layer to the tmp layer
 	TMPLayer.context.putImageData(imageDataToMove, startX + 1, startY);

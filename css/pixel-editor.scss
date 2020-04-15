@@ -35,6 +35,11 @@ svg {
   outline: 0 !important;
 }
 
+.weak {
+	font-size: 0.8em;
+	color: color(base,foreground,weak);
+}
+
 .drawingCanvas {
   cursor: url('/pixel-art-where-to-start/pencil-tool-cursor.png');
 

@@ -1,7 +1,7 @@
 //when the page is donw loading, you can get ready to start
 window.onload = function(){
-  updateCursor();
-  
+  currentTool.updateCursor();
+
   //if the user specified dimentions
   if (specifiedDimentions)
     //create a new pixel

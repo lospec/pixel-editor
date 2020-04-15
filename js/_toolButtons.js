@@ -1,41 +1,39 @@
 //pencil
 on('click',"pencil-button", function(){
-    changeTool('pencil');
+    tool.pencil.switchTo();
 }, false);
 
 //pencil bigger
 on('click',"pencil-bigger-button", function(){
-    brushSize++;
-    updateCursor();
+    tool.pencil.brushSize++;
 }, false);
 
 //pencil smaller
 on('click',"pencil-smaller-button", function(){
-    if(brushSize > 1) brushSize--;
-    updateCursor();
+    if(tool.pencil.brushSize > 1)
+    	tool.pencil.brushSize--;
 }, false);
 
 //eraser
 on('click',"eraser-button", function(){
-    changeTool('eraser');
+    tool.eraser.switchTo();
 }, false);
 
 //eraser bigger
 on('click',"eraser-bigger-button", function(){
-    eraserSize++;
-    updateCursor();
+    tool.eraser.brushSize++;
 }, false);
 
 //eraser smaller
 on('click',"eraser-smaller-button", function(e){
-    if(eraserSize > 1) eraserSize--;
-    updateCursor();
+    if(tool.eraser.brushSize > 1)
+    	tool.eraser.brushSize--;
 }, false);
 
 // rectangle
 on('click',"rectangle-button", function(){
     // If the user clicks twice on the button, they change the draw mode
-    if (currentTool == 'rectangle') {
+    if (currentTool.name == 'rectangle') {
         if (drawMode == 'empty') {
             drawMode = 'fill';
             setRectToolSvg();
@@ -46,40 +44,39 @@ on('click',"rectangle-button", function(){
         }
     }
     else {
-        changeTool('rectangle');
+        tool.rectangle.switchTo();
     }
 }, false);
 
 // rectangle bigger
 on('click',"rectangle-bigger-button", function(){
-    rectangleSize++;
-    updateCursor();
+    tool.rectangle.brushSize++;
 }, false);
 
 // rectangle smaller
 on('click',"rectangle-smaller-button", function(e){
-    if(rectangleSize > 1) rectangleSize--;
-    updateCursor();
+    if(tool.rectangle.brushSize > 1)
+    	tool.rectangle.brushSize--;
 }, false);
 
 //fill
 on('click',"fill-button", function(){
-    changeTool('fill');
-}, false);	
+    tool.fill.switchTo();
+}, false);
 
 //pan
 on('click',"pan-button", function(){
-    changeTool('pan');
-}, false);	
+    tool.pan.switchTo();
+}, false);
 
 //eyedropper
 on('click',"eyedropper-button", function(){
-	changeTool('eyedropper');
-}, false);		
+	tool.eyedropper.switchTo();
+}, false);
 
 //zoom tool button
 on('click',"zoom-button", function(){
-	changeTool('zoom');
+	tool.zoom.switchTo();
 }, false);
 
 //zoom in button
@@ -103,5 +100,7 @@ on('click',"zoom-out-button", function(){
 
 //rectangular selection button
 on('click', "rectselect-button", function(){
-    changeTool('rectselect');
+    tool.rectselect.switchTo();
 }, false);
+
+/*global on */

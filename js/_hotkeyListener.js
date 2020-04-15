@@ -15,65 +15,65 @@ function KeyPress(e) {
 	if (e.key === "Escape") {
 		if (!selectionCanceled) {
 			endSelection();
-			changeTool('pencil');
+			tool.pencil.switchTo();
 		}
 	}
 	else {
 	  	switch (keyboardEvent.keyCode) {
 			//pencil tool - 1, b
-			case 49: case 66: 
-				changeTool('pencil');
+			case 49: case 66:
+				tool.pencil.switchTo();
 				break;
 			//fill tool - 2, f
 			case 50: case 70:
-				changeTool('fill');
+				tool.fill.switchTo();
 				break;
 			//eyedropper - 3, e
 			case 51: case 69:
-				changeTool('eyedropper');
+				tool.eyedropper.switchTo();
 				break;
 			//pan - 4, p,
 			case 52: case 80:
-				changeTool('pan');
+				tool.pan.switchTo();
 				break;
 			//zoom - 5
 			case 53:
-			  changeTool('zoom');
+			  tool.zoom.switchTo();
 			  break;
 			 // eraser -6, r
 		    case 54: case 82:
 		         console.log("Pressed r");
-	            changeTool('eraser');
+	            tool.eraser.switchTo()
 		     	break;
-		    // Rectangular selection	
+		    // Rectangular selection
 		    case 77: case 109:
-				changeTool('rectselect');
+				tool.rectselect.switchTo()
 				break;
 			//Z
 			case 90:
 			  console.log('PRESSED Z ', keyboardEvent.ctrlKey)
 			  //CTRL+ALT+Z redo
-			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey) 
+			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey)
 			    redo();
 				if (!selectionCanceled) {
 			    		endSelection();
-			    		changeTool('pencil');
+			    		tool.pencil.switchTo()
 			    	}
 			  //CTRL+Z undo
 			  else if (keyboardEvent.ctrlKey) {
 			    	undo();
 			    	if (!selectionCanceled) {
 			    		endSelection();
-			    		changeTool('pencil');
+			    		tool.pencil.switchTo()
 			    	}
 			    }
 				//Z switch to zoom tool
-				else 
-				  changeTool('zoom');
+				else
+					tool.zoom.switchTo()
 				break;
 			//redo - ctrl y
 			case 89:
-			  if (keyboardEvent.ctrlKey) 
+			  if (keyboardEvent.ctrlKey)
 			    redo();
 			  break;
 			case 32:
@@ -86,7 +86,7 @@ function KeyPress(e) {
 document.onkeydown = KeyPress;
 
 window.addEventListener("keyup", function (e) {
-	
+
 	if (e.keyCode == 32) spacePressed = false;
 
 });

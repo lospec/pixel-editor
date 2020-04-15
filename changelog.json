@@ -1,0 +1,13 @@
+{
+	"1.2.0 - 4/14/20": [
+		{"change": "Added rectangle / selection tools", "author": "Unsettled"}
+	],
+
+	"1.1.0 - 4/4/19": [
+		{"change": "Added transparency / eraser tool", "author": "Unsettled"}
+	],
+
+	"1.0.0 - 11/17/17": [
+		{"change": "Initial release", "author": "skeddles"}
+	]
+}

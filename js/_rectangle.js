@@ -1,5 +1,4 @@
-var rectangleSize = 1;
-var prevRectangleSie = rectangleSize;
+
 var emptySVG = document.getElementById("empty-button-svg");
 var fullSVG = document.getElementById("full-button-svg");
 
@@ -28,7 +27,7 @@ function startRectDrawing(mouseEvent) {
 
 function updateRectDrawing(mouseEvent) {
 	let pos = getCursorPosition(mouseEvent);
-	
+
 	// Drawing the rect
 	drawRectangle(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
 }
@@ -64,13 +63,13 @@ function endRectDrawing(mouseEvent) {
 	endRectX -= 0.5;
 	startRectX -= 0.5;
 
-	currentLayer.context.lineWidth = rectangleSize;
+	currentLayer.context.lineWidth = tool.rectangle.brushSize;
 	currentLayer.context.fillStyle = currentGlobalColor;
 
-	line(startRectX, startRectY, endRectX, startRectY, rectangleSize);
-	line(endRectX, startRectY, endRectX, endRectY, rectangleSize);
-	line(endRectX, endRectY, startRectX, endRectY, rectangleSize);
-	line(startRectX, endRectY, startRectX, startRectY, rectangleSize);
+	line(startRectX, startRectY, endRectX, startRectY, tool.rectangle.brushSize);
+	line(endRectX, startRectY, endRectX, endRectY, tool.rectangle.brushSize);
+	line(endRectX, endRectY, startRectX, endRectY, tool.rectangle.brushSize);
+	line(startRectX, endRectY, startRectX, startRectY, tool.rectangle.brushSize);
 
 	if (drawMode == 'fill') {
 		currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
@@ -79,7 +78,7 @@ function endRectDrawing(mouseEvent) {
 	// Clearing the vfx canvas
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 }
-	
+
 function drawRectangle(x, y) {
 	// Getting the vfx context
 	let vfxContext = VFXCanvas.getContext("2d");
@@ -88,18 +87,18 @@ function drawRectangle(x, y) {
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 
 	// Drawing the rect
-	vfxContext.lineWidth = rectangleSize;
+	vfxContext.lineWidth = tool.rectangle.brushSize;
 	vfxContext.strokeStyle = currentGlobalColor;
 
 	// Drawing the rect
 	vfxContext.beginPath();
-	if ((rectangleSize % 2 ) == 0) {
+	if ((tool.rectangle.brushSize % 2 ) == 0) {
 		vfxContext.rect(startRectX - 0.5, startRectY - 0.5, x - startRectX, y - startRectY);
 	}
 	else {
 		vfxContext.rect(startRectX, startRectY, x - startRectX, y - startRectY);
 	}
-	
+
 	vfxContext.setLineDash([]);
 
 	vfxContext.stroke();
