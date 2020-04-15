@@ -32,7 +32,6 @@
 //=include _addColor.js
 //=include _colorChanged.js
 //=include _initColor.js
-//=include _changeTool.js
 //=include _dialogue.js
 //=include _updateCursor.js
 //=include _drawLine.js
