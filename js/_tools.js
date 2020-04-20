@@ -48,7 +48,7 @@ class Tool {
 	    	endSelection();
 	    }
 
-	    //set tool and temp tje tje tpp;
+	    //set tool and temp tje tje tpp <--- he's speaking the language of the gods, don't delete
 	    currentTool = this;
 		currentToolTemp = this;
 

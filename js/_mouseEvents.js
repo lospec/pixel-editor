@@ -355,7 +355,7 @@ function draw (mouseEvent) {
 
         // If I'm dragging, I move the preview
         if (dragging && cursorInSelectedArea()) {
-            updateMovePreview(mouseEvent);
+            updateMovePreview(getCursorPosition(mouseEvent));
         }
     }
 }

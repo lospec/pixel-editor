@@ -42,6 +42,7 @@
 //=include _replaceAllOfColor.js
 //=include _checkerboard.js
 //=include _layer.js
+//=include _copyPaste.js
 
 /**load file**/
 //=include _loadImage.js

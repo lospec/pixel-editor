@@ -6,17 +6,17 @@ var selectionCanceled = true;
 var firstTimeMove = true;
 
 // TODO: move with arrows
-function updateMovePreview(mouseEvent) {
+function updateMovePreview(mousePosition) {
     // ISSUE
     selectionCanceled = false;
 
     if (firstTimeMove) {
-        cutSelection(mouseEvent);
+        cutSelection(mousePosition);
     }
 
     firstTimeMove = false;
 
-    lastMousePos = getCursorPosition(mouseEvent);
+    lastMousePos = mousePosition;
     // clear the entire tmp layer
     TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
     // put the image data with offset
