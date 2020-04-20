@@ -63,10 +63,14 @@ function endSelection() {
                 Math.round(lastMovePos[0] / zoom - imageDataToMove.width / 2), 
                 Math.round(lastMovePos[1] / zoom - imageDataToMove.height / 2));
         }
+        else {
+            undo();
+        }
     }
 
     selectionCanceled = true;
     isRectSelecting = false;
     firstTimeMove = true;
     imageDataToMove = undefined;
+    isPasting = false;
 }

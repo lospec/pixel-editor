@@ -7,13 +7,14 @@ var spacePressed = false;
 		- Pressing ctrl+v ends the current selection and copies the clipboard in the tmp layer:
 			the editor enters move mode and lets the user move the copied selection around.
 			Pressing ctrl+v while moving a copy has the same effect of pressing ctrl+v after a ctrl+c
-		- Pressing ctrl+x cuts the selection and stores it in the clipboard
 		- The behaviour of ctrl+v is the same and doesn't depend on how the selected area was obtained
 			(with ctrl+c or with ctrl+v)
 		- Selecting a different tool while moving the copied or cut selection has the same effect of selecting 
 			a different tool while moving a standard selection
-		- You can't paste while dragging
 		- You can paste at any other time
+
+	BUGS:
+		- 
 */ 
 
 function KeyPress(e) {
@@ -30,7 +31,6 @@ function KeyPress(e) {
 	//
 	if (e.key === "Escape") {
 		if (!selectionCanceled) {
-			endSelection();
 			tool.pencil.switchTo();
 		}
 	}
@@ -83,7 +83,6 @@ function KeyPress(e) {
 				console.log("Cutting");
 				if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
 					cutSelectionTool();
-					endSelection();
 					tool.pencil.switchTo();
 				}
 				break;
@@ -94,14 +93,12 @@ function KeyPress(e) {
 			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey)
 			    redo();
 				if (!selectionCanceled) {
-			    		endSelection();
 			    		tool.pencil.switchTo()
 			    	}
 			  //CTRL+Z undo
 			  else if (keyboardEvent.ctrlKey) {
 			    	undo();
 			    	if (!selectionCanceled) {
-			    		endSelection();
 			    		tool.pencil.switchTo()
 			    	}
 			    }
