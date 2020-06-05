@@ -67,7 +67,6 @@ function endSelection() {
                 Math.round(lastMovePos[1] / zoom) - imageDataToMove.height / 2);
         }
         else {
-            console.log("yo");
             currentLayer.context.putImageData(
                 imageDataToMove, 
                 copiedStartX, 
@@ -83,4 +82,6 @@ function endSelection() {
     imageDataToMove = undefined;
     isPasting = false;
     isCutting = false;
+
+    new HistoryStateEditCanvas();
 }
