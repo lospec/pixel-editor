@@ -73,7 +73,6 @@ function endRectSelection(mouseEvent) {
 }
 
 function cutSelection(mousePosition) {
-	console.log("Coordinate: start x, y: " + startX + ", " + startY + " end x, y: " + endX + ", " + endY);
 	// Getting the selected pixels
 	imageDataToMove = currentLayer.context.getImageData(startX, startY, endX - startX + 1, endY - startY + 1);
     
@@ -138,8 +137,8 @@ function moveSelection(x, y, width, height) {
     vfxContext.lineWidth = 1;
     vfxContext.setLineDash([4]);
 
-    startX = Math.round(Math.round(x) - Math.round(width / 2)) + 0.5;
-    startY = Math.round(Math.round(y) - Math.round(height / 2)) + 0.5;
+    startX = Math.round(Math.round(x) - 0.5 - Math.round(width / 2)) + 0.5;
+    startY = Math.round(Math.round(y) - 0.5 - Math.round(height / 2)) + 0.5;
     endX = startX + Math.round(width);
     endY = startY + Math.round(height);
 
