@@ -34,6 +34,7 @@ function endSelection() {
     let cleanImageData = new ImageData(endX - startX, endY - startY);
 
     if (imageDataToMove !== undefined) {
+        console.log("definito");
         // Saving the current clipboard before editing it in order to merge it with the current layer
         cleanImageData.data.set(imageDataToMove.data);
 
@@ -67,6 +68,7 @@ function endSelection() {
                 Math.round(lastMovePos[1] / zoom) - imageDataToMove.height / 2);
         }
         else {
+            console.log("incollo male");
             currentLayer.context.putImageData(
                 imageDataToMove, 
                 copiedStartX, 
@@ -82,6 +84,7 @@ function endSelection() {
     imageDataToMove = undefined;
     isPasting = false;
     isCutting = false;
+    lastMovePos = undefined;
 
     new HistoryStateEditCanvas();
 }

@@ -26,7 +26,8 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool.name == 'moveselection') {
-			if (!cursorInSelectedArea()) {
+			if (!cursorInSelectedArea() && 
+				((mouseEvent.target.id == 'canvas-view') || mouseEvent.target.className == 'drawingCanvas')) {
 				tool.pencil.switchTo();
 				canDraw = false;
 			}
