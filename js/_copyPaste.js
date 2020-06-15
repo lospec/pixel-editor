@@ -44,8 +44,6 @@ function pasteSelection() {
 
 function cutSelectionTool() {
 	console.log("Taglio");
-	// Saving the canvas
-    new HistoryStateEditCanvas();
 
 	copiedEndX = endX;
 	copiedEndY = endY;
