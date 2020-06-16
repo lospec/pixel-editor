@@ -68,7 +68,6 @@ function endSelection() {
                 Math.round(lastMovePos[1] / zoom) - imageDataToMove.height / 2);
         }
         else {
-            console.log("incollo male");
             currentLayer.context.putImageData(
                 imageDataToMove, 
                 copiedStartX, 
