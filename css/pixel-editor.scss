@@ -22,6 +22,43 @@ body {
   /* Disable Android and iOS callouts*/
 }
 
+#layers-menu {
+  width:200px;
+  top: 48px;
+  bottom: 0;
+  right:0;
+  padding: 0;
+  margin: 0;
+  background-color: color(base);
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 1120;
+  list-style-type: none;
+}
+
+.layers-menu-entry {
+  background-color:blue;
+  display:inline-block;
+  height:45px;
+  width:100%;
+  display:flex;
+  align-items:center;
+
+  canvas {
+    display:inline-block;
+    height:100%;
+    width:50px;
+    background-color:red;
+    left:4px;
+  }
+
+  p {
+    display:inline-block;
+    padding-left:10px;
+    text-align:center;
+  }
+}
+
 //don't let svg handle click events, just send to parents
 svg {
   pointer-events: none;
@@ -229,7 +266,7 @@ svg {
 }
 
 #colors-menu {
-  right: 0;
+  right: 200px;
   width: 48px;
   display: flex;
   justify-content: flex-start;

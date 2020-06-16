@@ -114,6 +114,7 @@
         <li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
     </ul>
 
+    <!-- PALETTE -->
     <ul id="colors-menu">
 
         {{!
@@ -123,9 +124,19 @@
 
         <li class="noshrink"><button title="Add Current Color To Palette" id="add-color-button">{{svg "./plus.svg" width="30" height="30"}}</button></li>
     </ul>
+
+    <!-- LAYER MENU -->
+    <ul id = "layers-menu">
+        <li class = "layers-menu-entry">
+            <canvas></canvas>
+            <p>Lorem ipsum</p>
+        </li>
+    </ul>
+
     <div id="eyedropper-preview"></div>
     <div id="brush-preview"></div>
 
+    <!-- CANVASES -->
     <div id="canvas-view">
         <canvas id="vfx-canvas" class = "drawingCanvas"></canvas>
         <canvas id = "tmp-canvas" class = "drawingCanvas"></canvas>
