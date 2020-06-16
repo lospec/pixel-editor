@@ -103,6 +103,21 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                 case 'Add color':
                     addColor('#eeeeee');
                     break;
+                    // SELECTION MENU
+                case 'Paste':
+                    pasteSelection();
+                    break;
+                case 'Copy':
+                    copySelection();
+                    tool.pencil.switchTo();
+                    break;
+                case 'Cut':
+                    cutSelectionTool();
+                    tool.pencil.switchTo();
+                    break;
+                case 'Cancel':
+                    tool.pencil.switchTo();
+                    break;
                     //Help Menu
                 case 'Settings':
 

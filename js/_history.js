@@ -87,7 +87,7 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
         //find new color in palette and change it back to old color
         var colors = document.getElementsByClassName('color-button');
         for (var i = 0; i < colors.length; i++) {
-            console.log(newColorValue, '==', colors[i].jscolor.toString());
+            //console.log(newColorValue, '==', colors[i].jscolor.toString());
             if (newColorValue == colors[i].jscolor.toString()) {
                 colors[i].jscolor.fromString(oldColorValue);
                 break;
@@ -105,7 +105,7 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
         //find old color in palette and change it back to new color
         var colors = document.getElementsByClassName('color-button');
         for (var i = 0; i < colors.length; i++) {
-            console.log(oldColorValue, '==', colors[i].jscolor.toString());
+            //console.log(oldColorValue, '==', colors[i].jscolor.toString());
             if (oldColorValue == colors[i].jscolor.toString()) {
                 colors[i].jscolor.fromString(newColorValue);
                 break;
@@ -123,8 +123,8 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
 
 //rename to add undo state
 function saveHistoryState (state) {
-    console.log('%csaving history state', undoLogStyle);
-    console.log(state);
+    //console.log('%csaving history state', undoLogStyle);
+    //console.log(state);
 
     //get current canvas data and save to undoStates array
     undoStates.push(state);
@@ -140,12 +140,12 @@ function saveHistoryState (state) {
     //there should be no redoStates after an undoState is saved
     redoStates = [];
 
-    console.log(undoStates);
-    console.log(redoStates);
+    //console.log(undoStates);
+    //console.log(redoStates);
 }
 
 function undo () {
-    console.log('%cundo', undoLogStyle);
+    //console.log('%cundo', undoLogStyle);
 
     //if there are any states saved to undo
     if (undoStates.length > 0) {
@@ -154,7 +154,7 @@ function undo () {
 
         //get state 
         var undoState = undoStates[undoStates.length-1];
-        console.log(undoState);
+        //console.log(undoState);
 
         //restore the state
         undoState.undo();
@@ -167,12 +167,12 @@ function undo () {
             document.getElementById('undo-button').classList.add('disabled');
     }
 
-    console.log(undoStates);
-    console.log(redoStates);
+    //console.log(undoStates);
+    //console.log(redoStates);
 }
 
 function redo () {
-    console.log('%credo', undoLogStyle);
+    //console.log('%credo', undoLogStyle);
 
     if (redoStates.length > 0) {
 
@@ -181,7 +181,7 @@ function redo () {
 
         //get state 
         var redoState = redoStates[redoStates.length-1];
-        console.log(redoState);
+        //console.log(redoState);
 
         //restore the state
         redoState.redo();
@@ -193,6 +193,6 @@ function redo () {
         if (redoStates.length == 0) 
             document.getElementById('redo-button').classList.add('disabled');
     }
-    console.log(undoStates);
-    console.log(redoStates);
+    //console.log(undoStates);
+    //console.log(redoStates);
 }

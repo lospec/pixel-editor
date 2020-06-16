@@ -8,9 +8,11 @@ function clickedColor (e){
         if (selectedColor) selectedColor.classList.remove('selected');
 
         //set current color
-        currentLayer.context.fillStyle = this.style.backgroundColor;
-        currentGlobalColor = this.style.backgroundColor;
+        for (let i=1; i<layers.length - 2; i++) {
+            layers[i].context.fillStyle = this.style.backgroundColor;
+        }
 
+        currentGlobalColor = this.style.backgroundColor;
         //make color selected
         e.target.parentElement.classList.add('selected');
 

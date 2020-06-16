@@ -2,15 +2,14 @@
 
 //set the correct cursor for the current tool
 Tool.prototype.updateCursor = function () {
-
-	console.log('updateCursor()', currentTool)
+	//console.log('updateCursor()', currentTool)
 
 	//switch to that tools cursor
 	canvasView.style.cursor = this.cursor || 'default';
 
 	//if the tool uses a brush preview, make it visible and update the size
 	if (this.brushPreview) {
-		console.log('brush size',this.currentBrushSize)
+		//console.log('brush size',this.currentBrushSize)
 		brushPreview.style.display = 'block';
         brushPreview.style.width = this.currentBrushSize * zoom + 'px';
         brushPreview.style.height = this.currentBrushSize * zoom + 'px';

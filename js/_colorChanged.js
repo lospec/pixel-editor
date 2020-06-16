@@ -23,10 +23,12 @@ on('input', 'jscolor-hex-input', function (e) {
 
 //changes all of one color to another after being changed from color picker
 function colorChanged(e) {
-    console.log('colorChanged()');
+    console.log('colorChanged() to ' + e.target.value);
     //get colors
     var newColor = hexToRgb(e.target.value);
     var oldColor = e.target.oldColor;
+
+    newColor.a = 255;
 
     //save undo state
     //saveHistoryState({type: 'colorchange', newColor: e.target.value, oldColor: rgbToHex(oldColor), canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
@@ -38,6 +40,7 @@ function colorChanged(e) {
 
     //check if selected color already matches another color 
     colors = document.getElementsByClassName('color-button');
+    console.log(colors);
     var colorCheckingStyle = 'background: #bc60c4; color: white';
     var newColorHex = e.target.value.toLowerCase();
 
@@ -50,11 +53,11 @@ function colorChanged(e) {
 
         //if generated color matches this color
         if (newColorHex == colors[i].jscolor.toString()) {
-            // console.log('%ccolor already exists'+(colors[i].parentElement.classList.contains('jscolor-active')?' (but is the current color)':''), colorCheckingStyle);
+            console.log('%ccolor already exists'+(colors[i].parentElement.classList.contains('jscolor-active')?' (but is the current color)':''), colorCheckingStyle);
 
             //if the color isnt the one that has the picker currently open
             if (!colors[i].parentElement.classList.contains('jscolor-active')) {
-                // console.log('%cColor is duplicate', colorCheckingStyle);
+                console.log('%cColor is duplicate', colorCheckingStyle);
 
                 //show the duplicate color warning
                 duplicateColorWarning.style.visibility = 'visible';
@@ -83,8 +86,11 @@ function colorChanged(e) {
 
     //if this is the current color, update the drawing color
     if (e.target.colorElement.parentElement.classList.contains('selected')) {
-        // console.log('this color is the current color');
-        context.fillStyle = currentColor;
+        for (let i=1; i<layers.length - 2; i++) {
+            layers[i].context.fillStyle = '#'+ rgbToHex(newColor.r,newColor.g,newColor.b);
+        }
+
+        currentGlobalColor = newColor;
     }
     /* this is wrong and bad
     if (settings.switchToChangedColor) {

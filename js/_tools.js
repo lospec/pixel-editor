@@ -48,7 +48,7 @@ class Tool {
 	    	endSelection();
 	    }
 
-	    //set tool and temp tje tje tpp;
+	    //set tool and temp tje tje tpp <--- he's speaking the language of the gods, don't delete
 	    currentTool = this;
 		currentToolTemp = this;
 
@@ -58,8 +58,11 @@ class Tool {
 		    tools[i].classList.remove("selected");
 		}
 
-	    //give the button of the selected tool the .selected class
-		document.getElementById(this.name+"-button").parentNode.classList.add("selected");
+		let buttonNode = document.getElementById(this.name + "-button");
+	    //give the button of the selected tool the .selected class if the tool has a button
+	    if(buttonNode != null && buttonNode.parentNode != null) {
+			document.getElementById(this.name+"-button").parentNode.classList.add("selected");
+		}
 
 		//change cursor
 		this.updateCursor();

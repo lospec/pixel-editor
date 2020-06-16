@@ -17,10 +17,10 @@ function newPixel (width, height, palette) {
 	canvasSize = currentLayer.canvasSize;
 
 	// Adding the first layer and the checkerboard to the list of layers
+	layers.push(checkerBoard);
+	layers.push(currentLayer);
 	layers.push(VFXLayer);
 	layers.push(TMPLayer);
-	layers.push(currentLayer);
-	layers.push(checkerBoard);
 
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
