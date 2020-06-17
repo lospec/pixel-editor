@@ -34,12 +34,35 @@ body {
   position: fixed;
   z-index: 1120;
   list-style-type: none;
+
+  button {
+    top:2px;
+    font-size: 1.2em;
+    color: color(menu, foreground);
+    height: 100%;
+    width: 100%;
+    padding: 17px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: color(menu);
+    
+    transition: color 0.2s, background-color 0.2s;
+  }
+
+  button:hover {
+    color: color(base, foreground, bold);
+    background-color: color(base, foreground, default);
+  }
 }
 
 .layers-menu-entry {
-  background-color:blue;
+  margin-top:2px;
+  font-size: 1em;
+  color: color(base, foreground, text);
+  background-color: color(menu, background);
   display:inline-block;
-  height:45px;
+  height:50px;
   width:100%;
   display:flex;
   align-items:center;
@@ -55,8 +78,23 @@ body {
   p {
     display:inline-block;
     padding-left:10px;
-    text-align:center;
+    height:18px;
+    overflow:hidden;
+    position:relative;
   }
+
+  transition: color 0.1s, background-color 0.1s, box-shadow 0.1s;
+  -moz-transition: color 0.1s, background-color 0.1s, box-shadow 0.1s;
+  -webkit-transition: color 0.1s, background-color 0.1s, box-shadow 0.1s;
+}
+
+.layers-menu-entry:hover, .selected-layer {
+  color: color(base, foreground, bold);
+  background-color: color(base, foreground, default);
+
+  -webkit-box-shadow:inset 0px 0px 0px 2px color(base, foreground, text);
+  -moz-box-shadow:inset 0px 0px 0px 2px color(base, foreground, text);
+  box-shadow:inset 0px 0px 0px 2px color(base, foreground, text);
 }
 
 //don't let svg handle click events, just send to parents
@@ -73,8 +111,8 @@ svg {
 }
 
 .weak {
-	font-size: 0.8em;
-	color: color(base,foreground,weak);
+  font-size: 0.8em;
+  color: color(base,foreground,weak);
 }
 
 .drawingCanvas {
@@ -220,9 +258,9 @@ svg {
         }
       }
       a {
-      	display: block;
-      	text-decoration: none;
-      	box-sizing: border-box;
+        display: block;
+        text-decoration: none;
+        box-sizing: border-box;
       }
     }
   }
