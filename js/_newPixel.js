@@ -1,18 +1,19 @@
 function newPixel (width, height, palette) {
-    // Setting the current layer
+	layerList = document.getElementById("layers-menu");
+	layerListEntry = layerList.firstElementChild;
+
+	console.log("Layer entry: " + layerListEntry);
+    // Setting up the current layer
     currentLayer = new Layer(width, height, canvas, layerListEntry);
-    currentLayer.initialize();
 
     // Adding the checkerboard behind it
     checkerBoard = new Layer(width, height, checkerBoardCanvas);
-    checkerBoard.initialize();
 
     // Creating the vfx layer on top of everything
     VFXLayer = new Layer(width, height, VFXCanvas);
-    VFXLayer.initialize();
 
+    // Tmp layer to draw previews on
     TMPLayer = new Layer(width, height, TMPCanvas);
-    TMPLayer.initialize();
 
 	canvasSize = currentLayer.canvasSize;
 

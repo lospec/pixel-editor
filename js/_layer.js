@@ -1,6 +1,7 @@
 /** TODO LIST FOR LAYERS
     
     GENERAL REQUIREMENTS:
+    - The user shouldn't be able to draw on a hidden or locked layer
     - Must delete the selected layer when right clicking on a layer and selecting that option
         * We should think about selecting more than one layer at once.
         * Rename layer
@@ -8,7 +9,7 @@
         * Flatten visible option
         * Flatten everything option
     - Must move a layer when dragging it in the layer list (https://codepen.io/retrofuturistic/pen/tlbHE)
-    - When the user clicks on the eye icon, the layer becomes transparent
+    - When the user clicks on the eye icon, the icon must be changed and always be shown
     - When the user clicks on the lock icon, the layer is locked
     - When a layer is locked or not visible, the corresponding icons are always shown
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
@@ -33,6 +34,12 @@
     2 - Add a Replace feature so that people can replace a colour without editing the one in the palette
         (right click->replace colour in layers? in that case we'd have to implement multiple layers selection)
 
+    THINGS TO TEST:
+
+    1 - Undo / redo
+    2 - Copy / cut / paste selection
+    3 - Colour picking from underlying layer
+    4 - File export
 */
 
 /*
@@ -44,8 +51,8 @@
 
 // Will probably need a class to handle all the html stuff
 
-let layerList = document.getElementById("layers-menu");
-let layerListEntry = layerList.firstElementChild;
+let layerList;
+let layerListEntry;
 let layerCount = 1;
 let maxZIndex = 3;
 
@@ -71,18 +78,12 @@ on('click',"add-layer-button", function(){
 
     // Creating a layer object
     let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
-    newLayer.initialize();
+    newLayer.context.fillStyle = currentLayer.context.fillStyle;
     newLayer.copyData(currentLayer);
-    layers.push(newLayer);
-
-    console.log("Vera tela: " + currentLayer.canvas);
-    console.log("Tela: " + newLayer.canvas);
+    layers.splice(layers.length - 3, 0, newLayer);
     
-    // Binding functions
-    toAppend.onclick = newLayer.select;
-
     // Insert it before the Add layer button
-    layerList.insertBefore(toAppend, layerList.childNodes[layerList.childElementCount - 1]);
+    layerList.insertBefore(toAppend, layerList.childNodes[0]);
 }, false);
 
 /** Handler class for a single canvas (a single layer)
@@ -91,16 +92,27 @@ on('click',"add-layer-button", function(){
  * @param height Canvas height
  * @param canvas HTML canvas element
  */
-function Layer(width, height, canvas, menuEntry) {
-    this.canvasSize = [width, height];
-    this.canvas = canvas;
-    this.context = this.canvas.getContext('2d');
-    this.isSelected = false;
-    this.isVisible = true;
-    this.isLocked = false;
-    this.menuEntry = menuEntry;
+class Layer {
+    constructor(width, height, canvas, menuEntry) {
+        this.canvasSize = [width, height];
+        this.canvas = canvas;
+        this.context = this.canvas.getContext('2d');
+        this.isSelected = false;
+        this.isVisible = true;
+        this.isLocked = false;
+        this.menuEntry = menuEntry;
+
+        if (menuEntry != null) {
+            menuEntry.onclick = () => this.select();
+            menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
+            menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
+        }
+
+        this.initialize();
+    }
+
     // Initializes the canvas
-    this.initialize = function() {
+    initialize() {
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
         var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);
 
@@ -122,61 +134,93 @@ function Layer(width, height, canvas, menuEntry) {
 
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
-    };
+    }
     // Resizes canvas
-    this.resize = function() {
+    resize() {
         let newWidth = (this.canvas.width * zoom) + 'px';
         let newHeight = (this.canvas.height *zoom)+ 'px';
 
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
-    };
+    }
     // Copies the otherCanvas' position and size
-    this.copyData = function(otherCanvas) {
+    copyData(otherCanvas) {
         this.canvas.style.width = otherCanvas.canvas.style.width;
         this.canvas.style.height = otherCanvas.canvas.style.height;
 
         this.canvas.style.left = otherCanvas.canvas.style.left;
         this.canvas.style.top = otherCanvas.canvas.style.top;
-    };
+    }
 
-    this.select = function() {
+    select() {
         // Deselecting the old layer
         currentLayer.deselect();
 
         // Selecting the current layer
         this.isSelected = true;
-        menuEntry.classList.add("selected-layer");
-        currentLayer = getLayerByName(menuEntry.getElementsByTagName("p")[0].innerHTML);
+        this.menuEntry.classList.add("selected-layer");
+        currentLayer = getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
     }
 
-    this.deselect = function() {
+    toggleLock() {
+        if (this.isLocked) {
+            this.unlock();
+        }
+        else {
+            this.lock();
+        }
+    }
+
+    toggleVisibility() {
+        console.log(this);
+
+        if (this.isVisible) {
+            this.hide();
+        }
+        else {
+            this.show();
+        }
+    }
+
+    deselect() {
         this.isSelected = false;
-        menuEntry.classList.remove("selected-layer");
+        this.menuEntry.classList.remove("selected-layer");
     }
 
-    this.lock = function() {
+    lock() {
         this.isLocked = true;
     }
 
-    this.unlock = function() {
+    unlock() {
         this.isLocked = false;
     }
 
-    this.show = function() {
+    show() {
         this.isVisible = true;
+        this.canvas.style.visibility = "visible";
+
+        // Changing icon
+        this.menuEntry.getElementsByClassName("default-icon")[1].style.display = "inline-block";
+        this.menuEntry.getElementsByClassName("edited-icon")[1].style.display = "none";
     }
 
-    this.hide = function() {
+    hide() {
         this.isVisible = false;
+        this.canvas.style.visibility = "hidden";
+
+        // Changing icon
+        this.menuEntry.getElementsByClassName("default-icon")[1].style.display = "none";
+        this.menuEntry.getElementsByClassName("edited-icon")[1].style.display = "inline-block";
     }
 }
 
 // Finds a layer given its name
 function getLayerByName(name) {
     for (let i=0; i<layers.length; i++) {
-        if (layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
-            return layers[i];
+        if (layers[i].menuEntry != null) {
+            if (layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
+                return layers[i];
+            }
         }
     }
 
