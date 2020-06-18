@@ -127,16 +127,31 @@
 
     <!-- LAYER MENU -->
     <ul id = "layers-menu">
-        <li class = "layers-menu-entry">
+        <li class = "layers-menu-entry selected-layer">
             <canvas></canvas>
-            <!--<button title="Lock layer" class="lock-layer-button">
-                <img src="padlock-lock.png">
-            </button>-->
-            <p>Lorem ipsum dolor sit amet consectetur ascendit a very long name for this friggin layer<div class = "gradient">e</div></p>
+            <ul id class="layer-buttons">
+                <li>
+                    <button title="Lock layer" class="lock-layer-button">
+                        {{svg "unlockedpadlock.svg" width="15" height="15" class = "default-icon"}}
+                        {{svg "lockedpadlock.svg" width="15" height="15" class = "edited-icon" display = "none"}}
+                    </button>
+                </li>
+                <li>
+                    <button title="Show / hide layer" class="hide-layer-button">
+                        {{svg "visible.svg" width="15" height="15" class = "default-icon"}}
+                        {{svg "invisible.svg" width="15" height="15" class = "edited-icon" display = "none"}}
+                    </button>
+                </li>
+            </ul>
+
+            <p>Layer 0
+                <div class = "gradient"></div></p>
         </li>
 
         <li>
-            <button id = "add-layer-button">Add layer</button>
+            <button id = "add-layer-button">
+                {{svg "plus.svg" width="20" height="20"}} Add layer
+            </button>
         </li>
     </ul>
 

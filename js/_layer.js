@@ -1,19 +1,16 @@
 /** TODO LIST FOR LAYERS
     
     GENERAL REQUIREMENTS:
-    
-    - Must add a new layer (a new <li> element with class layer-menu-entry) when clicking on the "add" button
     - Must delete the selected layer when right clicking on a layer and selecting that option
         * We should think about selecting more than one layer at once.
+        * Rename layer
         * Merge with bottom layer option
         * Flatten visible option
         * Flatten everything option
     - Must move a layer when dragging it in the layer list (https://codepen.io/retrofuturistic/pen/tlbHE)
     - When the user clicks on the eye icon, the layer becomes transparent
     - When the user clicks on the lock icon, the layer is locked
-    - Lock and visibility options are only shown on mouse hover
     - When a layer is locked or not visible, the corresponding icons are always shown
-    - When a layer is selected, its background colour becomes lighter
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
@@ -27,7 +24,6 @@
     - mouse events will always have at least a canvas target, so evey time there's an event, we'll have to check
         the actual element type instead of the current layer and then apply the tool on the currentLayer, not on
         the first one in order of z-index   
-    - when zooming in and out, all the layers should be scaled accordingly
     - when changing the stroke colour, it should change for all the layers: it should already be happening,
       just make sure it is
 
@@ -39,6 +35,55 @@
 
 */
 
+/*
+    MORE TODO LIST:
+
+    - Resize canvas (must make a simple editor to preview the changes)
+    - Resize sprite
+*/
+
+// Will probably need a class to handle all the html stuff
+
+let layerList = document.getElementById("layers-menu");
+let layerListEntry = layerList.firstElementChild;
+let layerCount = 1;
+let maxZIndex = 3;
+
+on('click',"add-layer-button", function(){
+    // Creating a new canvas
+    let newCanvas = document.createElement("canvas");
+    // Setting up the new canvas
+    canvasView.append(newCanvas);
+    maxZIndex++;
+    newCanvas.style.zIndex = maxZIndex;
+    newCanvas.classList.add("drawingCanvas");
+
+    console.log("Tela creata: " + newCanvas);
+
+    // Clone the default layer
+    let toAppend = layerListEntry.cloneNode(true);
+    // Setting the default name for the layer
+    toAppend.getElementsByTagName('p')[0].innerHTML = "Layer " + layerCount;
+    // Removing the selected class
+    toAppend.classList.remove("selected-layer");
+    // Adding the layer to the list
+    layerCount++;
+
+    // Creating a layer object
+    let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
+    newLayer.initialize();
+    newLayer.copyData(currentLayer);
+    layers.push(newLayer);
+
+    console.log("Vera tela: " + currentLayer.canvas);
+    console.log("Tela: " + newLayer.canvas);
+    
+    // Binding functions
+    toAppend.onclick = newLayer.select;
+
+    // Insert it before the Add layer button
+    layerList.insertBefore(toAppend, layerList.childNodes[layerList.childElementCount - 1]);
+}, false);
 
 /** Handler class for a single canvas (a single layer)
  *
@@ -46,10 +91,14 @@
  * @param height Canvas height
  * @param canvas HTML canvas element
  */
-function Layer(width, height, canvas) {
+function Layer(width, height, canvas, menuEntry) {
     this.canvasSize = [width, height];
     this.canvas = canvas;
     this.context = this.canvas.getContext('2d');
+    this.isSelected = false;
+    this.isVisible = true;
+    this.isLocked = false;
+    this.menuEntry = menuEntry;
     // Initializes the canvas
     this.initialize = function() {
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
@@ -90,4 +139,46 @@ function Layer(width, height, canvas) {
         this.canvas.style.left = otherCanvas.canvas.style.left;
         this.canvas.style.top = otherCanvas.canvas.style.top;
     };
+
+    this.select = function() {
+        // Deselecting the old layer
+        currentLayer.deselect();
+
+        // Selecting the current layer
+        this.isSelected = true;
+        menuEntry.classList.add("selected-layer");
+        currentLayer = getLayerByName(menuEntry.getElementsByTagName("p")[0].innerHTML);
+    }
+
+    this.deselect = function() {
+        this.isSelected = false;
+        menuEntry.classList.remove("selected-layer");
+    }
+
+    this.lock = function() {
+        this.isLocked = true;
+    }
+
+    this.unlock = function() {
+        this.isLocked = false;
+    }
+
+    this.show = function() {
+        this.isVisible = true;
+    }
+
+    this.hide = function() {
+        this.isVisible = false;
+    }
+}
+
+// Finds a layer given its name
+function getLayerByName(name) {
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
+            return layers[i];
+        }
+    }
+
+    return null;
 }

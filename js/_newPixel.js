@@ -1,6 +1,6 @@
 function newPixel (width, height, palette) {
     // Setting the current layer
-    currentLayer = new Layer(width, height, canvas);
+    currentLayer = new Layer(width, height, canvas, layerListEntry);
     currentLayer.initialize();
 
     // Adding the checkerboard behind it
@@ -38,6 +38,7 @@ function newPixel (width, height, palette) {
 
 		//fill the palette with specified palette
 		createColorPalette(palettes[selectedPalette].colors,true);
+		fillCheckerboard();
 	}
 	else {
 	  //this wasn't a specified palette, so reset the url
@@ -55,14 +56,8 @@ function newPixel (width, height, palette) {
 	  addColor(defaultForegroundColor).classList.add('selected');
 	  addColor(defaultBackgroundColor);
 
-    //fill background of canvas with bg color
+    	//fill background of canvas with bg color
 		fillCheckerboard();
-		/*
-		currentLayer.context.fillStyle = '#'+defaultBackgroundColor;
-		currentLayer.context.fillRect(0, 0, canvasSize[0], canvasSize[1]);
-
-		console.log('#'+defaultBackgroundColor)
-		*/
 
 		//set current drawing color as foreground color
 		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
