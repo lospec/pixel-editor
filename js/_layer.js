@@ -34,6 +34,10 @@
     2 - Add a Replace feature so that people can replace a colour without editing the one in the palette
         (right click->replace colour in layers? in that case we'd have to implement multiple layers selection)
 
+    KNOWN BUGS:
+
+    1 - Must delete existing layers when creating a new pixel
+
     THINGS TO TEST:
 
     1 - Undo / redo
@@ -220,6 +224,32 @@ class Layer {
         // Changing icon
         this.menuEntry.getElementsByClassName("default-icon")[1].style.display = "none";
         this.menuEntry.getElementsByClassName("edited-icon")[1].style.display = "inline-block";
+    }
+
+    updateLayerPreview() {
+        // Getting the canvas
+        let destination = this.menuEntry.getElementsByTagName("canvas")[0];
+        let widthRatio = this.canvasSize[0] / this.canvasSize[1];
+        let heightRatio = this.canvasSize[1] / this.canvasSize[0];
+
+        // Computing width and height for the preview image
+        let previewWidth = destination.width;
+        let previewHeight = destination.height;
+
+        // If the sprite is rectangular, I apply the ratio to the preview as well
+        if (widthRatio < 1) {
+            previewWidth = destination.width * widthRatio;
+        }
+        else if (widthRatio > 1) {
+            previewHeight = destination.height * heightRatio;
+        }
+
+        // La appiccico sulla preview
+        destination.getContext('2d').clearRect(0, 0, destination.width, destination.height);
+        destination.getContext('2d').drawImage(this.canvas, 
+            // This is necessary to center the preview in the canvas
+            (destination.width - previewWidth) / 2, (destination.height - previewHeight) / 2, 
+            previewWidth, previewHeight);
     }
 }
 

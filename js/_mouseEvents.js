@@ -107,7 +107,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	    }
 	}
 	else if (currentTool.name == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-	  console.log('filling')
+	  	//console.log('filling')
 
 		//get cursor postion
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -116,29 +116,15 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		cursorLocation[0] += 2;
 		cursorLocation[1] += 12;
 
-    //fill starting at the location
+    	//fill starting at the location
 		fill(cursorLocation);
+		currentLayer.updateLayerPreview();
 	}
 	else if (currentTool.name == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
 		let mode;
 		if (mouseEvent.which == 1){
 			mode = "in";
         }
-    }
-    else if (currentTool == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-        //console.log('filling');
-        //if you clicked on anything but the canvas, do nothing
-        if (!mouseEvent.target == currentLayer.canvas) return;
-
-        //get cursor postion
-        var cursorLocation = getCursorPosition(mouseEvent);
-
-        //offset to match cursor point
-        cursorLocation[0] += 2;
-        cursorLocation[1] += 12;
-
-        //fill starting at the location
-        fill(cursorLocation);
     }
     else if (currentTool == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
         let mode;
@@ -160,6 +146,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	}
 	else if (currentTool.name == 'rectangle') {
 		endRectDrawing(mouseEvent);
+		currentLayer.updateLayerPreview();
 	}
 
 	dragging = false;
@@ -228,6 +215,8 @@ function draw (mouseEvent) {
 		//for the darkest 50% of colors, change the brush preview to dark mode
 		if (colorLightness>127) brushPreview.classList.remove('dark');
 		else brushPreview.classList.add('dark');
+
+		currentLayer.updateLayerPreview();
 	}
 	// Decided to write a different implementation in case of differences between the brush and the eraser tool
 	else if (currentTool.name == 'eraser') {
@@ -249,6 +238,8 @@ function draw (mouseEvent) {
                 lastPos = cursorLocation;
             }
         }
+
+        currentLayer.updateLayerPreview();
 	}
 	else if (currentTool.name == 'rectangle')
 	{

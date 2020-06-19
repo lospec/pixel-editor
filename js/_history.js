@@ -13,6 +13,8 @@ function HistoryStateEditCanvas () {
 
         this.canvas = currentCanvas;
         redoStates.push(this);
+
+        currentLayer.updateLayerPreview();
     };
 
     this.redo = function () {
@@ -21,6 +23,8 @@ function HistoryStateEditCanvas () {
 
         this.canvas = currentCanvas;
         undoStates.push(this);
+
+        currentLayer.updateLayerPreview();
     };
 
     //add self to undo array
