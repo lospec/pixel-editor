@@ -6,6 +6,10 @@ function newPixel (width, height, palette) {
     // Setting up the current layer
     currentLayer = new Layer(width, height, canvas, layerListEntry);
 
+    // Cloning the entry so that when I change something on the first layer, those changes aren't 
+    // propagated to the other ones
+    layerListEntry = layerListEntry.cloneNode(true);
+
     // Adding the checkerboard behind it
     checkerBoard = new Layer(width, height, checkerBoardCanvas);
 

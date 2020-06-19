@@ -103,6 +103,7 @@ class Layer {
         this.menuEntry = menuEntry;
 
         if (menuEntry != null) {
+            console.log("Aggiungo eventi");
             menuEntry.onclick = () => this.select();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
@@ -164,9 +165,11 @@ class Layer {
 
     toggleLock() {
         if (this.isLocked) {
+            console.log("unlocked");
             this.unlock();
         }
         else {
+            console.log("locked");
             this.lock();
         }
     }
@@ -189,10 +192,16 @@ class Layer {
 
     lock() {
         this.isLocked = true;
+
+        this.menuEntry.getElementsByClassName("default-icon")[0].style.display = "none";
+        this.menuEntry.getElementsByClassName("edited-icon")[0].style.display = "inline-block";
     }
 
     unlock() {
         this.isLocked = false;
+
+        this.menuEntry.getElementsByClassName("default-icon")[0].style.display = "inline-block";
+        this.menuEntry.getElementsByClassName("edited-icon")[0].style.display = "none";
     }
 
     show() {

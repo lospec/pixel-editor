@@ -8,8 +8,8 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	currentMouseEvent = mouseEvent;
 	canDraw = true;
 
-	//if no document has been created yet, or this is a dialog open
-	if (!documentCreated || dialogueOpen) return;
+	//if no document has been created yet, or this is a dialog open, or the currentLayer is locked
+	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
 	//prevent right mouse clicks and such, which will open unwanted menus
 	//mouseEvent.preventDefault();
 
@@ -36,7 +36,9 @@ window.addEventListener("mousedown", function (mouseEvent) {
 
 		currentTool.updateCursor();
 
-		if (canDraw) {
+		console.log(currentLayer.isLocked);
+
+		if (!currentLayer.isLocked && canDraw) {
 			draw(mouseEvent);
 		}
 	}
@@ -69,10 +71,11 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 	closeMenu();
 
-	if (!documentCreated || dialogueOpen) return;
+	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
+		// TODO: adjust so that if the picked colour is transparent, the underlying layer is checked
 		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
 		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
 
@@ -91,6 +94,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	        if (selectedColor) selectedColor.classList.remove("selected");
 
 	      	//set current color
+
+	      	// TODO: set it for all the layers
 	      	context.fillStyle = '#'+newColor;
 
 	      	//make color selected
@@ -121,7 +126,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
         }
     }
     else if (currentTool == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-        console.log('filling');
+        //console.log('filling');
         //if you clicked on anything but the canvas, do nothing
         if (!mouseEvent.target == currentLayer.canvas) return;
 
@@ -165,6 +170,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 }, false);
 
+// TODO: Make it snap to the pixel grid
 function setPreviewPosition(preview, cursor, size){
     preview.style.left = (
         currentLayer.canvas.offsetLeft
@@ -190,8 +196,8 @@ function draw (mouseEvent) {
 
 	var cursorLocation = lastMousePos;
 
-	//if a document hasnt yet been created, exit this function
-	if (!documentCreated || dialogueOpen) return;
+	//if a document hasnt yet been created or the current layer is locked, exit this function
+	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
 
 
 	eyedropperPreview.style.display = 'none';
