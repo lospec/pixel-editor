@@ -9,8 +9,8 @@
         * Flatten visible option
         * Flatten everything option
     - Must move a layer when dragging it in the layer list (https://codepen.io/retrofuturistic/pen/tlbHE)
-    - When the user clicks on the eye icon, the icon must be changed and always be shown
-    - When the user clicks on the lock icon, the layer is locked
+    - When the user clicks on the eye icon, the icon must always be shown
+    - When the user clicks on the lock icon, the icon must be always be shown
     - When a layer is locked or not visible, the corresponding icons are always shown
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
@@ -196,6 +196,7 @@ class Layer {
 
     lock() {
         this.isLocked = true;
+        this.menuEntry.getElementsByClassName("layer-button")[0].style.visibility = "visible";
 
         this.menuEntry.getElementsByClassName("default-icon")[0].style.display = "none";
         this.menuEntry.getElementsByClassName("edited-icon")[0].style.display = "inline-block";
@@ -203,6 +204,7 @@ class Layer {
 
     unlock() {
         this.isLocked = false;
+        this.menuEntry.getElementsByClassName("layer-button")[0].style.visibility = "hidden";
 
         this.menuEntry.getElementsByClassName("default-icon")[0].style.display = "inline-block";
         this.menuEntry.getElementsByClassName("edited-icon")[0].style.display = "none";
@@ -211,6 +213,7 @@ class Layer {
     show() {
         this.isVisible = true;
         this.canvas.style.visibility = "visible";
+        this.menuEntry.getElementsByClassName("layer-button")[1].style.visibility = "hidden";
 
         // Changing icon
         this.menuEntry.getElementsByClassName("default-icon")[1].style.display = "inline-block";
@@ -220,6 +223,7 @@ class Layer {
     hide() {
         this.isVisible = false;
         this.canvas.style.visibility = "hidden";
+        this.menuEntry.getElementsByClassName("layer-button")[1].style.visibility = "visible";
 
         // Changing icon
         this.menuEntry.getElementsByClassName("default-icon")[1].style.display = "none";

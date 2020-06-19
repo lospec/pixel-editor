@@ -111,7 +111,7 @@ body {
       }
     }
 
-    li {
+    .layer-button {
       visibility:hidden;
       height:50%;
     }
@@ -152,7 +152,7 @@ body {
 
 .layers-menu-entry:hover, .selected-layer {
   ul.layer-buttons li{
-    visibility:visible;
+    visibility:visible !important;
   }
 
   color: color(base, foreground, bold);
