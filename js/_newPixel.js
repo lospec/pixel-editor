@@ -1,10 +1,22 @@
-function newPixel (width, height, palette) {
-	layerList = document.getElementById("layers-menu");
-	layerListEntry = layerList.firstElementChild;
+let firstPixel = true;
 
-	console.log("Layer entry: " + layerListEntry);
+function newPixel (width, height, palette) {
+	if (firstPixel) {
+		layerList = document.getElementById("layers-menu");
+		layerListEntry = layerList.firstElementChild;
+
+		firstPixel = false;
+	}
+	else {
+		// TODO: clean layers before creating a new pixel
+		// Devo togliere tutte le entries tranne la prima
+		// Devo pulire la preview della prima entry
+		// Devo cancellare tutte le tele tranne quella con id pixel-canvas
+	}
+
     // Setting up the current layer
     currentLayer = new Layer(width, height, canvas, layerListEntry);
+    canvas.style.zIndex = 2;
 
     // Cloning the entry so that when I change something on the first layer, those changes aren't 
     // propagated to the other ones

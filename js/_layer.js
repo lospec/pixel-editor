@@ -8,11 +8,19 @@
         * Merge with bottom layer option
         * Flatten visible option
         * Flatten everything option
-    - Must move a layer when dragging it in the layer list (https://codepen.io/retrofuturistic/pen/tlbHE)
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
       file for it to be opened right in the pixel editor
+
+    HISTORY:
+    - Store states for every canvas
+    - Save add layer
+    - Save deleted layer
+    - Save merge layers
+    - Save flatten layers
+    - Save move layers
+    
 
     OPTIONAL:
 
@@ -27,8 +35,6 @@
     THINGS TO TEST:
 
     1 - Undo / redo
-    2 - Copy / cut / paste selection
-    3 - Colour picking from underlying layer
     4 - File export
 */
 
@@ -51,6 +57,9 @@ let layerDragSource = null;
 
 let layerCount = 1;
 let maxZIndex = 3;
+
+let unusedIDs = [];
+let currentID = layerCount;
 
 on('click',"add-layer-button", function(){
     // Creating a new canvas
@@ -98,8 +107,20 @@ class Layer {
         this.isLocked = false;
         this.menuEntry = menuEntry;
 
+        let id = unusedIDs.pop();
+
+        if (id == null) {
+            id = currentID;
+            currentID++;
+        }
+
+        this.id = id;
+
         if (menuEntry != null) {
-            console.log("Aggiungo eventi");
+            menuEntry.id = "layer" + id;
+        }
+
+        if (menuEntry != null) {
             menuEntry.onclick = () => this.select();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
@@ -140,18 +161,14 @@ class Layer {
     }
 
     layerDragStart(element) {
-        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
-        console.log("UELA");
-
         layerDragSource = this;
         element.dataTransfer.effectAllowed = 'move';
-        element.dataTransfer.setData('text/html', this.outerHTML);
+        element.dataTransfer.setData('text/html', this.id);
 
         this.classList.add('dragElem');
     }
 
     layerDragOver(element) {
-        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
         if (element.preventDefault) {
             element.preventDefault(); // Necessary. Allows us to drop.
         }
@@ -163,7 +180,6 @@ class Layer {
     }
 
     layerDragLeave(element) {
-        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
         this.classList.remove('layerdragover');
     }
 
@@ -175,22 +191,21 @@ class Layer {
 
         // Don't do anything if dropping the same column we're dragging.
         if (layerDragSource != this) {
-            // Set the source column's HTML to the HTML of the column we dropped on.
-            this.parentNode.removeChild(layerDragSource);
-            var dropHTML = element.dataTransfer.getData('text/html');
-            this.insertAdjacentHTML('beforebegin',dropHTML);
-            var dropElem = this.previousSibling;
+            let toDropID = element.dataTransfer.getData('text/html');
+            let thisID = this.id;
 
-            addDnDHandlers(dropElem);
+            console.log("ID di quello spostato: " + toDropID + ", di quello su cui metterlo: " + thisID);
+            swapLayerEntries(toDropID, thisID);
         }
 
         this.classList.remove('layerdragover');
+        dragging = false;
 
         return false;
     }
 
     layerDragEnd(element) {
-        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        console.log(currentLayer);
         this.classList.remove('layerdragover');
     }    
 
@@ -311,11 +326,57 @@ class Layer {
     }
 }
 
+// Swap two layer entries in the layer menu
+function swapLayerEntries(id1, id2) {
+    let entry1 = document.getElementById(id1);
+    let entry2 = document.getElementById(id2);
+
+    console.log("id1: " + id1);
+    console.log("id2: " + id2);
+
+    console.log("entry1: " + entry1);
+    console.log("entry2: " + entry2);
+
+    let layer1 = getLayerByID(id1);
+    let layer2 = getLayerByID(id2);
+    let tmpZIndex;
+
+    let after2 = entry2.nextSibling;
+    let parent = entry1.parentNode;
+
+    parent.insertBefore(entry2, entry1);
+
+    if (after2) {
+        parent.insertBefore(entry1, after2);
+    } else {
+       parent.appendChild(entry1);
+    }
+
+    tmpZIndex = layer1.canvas.style.zIndex;
+    console.log("1: " + layer1.canvas.style.zIndex);
+    console.log("2: " + layer2.canvas.style.zIndex);
+    layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
+    layer2.canvas.style.zIndex = tmpZIndex;
+}
+
 // Finds a layer given its name
 function getLayerByName(name) {
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             if (layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
+                return layers[i];
+            }
+        }
+    }
+
+    return null;
+}
+
+// Finds a layer given its id
+function getLayerByID(id) {
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            if (layers[i].menuEntry.id == id) {
                 return layers[i];
             }
         }

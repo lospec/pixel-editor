@@ -76,10 +76,14 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
 		// TODO: adjust so that if the picked colour is transparent, the underlying layer is checked
-		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
-		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
+		var selectedColor = getEyedropperColor(cursorLocation);
+		var newColor = rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
 
 		currentGlobalColor = "#" + newColor;
+
+		for (let i=1; i<layers.length - 1; i++) {
+			layers[i].context.fillStyle = currentGlobalColor;
+		}
 
 		var colors = document.getElementsByClassName('color-button');
 	    for (var i = 0; i < colors.length; i++) {
@@ -269,7 +273,7 @@ function draw (mouseEvent) {
         }
     }
     else if (currentTool.name == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
-        var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
+    	let selectedColor = getEyedropperColor(cursorLocation);
 
         eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
         eyedropperPreview.style.display = 'block';
