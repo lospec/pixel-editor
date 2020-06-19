@@ -9,24 +9,10 @@
         * Flatten visible option
         * Flatten everything option
     - Must move a layer when dragging it in the layer list (https://codepen.io/retrofuturistic/pen/tlbHE)
-    - When the user clicks on the eye icon, the icon must always be shown
-    - When the user clicks on the lock icon, the icon must be always be shown
-    - When a layer is locked or not visible, the corresponding icons are always shown
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
       file for it to be opened right in the pixel editor
-    
-    ADDITIONAL LOGIC TO MAKE IT WORK WITH THE REST OF THE CODE:
-
-    - move the tmp layer so that it's always right below the active layer
-    - when the move tool is selected (to move a selection), the tmp layer must be put right above the 
-        active layer to show a preview
-    - mouse events will always have at least a canvas target, so evey time there's an event, we'll have to check
-        the actual element type instead of the current layer and then apply the tool on the currentLayer, not on
-        the first one in order of z-index   
-    - when changing the stroke colour, it should change for all the layers: it should already be happening,
-      just make sure it is
 
     OPTIONAL:
 
@@ -53,10 +39,16 @@
     - Resize sprite
 */
 
-// Will probably need a class to handle all the html stuff
+// Instead of saving the whole entry, just save their IDs and swap the elements at the end of the drop
+// TODO: add id management. IDs are assigned incrementally, when a layer is deleted its id should be 
+// claimable by the new layers: add a queue to push the ids of the deleted layers to
+
 
 let layerList;
 let layerListEntry;
+
+let layerDragSource = null;
+
 let layerCount = 1;
 let maxZIndex = 3;
 
@@ -111,6 +103,12 @@ class Layer {
             menuEntry.onclick = () => this.select();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
+
+            menuEntry.addEventListener("dragstart", this.layerDragStart, false);
+            menuEntry.addEventListener("drop", this.layerDragDrop, false);
+            menuEntry.addEventListener("dragover", this.layerDragOver, false);
+            menuEntry.addEventListener("dragleave", this.layerDragLeave, false);
+            menuEntry.addEventListener("dragend", this.layerDragEnd, false);
         }
 
         this.initialize();
@@ -140,6 +138,62 @@ class Layer {
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
     }
+
+    layerDragStart(element) {
+        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        console.log("UELA");
+
+        layerDragSource = this;
+        element.dataTransfer.effectAllowed = 'move';
+        element.dataTransfer.setData('text/html', this.outerHTML);
+
+        this.classList.add('dragElem');
+    }
+
+    layerDragOver(element) {
+        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        if (element.preventDefault) {
+            element.preventDefault(); // Necessary. Allows us to drop.
+        }
+        this.classList.add('layerdragover');
+
+        element.dataTransfer.dropEffect = 'move';
+
+        return false;
+    }
+
+    layerDragLeave(element) {
+        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        this.classList.remove('layerdragover');
+    }
+
+    layerDragDrop(element) {
+        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        if (element.stopPropagation) {
+            element.stopPropagation(); // Stops some browsers from redirecting.
+        }
+
+        // Don't do anything if dropping the same column we're dragging.
+        if (layerDragSource != this) {
+            // Set the source column's HTML to the HTML of the column we dropped on.
+            this.parentNode.removeChild(layerDragSource);
+            var dropHTML = element.dataTransfer.getData('text/html');
+            this.insertAdjacentHTML('beforebegin',dropHTML);
+            var dropElem = this.previousSibling;
+
+            addDnDHandlers(dropElem);
+        }
+
+        this.classList.remove('layerdragover');
+
+        return false;
+    }
+
+    layerDragEnd(element) {
+        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
+        this.classList.remove('layerdragover');
+    }    
+
     // Resizes canvas
     resize() {
         let newWidth = (this.canvas.width * zoom) + 'px';

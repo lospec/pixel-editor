@@ -79,6 +79,11 @@ body {
   background-color: color(base, foreground, default);
 }
 
+.layerdragover {
+  border: 2px dashed color(base, foreground, bold);
+  border-top: 2px solid color(base, foreground, bold);
+}
+
 .layers-menu-entry {
   cursor:pointer;
   margin-top:2px;
