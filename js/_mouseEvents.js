@@ -36,8 +36,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 
 		currentTool.updateCursor();
 
-		console.log(currentLayer.isLocked);
-
 		if (!currentLayer.isLocked && canDraw) {
 			draw(mouseEvent);
 		}
@@ -47,7 +45,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		tool.pencil.previousBrushSize = tool.pencil.brushSize;
 	}
 	else if (currentTool.name == 'eraser' && mouseEvent.which == 3) {
-		console.log('resize eraser')
 	    currentTool = tool.resizeeraser;
 	    tool.eraser.previousBrushSize = tool.eraser.brushSize;
     }
@@ -87,12 +84,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 		var colors = document.getElementsByClassName('color-button');
 	    for (var i = 0; i < colors.length; i++) {
-	      console.log(colors[i].jscolor.toString());
 
 	      //if picked color matches this color
 	      if (newColor == colors[i].jscolor.toString()) {
-	        console.log('color found');
-
 	        //remove current color selection
 	        var selectedColor = document.querySelector("#colors-menu li.selected")
 	        if (selectedColor) selectedColor.classList.remove("selected");
@@ -111,7 +105,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	    }
 	}
 	else if (currentTool.name == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-	  	//console.log('filling')
 
 		//get cursor postion
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -341,7 +334,6 @@ function draw (mouseEvent) {
     else if (currentTool.name == 'rectselect') {
     	if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
     		isRectSelecting = true;
-    		console.log("cominciata selezione su " + mouseEvent.target.className);
     		startRectSelection(mouseEvent);
     	}
     	else if (dragging && isRectSelecting) {

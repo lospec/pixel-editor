@@ -183,7 +183,6 @@ class Layer {
     }
 
     layerDragDrop(element) {
-        console.log("Elemento: " + element.dataTransfer.getData('text/html'));
         if (element.stopPropagation) {
             element.stopPropagation(); // Stops some browsers from redirecting.
         }
@@ -192,8 +191,7 @@ class Layer {
         if (layerDragSource != this) {
             let toDropID = element.dataTransfer.getData('text/html');
             let thisID = this.id;
-
-            console.log("ID di quello spostato: " + toDropID + ", di quello su cui metterlo: " + thisID);
+            
             swapLayerEntries(toDropID, thisID);
         }
 
@@ -204,7 +202,6 @@ class Layer {
     }
 
     layerDragEnd(element) {
-        console.log(currentLayer);
         this.classList.remove('layerdragover');
     }    
 
@@ -237,18 +234,14 @@ class Layer {
 
     toggleLock() {
         if (this.isLocked) {
-            console.log("unlocked");
             this.unlock();
         }
         else {
-            console.log("locked");
             this.lock();
         }
     }
 
     toggleVisibility() {
-        console.log(this);
-
         if (this.isVisible) {
             this.hide();
         }
@@ -330,11 +323,8 @@ function swapLayerEntries(id1, id2) {
     let entry1 = document.getElementById(id1);
     let entry2 = document.getElementById(id2);
 
-    console.log("id1: " + id1);
-    console.log("id2: " + id2);
-
-    console.log("entry1: " + entry1);
-    console.log("entry2: " + entry2);
+    console.log("entry 1: " + id1);
+    console.log("entry 2: " + id2);
 
     let layer1 = getLayerByID(id1);
     let layer2 = getLayerByID(id2);
@@ -343,19 +333,30 @@ function swapLayerEntries(id1, id2) {
     let after2 = entry2.nextSibling;
     let parent = entry1.parentNode;
 
+    console.log("prima: " + layer1.canvas.style.zIndex);
+    console.log("prima: " + layer2.canvas.style.zIndex);
+
+    tmpZIndex = layer1.canvas.style.zIndex;
+    layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
+    layer2.canvas.style.zIndex = tmpZIndex;
+
+    console.log("fatto");
+
     parent.insertBefore(entry2, entry1);
 
     if (after2) {
-        parent.insertBefore(entry1, after2);
+        if (after2 == entry1) {
+            parent.prepend(entry1);
+        }
+        else {
+            parent.insertBefore(entry1, after2);
+        }
     } else {
        parent.appendChild(entry1);
     }
 
-    tmpZIndex = layer1.canvas.style.zIndex;
-    console.log("1: " + layer1.canvas.style.zIndex);
-    console.log("2: " + layer2.canvas.style.zIndex);
-    layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
-    layer2.canvas.style.zIndex = tmpZIndex;
+    console.log("dopo: " + layer1.canvas.style.zIndex);
+    console.log("dopo: " + layer2.canvas.style.zIndex);
 }
 
 // Finds a layer given its name
