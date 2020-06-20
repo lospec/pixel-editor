@@ -118,9 +118,6 @@ class Layer {
 
         if (menuEntry != null) {
             menuEntry.id = "layer" + id;
-        }
-
-        if (menuEntry != null) {
             menuEntry.onclick = () => this.select();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
@@ -130,6 +127,8 @@ class Layer {
             menuEntry.addEventListener("dragover", this.layerDragOver, false);
             menuEntry.addEventListener("dragleave", this.layerDragLeave, false);
             menuEntry.addEventListener("dragend", this.layerDragEnd, false);
+
+            menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
         }
 
         this.initialize();

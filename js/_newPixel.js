@@ -5,22 +5,49 @@ function newPixel (width, height, palette) {
 		layerList = document.getElementById("layers-menu");
 		layerListEntry = layerList.firstElementChild;
 
-		firstPixel = false;
+		// Setting up the current layer
+	    currentLayer = new Layer(width, height, canvas, layerListEntry);
+	    canvas.style.zIndex = 2;
 	}
 	else {
+		let nLayers = layers.length;
+		for (let i=2; i < layers.length - 2; i++) {
+			let currentEntry = layers[i].menuEntry;
+			let associatedLayer;
+
+			if (currentEntry != null) {
+				// Getting the associated layer
+				associatedLayer = getLayerByID(currentEntry.id);
+
+				// Deleting its canvas
+				associatedLayer.canvas.remove();
+
+				// Adding the id to the unused ones
+				unusedIDs.push(currentEntry.id);
+				// Removing the entry from the menu
+				currentEntry.remove();
+			}
+		}
+
+		// Removing the old layers from the list
+		for (let i=2; i<nLayers - 2; i++) {
+			layers.splice(2, 1);
+		}
+
+		// Setting up the current layer
+	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
+	    currentLayer = layers[1];
+	    layerCount = 1;
+
+	    canvas = currentLayer.canvas;
+	    context = currentLayer.context;
+	    canvas.style.zIndex = 2;
+
 		// TODO: clean layers before creating a new pixel
 		// Devo togliere tutte le entries tranne la prima
 		// Devo pulire la preview della prima entry
 		// Devo cancellare tutte le tele tranne quella con id pixel-canvas
 	}
-
-    // Setting up the current layer
-    currentLayer = new Layer(width, height, canvas, layerListEntry);
-    canvas.style.zIndex = 2;
-
-    // Cloning the entry so that when I change something on the first layer, those changes aren't 
-    // propagated to the other ones
-    layerListEntry = layerListEntry.cloneNode(true);
 
     // Adding the checkerboard behind it
     checkerBoard = new Layer(width, height, checkerBoardCanvas);
@@ -33,11 +60,16 @@ function newPixel (width, height, palette) {
 
 	canvasSize = currentLayer.canvasSize;
 
-	// Adding the first layer and the checkerboard to the list of layers
-	layers.push(checkerBoard);
-	layers.push(currentLayer);
-	layers.push(VFXLayer);
-	layers.push(TMPLayer);
+	if (firstPixel) {
+		// Cloning the entry so that when I change something on the first layer, those changes aren't 
+	    // propagated to the other ones
+	    layerListEntry = layerListEntry.cloneNode(true);
+		// Adding the first layer and the checkerboard to the list of layers
+		layers.push(checkerBoard);
+		layers.push(currentLayer);
+		layers.push(VFXLayer);
+		layers.push(TMPLayer);
+	}
 
 	//remove current palette
 	colors = document.getElementsByClassName('color-button');
@@ -92,4 +124,5 @@ function newPixel (width, height, palette) {
 	document.getElementById('save-as-button').classList.remove('disabled');
 	documentCreated = true;
 
+	firstPixel = false;
 }
