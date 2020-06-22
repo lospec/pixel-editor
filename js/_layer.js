@@ -20,17 +20,12 @@
     - Save merge layers
     - Save flatten layers
     - Save move layers
-    
 
     OPTIONAL:
 
     1 - Fix issues 
     2 - Add a Replace feature so that people can replace a colour without editing the one in the palette
         (right click->replace colour in layers? in that case we'd have to implement multiple layers selection)
-
-    KNOWN BUGS:
-
-    1 - Must delete existing layers when creating a new pixel
 
     THINGS TO TEST:
 
@@ -60,6 +55,8 @@ let maxZIndex = 3;
 
 let unusedIDs = [];
 let currentID = layerCount;
+let idToDelete;
+let layerOptions = document.getElementById("layer-properties-menu");
 
 on('click',"add-layer-button", function(){
     // Creating a new canvas
@@ -118,10 +115,11 @@ class Layer {
 
         if (menuEntry != null) {
             menuEntry.id = "layer" + id;
-            menuEntry.onclick = () => this.select();
+            menuEntry.onclick = () => this.selectLayer();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
 
+            menuEntry.addEventListener("mouseup", this.openOptionsMenu, false);
             menuEntry.addEventListener("dragstart", this.layerDragStart, false);
             menuEntry.addEventListener("drop", this.layerDragDrop, false);
             menuEntry.addEventListener("dragover", this.layerDragOver, false);
@@ -222,14 +220,46 @@ class Layer {
         this.canvas.style.top = otherCanvas.canvas.style.top;
     }
 
-    select() {
-        // Deselecting the old layer
-        currentLayer.deselect();
+    openOptionsMenu(event) {
+        if (event.which == 3) {
+            let target = event.target;
+            let offsets = getElementAbsolutePosition(this);
 
-        // Selecting the current layer
-        this.isSelected = true;
-        this.menuEntry.classList.add("selected-layer");
-        currentLayer = getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
+            while (target != null && target.classList != null && !target.classList.contains("layers-menu-entry")) {
+                target = target.parentElement;
+            }
+
+            idToDelete = target.id;
+
+            layerOptions.style.visibility = "visible";
+            layerOptions.style.top = "0";
+            layerOptions.style.marginTop = "" + (event.clientY - 25) + "px";
+
+            getLayerByID(idToDelete).selectLayer();
+        }
+    }
+
+    closeOptionsMenu(event) {
+        layerOptions.style.visibility = "hidden";
+    }
+
+    selectLayer(layer) {
+        if (layer == null) {
+            // Deselecting the old layer
+            currentLayer.deselectLayer();
+
+            // Selecting the current layer
+            this.isSelected = true;
+            this.menuEntry.classList.add("selected-layer");
+            currentLayer = getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
+        }
+        else {
+            currentLayer.deselectLayer();
+
+            layer.isSelected = true;
+            layer.menuEntry.classList.add("selected-layer");
+            currentLayer = layer;
+        }
     }
 
     toggleLock() {
@@ -250,7 +280,7 @@ class Layer {
         }
     }
 
-    deselect() {
+    deselectLayer() {
         this.isSelected = false;
         this.menuEntry.classList.remove("selected-layer");
     }
@@ -318,13 +348,38 @@ class Layer {
     }
 }
 
+function deleteLayer(event) {
+    // Cannot delete all the layers
+    if (layers.length != 4) {
+        let layerIndex = layers.indexOf(currentLayer);
+        let toDelete = layers[layerIndex];
+        // Adding the ids to the unused ones
+        unusedIDs.push(currentLayer.id);
+
+        // Selecting the next layer
+        if (layerIndex != (layers.length - 3)) {
+            layers[layerIndex + 1].selectLayer();
+        }
+        // or the previous one if the next one doesn't exist
+        else {
+            layers[layerIndex - 1].selectLayer();
+        }
+
+        // Deleting canvas and entry
+        toDelete.canvas.remove();
+        toDelete.menuEntry.remove();
+
+        layers.splice(layerIndex, 1);
+    }
+
+    currentLayer.closeOptionsMenu();
+}
+
+
 // Swap two layer entries in the layer menu
 function swapLayerEntries(id1, id2) {
     let entry1 = document.getElementById(id1);
     let entry2 = document.getElementById(id2);
-
-    console.log("entry 1: " + id1);
-    console.log("entry 2: " + id2);
 
     let layer1 = getLayerByID(id1);
     let layer2 = getLayerByID(id2);
@@ -333,14 +388,9 @@ function swapLayerEntries(id1, id2) {
     let after2 = entry2.nextSibling;
     let parent = entry1.parentNode;
 
-    console.log("prima: " + layer1.canvas.style.zIndex);
-    console.log("prima: " + layer2.canvas.style.zIndex);
-
     tmpZIndex = layer1.canvas.style.zIndex;
     layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
     layer2.canvas.style.zIndex = tmpZIndex;
-
-    console.log("fatto");
 
     parent.insertBefore(entry2, entry1);
 
@@ -354,9 +404,6 @@ function swapLayerEntries(id1, id2) {
     } else {
        parent.appendChild(entry1);
     }
-
-    console.log("dopo: " + layer1.canvas.style.zIndex);
-    console.log("dopo: " + layer2.canvas.style.zIndex);
 }
 
 // Finds a layer given its name

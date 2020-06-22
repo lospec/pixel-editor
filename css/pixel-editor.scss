@@ -22,6 +22,43 @@ body {
   /* Disable Android and iOS callouts*/
 }
 
+#layer-properties-menu {
+  visibility:hidden;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  right: 0;
+  width:120px;
+  text-align:center;
+  
+  margin-right:200px;
+  /*border:1px solid color(menu, foreground);*/
+
+  list-style:none;
+  position:relative;
+  z-index:1200;
+  list-style-type: none;
+  
+  background-color: color(base);
+  position: fixed;
+  overflow: visible;
+
+  li button {
+    color: color(menu, foreground);
+    height: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width:100%;
+  }
+
+  li button:hover {
+    background-color:color(menu, background);
+  }
+
+}
+
 .preview-canvas {
   image-rendering:optimizeSpeed;             /* Legal fallback */
   image-rendering:-moz-crisp-edges;          /* Firefox        */

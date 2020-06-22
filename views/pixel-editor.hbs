@@ -153,6 +153,15 @@
                 {{svg "plus.svg" width="20" height="20"}} Add layer
             </button>
         </li>
+
+        <ul id = "layer-properties-menu">
+            <li>
+                <button id = "delete-layer" onclick = "deleteLayer()">Delete</button>
+            </li>
+            <li>
+                <button id = "rename-layer">Rename</button>
+            </li>
+        </ul>
     </ul>
 
     <div id="eyedropper-preview"></div>
@@ -274,8 +283,6 @@
                 <button id="save-settings" class="default">Save</button>
             </div>
         </div>
-    </div>
-
     </div>
 
     <script>

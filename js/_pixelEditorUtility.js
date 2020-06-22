@@ -10,6 +10,18 @@ function isPixelEmpty(pixel) {
     return false;
 }
 
+function isChildOfByClass(element, className) {
+	while (element != null && element.classList != null && !element.classList.contains(className)) {
+		element = element.parentElement;
+	}
+
+	if (element != null && element.classList != null && element.classList.contains(className)) {
+		return true;
+	}
+
+	return false;
+}
+
 function getEyedropperColor(cursorLocation) {
 	let max = -1;
 	let tmpColour;
@@ -32,4 +44,17 @@ function getEyedropperColor(cursorLocation) {
 	}
 
 	return selectedColor;
+}
+
+function getElementAbsolutePosition(element) {
+	let curleft = curtop = 0;
+
+	if (element.offsetParent) {
+		do {
+			curleft += element.offsetLeft;
+			curtop += element.offsetTop;
+		} while (element = element.offsetParent);
+	}
+
+	return [curleft,curtop];
 }

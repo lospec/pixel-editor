@@ -67,6 +67,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	currentMouseEvent = mouseEvent;
 
 	closeMenu();
+	
+	if (!isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
+		currentLayer.closeOptionsMenu();	
+	}
 
 	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
 
