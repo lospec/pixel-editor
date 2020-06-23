@@ -344,37 +344,13 @@ function flatten(onlyVisible) {
         }
 
         // Sorting them by z-index
-        visibleLayers.sort((a, b) => (a.canvas.zIndex > b.canvas.zIndex) ? 1 : -1);
+        visibleLayers.sort((a, b) => (a.canvas.zIndex > b.canvas.zIndex) ? -1 : 1);
         // Selecting the last visible layer (the only one that won't get deleted)
         visibleLayers[visibleLayers.length - 1].selectLayer();
 
         // Merging all the layer but the last one
         for (let i=0; i<visibleLayers.length - 1; i++) {
-            // Copying the above content on the layerBelow
-            let belowImageData = visibleLayers[i].context.getImageData(0, 0, canvas.width, canvas.height);
-            let toMergeImageData = visibleLayers[i + 1].context.getImageData(0, 0, canvas.width, canvas.height);
-
-            for (let i=0; i<belowImageData.data.length; i+=4) {
-                let currentMovePixel = [
-                    toMergeImageData.data[i], toMergeImageData.data[i+1], 
-                    toMergeImageData.data[i+2], toMergeImageData.data[i+3]
-                ];
-
-                let currentUnderlyingPixel = [
-                    belowImageData.data[i], belowImageData.data[i+1], 
-                    belowImageData.data[i+2], belowImageData.data[i+3]
-                ];
-
-                if (isPixelEmpty(currentMovePixel)) {
-                    if (!isPixelEmpty(belowImageData)) {
-                        toMergeImageData.data[i] = currentUnderlyingPixel[0];
-                        toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
-                        toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
-                        toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
-                    }
-                }
-            }
-            visibleLayers[i + 1].context.putImageData(toMergeImageData, 0, 0);
+            mergeLayers(visibleLayers[i + 1].context, visibleLayers[i].context);
 
             // Deleting the above layer
             visibleLayers[i].canvas.remove();
@@ -402,31 +378,7 @@ function merge(event) {
         // Selecting that layer
         layerBelow.selectLayer();
 
-        // Copying the above content on the layerBelow
-        let belowImageData = currentLayer.context.getImageData(0, 0, canvas.width, canvas.height);
-        let toMergeImageData = toMerge.context.getImageData(0, 0, canvas.width, canvas.height);
-
-        for (let i=0; i<belowImageData.data.length; i+=4) {
-            let currentMovePixel = [
-                toMergeImageData.data[i], toMergeImageData.data[i+1], 
-                toMergeImageData.data[i+2], toMergeImageData.data[i+3]
-            ];
-
-            let currentUnderlyingPixel = [
-                belowImageData.data[i], belowImageData.data[i+1], 
-                belowImageData.data[i+2], belowImageData.data[i+3]
-            ];
-
-            if (isPixelEmpty(currentMovePixel)) {
-                if (!isPixelEmpty(belowImageData)) {
-                    toMergeImageData.data[i] = currentUnderlyingPixel[0];
-                    toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
-                    toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
-                    toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
-                }
-            }
-        }
-        currentLayer.context.putImageData(toMergeImageData, 0, 0);
+        mergeLayers(currentLayer.context, toMerge.context);
 
         // Deleting the above layer
         toMerge.canvas.remove();

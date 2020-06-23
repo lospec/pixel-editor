@@ -37,7 +37,6 @@ function newPixel (width, height, palette) {
 		// Setting up the current layer
 	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
 	    currentLayer = layers[1];
-	    layerCount = 1;
 
 	    canvas = currentLayer.canvas;
 	    context = currentLayer.context;

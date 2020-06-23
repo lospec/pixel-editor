@@ -1,3 +1,32 @@
+function mergeLayers(belowLayer, topLayer) {
+	// Copying the above content on the layerBelow
+    let belowImageData = belowLayer.getImageData(0, 0, canvas.width, canvas.height);
+    let toMergeImageData = topLayer.getImageData(0, 0, canvas.width, canvas.height);
+
+    for (let i=0; i<belowImageData.data.length; i+=4) {
+        let currentMovePixel = [
+            toMergeImageData.data[i], toMergeImageData.data[i+1], 
+            toMergeImageData.data[i+2], toMergeImageData.data[i+3]
+        ];
+
+        let currentUnderlyingPixel = [
+            belowImageData.data[i], belowImageData.data[i+1], 
+            belowImageData.data[i+2], belowImageData.data[i+3]
+        ];
+
+        if (isPixelEmpty(currentMovePixel)) {
+            if (!isPixelEmpty(belowImageData)) {
+                toMergeImageData.data[i] = currentUnderlyingPixel[0];
+                toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
+                toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
+                toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
+            }
+        }
+    }
+
+    belowLayer.putImageData(toMergeImageData, 0, 0);
+}
+
 function simulateInput(keyCode, ctrl, alt, shift) {
 	let keyboardEvent = document.createEvent("KeyboardEvent");
 	let initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
