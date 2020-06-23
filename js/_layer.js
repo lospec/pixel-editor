@@ -1,13 +1,6 @@
 /** TODO LIST FOR LAYERS
     
     GENERAL REQUIREMENTS:
-    - The user shouldn't be able to draw on a hidden or locked layer
-    - Must delete the selected layer when right clicking on a layer and selecting that option
-        * We should think about selecting more than one layer at once.
-        * Rename layer
-        * Merge with bottom layer option
-        * Flatten visible option
-        * Flatten everything option
     - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
@@ -38,6 +31,9 @@
 
     - Resize canvas (must make a simple editor to preview the changes)
     - Resize sprite
+    - Refactor the code so that every instance of "canvas" and "context" is replaced by currentLayer.canvas
+      and currentLayer.context
+    - Refactor and replace the merge layer algorithm with a general function in _pixelEditorUtility.js
 */
 
 // Instead of saving the whole entry, just save their IDs and swap the elements at the end of the drop
@@ -57,6 +53,8 @@ let unusedIDs = [];
 let currentID = layerCount;
 let idToDelete;
 let layerOptions = document.getElementById("layer-properties-menu");
+
+let isRenamingLayer = false;
 
 on('click',"add-layer-button", function(){
     // Creating a new canvas
@@ -241,6 +239,8 @@ class Layer {
 
     closeOptionsMenu(event) {
         layerOptions.style.visibility = "hidden";
+        currentLayer.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
+        isRenamingLayer = false;
     }
 
     selectLayer(layer) {
@@ -260,6 +260,9 @@ class Layer {
             layer.menuEntry.classList.add("selected-layer");
             currentLayer = layer;
         }
+
+        canvas = currentLayer.canvas;
+        context = currentLayer.context;
     }
 
     toggleLock() {
@@ -348,6 +351,122 @@ class Layer {
     }
 }
 
+function flatten(onlyVisible) {
+    if (!onlyVisible) {
+        // Selecting the first layer
+        let firstLayer = layerList.firstElementChild;
+        getLayerByID(firstLayer.id).selectLayer();
+
+        for (let i = 0; i < layerList.childElementCount - 1; i++) {
+            merge();
+        }
+    }
+    else {
+        // Getting all the visible layers
+        let visibleLayers = [];
+
+        for (let i=0; i<layers.length; i++) {
+            if (layers[i].menuEntry != null && layers[i].isVisible) {
+                visibleLayers.push(layers[i]);
+            }
+        }
+
+        // Sorting them by z-index
+        visibleLayers.sort((a, b) => (a.canvas.zIndex > b.canvas.zIndex) ? 1 : -1);
+        // Selecting the last visible layer (the only one that won't get deleted)
+        visibleLayers[visibleLayers.length - 1].selectLayer();
+
+        // Merging all the layer but the last one
+        for (let i=0; i<visibleLayers.length - 1; i++) {
+            // Copying the above content on the layerBelow
+            let belowImageData = visibleLayers[i].context.getImageData(0, 0, canvas.width, canvas.height);
+            let toMergeImageData = visibleLayers[i + 1].context.getImageData(0, 0, canvas.width, canvas.height);
+
+            for (let i=0; i<belowImageData.data.length; i+=4) {
+                let currentMovePixel = [
+                    toMergeImageData.data[i], toMergeImageData.data[i+1], 
+                    toMergeImageData.data[i+2], toMergeImageData.data[i+3]
+                ];
+
+                let currentUnderlyingPixel = [
+                    belowImageData.data[i], belowImageData.data[i+1], 
+                    belowImageData.data[i+2], belowImageData.data[i+3]
+                ];
+
+                if (isPixelEmpty(currentMovePixel)) {
+                    if (!isPixelEmpty(belowImageData)) {
+                        toMergeImageData.data[i] = currentUnderlyingPixel[0];
+                        toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
+                        toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
+                        toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
+                    }
+                }
+            }
+            visibleLayers[i + 1].context.putImageData(toMergeImageData, 0, 0);
+
+            // Deleting the above layer
+            visibleLayers[i].canvas.remove();
+            visibleLayers[i].menuEntry.remove();
+            layers.splice(layers.indexOf(visibleLayers[i]), 1);
+        }
+
+        // Updating the layer preview
+        currentLayer.updateLayerPreview();
+    }
+}
+
+function merge(event) {
+    // Saving the layer that should be merged
+    let toMerge = currentLayer;
+    let toMergeIndex = layers.indexOf(toMerge);
+    // Getting layer below
+    let layerBelow = getLayerByID(currentLayer.menuEntry.nextElementSibling.id);
+
+    console.log("YEEEEUUE");
+    console.log(layerBelow);
+
+    // If I have something to merge with
+    if (layerBelow != null) {
+        // Selecting that layer
+        layerBelow.selectLayer();
+
+        // Copying the above content on the layerBelow
+        let belowImageData = currentLayer.context.getImageData(0, 0, canvas.width, canvas.height);
+        let toMergeImageData = toMerge.context.getImageData(0, 0, canvas.width, canvas.height);
+
+        for (let i=0; i<belowImageData.data.length; i+=4) {
+            let currentMovePixel = [
+                toMergeImageData.data[i], toMergeImageData.data[i+1], 
+                toMergeImageData.data[i+2], toMergeImageData.data[i+3]
+            ];
+
+            let currentUnderlyingPixel = [
+                belowImageData.data[i], belowImageData.data[i+1], 
+                belowImageData.data[i+2], belowImageData.data[i+3]
+            ];
+
+            if (isPixelEmpty(currentMovePixel)) {
+                if (!isPixelEmpty(belowImageData)) {
+                    toMergeImageData.data[i] = currentUnderlyingPixel[0];
+                    toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
+                    toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
+                    toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
+                }
+            }
+        }
+        currentLayer.context.putImageData(toMergeImageData, 0, 0);
+
+        // Deleting the above layer
+        toMerge.canvas.remove();
+        toMerge.menuEntry.remove();
+        layers.splice(toMergeIndex, 1);
+
+        // Updating the layer preview
+        currentLayer.updateLayerPreview();
+    }
+    
+}
+
 function deleteLayer(event) {
     // Cannot delete all the layers
     if (layers.length != 4) {
@@ -362,19 +481,34 @@ function deleteLayer(event) {
         }
         // or the previous one if the next one doesn't exist
         else {
-            layers[layerIndex - 1].selectLayer();
+            layers[layerIndex - 1].selectLayer(); 
         }
 
         // Deleting canvas and entry
         toDelete.canvas.remove();
         toDelete.menuEntry.remove();
 
+        // Removing the layer from the list
         layers.splice(layerIndex, 1);
     }
 
+    // Closing the menu
     currentLayer.closeOptionsMenu();
 }
 
+function renameLayer(event) {
+    let layerIndex = layers.indexOf(currentLayer);
+    let toRename = currentLayer;
+    let p = currentLayer.menuEntry.getElementsByTagName("p")[0];
+
+    p.setAttribute("contenteditable", true);
+    p.classList.add("layer-name-editable");
+    p.focus();
+
+    simulateInput(65, true, false, false);
+
+    isRenamingLayer = true;
+}
 
 // Swap two layer entries in the layer menu
 function swapLayerEntries(id1, id2) {

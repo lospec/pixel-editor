@@ -156,10 +156,19 @@
 
         <ul id = "layer-properties-menu">
             <li>
-                <button id = "delete-layer" onclick = "deleteLayer()">Delete</button>
+                <button onclick = "deleteLayer()">Delete</button>
             </li>
             <li>
-                <button id = "rename-layer">Rename</button>
+                <button onclick = "renameLayer()">Rename</button>
+            </li>
+            <li>
+                <button onclick = "merge()">Merge below</button>
+            </li>
+            <li> 
+                <button onclick = "flatten(true)">Flatten visible</button>
+            </li>
+            <li>
+                <button onclick = "flatten(false)">Flatten all</button>
             </li>
         </ul>
     </ul>

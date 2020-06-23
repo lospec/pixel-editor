@@ -1,3 +1,22 @@
+function simulateInput(keyCode, ctrl, alt, shift) {
+	let keyboardEvent = document.createEvent("KeyboardEvent");
+	let initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+
+	keyboardEvent[initMethod](
+	  "keydown", // event type: keydown, keyup, keypress
+	  true,      // bubbles
+	  true,      // cancelable
+	  window,    // view: should be window
+	  ctrl,     // ctrlKey
+	  alt,     // altKey
+	  shift,     // shiftKey
+	  false,     // metaKey
+	  keyCode,        // keyCode: unsigned long - the virtual key code, else 0
+	  keyCode       // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
+	);
+	document.dispatchEvent(keyboardEvent);
+}
+
 function isPixelEmpty(pixel) {
 	if (pixel == null || pixel === undefined) {
 		return false;
