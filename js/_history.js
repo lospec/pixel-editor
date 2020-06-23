@@ -33,23 +33,31 @@ function HistoryStateAddLayer() {
 
 //prototype for undoing canvas changes
 function HistoryStateEditCanvas () {
-    this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    this.canvasState = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    this.layerID = currentLayer.id;
 
     this.undo = function () {
-        var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-        currentLayer.context.putImageData(this.canvas, 0, 0);
+        console.log("id: " + this.layerID);
 
-        this.canvas = currentCanvas;
+        var stateLayer = getLayerByID(this.layerID);
+        var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        stateLayer.context.putImageData(this.canvasState, 0, 0);
+
+        this.canvasState = currentCanvas;
         redoStates.push(this);
 
-        currentLayer.updateLayerPreview();
+        stateLayer.updateLayerPreview();
     };
 
     this.redo = function () {
-        var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-        currentLayer.context.putImageData(this.canvas, 0, 0);
+        console.log("id: " + this.layerID);
 
-        this.canvas = currentCanvas;
+        var stateLayer = getLayerByID(this.layerID);
+        var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+
+        stateLayer.context.putImageData(this.canvasState, 0, 0);
+
+        this.canvasState = currentCanvas;
         undoStates.push(this);
 
         currentLayer.updateLayerPreview();

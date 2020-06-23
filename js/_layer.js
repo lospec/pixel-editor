@@ -81,7 +81,7 @@ class Layer {
             currentID++;
         }
 
-        this.id = id;
+        this.id = "layer" + id;
 
         if (menuEntry != null) {
             menuEntry.id = "layer" + id;

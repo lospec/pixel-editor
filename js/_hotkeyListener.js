@@ -30,7 +30,6 @@ function KeyPress(e) {
 				break;
 			// copy tool c
 			case 67: case 99:
-				console.log("Copying");
 				if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
 			    	copySelection();
 			    }
@@ -53,7 +52,6 @@ function KeyPress(e) {
 			  break;
 			 // eraser -6, r
 		    case 54: case 82:
-		         console.log("Pressed r");
 	            tool.eraser.switchTo()
 		     	break;
 		    // Rectangular selection
@@ -62,13 +60,11 @@ function KeyPress(e) {
 				break;
 			// Paste tool
 			case 86: case 118:
-				console.log("Pasting");
 				if (keyboardEvent.ctrlKey && !dragging) {
 					pasteSelection();
 				}
 				break;
 			case 88: case 120:
-				console.log("Cutting");
 				if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
 					cutSelectionTool();
 					tool.pencil.switchTo();
@@ -76,7 +72,6 @@ function KeyPress(e) {
 				break;
 			//Z
 			case 90:
-			  console.log('PRESSED Z ', keyboardEvent.ctrlKey)
 			  //CTRL+ALT+Z redo
 			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey)
 			    redo();
