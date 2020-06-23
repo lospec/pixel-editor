@@ -56,35 +56,7 @@ let layerOptions = document.getElementById("layer-properties-menu");
 
 let isRenamingLayer = false;
 
-on('click',"add-layer-button", function(){
-    // Creating a new canvas
-    let newCanvas = document.createElement("canvas");
-    // Setting up the new canvas
-    canvasView.append(newCanvas);
-    maxZIndex++;
-    newCanvas.style.zIndex = maxZIndex;
-    newCanvas.classList.add("drawingCanvas");
-
-    console.log("Tela creata: " + newCanvas);
-
-    // Clone the default layer
-    let toAppend = layerListEntry.cloneNode(true);
-    // Setting the default name for the layer
-    toAppend.getElementsByTagName('p')[0].innerHTML = "Layer " + layerCount;
-    // Removing the selected class
-    toAppend.classList.remove("selected-layer");
-    // Adding the layer to the list
-    layerCount++;
-
-    // Creating a layer object
-    let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
-    newLayer.context.fillStyle = currentLayer.context.fillStyle;
-    newLayer.copyData(currentLayer);
-    layers.splice(layers.length - 3, 0, newLayer);
-    
-    // Insert it before the Add layer button
-    layerList.insertBefore(toAppend, layerList.childNodes[0]);
-}, false);
+on('click',"add-layer-button", addLayer, false);
 
 /** Handler class for a single canvas (a single layer)
  *
@@ -564,4 +536,34 @@ function getLayerByID(id) {
     }
 
     return null;
+}
+
+function addLayer() {
+    // Creating a new canvas
+    let newCanvas = document.createElement("canvas");
+    // Setting up the new canvas
+    canvasView.append(newCanvas);
+    maxZIndex++;
+    newCanvas.style.zIndex = maxZIndex;
+    newCanvas.classList.add("drawingCanvas");
+
+    console.log("Tela creata: " + newCanvas);
+
+    // Clone the default layer
+    let toAppend = layerListEntry.cloneNode(true);
+    // Setting the default name for the layer
+    toAppend.getElementsByTagName('p')[0].innerHTML = "Layer " + layerCount;
+    // Removing the selected class
+    toAppend.classList.remove("selected-layer");
+    // Adding the layer to the list
+    layerCount++;
+
+    // Creating a layer object
+    let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
+    newLayer.context.fillStyle = currentLayer.context.fillStyle;
+    newLayer.copyData(currentLayer);
+    layers.splice(layers.length - 3, 0, newLayer);
+    
+    // Insert it before the Add layer button
+    layerList.insertBefore(toAppend, layerList.childNodes[0]);
 }

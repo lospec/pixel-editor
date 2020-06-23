@@ -32,8 +32,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 				canDraw = false;
 			}
 		}
-		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
-
+		
 		currentTool.updateCursor();
 
 		if (!currentLayer.isLocked && canDraw) {

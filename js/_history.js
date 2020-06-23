@@ -3,6 +3,34 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
+function HistoryStateMergeLayer() {
+
+}
+
+function HistoryStateFlattenVisible() {
+
+}
+
+function HistoryStateFlattenAll() {
+
+}
+
+function HistoryStateRenameLayer() {
+
+}
+
+function HistoryStateDeleteLayer() {
+
+}
+
+function HistoryStateMoveLayer() {
+
+}
+
+function HistoryStateAddLayer() {
+
+}
+
 //prototype for undoing canvas changes
 function HistoryStateEditCanvas () {
     this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
