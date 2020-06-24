@@ -55,6 +55,7 @@ let idToDelete;
 let layerOptions = document.getElementById("layer-properties-menu");
 
 let isRenamingLayer = false;
+let oldLayerName = null;
 
 on('click',"add-layer-button", addLayer, false);
 
@@ -75,13 +76,14 @@ class Layer {
         this.menuEntry = menuEntry;
 
         let id = unusedIDs.pop();
+        console.log("id creato: " + id);
 
         if (id == null) {
             id = currentID;
             currentID++;
         }
 
-        this.id = "layer" + id;
+        this.id = "layer" + id;     
 
         if (menuEntry != null) {
             menuEntry.id = "layer" + id;
@@ -220,6 +222,11 @@ class Layer {
         layerOptions.style.visibility = "hidden";
         currentLayer.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
         isRenamingLayer = false;
+
+        if (oldLayerName != null) {
+            new HistoryStateRenameLayer(oldLayerName, this.menuEntry.getElementsByTagName("p")[0].innerHTML, currentLayer);
+            oldLayerName = null;
+        }
     }
 
     selectLayer(layer) {
@@ -398,13 +405,14 @@ function merge(event) {
     
 }
 
-function deleteLayer(event) {
+function deleteLayer() {
     // Cannot delete all the layers
     if (layers.length != 4) {
         let layerIndex = layers.indexOf(currentLayer);
         let toDelete = layers[layerIndex];
         // Adding the ids to the unused ones
-        unusedIDs.push(currentLayer.id);
+        console.log("id cancellato: " + toDelete.id);
+        unusedIDs.push(toDelete.id);
 
         // Selecting the next layer
         if (layerIndex != (layers.length - 3)) {
@@ -431,6 +439,8 @@ function renameLayer(event) {
     let layerIndex = layers.indexOf(currentLayer);
     let toRename = currentLayer;
     let p = currentLayer.menuEntry.getElementsByTagName("p")[0];
+
+    oldLayerName = p.innerHTML;
 
     p.setAttribute("contenteditable", true);
     p.classList.add("layer-name-editable");
@@ -530,7 +540,8 @@ function addLayer(id, saveHistory = true) {
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
 
-    if (id != null) {
+    if (id != null && typeof(id) == "string") {
+        console.log("imposto");
         newLayer.setID(id);
     }
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history

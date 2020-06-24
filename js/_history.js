@@ -15,12 +15,38 @@ function HistoryStateFlattenAll() {
 
 }
 
-function HistoryStateRenameLayer() {
+function HistoryStateRenameLayer(oldName, newName, layer) {
+    this.edited = layer;
+    this.oldName = oldName;
+    this.newName = newName;
 
+    this.undo = function() {
+        layer.menuEntry.getElementsByTagName("p")[0].innerHTML = oldName;
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        layer.menuEntry.getElementsByTagName("p")[0].innerHTML = newName;
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
 }
 
-function HistoryStateDeleteLayer() {
+function HistoryStateDeleteLayer(layerData) {
+    this.deleted = layerData;
 
+    this.undo = function() {
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
 }
 
 function HistoryStateMoveLayer(layer1, layer2) {
@@ -45,7 +71,7 @@ function HistoryStateAddLayer(layerData) {
 
     this.undo = function() {
         redoStates.push(this);
-        // un po' brutale onestamente
+
         this.added.selectLayer();
         deleteLayer();
 
