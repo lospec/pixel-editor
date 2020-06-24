@@ -3,16 +3,16 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
-function HistoryStateMergeLayer() {
-
-}
-
 function HistoryStateFlattenVisible() {
-
+    // undo the merge for the number of layers that have been flattened
 }
 
 function HistoryStateFlattenAll() {
+    // undo the merge for the number of layers that have been flattened
+}
 
+function HistoryStateMergeLayer() {
+    // todo
 }
 
 function HistoryStateRenameLayer(oldName, newName, layer) {
@@ -35,14 +35,28 @@ function HistoryStateRenameLayer(oldName, newName, layer) {
     saveHistoryState(this);
 }
 
-function HistoryStateDeleteLayer(layerData) {
+function HistoryStateDeleteLayer(layerData, before, index) {
     this.deleted = layerData;
+    this.before = before;
+    this.index = index;
 
     this.undo = function() {
+        canvasView.append(this.deleted.canvas);
+        if (this.before != null) {
+            layerList.insertBefore(this.deleted.menuEntry, this.before);
+        }
+        else {
+            layerList.prepend(this.deleted.menuEntry);
+        }
+        layers.splice(this.index, 0, this.deleted);
+
         redoStates.push(this);
     };
 
     this.redo = function() {
+        this.deleted.selectLayer();
+        deleteLayer(false);
+
         undoStates.push(this);
     };
 
@@ -66,19 +80,24 @@ function HistoryStateMoveLayer(layer1, layer2) {
     saveHistoryState(this);
 }
 
-function HistoryStateAddLayer(layerData) {
+function HistoryStateAddLayer(layerData, index) {
     this.added = layerData;
+    this.index = index;
 
     this.undo = function() {
         redoStates.push(this);
 
-        this.added.selectLayer();
-        deleteLayer();
-
+        this.added.canvas.remove();
+        this.added.menuEntry.remove();
+        layers.splice(index, 1);
     };
 
     this.redo = function() {
-        addLayer(layerData.id, false);
+        undoStates.push(this);
+
+        canvasView.append(this.added.canvas);
+        layerList.prepend(this.added.menuEntry);
+        layers.splice(this.index, 0, this.added);
     };
 
     saveHistoryState(this);
@@ -90,6 +109,7 @@ function HistoryStateEditCanvas () {
     this.layerID = currentLayer.id;
 
     this.undo = function () {
+        console.log("CHE COSA STA SUCCEDENDOOOOOO STA CAMBIANDO IL MONDOOOOO");
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
         stateLayer.context.putImageData(this.canvasState, 0, 0);
@@ -239,7 +259,7 @@ function undo () {
 
     //if there are any states saved to undo
     if (undoStates.length > 0) {
-
+        console.log("UUUEEEEEEEEEEE");
         document.getElementById('redo-button').classList.remove('disabled');
 
         //get state 

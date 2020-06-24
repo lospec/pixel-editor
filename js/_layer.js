@@ -405,11 +405,12 @@ function merge(event) {
     
 }
 
-function deleteLayer() {
+function deleteLayer(saveHistory = true) {
     // Cannot delete all the layers
     if (layers.length != 4) {
         let layerIndex = layers.indexOf(currentLayer);
         let toDelete = layers[layerIndex];
+        let previousSibling = toDelete.menuEntry.previousElementSibling;
         // Adding the ids to the unused ones
         console.log("id cancellato: " + toDelete.id);
         unusedIDs.push(toDelete.id);
@@ -429,6 +430,10 @@ function deleteLayer() {
 
         // Removing the layer from the list
         layers.splice(layerIndex, 1);
+
+        if (saveHistory) {
+            new HistoryStateDeleteLayer(toDelete, previousSibling, layerIndex);
+        }
     }
 
     // Closing the menu
@@ -512,6 +517,7 @@ function getLayerByID(id) {
 }
 
 function addLayer(id, saveHistory = true) {
+    let index = layers.length - 3;
     // Creating a new canvas
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
@@ -535,7 +541,7 @@ function addLayer(id, saveHistory = true) {
     let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
     newLayer.context.fillStyle = currentLayer.context.fillStyle;
     newLayer.copyData(currentLayer);
-    layers.splice(layers.length - 3, 0, newLayer);
+    layers.splice(index, 0, newLayer);
     
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
@@ -546,6 +552,6 @@ function addLayer(id, saveHistory = true) {
     }
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
     if (saveHistory) {
-        new HistoryStateAddLayer(newLayer);
+        new HistoryStateAddLayer(newLayer, index);
     }
 }
