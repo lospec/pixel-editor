@@ -27,8 +27,24 @@ function HistoryStateMoveLayer() {
 
 }
 
-function HistoryStateAddLayer() {
+//TODO: finisci
+function HistoryStateAddLayer(layerData) {
+    this.added = layerData;
 
+    this.undo = function() {
+        redoStates.push(this);
+        // un po' brutale onestamente
+        this.added.selectLayer();
+        deleteLayer();
+
+    };
+
+    this.redo = function() {
+        undoStates.push(this);
+        addLayer();
+    };
+
+    saveHistoryState(this);
 }
 
 //prototype for undoing canvas changes
@@ -37,7 +53,6 @@ function HistoryStateEditCanvas () {
     this.layerID = currentLayer.id;
 
     this.undo = function () {
-        console.log("id: " + this.layerID);
 
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
@@ -50,7 +65,6 @@ function HistoryStateEditCanvas () {
     };
 
     this.redo = function () {
-        console.log("id: " + this.layerID);
 
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);

@@ -518,4 +518,5 @@ function addLayer() {
     
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
+    new HistoryStateAddLayer(newLayer);
 }
