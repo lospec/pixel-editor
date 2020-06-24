@@ -23,11 +23,23 @@ function HistoryStateDeleteLayer() {
 
 }
 
-function HistoryStateMoveLayer() {
+function HistoryStateMoveLayer(layer1, layer2) {
+    this.layer1 = layer1;
+    this.layer2 = layer2;
 
+    this.undo = function() {
+        swapLayerEntries(layer1, layer2, false);
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        swapLayerEntries(layer1, layer2, false);
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
 }
 
-//TODO: finisci
 function HistoryStateAddLayer(layerData) {
     this.added = layerData;
 
@@ -40,8 +52,7 @@ function HistoryStateAddLayer(layerData) {
     };
 
     this.redo = function() {
-        undoStates.push(this);
-        addLayer();
+        addLayer(layerData.id, false);
     };
 
     saveHistoryState(this);
@@ -53,7 +64,6 @@ function HistoryStateEditCanvas () {
     this.layerID = currentLayer.id;
 
     this.undo = function () {
-
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
         stateLayer.context.putImageData(this.canvasState, 0, 0);
@@ -65,7 +75,7 @@ function HistoryStateEditCanvas () {
     };
 
     this.redo = function () {
-
+        console.log("YEET");
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 
@@ -74,7 +84,7 @@ function HistoryStateEditCanvas () {
         this.canvasState = currentCanvas;
         undoStates.push(this);
 
-        currentLayer.updateLayerPreview();
+        stateLayer.updateLayerPreview();
     };
 
     //add self to undo array

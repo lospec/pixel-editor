@@ -127,6 +127,13 @@ class Layer {
         this.context.mozImageSmoothingEnabled = false;
     }
 
+    setID(id) {
+        this.id = id;
+        if (this.menuEntry != null) {
+            this.menuEntry.id = id;
+        }
+    }
+
     layerDragStart(element) {
         layerDragSource = this;
         element.dataTransfer.effectAllowed = 'move';
@@ -434,8 +441,8 @@ function renameLayer(event) {
     isRenamingLayer = true;
 }
 
-// Swap two layer entries in the layer menu
-function swapLayerEntries(id1, id2) {
+// Swaps two layer entries in the layer menu
+function swapLayerEntries(id1, id2, saveHistory = true) {
     let entry1 = document.getElementById(id1);
     let entry2 = document.getElementById(id2);
 
@@ -461,6 +468,10 @@ function swapLayerEntries(id1, id2) {
         }
     } else {
        parent.appendChild(entry1);
+    }
+
+    if (saveHistory) { 
+        new HistoryStateMoveLayer(id1, id2);
     }
 }
 
@@ -490,7 +501,7 @@ function getLayerByID(id) {
     return null;
 }
 
-function addLayer() {
+function addLayer(id, saveHistory = true) {
     // Creating a new canvas
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
@@ -518,5 +529,12 @@ function addLayer() {
     
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
-    new HistoryStateAddLayer(newLayer);
+
+    if (id != null) {
+        newLayer.setID(id);
+    }
+    // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
+    if (saveHistory) {
+        new HistoryStateAddLayer(newLayer);
+    }
 }
