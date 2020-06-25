@@ -157,7 +157,7 @@ class Layer {
             let toDropID = element.dataTransfer.getData('text/html');
             let thisID = this.id;
             
-            swapLayerEntries(toDropID, thisID);
+            moveLayers(toDropID, thisID);
         }
 
         this.classList.remove('layerdragover');
@@ -461,16 +461,55 @@ function renameLayer(event) {
 }
 
 // Swaps two layer entries in the layer menu
-function swapLayerEntries(id1, id2, saveHistory = true) {
-    let entry1 = document.getElementById(id1);
-    let entry2 = document.getElementById(id2);
+function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
+    let entry1 = document.getElementById(toDropLayer);
+    let entry2 = document.getElementById(staticLayer);
 
-    let layer1 = getLayerByID(id1);
-    let layer2 = getLayerByID(id2);
+    let toDrop = getLayerByID(toDropLayer);
+    let static = getLayerByID(staticLayer);
+    let layerCopy = layers;
     let tmpZIndex;
 
     let after2 = entry2.nextSibling;
     let parent = entry1.parentNode;
+
+    layerCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
+    console.log(layerCopy.map(a => a.canvas.style.zIndex));
+
+    let toDropIndex = layerCopy.indexOf(toDrop);
+    let staticIndex = layerCopy.indexOf(static);
+
+    layerList.insertBefore(toDrop.menuEntry, static.menuEntry);
+
+    if (toDropIndex < staticIndex) {
+        console.log("UO");
+        let tmp = toDrop.canvas.style.zIndex;
+        let tmp2;
+
+        for (let i=toDropIndex+1; i<=staticIndex; i++) {
+            tmp2 = layerCopy[i].canvas.style.zIndex;
+            layerCopy[i].canvas.style.zIndex = tmp;
+            tmp = tmp2;
+        }
+
+        toDrop.canvas.style.zIndex = tmp;
+    }
+    else {
+        // BUG QUI
+        let tmp = toDrop.canvas.style.zIndex;
+        let tmp2;
+
+        for (let i=toDropIndex-1; i>staticIndex; i--) {
+            tmp2 = layerCopy[i].canvas.style.zIndex;
+            layerCopy[i].canvas.style.zIndex = tmp;
+            tmp = tmp2;
+        }
+
+        toDrop.canvas.style.zIndex = tmp;
+    }
+
+    /*
+    console.log("id1: " + toDrop + ", id2: " + static);
 
     tmpZIndex = layer1.canvas.style.zIndex;
     layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
@@ -488,9 +527,9 @@ function swapLayerEntries(id1, id2, saveHistory = true) {
     } else {
        parent.appendChild(entry1);
     }
-
-    if (saveHistory) { 
-        new HistoryStateMoveLayer(id1, id2);
+    */
+   if (saveHistory) { 
+        new HistoryStateMoveLayer(toDrop, static);
     }
 }
 

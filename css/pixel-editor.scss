@@ -128,8 +128,8 @@ body {
 }
 
 .layerdragover {
-  border: 2px dashed color(base, foreground, bold);
-  border-top: 2px solid color(base, foreground, bold);
+  margin-top:5px;
+  border-top: 3px solid color(base, foreground, bold);
 }
 
 .layers-menu-entry {
