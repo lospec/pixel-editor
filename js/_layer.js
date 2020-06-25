@@ -329,11 +329,14 @@ function flatten(onlyVisible) {
     if (!onlyVisible) {
         // Selecting the first layer
         let firstLayer = layerList.firstElementChild;
+        let nToFlatten = layerList.childElementCount - 1;
         getLayerByID(firstLayer.id).selectLayer();
 
-        for (let i = 0; i < layerList.childElementCount - 1; i++) {
+        for (let i = 0; i < nToFlatten; i++) {
             merge();
         }
+
+        new HistoryStateFlattenAll(nToFlatten);
     }
     else {
         // Getting all the visible layers
@@ -382,7 +385,7 @@ function merge(saveHistory = true) {
                 layerBelow.context.getImageData(0, 0, layerBelow.canvasSize[0], layerBelow.canvasSize[1]),
                 layerBelow);
         }
-        
+
         mergeLayers(currentLayer.context, toMerge.context);
 
         // Deleting the above layer

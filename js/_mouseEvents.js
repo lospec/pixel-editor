@@ -9,7 +9,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	canDraw = true;
 
 	//if no document has been created yet, or this is a dialog open, or the currentLayer is locked
-	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
+	if (!documentCreated || dialogueOpen || currentLayer.isLocked || !currentLayer.isVisible) return;
 	//prevent right mouse clicks and such, which will open unwanted menus
 	//mouseEvent.preventDefault();
 
@@ -35,7 +35,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		
 		currentTool.updateCursor();
 
-		if (!currentLayer.isLocked && canDraw) {
+		if (!currentLayer.isLocked && !currentLayer.isVisible && canDraw) {
 			draw(mouseEvent);
 		}
 	}
@@ -71,7 +71,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		currentLayer.closeOptionsMenu();	
 	}
 
-	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
+	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -184,7 +184,7 @@ function draw (mouseEvent) {
 	var cursorLocation = lastMousePos;
 
 	//if a document hasnt yet been created or the current layer is locked, exit this function
-	if (!documentCreated || dialogueOpen || currentLayer.isLocked) return;
+	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 
 	eyedropperPreview.style.display = 'none';

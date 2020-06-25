@@ -7,8 +7,27 @@ function HistoryStateFlattenVisible() {
     // undo the merge for the number of layers that have been flattened
 }
 
-function HistoryStateFlattenAll() {
-    // undo the merge for the number of layers that have been flattened
+function HistoryStateFlattenAll(nFlattened) {
+    this.nFlattened = nFlattened;
+
+    this.undo = function() {
+        console.log(nFlattened);
+        for (let i=0; i<nFlattened - 2; i++) {
+            undo();
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        for (let i=0; i<nFlattened - 2; i++) {
+            redo();
+        }
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
 }
 
 function HistoryStateMergeLayer(aboveIndex, aboveLayer, belowData, belowLayer) {
@@ -16,7 +35,7 @@ function HistoryStateMergeLayer(aboveIndex, aboveLayer, belowData, belowLayer) {
     this.belowData = belowData;
     this.aboveLayer = aboveLayer;
     this.belowLayer = belowLayer;
-    // todo
+
     this.undo = function() {
         layerList.insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
         canvasView.append(this.aboveLayer.canvas);
@@ -134,7 +153,6 @@ function HistoryStateEditCanvas () {
     this.layerID = currentLayer.id;
 
     this.undo = function () {
-        console.log("CHE COSA STA SUCCEDENDOOOOOO STA CAMBIANDO IL MONDOOOOO");
         var stateLayer = getLayerByID(this.layerID);
         var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
         stateLayer.context.putImageData(this.canvasState, 0, 0);
@@ -258,9 +276,6 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
 
 //rename to add undo state
 function saveHistoryState (state) {
-    //console.log('%csaving history state', undoLogStyle);
-    //console.log(state);
-
     //get current canvas data and save to undoStates array
     undoStates.push(state);
 
@@ -274,9 +289,6 @@ function saveHistoryState (state) {
 
     //there should be no redoStates after an undoState is saved
     redoStates = [];
-
-    //console.log(undoStates);
-    //console.log(redoStates);
 }
 
 function undo () {
@@ -284,26 +296,22 @@ function undo () {
 
     //if there are any states saved to undo
     if (undoStates.length > 0) {
-        console.log("UUUEEEEEEEEEEE");
         document.getElementById('redo-button').classList.remove('disabled');
 
         //get state 
         var undoState = undoStates[undoStates.length-1];
         //console.log(undoState);
 
-        //restore the state
-        undoState.undo();
-
         //remove from the undo list
         undoStates.splice(undoStates.length-1,1);
 
+        //restore the state
+        undoState.undo();
+        
         //if theres none left to undo, disable the option
         if (undoStates.length == 0) 
             document.getElementById('undo-button').classList.add('disabled');
     }
-
-    //console.log(undoStates);
-    //console.log(redoStates);
 }
 
 function redo () {
@@ -316,13 +324,12 @@ function redo () {
 
         //get state 
         var redoState = redoStates[redoStates.length-1];
-        //console.log(redoState);
+
+        //remove from redo array (do this before restoring the state, else the flatten state will break)
+        redoStates.splice(redoStates.length-1,1);
 
         //restore the state
         redoState.redo();
-
-        //remove from redo array
-        redoStates.splice(redoStates.length-1,1);
 
         //if theres none left to redo, disable the option
         if (redoStates.length == 0) 
