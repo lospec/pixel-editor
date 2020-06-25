@@ -1,18 +1,13 @@
 /** TODO LIST FOR LAYERS
     
     GENERAL REQUIREMENTS:
-    - When saving an artwork, the layers must be flattened to a temporary layer, which is then exported and deleted
     - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
       file for it to be opened right in the pixel editor
 
     HISTORY:
-    - Store states for every canvas
-    - Save add layer
-    - Save deleted layer
     - Save merge layers
     - Save flatten layers
-    - Save move layers
 
     OPTIONAL:
 
@@ -23,7 +18,6 @@
     THINGS TO TEST:
 
     1 - Undo / redo
-    4 - File export
 */
 
 /*
@@ -33,13 +27,7 @@
     - Resize sprite
     - Refactor the code so that every instance of "canvas" and "context" is replaced by currentLayer.canvas
       and currentLayer.context
-    - Refactor and replace the merge layer algorithm with a general function in _pixelEditorUtility.js
 */
-
-// Instead of saving the whole entry, just save their IDs and swap the elements at the end of the drop
-// TODO: add id management. IDs are assigned incrementally, when a layer is deleted its id should be 
-// claimable by the new layers: add a queue to push the ids of the deleted layers to
-
 
 let layerList;
 let layerListEntry;
@@ -377,21 +365,24 @@ function flatten(onlyVisible) {
     }
 }
 
-function merge(event) {
+function merge(saveHistory = true) {
     // Saving the layer that should be merged
     let toMerge = currentLayer;
     let toMergeIndex = layers.indexOf(toMerge);
     // Getting layer below
     let layerBelow = getLayerByID(currentLayer.menuEntry.nextElementSibling.id);
-
-    console.log("YEEEEUUE");
-    console.log(layerBelow);
-
+    
     // If I have something to merge with
     if (layerBelow != null) {
         // Selecting that layer
         layerBelow.selectLayer();
 
+        if (saveHistory) {
+            new HistoryStateMergeLayer(toMergeIndex, toMerge, 
+                layerBelow.context.getImageData(0, 0, layerBelow.canvasSize[0], layerBelow.canvasSize[1]),
+                layerBelow);
+        }
+        
         mergeLayers(currentLayer.context, toMerge.context);
 
         // Deleting the above layer

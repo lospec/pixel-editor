@@ -11,8 +11,33 @@ function HistoryStateFlattenAll() {
     // undo the merge for the number of layers that have been flattened
 }
 
-function HistoryStateMergeLayer() {
+function HistoryStateMergeLayer(aboveIndex, aboveLayer, belowData, belowLayer) {
+    this.aboveIndex = aboveIndex;
+    this.belowData = belowData;
+    this.aboveLayer = aboveLayer;
+    this.belowLayer = belowLayer;
     // todo
+    this.undo = function() {
+        layerList.insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
+        canvasView.append(this.aboveLayer.canvas);
+
+        belowLayer.context.clearRect(0, 0, this.belowLayer.canvasSize[0], this.belowLayer.canvasSize[1]);
+        belowLayer.context.putImageData(this.belowData, 0, 0);
+        belowLayer.updateLayerPreview();
+
+        layers.splice(this.aboveIndex, 0, this.aboveLayer);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        aboveLayer.selectLayer();
+        merge(false);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
 }
 
 function HistoryStateRenameLayer(oldName, newName, layer) {
