@@ -3,16 +3,11 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
-function HistoryStateFlattenVisible() {
-    // undo the merge for the number of layers that have been flattened
-}
-
-function HistoryStateFlattenAll(nFlattened) {
-    this.nFlattened = nFlattened;
+function HistoryStateFlattenVisible(flattened) {
+    this.nFlattened = flattened;
 
     this.undo = function() {
-        console.log(nFlattened);
-        for (let i=0; i<nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened; i++) {
             undo();
         }
 
@@ -20,7 +15,67 @@ function HistoryStateFlattenAll(nFlattened) {
     };
 
     this.redo = function() {
-        for (let i=0; i<nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened; i++) {
+            redo();
+        }
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateFlattenTwoVisibles(belowImageData, beforeAbove, layerIndex, aboveLayer, belowLayer) {
+    this.aboveLayer = aboveLayer;
+    this.belowLayer = belowLayer;
+    this.belowImageData = belowImageData;
+
+    this.undo = function() {
+        // SCEMOOOO DEVI METTERCI PURE I PIXELSSSS
+        canvasView.append(aboveLayer.canvas);
+        if (beforeAbove != null) {
+            layerList.insertBefore(aboveLayer.menuEntry, beforeAbove.menuEntry);
+        }
+        else {
+            layerList.prepend(aboveLayer.menuEntry);
+        }
+
+        belowLayer.context.clearRect(0, 0, belowLayer.canvasSize[0], belowLayer.canvasSize[1]);
+        belowLayer.context.putImageData(this.belowImageData, 0, 0);
+        belowLayer.updateLayerPreview();
+
+        layers.splice(layerIndex, 0, aboveLayer);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        mergeLayers(belowLayer.context, aboveLayer.context);
+
+        // Deleting the above layer
+        aboveLayer.canvas.remove();
+        aboveLayer.menuEntry.remove();
+        layers.splice(layers.indexOf(aboveLayer), 1);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateFlattenAll(nFlattened) {
+    this.nFlattened = nFlattened;
+
+    this.undo = function() {
+        for (let i=0; i<this.nFlattened - 2; i++) {
+            undo();
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        for (let i=0; i<this.nFlattened - 2; i++) {
             redo();
         }
 

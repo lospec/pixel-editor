@@ -341,6 +341,7 @@ function flatten(onlyVisible) {
     else {
         // Getting all the visible layers
         let visibleLayers = [];
+        let nToFlatten = 0;
 
         for (let i=0; i<layers.length; i++) {
             if (layers[i].menuEntry != null && layers[i].isVisible) {
@@ -355,6 +356,14 @@ function flatten(onlyVisible) {
 
         // Merging all the layer but the last one
         for (let i=0; i<visibleLayers.length - 1; i++) {
+            nToFlatten++;
+            new HistoryStateFlattenTwoVisibles(
+                visibleLayers[i + 1].context.getImageData(0, 0, visibleLayers[i].canvasSize[0], visibleLayers[i].canvasSize[1]),
+                visibleLayers[i].menuEntry.previousElementSibling,
+                layers.indexOf(visibleLayers[i]),
+                visibleLayers[i], visibleLayers[i + 1]
+            );
+
             mergeLayers(visibleLayers[i + 1].context, visibleLayers[i].context);
 
             // Deleting the above layer
@@ -363,6 +372,7 @@ function flatten(onlyVisible) {
             layers.splice(layers.indexOf(visibleLayers[i]), 1);
         }
 
+        new HistoryStateFlattenVisible(nToFlatten);
         // Updating the layer preview
         currentLayer.updateLayerPreview();
     }
