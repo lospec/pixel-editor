@@ -12,6 +12,7 @@ The next version is mostly focused on adding missing essential features and port
 
 Suggestions / Planned features:
 
+- Save project while keeping layer data 
 - Line tool
 - Resize canvas
 - Snap brush preview to pixel grid
