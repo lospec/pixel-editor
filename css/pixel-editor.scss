@@ -70,6 +70,24 @@ body {
 }
 
 #layers-menu {
+  &::-webkit-scrollbar {
+    background: #232125;
+    width: 1em;
+  }
+  &::-webkit-scrollbar-track {
+      margin-top: -0.125em;
+      width: 1em;
+  }
+  &::-webkit-scrollbar-thumb {
+      background: #332f35;
+      border-radius: 0.25em;
+      border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+  }
+  &::-webkit-scrollbar-corner {
+      background: #232125;
+  }
+    scrollbar-color: #332f35 #232125;
+  scroll-behavior: smooth;
   width:200px;
   top: 48px;
   bottom: 0;
