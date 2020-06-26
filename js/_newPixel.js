@@ -41,11 +41,6 @@ function newPixel (width, height, palette) {
 	    canvas = currentLayer.canvas;
 	    context = currentLayer.context;
 	    canvas.style.zIndex = 2;
-
-		// TODO: clean layers before creating a new pixel
-		// Devo togliere tutte le entries tranne la prima
-		// Devo pulire la preview della prima entry
-		// Devo cancellare tutte le tele tranne quella con id pixel-canvas
 	}
 
     // Adding the checkerboard behind it

@@ -1,5 +1,4 @@
 var currentMouseEvent;
-// TODO: replace every position calculation with lastMousePos
 var lastMousePos;
 
 //mousedown - start drawing
@@ -75,7 +74,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
-		// TODO: adjust so that if the picked colour is transparent, the underlying layer is checked
 		var selectedColor = getEyedropperColor(cursorLocation);
 		var newColor = rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
 
@@ -96,8 +94,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 	      	//set current color
 
-	      	// TODO: set it for all the layers
-	      	context.fillStyle = '#'+newColor;
+			for (let i=2; i<layers.length; i++) {
+				layers[i].context.fillStyle = '#' + newColor;
+			}
 
 	      	//make color selected
 	      	colors[i].parentElement.classList.add('selected');

@@ -5,28 +5,9 @@
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
       file for it to be opened right in the pixel editor
 
-    HISTORY:
-    - Save merge layers
-    - Save flatten layers
-
     OPTIONAL:
 
     1 - Fix issues 
-    2 - Add a Replace feature so that people can replace a colour without editing the one in the palette
-        (right click->replace colour in layers? in that case we'd have to implement multiple layers selection)
-
-    THINGS TO TEST:
-
-    1 - Undo / redo
-*/
-
-/*
-    MORE TODO LIST:
-
-    - Resize canvas (must make a simple editor to preview the changes)
-    - Resize sprite
-    - Refactor the code so that every instance of "canvas" and "context" is replaced by currentLayer.canvas
-      and currentLayer.context
 */
 
 let layerList;
@@ -125,6 +106,7 @@ class Layer {
     }
 
     layerDragStart(element) {
+        layerList.children[layerList.childElementCount - 2].setAttribute("draggable", "true");
         layerDragSource = this;
         element.dataTransfer.effectAllowed = 'move';
         element.dataTransfer.setData('text/html', this.id);
@@ -168,6 +150,7 @@ class Layer {
 
     layerDragEnd(element) {
         this.classList.remove('layerdragover');
+        layerList.children[layerList.childElementCount - 2].setAttribute("draggable", "false");
     }    
 
     // Resizes canvas
@@ -462,19 +445,14 @@ function renameLayer(event) {
 
 // Swaps two layer entries in the layer menu
 function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
-    let entry1 = document.getElementById(toDropLayer);
-    let entry2 = document.getElementById(staticLayer);
-
     let toDrop = getLayerByID(toDropLayer);
     let static = getLayerByID(staticLayer);
     let layerCopy = layers;
-    let tmpZIndex;
 
-    let after2 = entry2.nextSibling;
-    let parent = entry1.parentNode;
+    let beforeToDrop = toDrop.menuEntry.nextElementSibling;
+    let nMoved = 0;
 
     layerCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
-    console.log(layerCopy.map(a => a.canvas.style.zIndex));
 
     let toDropIndex = layerCopy.indexOf(toDrop);
     let staticIndex = layerCopy.indexOf(static);
@@ -482,17 +460,30 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
     layerList.insertBefore(toDrop.menuEntry, static.menuEntry);
 
     if (toDropIndex < staticIndex) {
-        console.log("UO");
         let tmp = toDrop.canvas.style.zIndex;
         let tmp2;
 
         for (let i=toDropIndex+1; i<=staticIndex; i++) {
             tmp2 = layerCopy[i].canvas.style.zIndex;
+
+            if (saveHistory) {
+                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
+            }
+
             layerCopy[i].canvas.style.zIndex = tmp;
             tmp = tmp2;
+            nMoved++;
+        }
+
+        if (saveHistory) {
+            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
         }
 
         toDrop.canvas.style.zIndex = tmp;
+        
+        if (saveHistory) {
+            new HistoryStateMoveLayer(beforeToDrop, toDrop, static, nMoved);
+        }
     }
     else {
         // BUG QUI
@@ -501,35 +492,26 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
 
         for (let i=toDropIndex-1; i>staticIndex; i--) {
             tmp2 = layerCopy[i].canvas.style.zIndex;
+
+            if (saveHistory) {
+                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
+            }
+
             layerCopy[i].canvas.style.zIndex = tmp;
             tmp = tmp2;
+            nMoved++;
+        }
+
+        if (saveHistory) {
+            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
         }
 
         toDrop.canvas.style.zIndex = tmp;
-    }
 
-    /*
-    console.log("id1: " + toDrop + ", id2: " + static);
-
-    tmpZIndex = layer1.canvas.style.zIndex;
-    layer1.canvas.style.zIndex = layer2.canvas.style.zIndex;
-    layer2.canvas.style.zIndex = tmpZIndex;
-
-    parent.insertBefore(entry2, entry1);
-
-    if (after2) {
-        if (after2 == entry1) {
-            parent.prepend(entry1);
+        if (saveHistory) {
+            new HistoryStateMoveLayer(beforeToDrop, toDrop, static, nMoved);
         }
-        else {
-            parent.insertBefore(entry1, after2);
-        }
-    } else {
-       parent.appendChild(entry1);
-    }
-    */
-   if (saveHistory) { 
-        new HistoryStateMoveLayer(toDrop, static);
+
     }
 }
 

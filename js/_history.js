@@ -162,17 +162,47 @@ function HistoryStateDeleteLayer(layerData, before, index) {
     saveHistoryState(this);
 }
 
-function HistoryStateMoveLayer(layer1, layer2) {
-    this.layer1 = layer1;
-    this.layer2 = layer2;
+function HistoryStateMoveTwoLayers(layer, oldIndex, newIndex) {
+    this.layer = layer;
+    this.oldIndex = oldIndex;
+    this.newIndex = newIndex;
 
     this.undo = function() {
-        swapLayerEntries(layer1, layer2, false);
+        layer.canvas.style.zIndex = oldIndex;
         redoStates.push(this);
     };
 
     this.redo = function() {
-        swapLayerEntries(layer1, layer2, false);
+        layer.canvas.style.zIndex = newIndex;
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateMoveLayer(afterToDrop, toDrop, static, nMoved) {
+    this.beforeToDrop = afterToDrop;
+    this.toDrop = toDrop;
+
+    this.undo = function() {
+        toDrop.menuEntry.remove();
+
+        if (afterToDrop != null) {
+            layerList.insertBefore(toDrop.menuEntry, afterToDrop)
+        }
+        else {
+            layerList.append(toDrop.menuEntry);
+        }
+
+        for (let i=0; i<nMoved; i++) {
+            undo();
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        moveLayers(toDrop.menuEntry.id, static.menuEntry.id, true);
         undoStates.push(this);
     };
 
