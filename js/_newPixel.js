@@ -1,6 +1,7 @@
 let firstPixel = true;
 
 function newPixel (width, height, palette) {
+	currentPalette = [];
 	if (firstPixel) {
 		layerList = document.getElementById("layers-menu");
 		layerListEntry = layerList.firstElementChild;
@@ -115,7 +116,7 @@ function newPixel (width, height, palette) {
 	closeDialogue();
 	currentTool.updateCursor();
 
-	document.getElementById('save-as-button').classList.remove('disabled');
+	document.getElementById('export-button').classList.remove('disabled');
 	documentCreated = true;
 
 	firstPixel = false;

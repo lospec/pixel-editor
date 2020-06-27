@@ -12,11 +12,11 @@ The next version is mostly focused on adding missing essential features and port
 
 Suggestions / Planned features:
 
-- Save project while keeping layer data 
 - Line tool
 - Resize canvas
 - Snap brush preview to pixel grid
 - Move selection with arrows
+- Load palette from LPE file
 
 - Custom color picker
     - custom code without dependencies
@@ -36,7 +36,7 @@ Suggestions / Planned features:
     - Another currentLayer.canvas
     - Must be rescaled each zoom
 
-- Possibly add collaborate function using together.js
+- Possibly add collaborate function
 - Bug fix
     - Alt + scroll broken
 

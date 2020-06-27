@@ -55,6 +55,7 @@ class Layer {
         this.id = "layer" + id;     
 
         if (menuEntry != null) {
+            this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
             menuEntry.id = "layer" + id;
             menuEntry.onclick = () => this.selectLayer();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
@@ -195,7 +196,10 @@ class Layer {
         isRenamingLayer = false;
 
         if (oldLayerName != null) {
-            new HistoryStateRenameLayer(oldLayerName, this.menuEntry.getElementsByTagName("p")[0].innerHTML, currentLayer);
+            let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
+            this.name = name;
+
+            new HistoryStateRenameLayer(oldLayerName, name, currentLayer);
             oldLayerName = null;
         }
     }
@@ -333,16 +337,17 @@ function flatten(onlyVisible) {
         }
 
         // Sorting them by z-index
-        visibleLayers.sort((a, b) => (a.canvas.zIndex > b.canvas.zIndex) ? -1 : 1);
+        visibleLayers.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? -1 : 1);
         // Selecting the last visible layer (the only one that won't get deleted)
         visibleLayers[visibleLayers.length - 1].selectLayer();
 
         // Merging all the layer but the last one
         for (let i=0; i<visibleLayers.length - 1; i++) {
             nToFlatten++;
+            console.log(visibleLayers[i].menuEntry.nextElementSibling);
             new HistoryStateFlattenTwoVisibles(
                 visibleLayers[i + 1].context.getImageData(0, 0, visibleLayers[i].canvasSize[0], visibleLayers[i].canvasSize[1]),
-                visibleLayers[i].menuEntry.previousElementSibling,
+                visibleLayers[i].menuEntry.nextElementSibling,
                 layers.indexOf(visibleLayers[i]),
                 visibleLayers[i], visibleLayers[i + 1]
             );
@@ -572,7 +577,6 @@ function addLayer(id, saveHistory = true) {
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
 
     if (id != null && typeof(id) == "string") {
-        console.log("imposto");
         newLayer.setID(id);
     }
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history

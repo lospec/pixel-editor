@@ -43,8 +43,9 @@
             <button>File</button>
             <ul>
                 <li><button>New</button></li>
+                <li><button>Save project</button></li>
                 <li><button>Open</button></li>
-                <li><button id="save-as-button" class="disabled">Save as...</button></li>
+                <li><button id="export-button" class="disabled">Export</button></li>
                 <li><a href="/pixel-editor">Exit</a></li>
             </ul>
         </li>
@@ -149,8 +150,7 @@
                 </li>
             </ul>
 
-            <p>Layer 0
-                <div class = "gradient"></div></p>
+            <p>Layer 0<div class = "gradient"></div></p>
         </li>
 
         <li>
@@ -158,24 +158,24 @@
                 {{svg "plus.svg" width="20" height="20"}} Add layer
             </button>
         </li>
+    </ul>
 
-        <ul id = "layer-properties-menu">
-            <li>
-                <button onclick = "deleteLayer()">Delete</button>
-            </li>
-            <li>
-                <button onclick = "renameLayer()">Rename</button>
-            </li>
-            <li>
-                <button onclick = "merge()">Merge below</button>
-            </li>
-            <li> 
-                <button onclick = "flatten(true)">Flatten visible</button>
-            </li>
-            <li>
-                <button onclick = "flatten(false)">Flatten all</button>
-            </li>
-        </ul>
+    <ul id = "layer-properties-menu">
+        <li>
+            <button onclick = "deleteLayer()">Delete</button>
+        </li>
+        <li>
+            <button onclick = "renameLayer()">Rename</button>
+        </li>
+        <li>
+            <button onclick = "merge()">Merge below</button>
+        </li>
+        <li> 
+            <button onclick = "flatten(true)">Flatten visible</button>
+        </li>
+        <li>
+            <button onclick = "flatten(false)">Flatten all</button>
+        </li>
     </ul>
 
     <div id="eyedropper-preview"></div>
@@ -192,7 +192,8 @@
 
     <div id="data-holders">
       <a id="save-image-link-holder" href="#">dl</a>
-      <input id="open-image-browse-holder" type="file" accept="image/png, image/gif"/>
+      <a id="save-project-link-holder" href="#">dl</a>
+      <input id="open-image-browse-holder" type="file" accept="image/png, image/gif, .lpe"/>
       <input id="load-palette-browse-holder" type="file" accept="image/png, image/gif"/>
       <canvas id="load-palette-canvas-holder"></canvas>
     </div>

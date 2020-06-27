@@ -34,6 +34,29 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                 case 'New':
                     showDialogue('new-pixel');
                     break;
+                case 'Save project':
+                    //create name
+                    var selectedPalette = getText('palette-button');
+                    if (selectedPalette != 'Choose a palette...'){
+                        var paletteAbbreviation = palettes[selectedPalette].abbreviation;
+                        var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+                    } else {
+                        var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+                        selectedPalette = 'none';
+                    }
+
+                    //set download link
+                    var linkHolder = document.getElementById('save-project-link-holder');
+                    // create file content
+                    var content = getProjectData();
+
+                    linkHolder.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+                    linkHolder.download = fileName;
+                    linkHolder.click();
+
+                    ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+
+                    break;
                 case 'Open':
                     //if a document exists
                     if (documentCreated) {
@@ -48,9 +71,8 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
                     break;
 
-                case 'Save as...':
+                case 'Export':
                     if (documentCreated) {
-
                         //create name
                         var selectedPalette = getText('palette-button');
                         if (selectedPalette != 'Choose a palette...'){
@@ -66,7 +88,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                         // Creating a tmp canvas to flatten everything
                         var exportCanvas = document.createElement("canvas");
                         var emptyCanvas = document.createElement("canvas");
-                        var layersCopy = layers.slice();;
+                        var layersCopy = layers.slice();
 
                         exportCanvas.width = canvasSize[0];
                         exportCanvas.height = canvasSize[1];
@@ -75,7 +97,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                         emptyCanvas.height = canvasSize[1];
 
                         // Sorting the layers by z index
-                        layersCopy.sort((a, b) => (a.canvas.zIndex > b.canvas.zIndex) ? 1 : -1);
+                        layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
 
                         // Merging every layer on the export canvas
                         for (let i=0; i<layersCopy.length; i++) {
@@ -100,7 +122,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                         exportCanvas.remove();
 
                         //track google event
-                        ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+                        ga('send', 'event', 'Pixel Editor Export', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
                     }
 
                     break;
@@ -149,7 +171,6 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     break;
                     //Help Menu
                 case 'Settings':
-
                     //fill form with current settings values
                     setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
 
@@ -177,4 +198,28 @@ function closeMenu () {
     for (var i = 0; i < mainMenuItems.length; i++) {
         deselect(mainMenuItems[i]);
     }
+}
+
+function getProjectData() {
+    // use a dictionary
+    let dictionary = [];
+    // store canvas size
+    dictionary.push({key: "canvasWidth", value: currentLayer.canvasSize[0]});
+    dictionary.push({key: "canvasHeight", value: currentLayer.canvasSize[1]});
+    // store palette
+    for (let i=0; i<currentPalette.length; i++) {
+        dictionary.push({key: "color" + i, value: currentPalette[i]});
+    }
+    // store layers 
+    for (let i=0; i<layers.length; i++) {
+        // Only saving the layers the user has access to (no vfx, tmp or checkerboard layers)
+        if (layers[i].menuEntry != null) {
+            dictionary.push({key: "layer" + i, value: layers[i]});
+            dictionary.push({key: "layer" + i + "ImageData", 
+                value: layers[i].canvas.toDataURL()
+            });
+        }
+    }
+    
+    return JSON.stringify(dictionary);
 }

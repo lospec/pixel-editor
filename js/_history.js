@@ -25,20 +25,15 @@ function HistoryStateFlattenVisible(flattened) {
     saveHistoryState(this);
 }
 
-function HistoryStateFlattenTwoVisibles(belowImageData, beforeAbove, layerIndex, aboveLayer, belowLayer) {
+function HistoryStateFlattenTwoVisibles(belowImageData, afterAbove, layerIndex, aboveLayer, belowLayer) {
     this.aboveLayer = aboveLayer;
     this.belowLayer = belowLayer;
     this.belowImageData = belowImageData;
 
     this.undo = function() {
-        // SCEMOOOO DEVI METTERCI PURE I PIXELSSSS
+        console.log(afterAbove.menuEntry);
         canvasView.append(aboveLayer.canvas);
-        if (beforeAbove != null) {
-            layerList.insertBefore(aboveLayer.menuEntry, beforeAbove.menuEntry);
-        }
-        else {
-            layerList.prepend(aboveLayer.menuEntry);
-        }
+        layerList.insertBefore(aboveLayer.menuEntry, afterAbove);
 
         belowLayer.context.clearRect(0, 0, belowLayer.canvasSize[0], belowLayer.canvasSize[1]);
         belowLayer.context.putImageData(this.belowImageData, 0, 0);
