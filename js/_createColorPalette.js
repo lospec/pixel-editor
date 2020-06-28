@@ -1,9 +1,11 @@
 
-function createColorPalette(selectedPalette, fillBackground) {
+function createColorPalette(selectedPalette, fillBackground, deletePreviousPalette = true) {
     //remove current palette
-    colors = document.getElementsByClassName('color-button');
-    while (colors.length > 0) {
-        colors[0].parentElement.remove();
+    if (deletePreviousPalette) {
+        colors = document.getElementsByClassName('color-button');
+        while (colors.length > 0) {
+            colors[0].parentElement.remove();
+        }
     }
 
     var lightestColor = '#000000';
@@ -31,9 +33,49 @@ function createColorPalette(selectedPalette, fillBackground) {
 
             darkestColor = newColor;
         }
-
     }
 
     //set as current color
     currentLayer.context.fillStyle = darkestColor;
+}
+
+function createPaletteFromLayers() {
+    let colors = {};
+
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            let imageData = layers[i].context.getImageData(0, 0, layers[i].canvasSize[0], layers[i].canvasSize[1]).data;
+            let dataLength = imageData.length;
+
+            for (let j=0; j<dataLength; j += 4) {
+                if (!isPixelEmpty(imageData[j])) {
+                    let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
+
+                    if (!colors[color]) {
+                        colors[color] = {r:imageData[j],g:imageData[j + 1],b:imageData[j + 2]};
+
+                        //don't allow more than 256 colors to be added
+                        if (Object.keys(colors).length >= settings.maxColorsOnImportedImage) {
+                            alert('The image loaded seems to have more than '+settings.maxColorsOnImportedImage+' colors.');
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    console.log(colors);
+
+    //create array out of colors object
+    let colorPaletteArray = [];
+    for (let color in colors) {
+        if (colors.hasOwnProperty(color)) {
+            colorPaletteArray.push('#'+rgbToHex(colors[color]));
+        }
+    }
+    console.log('COLOR PALETTE ARRAY', colorPaletteArray);
+
+    //create palette form colors array
+    createColorPalette(colorPaletteArray, false);
 }

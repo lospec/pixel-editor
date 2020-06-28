@@ -17,6 +17,7 @@ Suggestions / Planned features:
 - Snap brush preview to pixel grid
 - Move selection with arrows
 - Load palette from LPE file
+- Move colours in palette editor
 
 - Custom color picker
     - custom code without dependencies

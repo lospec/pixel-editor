@@ -107,7 +107,6 @@ class Layer {
     }
 
     layerDragStart(element) {
-        layerList.children[layerList.childElementCount - 2].setAttribute("draggable", "true");
         layerDragSource = this;
         element.dataTransfer.effectAllowed = 'move';
         element.dataTransfer.setData('text/html', this.id);
@@ -151,7 +150,6 @@ class Layer {
 
     layerDragEnd(element) {
         this.classList.remove('layerdragover');
-        layerList.children[layerList.childElementCount - 2].setAttribute("draggable", "false");
     }    
 
     // Resizes canvas
@@ -452,7 +450,7 @@ function renameLayer(event) {
 function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
     let toDrop = getLayerByID(toDropLayer);
     let static = getLayerByID(staticLayer);
-    let layerCopy = layers;
+    let layerCopy = layers.slice();
 
     let beforeToDrop = toDrop.menuEntry.nextElementSibling;
     let nMoved = 0;
@@ -547,6 +545,7 @@ function getLayerByID(id) {
 }
 
 function addLayer(id, saveHistory = true) {
+    // layers.length - 3
     let index = layers.length - 3;
     // Creating a new canvas
     let newCanvas = document.createElement("canvas");
@@ -583,4 +582,6 @@ function addLayer(id, saveHistory = true) {
     if (saveHistory) {
         new HistoryStateAddLayer(newLayer, index);
     }
+
+    return newLayer;
 }

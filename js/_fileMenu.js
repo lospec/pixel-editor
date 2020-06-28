@@ -202,22 +202,27 @@ function closeMenu () {
 
 function getProjectData() {
     // use a dictionary
-    let dictionary = [];
+    let dictionary = {};
+    // sorting layers by increasing z-index
+    let layersCopy = layers.slice();
+    layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
     // store canvas size
-    dictionary.push({key: "canvasWidth", value: currentLayer.canvasSize[0]});
-    dictionary.push({key: "canvasHeight", value: currentLayer.canvasSize[1]});
+    dictionary['canvasWidth'] = currentLayer.canvasSize[0];
+    dictionary['canvasHeight'] = currentLayer.canvasSize[1];
     // store palette
     for (let i=0; i<currentPalette.length; i++) {
-        dictionary.push({key: "color" + i, value: currentPalette[i]});
+        dictionary["color" + i] = currentPalette[i];
     }
+
+    // Store number of layers
+    dictionary["nLayers"] = layersCopy.length;
+
     // store layers 
-    for (let i=0; i<layers.length; i++) {
+    for (let i=0; i<layersCopy.length; i++) {
         // Only saving the layers the user has access to (no vfx, tmp or checkerboard layers)
-        if (layers[i].menuEntry != null) {
-            dictionary.push({key: "layer" + i, value: layers[i]});
-            dictionary.push({key: "layer" + i + "ImageData", 
-                value: layers[i].canvas.toDataURL()
-            });
+        if (layersCopy[i].menuEntry != null) {
+            dictionary["layer" + i] = layersCopy[i];
+            dictionary["layer" + i + "ImageData"] = layersCopy[i].canvas.toDataURL();
         }
     }
     

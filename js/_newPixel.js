@@ -1,6 +1,6 @@
 let firstPixel = true;
 
-function newPixel (width, height, palette) {
+function newPixel (width, height, palette, fileContent = null) {
 	currentPalette = [];
 	if (firstPixel) {
 		layerList = document.getElementById("layers-menu");
@@ -74,7 +74,7 @@ function newPixel (width, height, palette) {
 
 	//add colors from selected palette
 	var selectedPalette = getText('palette-button');
-	if (selectedPalette != 'Choose a palette...') {
+	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
 
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
@@ -82,32 +82,31 @@ function newPixel (width, height, palette) {
 
 		//fill the palette with specified palette
 		createColorPalette(palettes[selectedPalette].colors,true);
-		fillCheckerboard();
 	}
-	else {
-	  //this wasn't a specified palette, so reset the url
-	  history.pushState(null, null, '/pixel-editor/app');
+	else if (fileContent == null) {
+		//this wasn't a specified palette, so reset the url
+		history.pushState(null, null, '/pixel-editor/app');
 
-	  //generate default colors
-	  var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
-	  var bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
+		//generate default colors
+		var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
+		var bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
 
-	  //convert colors to hex
-	  var defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
-	  var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
+		//convert colors to hex
+		var defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
+		var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
 
-	  //add colors to paletee
-	  addColor(defaultForegroundColor).classList.add('selected');
-	  addColor(defaultBackgroundColor);
-
-    	//fill background of canvas with bg color
-		fillCheckerboard();
+		//add colors to palette
+		addColor(defaultForegroundColor).classList.add('selected');
+		addColor(defaultBackgroundColor);
 
 		//set current drawing color as foreground color
 		currentLayer.context.fillStyle = '#'+defaultForegroundColor;
 		currentGlobalColor = '#' + defaultForegroundColor;
 		selectedPalette = 'none';
 	}
+
+	//fill background of canvas with bg color
+	fillCheckerboard();
 
 	//reset undo and redo states
 	undoStates = [];
@@ -120,4 +119,43 @@ function newPixel (width, height, palette) {
 	documentCreated = true;
 
 	firstPixel = false;
+
+	if (fileContent != null) {
+		console.log(fileContent);
+		for (let i=0; i<fileContent['nLayers']; i++) {
+			let layerData = fileContent['layer' + i];
+			let layerImage = fileContent['layer' + i + 'ImageData'];
+
+			if (layerData != null) {
+				// Setting id
+				let createdLayer = addLayer(layerData.id, false);
+				// Setting name
+				createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
+
+				// Adding the image (I can do that because they're sorted by increasing z-index)
+				let img = new Image();
+				img.onload = function() {
+					createdLayer.context.drawImage(img, 0, 0);
+					createdLayer.updateLayerPreview();
+
+					if (i == (fileContent['nLayers'] - 1)) {
+						createPaletteFromLayers();
+					}
+				};				
+
+				img.src = layerImage;
+
+				// Setting visibility and lock options
+				if (!layerData.isVisible) {
+					createdLayer.hide();
+				}
+				if (layerData.isLocked) {
+					createdLayer.lock();
+				}
+			}
+		}
+
+		// Deleting the default layer
+		deleteLayer(false);
+	}
 }
