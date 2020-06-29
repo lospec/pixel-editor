@@ -19,6 +19,7 @@ Suggestions / Planned features:
 - Load palette from LPE file
 - Move colours in palette editor
 - Duplicate layer
+- Hide non-hovered layers
 
 - Custom color picker
     - custom code without dependencies
