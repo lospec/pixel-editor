@@ -18,6 +18,7 @@ Suggestions / Planned features:
 - Move selection with arrows
 - Load palette from LPE file
 - Move colours in palette editor
+- Duplicate layer
 
 - Custom color picker
     - custom code without dependencies
