@@ -19,6 +19,7 @@
 //=include _settings.js
 
 /**dropdown formatting**/
+//=include _editorMode.js
 //=include _presets.js
 //=include _palettes.js
 

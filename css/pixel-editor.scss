@@ -911,6 +911,14 @@ svg {
   font-style: italic;
 }
 
+#editor-mode-info {
+  font-style:italic;
+}
+
+#editor-mode {
+  display:none;
+}
+
 #compatibility-warning {
   display: flex;
   justify-content: center;

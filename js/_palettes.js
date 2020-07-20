@@ -44,7 +44,6 @@ on('click', 'load-palette-button', function () {
 
 
 
-
 on('click', 'palette-button', function (e){
     toggle('palette-button');
     toggle('palette-menu');
@@ -55,6 +54,7 @@ on('click', 'palette-button', function (e){
 });
 
 on('click', 'new-pixel', function (){
+    deselect('editor-mode-menu');
     deselect('preset-button');
     deselect('preset-menu');
     deselect('palette-button');
