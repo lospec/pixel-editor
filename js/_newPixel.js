@@ -1,6 +1,8 @@
 let firstPixel = true;
 
-function newPixel (width, height, palette, fileContent = null) {
+function newPixel (width, height, editorMode, fileContent = null) {
+	pixelEditorMode = editorMode;
+
 	currentPalette = [];
 	if (firstPixel) {
 		layerList = document.getElementById("layers-menu");
@@ -121,7 +123,6 @@ function newPixel (width, height, palette, fileContent = null) {
 	firstPixel = false;
 
 	if (fileContent != null) {
-		console.log(fileContent);
 		for (let i=0; i<fileContent['nLayers']; i++) {
 			let layerData = fileContent['layer' + i];
 			let layerImage = fileContent['layer' + i + 'ImageData'];
@@ -157,5 +158,12 @@ function newPixel (width, height, palette, fileContent = null) {
 
 		// Deleting the default layer
 		deleteLayer(false);
+	}
+
+	if (pixelEditorMode == 'Basic') {
+		switchMode('Advanced', false);
+	}
+	else {
+		switchMode('Basic', false);
 	}
 }

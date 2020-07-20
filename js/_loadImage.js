@@ -12,7 +12,7 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
                 reader.onload = function (e) {
                     let dictionary = JSON.parse(e.target.result);
 
-                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], [], dictionary);
+                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary['editorMode'], dictionary);
                 }
             }
             else {
@@ -22,7 +22,7 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
                     var img = new Image();
                     img.onload = function() {
                         //create a new pixel with the images dimentions
-                        newPixel(this.width, this.height, []);
+                        newPixel(this.width, this.height, 'Advanced');
 
                         //draw the image onto the canvas
                         currentLayer.context.drawImage(img, 0, 0);

@@ -9,6 +9,45 @@ let modes = {
 
 let infoBox = document.getElementById('editor-mode-info');
 
+function switchMode(currentMode, mustConfirm = true) {
+    if (currentMode == 'Basic') {
+        // Switch to advanced ez pez lemon squez
+        document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
+		// Show the layer menus
+		layerList.style.display = "inline-block";
+		document.getElementById('layer-button').style.display = 'inline-block';
+		// Move the palette menu
+        document.getElementById('colors-menu').style.right = '200px';
+        
+        pixelEditorMode = 'Advanced';
+    }
+    else {
+        // Switch to basic
+        if (mustConfirm) {
+            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+                return;
+            }
+        }
+
+        document.getElementById('switch-mode-button').innerHTML = 'Switch to advanced mode';
+		// Selecting the current layer
+		currentLayer.selectLayer();
+		// Flatten the layers
+		flatten(true);
+		// Hide the layer menus
+		layerList.style.display = 'none';
+		document.getElementById('layer-button').style.display = 'none';
+		// Move the palette menu
+		document.getElementById('colors-menu').style.right = '0px';
+
+		pixelEditorMode = 'Basic';
+    }
+}
+
+on('click', 'switch-mode-button', function (e) {
+    switchMode(pixelEditorMode);
+});
+
 // Makes the menu open
 on('click', 'editor-mode-button', function (e){
     //open or close the preset menu

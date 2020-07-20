@@ -2,7 +2,7 @@ on('click', 'create-button', function (){
     var width = getValue('size-width');
     var height = getValue('size-height');
     var mode = getValue("editor-mode");
-    newPixel(width,height,'asdfg');
+    newPixel(width, height, mode);
     document.getElementById('new-pixel-warning').style.display = 'block';
 
     //get selected palette name

@@ -206,18 +206,20 @@ function getProjectData() {
     // sorting layers by increasing z-index
     let layersCopy = layers.slice();
     layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
-    // store canvas size
+    // save canvas size
     dictionary['canvasWidth'] = currentLayer.canvasSize[0];
     dictionary['canvasHeight'] = currentLayer.canvasSize[1];
-    // store palette
+    // save editor mode
+    dictionary['editorMode'] = pixelEditorMode;
+    // save palette
     for (let i=0; i<currentPalette.length; i++) {
         dictionary["color" + i] = currentPalette[i];
     }
 
-    // Store number of layers
+    // save number of layers
     dictionary["nLayers"] = layersCopy.length;
 
-    // store layers 
+    // save layers 
     for (let i=0; i<layersCopy.length; i++) {
         // Only saving the layers the user has access to (no vfx, tmp or checkerboard layers)
         if (layersCopy[i].menuEntry != null) {
