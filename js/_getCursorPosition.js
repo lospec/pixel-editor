@@ -6,6 +6,8 @@ function getCursorPosition(e) {
     if (e.pageX != undefined && e.pageY != undefined) {
         x = e.pageX;
         y = e.pageY;
+
+        console.log("passato di qui");
     }
     else {
         x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
@@ -15,5 +17,5 @@ function getCursorPosition(e) {
     x -= canvas.offsetLeft;
     y -= canvas.offsetTop;
 
-    return [x,y];
+    return [Math.round(x), Math.round(y)];
 }

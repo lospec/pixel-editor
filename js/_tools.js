@@ -95,8 +95,8 @@ class Tool {
 	}
 
 	moveBrushPreview(cursorLocation) {
-		brushPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 + 'px';
-		brushPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 + 'px';
+		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2) + 'px';
+		brushPreview.style.top = (Math.ceil(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2) + 'px';
 	}
 }
 

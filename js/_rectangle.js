@@ -53,8 +53,6 @@ function endRectDrawing(mouseEvent) {
 		startRectY = tmp;
 	}
 
-	let hexColor = hexToRgb(currentLayer.context.fillStyle);
-
 	// Resetting this
 	isDrawingRect = false;
 	// Drawing the rect
