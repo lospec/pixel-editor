@@ -143,7 +143,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	else if (currentTool.name == 'rectselect' && isRectSelecting) {
 		endRectSelection(mouseEvent);
 	}
-	else if (currentTool.name == 'rectangle') {
+	else if (currentTool.name == 'rectangle' && isDrawingRect) {
 		endRectDrawing(mouseEvent);
 		currentLayer.updateLayerPreview();
 	}
