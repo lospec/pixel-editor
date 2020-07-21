@@ -4,7 +4,6 @@ let currentPalette = [];
 //input hex color string
 //returns list item element
 function addColor (newColor) {
-
     //add # at beginning if not present
     if (newColor.charAt(0) != '#')
         newColor = '#' + newColor;
@@ -18,13 +17,6 @@ function addColor (newColor) {
     button.style.backgroundColor = newColor;
     button.addEventListener('mouseup', clickedColor);
     listItem.appendChild(button);
-
-    /*
-        //create input to hold color value
-    var colorValue = document.createElement("input");
-    colorValue.classList.add("color-value");
-    listItem.appendChild(colorValue);
-    */
 
     //insert new listItem element at the end of the colors menu (right before add button)
     colorsMenu.insertBefore(listItem, colorsMenu.children[colorsMenu.children.length-1]);
