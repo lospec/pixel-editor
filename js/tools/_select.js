@@ -2,6 +2,7 @@
 
 new Tool('rectselect', {
 	cursor: 'crosshair',
+	brushPreview: true,
 });
 
 

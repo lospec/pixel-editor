@@ -8,9 +8,8 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		layerList = document.getElementById("layers-menu");
 		layerListEntry = layerList.firstElementChild;
 
-		// Setting up the current layer
 	    currentLayer = new Layer(width, height, canvas, layerListEntry);
-	    canvas.style.zIndex = 2;
+	    currentLayer.canvas.style.zIndex = 2;
 	}
 	else {
 		let nLayers = layers.length;
@@ -41,9 +40,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
 	    currentLayer = layers[1];
 
-	    canvas = currentLayer.canvas;
-	    context = currentLayer.context;
-	    canvas.style.zIndex = 2;
+	    currentLayer.canvas.style.zIndex = 2;
 	}
 
     // Adding the checkerboard behind it

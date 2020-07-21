@@ -1,7 +1,7 @@
 //init variables
 var canvasSize,zoom;
 var dragging = false;
-var lastPos = [0,0];
+var lastMouseClickPos = [0,0];
 var dialogueOpen = false;
 var documentCreated = false;
 var pixelEditorMode;
@@ -26,7 +26,6 @@ var popUpContainer = document.getElementById("pop-up-container");
 
 // main canvas
 var canvas = document.getElementById('pixel-canvas');
-var context = canvas.getContext('2d');
 var currentGlobalColor;
 
 // Layers
