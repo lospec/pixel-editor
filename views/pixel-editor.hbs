@@ -52,6 +52,8 @@
         <li>
             <button>Edit</button>
             <ul>
+                <li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
+                <li><button id="resize-sprite-button">Resize sprite</button></li>
                 <li><button id="undo-button" class="disabled">Undo</button></li>
                 <li><button id="redo-button" class="disabled">Redo</button></li>
             </ul>
@@ -218,7 +220,8 @@
       {{svg "adjust.svg" width="20" height="20" }}
     </div>
 
-    <div id="pop-up-container">
+    <div id="pop-up-container" id = "new-pixel-container">
+        <!-- NEW PIXEL -->
         <div id="new-pixel">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>New Pixel</h1>
@@ -245,6 +248,34 @@
             <div>
                 <button id="create-button" class="default">Create</button>
             </div>
+        </div>
+        <!--CANVAS RESIZE-->
+        <div id = "resize-canvas">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Resize canvas</h1>
+
+            <!--PIVOT-->
+            <h2>Choose pivot:</h2>
+            <button id = "open-pivot-button" class = "dropdown-button">Choose a pivot...</button>
+            <div id = "pivot-menu" class = "dropdown-menu">
+                <button>Top-left</button>
+                <button>Top-center</button>
+                <button>Top-right</button>
+                <button>Middle-left</button>
+                <button>Middle-center</button>
+                <button>Middle-right</button>
+                <button>Bottom-left</button>
+                <button>Bottom-center</button>
+                <button>Bottom-right</button>
+            </div>
+            <input id="pivot" value="{{#if pivot}}{{pivot}}{{else}}'Center'{{/if}}" autocomplete="off" />
+
+            <!--BORDERS-->
+            <h2>Borders</h2>
+            Left: <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+            Right: <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+            Top: <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+            Bottom: <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
         </div>
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
