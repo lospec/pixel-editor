@@ -35,6 +35,9 @@ function createColorPalette(selectedPalette, fillBackground, deletePreviousPalet
         }
     }
 
+	//prepend # if not present
+	if (!darkestColor.includes('#')) darkestColor = '#' + darkestColor;
+
     //set as current color
     currentLayer.context.fillStyle = darkestColor;
 }
