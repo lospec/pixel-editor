@@ -40,9 +40,6 @@ class Tool {
 
 	//switch to this tool (replaced global changeTool())
 	switchTo () {
-
-		console.log('changing tool to',this.name)
-
 		// Ending any selection in progress
 	    if (currentTool.name.includes("select") && !this.name.includes("select") && !selectionCanceled) {
 	    	endSelection();

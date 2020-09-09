@@ -34,9 +34,30 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                 case 'New':
                     showDialogue('new-pixel');
                     break;
+                case 'Save project':
+                    //create name
+                    var selectedPalette = getText('palette-button');
+                    if (selectedPalette != 'Choose a palette...'){
+                        var paletteAbbreviation = palettes[selectedPalette].abbreviation;
+                        var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+                    } else {
+                        var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+                        selectedPalette = 'none';
+                    }
+
+                    //set download link
+                    var linkHolder = document.getElementById('save-project-link-holder');
+                    // create file content
+                    var content = getProjectData();
+
+                    linkHolder.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+                    linkHolder.download = fileName;
+                    linkHolder.click();
+
+                    ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+
+                    break;
                 case 'Open':
-
-
                     //if a document exists
                     if (documentCreated) {
                         //check if the user wants to overwrite
@@ -50,9 +71,8 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
                     break;
 
-                case 'Save as...':
+                case 'Export':
                     if (documentCreated) {
-
                         //create name
                         var selectedPalette = getText('palette-button');
                         if (selectedPalette != 'Choose a palette...'){
@@ -65,13 +85,44 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
                         //set download link
                         var linkHolder = document.getElementById('save-image-link-holder');
-                        linkHolder.href = canvas.toDataURL();
+                        // Creating a tmp canvas to flatten everything
+                        var exportCanvas = document.createElement("canvas");
+                        var emptyCanvas = document.createElement("canvas");
+                        var layersCopy = layers.slice();
+
+                        exportCanvas.width = canvasSize[0];
+                        exportCanvas.height = canvasSize[1];
+
+                        emptyCanvas.width = canvasSize[0];
+                        emptyCanvas.height = canvasSize[1];
+
+                        // Sorting the layers by z index
+                        layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
+
+                        // Merging every layer on the export canvas
+                        for (let i=0; i<layersCopy.length; i++) {
+                            if (layersCopy[i].menuEntry != null && layersCopy[i].isVisible) {
+                                mergeLayers(exportCanvas.getContext('2d'), layersCopy[i].context);
+                            }
+                            // I'm not going to find out why the layer ordering screws up if you don't copy
+                            // a blank canvas when layers[i] is not set as visible, but if you have time to
+                            // spend, feel free to investigate (comment the else, create 3 layers: hide the 
+                            // middle one and export, the other 2 will be swapped in their order)
+                            else {
+                                mergeLayers(exportCanvas.getContext('2d'), emptyCanvas.getContext('2d'));
+                            }
+                        }
+
+                        linkHolder.href = exportCanvas.toDataURL();
                         linkHolder.download = fileName;
 
                         linkHolder.click();
 
+                        emptyCanvas.remove();
+                        exportCanvas.remove();
+
                         //track google event
-                        ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+                        ga('send', 'event', 'Pixel Editor Export', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
                     }
 
                     break;
@@ -120,7 +171,6 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     break;
                     //Help Menu
                 case 'Settings':
-
                     //fill form with current settings values
                     setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
 
@@ -148,4 +198,35 @@ function closeMenu () {
     for (var i = 0; i < mainMenuItems.length; i++) {
         deselect(mainMenuItems[i]);
     }
+}
+
+function getProjectData() {
+    // use a dictionary
+    let dictionary = {};
+    // sorting layers by increasing z-index
+    let layersCopy = layers.slice();
+    layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
+    // save canvas size
+    dictionary['canvasWidth'] = currentLayer.canvasSize[0];
+    dictionary['canvasHeight'] = currentLayer.canvasSize[1];
+    // save editor mode
+    dictionary['editorMode'] = pixelEditorMode;
+    // save palette
+    for (let i=0; i<currentPalette.length; i++) {
+        dictionary["color" + i] = currentPalette[i];
+    }
+
+    // save number of layers
+    dictionary["nLayers"] = layersCopy.length;
+
+    // save layers 
+    for (let i=0; i<layersCopy.length; i++) {
+        // Only saving the layers the user has access to (no vfx, tmp or checkerboard layers)
+        if (layersCopy[i].menuEntry != null) {
+            dictionary["layer" + i] = layersCopy[i];
+            dictionary["layer" + i + "ImageData"] = layersCopy[i].canvas.toDataURL();
+        }
+    }
+    
+    return JSON.stringify(dictionary);
 }

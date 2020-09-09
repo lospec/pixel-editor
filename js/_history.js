@@ -3,24 +3,257 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
-//prototype for undoing canvas changes
-function HistoryStateEditCanvas () {
-    this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+function HistoryStateFlattenVisible(flattened) {
+    this.nFlattened = flattened;
 
-    this.undo = function () {
-        var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-        currentLayer.context.putImageData(this.canvas, 0, 0);
+    this.undo = function() {
+        for (let i=0; i<this.nFlattened; i++) {
+            undo();
+        }
 
-        this.canvas = currentCanvas;
         redoStates.push(this);
     };
 
-    this.redo = function () {
-        var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-        currentLayer.context.putImageData(this.canvas, 0, 0);
+    this.redo = function() {
+        for (let i=0; i<this.nFlattened; i++) {
+            redo();
+        }
 
-        this.canvas = currentCanvas;
         undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateFlattenTwoVisibles(belowImageData, afterAbove, layerIndex, aboveLayer, belowLayer) {
+    this.aboveLayer = aboveLayer;
+    this.belowLayer = belowLayer;
+    this.belowImageData = belowImageData;
+
+    this.undo = function() {
+        console.log(afterAbove.menuEntry);
+        canvasView.append(aboveLayer.canvas);
+        layerList.insertBefore(aboveLayer.menuEntry, afterAbove);
+
+        belowLayer.context.clearRect(0, 0, belowLayer.canvasSize[0], belowLayer.canvasSize[1]);
+        belowLayer.context.putImageData(this.belowImageData, 0, 0);
+        belowLayer.updateLayerPreview();
+
+        layers.splice(layerIndex, 0, aboveLayer);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        mergeLayers(belowLayer.context, aboveLayer.context);
+
+        // Deleting the above layer
+        aboveLayer.canvas.remove();
+        aboveLayer.menuEntry.remove();
+        layers.splice(layers.indexOf(aboveLayer), 1);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateFlattenAll(nFlattened) {
+    this.nFlattened = nFlattened;
+
+    this.undo = function() {
+        for (let i=0; i<this.nFlattened - 2; i++) {
+            undo();
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        for (let i=0; i<this.nFlattened - 2; i++) {
+            redo();
+        }
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateMergeLayer(aboveIndex, aboveLayer, belowData, belowLayer) {
+    this.aboveIndex = aboveIndex;
+    this.belowData = belowData;
+    this.aboveLayer = aboveLayer;
+    this.belowLayer = belowLayer;
+
+    this.undo = function() {
+        layerList.insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
+        canvasView.append(this.aboveLayer.canvas);
+
+        belowLayer.context.clearRect(0, 0, this.belowLayer.canvasSize[0], this.belowLayer.canvasSize[1]);
+        belowLayer.context.putImageData(this.belowData, 0, 0);
+        belowLayer.updateLayerPreview();
+
+        layers.splice(this.aboveIndex, 0, this.aboveLayer);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        aboveLayer.selectLayer();
+        merge(false);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateRenameLayer(oldName, newName, layer) {
+    this.edited = layer;
+    this.oldName = oldName;
+    this.newName = newName;
+
+    this.undo = function() {
+        layer.menuEntry.getElementsByTagName("p")[0].innerHTML = oldName;
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        layer.menuEntry.getElementsByTagName("p")[0].innerHTML = newName;
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateDeleteLayer(layerData, before, index) {
+    this.deleted = layerData;
+    this.before = before;
+    this.index = index;
+
+    this.undo = function() {
+        canvasView.append(this.deleted.canvas);
+        if (this.before != null) {
+            layerList.insertBefore(this.deleted.menuEntry, this.before);
+        }
+        else {
+            layerList.prepend(this.deleted.menuEntry);
+        }
+        layers.splice(this.index, 0, this.deleted);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        this.deleted.selectLayer();
+        deleteLayer(false);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateMoveTwoLayers(layer, oldIndex, newIndex) {
+    this.layer = layer;
+    this.oldIndex = oldIndex;
+    this.newIndex = newIndex;
+
+    this.undo = function() {
+        layer.canvas.style.zIndex = oldIndex;
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        layer.canvas.style.zIndex = newIndex;
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateMoveLayer(afterToDrop, toDrop, static, nMoved) {
+    this.beforeToDrop = afterToDrop;
+    this.toDrop = toDrop;
+
+    this.undo = function() {
+        toDrop.menuEntry.remove();
+
+        if (afterToDrop != null) {
+            layerList.insertBefore(toDrop.menuEntry, afterToDrop)
+        }
+        else {
+            layerList.append(toDrop.menuEntry);
+        }
+
+        for (let i=0; i<nMoved; i++) {
+            undo();
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        moveLayers(toDrop.menuEntry.id, static.menuEntry.id, true);
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateAddLayer(layerData, index) {
+    this.added = layerData;
+    this.index = index;
+
+    this.undo = function() {
+        redoStates.push(this);
+
+        this.added.canvas.remove();
+        this.added.menuEntry.remove();
+        layers.splice(index, 1);
+    };
+
+    this.redo = function() {
+        undoStates.push(this);
+
+        canvasView.append(this.added.canvas);
+        layerList.prepend(this.added.menuEntry);
+        layers.splice(this.index, 0, this.added);
+    };
+
+    saveHistoryState(this);
+}
+
+//prototype for undoing canvas changes
+function HistoryStateEditCanvas () {
+    this.canvasState = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+    this.layerID = currentLayer.id;
+
+    this.undo = function () {
+        var stateLayer = getLayerByID(this.layerID);
+        var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        stateLayer.context.putImageData(this.canvasState, 0, 0);
+
+        this.canvasState = currentCanvas;
+        redoStates.push(this);
+
+        stateLayer.updateLayerPreview();
+    };
+
+    this.redo = function () {
+        console.log("YEET");
+        var stateLayer = getLayerByID(this.layerID);
+        var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+
+        stateLayer.context.putImageData(this.canvasState, 0, 0);
+
+        this.canvasState = currentCanvas;
+        undoStates.push(this);
+
+        stateLayer.updateLayerPreview();
     };
 
     //add self to undo array
@@ -123,9 +356,6 @@ function HistoryStateEditColor (newColorValue, oldColorValue) {
 
 //rename to add undo state
 function saveHistoryState (state) {
-    //console.log('%csaving history state', undoLogStyle);
-    //console.log(state);
-
     //get current canvas data and save to undoStates array
     undoStates.push(state);
 
@@ -139,9 +369,6 @@ function saveHistoryState (state) {
 
     //there should be no redoStates after an undoState is saved
     redoStates = [];
-
-    //console.log(undoStates);
-    //console.log(redoStates);
 }
 
 function undo () {
@@ -149,26 +376,22 @@ function undo () {
 
     //if there are any states saved to undo
     if (undoStates.length > 0) {
-
         document.getElementById('redo-button').classList.remove('disabled');
 
         //get state 
         var undoState = undoStates[undoStates.length-1];
         //console.log(undoState);
 
-        //restore the state
-        undoState.undo();
-
         //remove from the undo list
         undoStates.splice(undoStates.length-1,1);
 
+        //restore the state
+        undoState.undo();
+        
         //if theres none left to undo, disable the option
         if (undoStates.length == 0) 
             document.getElementById('undo-button').classList.add('disabled');
     }
-
-    //console.log(undoStates);
-    //console.log(redoStates);
 }
 
 function redo () {
@@ -181,13 +404,12 @@ function redo () {
 
         //get state 
         var redoState = redoStates[redoStates.length-1];
-        //console.log(redoState);
+
+        //remove from redo array (do this before restoring the state, else the flatten state will break)
+        redoStates.splice(redoStates.length-1,1);
 
         //restore the state
         redoState.redo();
-
-        //remove from redo array
-        redoStates.splice(redoStates.length-1,1);
 
         //if theres none left to redo, disable the option
         if (redoStates.length == 0) 

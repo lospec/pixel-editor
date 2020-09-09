@@ -20,6 +20,10 @@ function copySelection() {
 }
 
 function pasteSelection() {
+	// Can't paste if the layer is locked
+	if (currentLayer.isLocked) {
+		return;
+	}
 	endSelection();
 
 	isPasting = true;

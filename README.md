@@ -12,6 +12,15 @@ The next version is mostly focused on adding missing essential features and port
 
 Suggestions / Planned features:
 
+- Line tool
+- Resize canvas
+- Snap brush preview to pixel grid
+- Move selection with arrows
+- Load palette from LPE file
+- Move colours in palette editor
+- Duplicate layer
+- Hide non-hovered layers
+
 - Custom color picker
     - custom code without dependencies
     - more features such as sliders / color modes
@@ -23,16 +32,14 @@ Suggestions / Planned features:
     - Stack colors when too many
     - Fix popups
 
-- Copy/paste
-    - Add as selection
-    - Show colors which would need to be added to palette
+- Show colors which would need to be added to palette
 
 - Palette option remove unused colors
 - Pixel Grid
     - Another currentLayer.canvas
     - Must be rescaled each zoom
 
-- Possibly add collaborate function using together.js
+- Possibly add collaborate function
 - Bug fix
     - Alt + scroll broken
 

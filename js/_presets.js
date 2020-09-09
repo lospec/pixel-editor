@@ -49,7 +49,6 @@ Object.keys(presets).forEach(function(presetName,index) {
 
 });
 
-
 on('click', 'preset-button', function (e){
     //open or close the preset menu
     toggle('preset-button');

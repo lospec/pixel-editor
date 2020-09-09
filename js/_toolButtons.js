@@ -16,6 +16,7 @@ on('click',"pencil-smaller-button", function(){
 
 //eraser
 on('click',"eraser-button", function(){
+    console.log("selecting eraser");
     tool.eraser.switchTo();
 }, false);
 
@@ -31,7 +32,7 @@ on('click',"eraser-smaller-button", function(e){
 }, false);
 
 // rectangle
-on('click','rectangle-button', function(){
+on('click','rectangle-button', function(e){
     // If the user clicks twice on the button, they change the draw mode
     if (currentTool.name == 'rectangle') {
         if (drawMode == 'empty') {

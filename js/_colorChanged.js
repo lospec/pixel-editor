@@ -28,10 +28,11 @@ function colorChanged(e) {
     var newColor = hexToRgb(e.target.value);
     var oldColor = e.target.oldColor;
 
+    currentPalette.splice(currentPalette.indexOf("#" + newColor), 1);
+
     newColor.a = 255;
 
     //save undo state
-    //saveHistoryState({type: 'colorchange', newColor: e.target.value, oldColor: rgbToHex(oldColor), canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
     new HistoryStateEditColor(e.target.value.toLowerCase(), rgbToHex(oldColor));
 
     //get the currently selected color
@@ -82,7 +83,7 @@ function colorChanged(e) {
 
     //set new old color to changed color
     e.target.oldColor = newColor;
-
+    currentPalette.push('#' + newColorHex);
 
     //if this is the current color, update the drawing color
     if (e.target.colorElement.parentElement.classList.contains('selected')) {

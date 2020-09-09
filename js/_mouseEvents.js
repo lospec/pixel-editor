@@ -1,5 +1,4 @@
 var currentMouseEvent;
-// TODO: replace every position calculation with lastMousePos
 var lastMousePos;
 
 //mousedown - start drawing
@@ -8,8 +7,8 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	currentMouseEvent = mouseEvent;
 	canDraw = true;
 
-	//if no document has been created yet, or this is a dialog open
-	if (!documentCreated || dialogueOpen) return;
+	//if no document has been created yet, or this is a dialog open, or the currentLayer is locked
+	if (!documentCreated || dialogueOpen || currentLayer.isLocked || !currentLayer.isVisible) return;
 	//prevent right mouse clicks and such, which will open unwanted menus
 	//mouseEvent.preventDefault();
 
@@ -32,11 +31,10 @@ window.addEventListener("mousedown", function (mouseEvent) {
 				canDraw = false;
 			}
 		}
-		    //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
-
+		
 		currentTool.updateCursor();
 
-		if (canDraw) {
+		if (!currentLayer.isLocked && !currentLayer.isVisible && canDraw) {
 			draw(mouseEvent);
 		}
 	}
@@ -45,7 +43,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		tool.pencil.previousBrushSize = tool.pencil.brushSize;
 	}
 	else if (currentTool.name == 'eraser' && mouseEvent.which == 3) {
-		console.log('resize eraser')
 	    currentTool = tool.resizeeraser;
 	    tool.eraser.previousBrushSize = tool.eraser.brushSize;
     }
@@ -68,30 +65,38 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	currentMouseEvent = mouseEvent;
 
 	closeMenu();
+	
+	if (currentLayer != null && !isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
+		currentLayer.closeOptionsMenu();	
+	}
 
-	if (!documentCreated || dialogueOpen) return;
+	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
-		var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1);
-		var newColor = rgbToHex(selectedColor.data[0],selectedColor.data[1],selectedColor.data[2]);
+		var selectedColor = getEyedropperColor(cursorLocation);
+		var newColor = rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
 
 		currentGlobalColor = "#" + newColor;
 
+		for (let i=1; i<layers.length - 1; i++) {
+			layers[i].context.fillStyle = currentGlobalColor;
+		}
+
 		var colors = document.getElementsByClassName('color-button');
 	    for (var i = 0; i < colors.length; i++) {
-	      console.log(colors[i].jscolor.toString());
 
 	      //if picked color matches this color
 	      if (newColor == colors[i].jscolor.toString()) {
-	        console.log('color found');
-
 	        //remove current color selection
 	        var selectedColor = document.querySelector("#colors-menu li.selected")
 	        if (selectedColor) selectedColor.classList.remove("selected");
 
 	      	//set current color
-	      	context.fillStyle = '#'+newColor;
+
+			for (let i=2; i<layers.length; i++) {
+				layers[i].context.fillStyle = '#' + newColor;
+			}
 
 	      	//make color selected
 	      	colors[i].parentElement.classList.add('selected');
@@ -102,7 +107,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	    }
 	}
 	else if (currentTool.name == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-	  console.log('filling')
 
 		//get cursor postion
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -111,29 +115,15 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		cursorLocation[0] += 2;
 		cursorLocation[1] += 12;
 
-    //fill starting at the location
+    	//fill starting at the location
 		fill(cursorLocation);
+		currentLayer.updateLayerPreview();
 	}
 	else if (currentTool.name == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
 		let mode;
 		if (mouseEvent.which == 1){
 			mode = "in";
         }
-    }
-    else if (currentTool == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
-        console.log('filling');
-        //if you clicked on anything but the canvas, do nothing
-        if (!mouseEvent.target == currentLayer.canvas) return;
-
-        //get cursor postion
-        var cursorLocation = getCursorPosition(mouseEvent);
-
-        //offset to match cursor point
-        cursorLocation[0] += 2;
-        cursorLocation[1] += 12;
-
-        //fill starting at the location
-        fill(cursorLocation);
     }
     else if (currentTool == 'zoom' && mouseEvent.target.className == 'drawingCanvas') {
         let mode;
@@ -153,8 +143,9 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	else if (currentTool.name == 'rectselect' && isRectSelecting) {
 		endRectSelection(mouseEvent);
 	}
-	else if (currentTool.name == 'rectangle') {
+	else if (currentTool.name == 'rectangle' && isDrawingRect) {
 		endRectDrawing(mouseEvent);
+		currentLayer.updateLayerPreview();
 	}
 
 	dragging = false;
@@ -165,6 +156,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 }, false);
 
+// TODO: Make it snap to the pixel grid
 function setPreviewPosition(preview, cursor, size){
     preview.style.left = (
         currentLayer.canvas.offsetLeft
@@ -190,8 +182,8 @@ function draw (mouseEvent) {
 
 	var cursorLocation = lastMousePos;
 
-	//if a document hasnt yet been created, exit this function
-	if (!documentCreated || dialogueOpen) return;
+	//if a document hasnt yet been created or the current layer is locked, exit this function
+	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 
 	eyedropperPreview.style.display = 'none';
@@ -222,6 +214,8 @@ function draw (mouseEvent) {
 		//for the darkest 50% of colors, change the brush preview to dark mode
 		if (colorLightness>127) brushPreview.classList.remove('dark');
 		else brushPreview.classList.add('dark');
+
+		currentLayer.updateLayerPreview();
 	}
 	// Decided to write a different implementation in case of differences between the brush and the eraser tool
 	else if (currentTool.name == 'eraser') {
@@ -243,6 +237,8 @@ function draw (mouseEvent) {
                 lastPos = cursorLocation;
             }
         }
+
+        currentLayer.updateLayerPreview();
 	}
 	else if (currentTool.name == 'rectangle')
 	{
@@ -272,7 +268,7 @@ function draw (mouseEvent) {
         }
     }
     else if (currentTool.name == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
-        var selectedColor = context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
+    	let selectedColor = getEyedropperColor(cursorLocation);
 
         eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
         eyedropperPreview.style.display = 'block';
@@ -340,7 +336,6 @@ function draw (mouseEvent) {
     else if (currentTool.name == 'rectselect') {
     	if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
     		isRectSelecting = true;
-    		console.log("cominciata selezione su " + mouseEvent.target.className);
     		startRectSelection(mouseEvent);
     	}
     	else if (dragging && isRectSelecting) {

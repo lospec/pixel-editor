@@ -84,6 +84,7 @@ function endSelection() {
     isPasting = false;
     isCutting = false;
     lastMovePos = undefined;
+    currentLayer.updateLayerPreview();
 
     new HistoryStateEditCanvas();
 }

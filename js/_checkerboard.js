@@ -8,6 +8,7 @@ var nSquaresFilled = 0;
 function fillCheckerboard() {
     // Getting checkerboard context
     var context = checkerBoard.context;
+    context.clearRect(0, 0, canvasSize[0], canvasSize[1]);
 
     // Cycling through the canvas (using it as a matrix)
     for (var i=0; i<canvasSize[0] / checkerBoardSquareSize; i++) {

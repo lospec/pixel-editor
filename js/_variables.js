@@ -4,6 +4,7 @@ var dragging = false;
 var lastPos = [0,0];
 var dialogueOpen = false;
 var documentCreated = false;
+var pixelEditorMode;
 
 // Checkerboard management
 // Checkerboard color 1

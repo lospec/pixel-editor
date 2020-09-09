@@ -1,27 +1,15 @@
 var spacePressed = false;
 
-/**
-	Copy / paste / cut logic:
-		- The user selects an area
-		- Pressing ctrl+c copies the selection
-		- Pressing ctrl+v ends the current selection and copies the clipboard in the tmp layer:
-			the editor enters move mode and lets the user move the copied selection around.
-			Pressing ctrl+v while moving a copy has the same effect of pressing ctrl+v after a ctrl+c
-		- The behaviour of ctrl+v is the same and doesn't depend on how the selected area was obtained
-			(with ctrl+c or with ctrl+v)
-		- Selecting a different tool while moving the copied or cut selection has the same effect of selecting 
-			a different tool while moving a standard selection
-		- You can paste at any other time
-
-	BUGS:
-		- 
-*/ 
-
 function KeyPress(e) {
     var keyboardEvent = window.event? event : e;
 
-    //if the user is typing in an input field, ignore these hotkeys
-    if (document.activeElement.tagName == 'INPUT') return;
+    //if the user is typing in an input field or renaming a layer, ignore these hotkeys, unless it's an enter key
+    if (document.activeElement.tagName == 'INPUT' || isRenamingLayer) {
+    	if (e.keyCode == 13) {
+    		currentLayer.closeOptionsMenu();
+    	}
+    	return;
+    }
 
     //if no document has been created yet,
     //orthere is a dialog box open
@@ -42,7 +30,6 @@ function KeyPress(e) {
 				break;
 			// copy tool c
 			case 67: case 99:
-				console.log("Copying");
 				if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
 			    	copySelection();
 			    }
@@ -65,7 +52,6 @@ function KeyPress(e) {
 			  break;
 			 // eraser -6, r
 		    case 54: case 82:
-		         console.log("Pressed r");
 	            tool.eraser.switchTo()
 		     	break;
 		    // Rectangular selection
@@ -74,13 +60,11 @@ function KeyPress(e) {
 				break;
 			// Paste tool
 			case 86: case 118:
-				console.log("Pasting");
 				if (keyboardEvent.ctrlKey && !dragging) {
 					pasteSelection();
 				}
 				break;
 			case 88: case 120:
-				console.log("Cutting");
 				if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
 					cutSelectionTool();
 					tool.pencil.switchTo();
@@ -88,7 +72,6 @@ function KeyPress(e) {
 				break;
 			//Z
 			case 90:
-			  console.log('PRESSED Z ', keyboardEvent.ctrlKey)
 			  //CTRL+ALT+Z redo
 			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey)
 			    redo();

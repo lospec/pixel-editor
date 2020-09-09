@@ -1,7 +1,8 @@
 on('click', 'create-button', function (){
     var width = getValue('size-width');
     var height = getValue('size-height');
-    newPixel(width,height,'asdfg');
+    var mode = getValue("editor-mode");
+    newPixel(width, height, mode);
     document.getElementById('new-pixel-warning').style.display = 'block';
 
     //get selected palette name
@@ -16,6 +17,9 @@ on('click', 'create-button', function (){
     //reset new form
     setValue('size-width', 64);
     setValue('size-height', 64);
+    setValue("editor-mode", 'Advanced')
+
+    setText('editor-mode-button', 'Choose a mode...');
     setText('palette-button', 'Choose a palette...');
     setText('preset-button', 'Choose a preset...');
 });

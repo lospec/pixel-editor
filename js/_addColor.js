@@ -1,3 +1,5 @@
+let currentPalette = [];
+
 //adds the given color to the palette
 //input hex color string
 //returns list item element
@@ -6,7 +8,7 @@ function addColor (newColor) {
     //add # at beginning if not present
     if (newColor.charAt(0) != '#')
         newColor = '#' + newColor;
-
+    currentPalette.push(newColor);
     //create list item
     var listItem = document.createElement('li');   
 
@@ -44,6 +46,8 @@ function addColor (newColor) {
         //show jscolor picker
         button.parentElement.firstChild.jscolor.show();
     });
+
+    console.log(currentPalette);
 
     return listItem;
 }

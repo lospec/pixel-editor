@@ -98,8 +98,6 @@ function drawRect(x, y) {
     vfxContext.rect(startX, startY, x - startX, y - startY);
 
     vfxContext.stroke();
-
-    // TODO: make the rect blink from black to white in case of dark backgrounds
 }
 
 function applyChanges() {

@@ -22,6 +22,214 @@ body {
   /* Disable Android and iOS callouts*/
 }
 
+#layer-properties-menu {
+  visibility:hidden;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  right: 0;
+  width:120px;
+  text-align:center;
+  
+  margin-right:200px;
+  /*border:1px solid color(menu, foreground);*/
+
+  list-style:none;
+  position:relative;
+  z-index:1200;
+  list-style-type: none;
+  
+  background-color: color(base);
+  position: fixed;
+  overflow: visible;
+
+  li button {
+    color: color(menu, foreground);
+    height: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width:100%;
+  }
+
+  li button:hover {
+    background-color:color(menu, background);
+  }
+}
+
+.preview-canvas {
+  image-rendering:optimizeSpeed;             /* Legal fallback */
+  image-rendering:-moz-crisp-edges;          /* Firefox        */
+  image-rendering:-o-crisp-edges;            /* Opera          */
+  image-rendering:-webkit-optimize-contrast; /* Safari         */
+  image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+  image-rendering:crisp-edges;               /* CSS4 Proposed  */
+  image-rendering:pixelated;                 /* CSS4 Proposed  */
+  -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+
+#layers-menu {
+  &::-webkit-scrollbar {
+    background: #232125;
+    width: 1em;
+  }
+  &::-webkit-scrollbar-track {
+      margin-top: -0.125em;
+      width: 1em;
+  }
+  &::-webkit-scrollbar-thumb {
+      background: #332f35;
+      border-radius: 0.25em;
+      border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+  }
+  &::-webkit-scrollbar-corner {
+      background: #232125;
+  }
+    scrollbar-color: #332f35 #232125;
+  scroll-behavior: smooth;
+  width:200px;
+  top: 48px;
+  bottom: 0;
+  right:0;
+  padding: 0;
+  margin: 0;
+  background-color: color(base);
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 1120;
+  list-style-type: none;
+  overflow-y:scroll;
+  overflow-x:hidden;
+
+  // TODO: make the scroll bar a bit fancier
+
+  #add-layer-button {
+    path {
+      fill:color(menu, foreground);
+    }
+    svg {
+      position:relative;
+      margin-right:10px;
+    }
+    position:relative;
+    justify-content: center;
+    display:flex;
+    align-items:center;
+    margin-top:2px;
+    font-size: 1.2em;
+    color: color(menu, foreground);
+    height: 100%;
+    width: 100%;
+    padding: 17px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: color(menu);
+    
+    transition: color 0.2s, background-color 0.2s;
+  }
+
+  #add-layer-button:hover {
+    color: color(base, foreground, bold);
+    background-color: color(base, foreground, default);
+  }
+}
+
+.selected-layer {
+  ul.layer-buttons li{
+    visibility:visible;
+  }
+
+  color: color(base, foreground, bold);
+  background-color: color(base, foreground, default);
+}
+
+.layerdragover {
+  margin-top:5px;
+  border-top: 3px solid color(base, foreground, bold);
+}
+
+.layers-menu-entry {
+  cursor:pointer;
+  margin-top:2px;
+  font-size: 1em;
+  color: color(base, foreground, text);
+  background-color: color(menu, background);
+  display:inline-block;
+  height:50px;
+  width:100%;
+  display:flex;
+  align-items:center;
+
+  ul.layer-buttons {
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    position:relative;
+    height:100%;
+    list-style:none;
+
+    path {
+      fill: color(base, foreground);
+    }
+    li:hover {
+      background: color(base, background, hover);
+      path {
+        fill: color(base, foreground, hover);
+      }
+    }
+
+    .layer-button {
+      visibility:hidden;
+      height:50%;
+    }
+  }
+
+  .lock-layer-button, .hide-layer-button {
+    color: color(menu, foreground);
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: color(menu);
+    transition: color 0.2s, background-color 0.2s;
+    height:100%;
+    position:relative;
+  }
+
+  canvas {
+    display:inline-block;
+    height:50px;
+    width:50px;
+    background-color:lightgrey;
+    left:4px;
+  }
+
+  p {
+    right:0;
+    display:inline-block;
+    padding-left:10px;
+    height:18px;
+    overflow:hidden;
+    position:relative;
+  }
+
+  transition: color 0.1s, background-color 0.1s;
+  -moz-transition: color 0.1s, background-color 0.1s;
+  -webkit-transition: color 0.1s, background-color 0.1s;
+}
+
+.layers-menu-entry:hover, .selected-layer {
+  ul.layer-buttons li{
+    visibility:visible !important;
+  }
+
+  color: color(base, foreground, bold);
+  background-color: color(base, foreground, default);
+}
+
 //don't let svg handle click events, just send to parents
 svg {
   pointer-events: none;
@@ -36,8 +244,8 @@ svg {
 }
 
 .weak {
-	font-size: 0.8em;
-	color: color(base,foreground,weak);
+  font-size: 0.8em;
+  color: color(base,foreground,weak);
 }
 
 .drawingCanvas {
@@ -183,9 +391,9 @@ svg {
         }
       }
       a {
-      	display: block;
-      	text-decoration: none;
-      	box-sizing: border-box;
+        display: block;
+        text-decoration: none;
+        box-sizing: border-box;
       }
     }
   }
@@ -229,7 +437,7 @@ svg {
 }
 
 #colors-menu {
-  right: 0;
+  right: 200px;
   width: 48px;
   display: flex;
   justify-content: flex-start;
@@ -701,6 +909,14 @@ svg {
   display: none;
   color: color(base, foreground, weak);
   font-style: italic;
+}
+
+#editor-mode-info {
+  font-style:italic;
+}
+
+#editor-mode {
+  display:none;
 }
 
 #compatibility-warning {
