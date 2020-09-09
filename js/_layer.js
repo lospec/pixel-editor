@@ -1,13 +1,13 @@
 /** TODO LIST FOR LAYERS
-    
+
     GENERAL REQUIREMENTS:
-    - Saving the state of an artwork to a .lospec file so that people can work on it later keeping 
+    - Saving the state of an artwork to a .lospec file so that people can work on it later keeping
       the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
       file for it to be opened right in the pixel editor
 
     OPTIONAL:
 
-    1 - Fix issues 
+    1 - Fix issues
 */
 
 let layerList;
@@ -52,7 +52,7 @@ class Layer {
             currentID++;
         }
 
-        this.id = "layer" + id;     
+        this.id = "layer" + id;
 
         if (menuEntry != null) {
             this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
@@ -138,7 +138,7 @@ class Layer {
         if (layerDragSource != this) {
             let toDropID = element.dataTransfer.getData('text/html');
             let thisID = this.id;
-            
+
             moveLayers(toDropID, thisID);
         }
 
@@ -150,7 +150,7 @@ class Layer {
 
     layerDragEnd(element) {
         this.classList.remove('layerdragover');
-    }    
+    }
 
     // Resizes canvas
     resize() {
@@ -303,9 +303,9 @@ class Layer {
 
         // La appiccico sulla preview
         destination.getContext('2d').clearRect(0, 0, destination.width, destination.height);
-        destination.getContext('2d').drawImage(this.canvas, 
+        destination.getContext('2d').drawImage(this.canvas,
             // This is necessary to center the preview in the canvas
-            (destination.width - previewWidth) / 2, (destination.height - previewHeight) / 2, 
+            (destination.width - previewWidth) / 2, (destination.height - previewHeight) / 2,
             previewWidth, previewHeight);
     }
 }
@@ -373,14 +373,14 @@ function merge(saveHistory = true) {
     let toMergeIndex = layers.indexOf(toMerge);
     // Getting layer below
     let layerBelow = getLayerByID(currentLayer.menuEntry.nextElementSibling.id);
-    
+
     // If I have something to merge with
     if (layerBelow != null) {
         // Selecting that layer
         layerBelow.selectLayer();
 
         if (saveHistory) {
-            new HistoryStateMergeLayer(toMergeIndex, toMerge, 
+            new HistoryStateMergeLayer(toMergeIndex, toMerge,
                 layerBelow.context.getImageData(0, 0, layerBelow.canvasSize[0], layerBelow.canvasSize[1]),
                 layerBelow);
         }
@@ -395,7 +395,7 @@ function merge(saveHistory = true) {
         // Updating the layer preview
         currentLayer.updateLayerPreview();
     }
-    
+
 }
 
 function deleteLayer(saveHistory = true) {
@@ -414,7 +414,7 @@ function deleteLayer(saveHistory = true) {
         }
         // or the previous one if the next one doesn't exist
         else {
-            layers[layerIndex - 1].selectLayer(); 
+            layers[layerIndex - 1].selectLayer();
         }
 
         // Deleting canvas and entry
@@ -486,7 +486,7 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
         }
 
         toDrop.canvas.style.zIndex = tmp;
-        
+
         if (saveHistory) {
             new HistoryStateMoveLayer(beforeToDrop, toDrop, static, nMoved);
         }
@@ -560,6 +560,8 @@ function addLayer(id, saveHistory = true) {
 
     console.log("Tela creata: " + newCanvas);
 
+	if (!layerListEntry) return console.warn('skipping adding layer because no document');
+
     // Clone the default layer
     let toAppend = layerListEntry.cloneNode(true);
     // Setting the default name for the layer
@@ -574,7 +576,7 @@ function addLayer(id, saveHistory = true) {
     newLayer.context.fillStyle = currentLayer.context.fillStyle;
     newLayer.copyData(currentLayer);
     layers.splice(index, 0, newLayer);
-    
+
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
 
@@ -588,3 +590,5 @@ function addLayer(id, saveHistory = true) {
 
     return newLayer;
 }
+
+layerList = document.getElementById("layers-menu");

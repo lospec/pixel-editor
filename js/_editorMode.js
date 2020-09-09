@@ -10,6 +10,8 @@ let modes = {
 let infoBox = document.getElementById('editor-mode-info');
 
 function switchMode(currentMode, mustConfirm = true) {
+
+	//switch to advanced mode
     if (currentMode == 'Basic') {
         // Switch to advanced ez pez lemon squez
         document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
@@ -18,22 +20,33 @@ function switchMode(currentMode, mustConfirm = true) {
 		document.getElementById('layer-button').style.display = 'inline-block';
 		// Move the palette menu
         document.getElementById('colors-menu').style.right = '200px';
-        
+
         pixelEditorMode = 'Advanced';
     }
+
+    //switch to basic mode
     else {
-        // Switch to basic
-        if (mustConfirm) {
-            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
-                return;
-            }
+
+
+		//if there is a current layer (a document is active)
+        if (currentLayer) {
+
+        	//confirm with user before flattening image
+        	if (mustConfirm ) {
+	            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+	                return;
+	            }
+	        }
+
+			// Selecting the current layer
+			currentLayer.selectLayer();
+			// Flatten the layers
+			flatten(true);
         }
 
+        //change menu text
         document.getElementById('switch-mode-button').innerHTML = 'Switch to advanced mode';
-		// Selecting the current layer
-		currentLayer.selectLayer();
-		// Flatten the layers
-		flatten(true);
+
 		// Hide the layer menus
 		layerList.style.display = 'none';
 		document.getElementById('layer-button').style.display = 'none';
