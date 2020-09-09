@@ -1,4 +1,8 @@
 {
+	"1.3.0 - 9/8/20": [
+		{"change": "Added layers", "author": "Unsettled"}
+	],
+
 	"1.2.0 - 4/14/20": [
 		{"change": "Added rectangle / selection tools", "author": "Unsettled"}
 	],
