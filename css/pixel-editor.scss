@@ -919,6 +919,59 @@ svg {
   display:none;
 }
 
+#pivot-menu {
+  position: relative;
+  display:inline-flex;
+  flex-wrap:wrap;
+  vertical-align:middle;
+  text-align:center;
+  width:150px;
+
+  button {
+    margin-right:10px;
+    margin-bottom:10px;
+    position:relative;
+    width:40px;
+    height:40px;
+    background:color(menu, background);
+    border:none;
+    
+    path {
+      fill:color(menu, foreground);
+    }
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  button:hover,
+  button:focus {
+      background-color: color(base, foreground);
+      path {
+        fill:color(base, foreground, bold);
+      }
+      border: 2px solid color(base, foreground);
+  }
+  button:active {
+      transform: scale(0.95);
+  }
+}
+
+#borders-menu {
+  display:flex;
+  position:relative;
+  flex-wrap: wrap;
+  width:200px;
+  padding:5px;
+  vertical-align:middle;
+
+  input {
+    width:10px;
+    height:10px;
+  }
+}
+
 #compatibility-warning {
   display: flex;
   justify-content: center;

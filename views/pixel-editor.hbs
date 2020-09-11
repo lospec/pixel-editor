@@ -254,28 +254,39 @@
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>Resize canvas</h1>
 
-            <!--PIVOT-->
-            <h2>Choose pivot:</h2>
-            <button id = "open-pivot-button" class = "dropdown-button">Choose a pivot...</button>
-            <div id = "pivot-menu" class = "dropdown-menu">
-                <button>Top-left</button>
-                <button>Top-center</button>
-                <button>Top-right</button>
-                <button>Middle-left</button>
-                <button>Middle-center</button>
-                <button>Middle-right</button>
-                <button>Bottom-left</button>
-                <button>Bottom-center</button>
-                <button>Bottom-right</button>
-            </div>
-            <input id="pivot" value="{{#if pivot}}{{pivot}}{{else}}'Center'{{/if}}" autocomplete="off" />
+            <!--PIVOTS-->
+            <span id = "pivot-menu">
+                <button>{{svg "arrows/topleft.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/top.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/topright.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/left.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/middle.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/right.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/bottomleft.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/bottom.svg" width="20" height="20"}}</button>
+                <button>{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
+            </span>
 
             <!--BORDERS-->
             <h2>Borders</h2>
-            Left: <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
-            Right: <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
-            Top: <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
-            Bottom: <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+            <span id = "borders-menu">
+                <span>
+                    Left: 
+                </span>
+                <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                <span>
+                    Right: 
+                </span>
+                <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                <span>
+                    Top: 
+                </span>
+                <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                <span>
+                    Bottom: 
+                </span>
+                <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+            </span>
         </div>
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
