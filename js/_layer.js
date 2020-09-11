@@ -452,7 +452,7 @@ function renameLayer(event) {
 // Swaps two layer entries in the layer menu
 function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
     let toDrop = getLayerByID(toDropLayer);
-    let static = getLayerByID(staticLayer);
+    let staticc = getLayerByID(staticLayer);
     let layerCopy = layers.slice();
 
     let beforeToDrop = toDrop.menuEntry.nextElementSibling;
@@ -461,9 +461,9 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
     layerCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
 
     let toDropIndex = layerCopy.indexOf(toDrop);
-    let staticIndex = layerCopy.indexOf(static);
+    let staticIndex = layerCopy.indexOf(staticc);
 
-    layerList.insertBefore(toDrop.menuEntry, static.menuEntry);
+    layerList.insertBefore(toDrop.menuEntry, staticc.menuEntry);
 
     if (toDropIndex < staticIndex) {
         let tmp = toDrop.canvas.style.zIndex;
@@ -488,7 +488,7 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
         toDrop.canvas.style.zIndex = tmp;
 
         if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, static, nMoved);
+            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
         }
     }
     else {
@@ -515,7 +515,7 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
         toDrop.canvas.style.zIndex = tmp;
 
         if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, static, nMoved);
+            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
         }
 
     }

@@ -175,7 +175,7 @@ function HistoryStateMoveTwoLayers(layer, oldIndex, newIndex) {
     saveHistoryState(this);
 }
 
-function HistoryStateMoveLayer(afterToDrop, toDrop, static, nMoved) {
+function HistoryStateMoveLayer(afterToDrop, toDrop, staticc, nMoved) {
     this.beforeToDrop = afterToDrop;
     this.toDrop = toDrop;
 
@@ -197,7 +197,7 @@ function HistoryStateMoveLayer(afterToDrop, toDrop, static, nMoved) {
     };
 
     this.redo = function() {
-        moveLayers(toDrop.menuEntry.id, static.menuEntry.id, true);
+        moveLayers(toDrop.menuEntry.id, staticc.menuEntry.id, true);
         undoStates.push(this);
     };
 
@@ -378,7 +378,7 @@ function undo () {
     if (undoStates.length > 0) {
         document.getElementById('redo-button').classList.remove('disabled');
 
-        //get state 
+        //get state
         var undoState = undoStates[undoStates.length-1];
         //console.log(undoState);
 
@@ -387,9 +387,9 @@ function undo () {
 
         //restore the state
         undoState.undo();
-        
+
         //if theres none left to undo, disable the option
-        if (undoStates.length == 0) 
+        if (undoStates.length == 0)
             document.getElementById('undo-button').classList.add('disabled');
     }
 }
@@ -402,7 +402,7 @@ function redo () {
         //enable undo button
         document.getElementById('undo-button').classList.remove('disabled');
 
-        //get state 
+        //get state
         var redoState = redoStates[redoStates.length-1];
 
         //remove from redo array (do this before restoring the state, else the flatten state will break)
@@ -412,7 +412,7 @@ function redo () {
         redoState.redo();
 
         //if theres none left to redo, disable the option
-        if (redoStates.length == 0) 
+        if (redoStates.length == 0)
             document.getElementById('redo-button').classList.add('disabled');
     }
     //console.log(undoStates);
