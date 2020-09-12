@@ -244,9 +244,10 @@ class Layer {
             layer.menuEntry.classList.add("selected-layer");
             currentLayer = layer;
         }
-
+/*
         canvas = currentLayer.canvas;
         context = currentLayer.context;
+*/
     }
 
     toggleLock() {
