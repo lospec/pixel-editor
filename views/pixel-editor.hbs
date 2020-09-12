@@ -266,27 +266,26 @@
                 <button>{{svg "arrows/bottom.svg" width="20" height="20"}}</button>
                 <button>{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
             </span>
-
             <!--BORDERS-->
-            <h2>Borders</h2>
             <span id = "borders-menu">
                 <span>
-                    Left: 
+                    Left: <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
-                <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                
                 <span>
-                    Right: 
+                    Right: <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
-                <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                
                 <span>
-                    Top: 
+                    Top: <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
-                <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                
                 <span>
-                    Bottom: 
+                    Bottom: <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
-                <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
-            </span>
+
+                <button id = "resize-canvas-confirm">Resize canvas</button>
+            </span>            
         </div>
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
