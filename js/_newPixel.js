@@ -5,7 +5,6 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 	currentPalette = [];
 	if (firstPixel) {
-		layerList = document.getElementById("layers-menu");
 		layerListEntry = layerList.firstElementChild;
 
 	    currentLayer = new Layer(width, height, canvas, layerListEntry);
@@ -55,7 +54,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	canvasSize = currentLayer.canvasSize;
 
 	if (firstPixel) {
-		// Cloning the entry so that when I change something on the first layer, those changes aren't 
+		// Cloning the entry so that when I change something on the first layer, those changes aren't
 	    // propagated to the other ones
 	    layerListEntry = layerListEntry.cloneNode(true);
 		// Adding the first layer and the checkerboard to the list of layers
@@ -139,7 +138,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 					if (i == (fileContent['nLayers'] - 1)) {
 						createPaletteFromLayers();
 					}
-				};				
+				};
 
 				img.src = layerImage;
 
