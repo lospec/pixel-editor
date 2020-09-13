@@ -22,10 +22,31 @@ function initResizeCanvasInputs() {
 }
 
 function resizeCanvas(event) {
-    resizeCanvasUpdateBorders();
+    let imageDatas = [];
+    rcUpdateBorders();
+
+    // Save all imageDatas
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            imageDatas.push(layers[i].context.getImageData(0, 0, layers[i].canvasSize[0], layers[i].canvasSize[1]));
+        }
+    }
+
+    // Resize the canvases
+    for (let i=0; i<layers.length; i++) {
+        layers[i].canvasSize[0] += borders.left + borders.right;
+        layers[i].canvasSize[1] += borders.top + borders.bottom;
+
+        layers[i].canvas.width = layers[i].canvasSize[0];
+        layers[i].canvas.height = layers[i].canvasSize[1];
+    }
+    // Clear the canvases
+
+    // Put the imageDatas in the right position
+    // Must crop the imageDatas if the canvas has being reduced
 }
 
-function resizeCanvasUpdateBorders() {
+function rcUpdateBorders() {
     console.log(document.getElementById("rc-border-left").value);
 
     // Getting input
@@ -47,15 +68,3 @@ function changePivot(event) {
     pivot = event.target.getAttribute("value");
 }
 
-// Use a dialogue
-    // Apply the new sizing
-    // Move the images on the layers to fit what the user actually decided
-
-// Function to actually resize the canvases
-    // Save all imageDatas
-    // Resize the canvases
-    // Clear the canvases
-
-// Function to place the imageDatas as specified in the pivot section
-    // Put the imageDatas in the right position
-    // Must crop the imageDatas if the canvas has being reduced
