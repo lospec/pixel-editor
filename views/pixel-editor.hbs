@@ -269,19 +269,23 @@
             <!--BORDERS-->
             <span id = "borders-menu">
                 <span>
-                    Left: <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    Left: <input id="rc-border-left" type="number" default="0" step="1" 
+                    value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
                 
                 <span>
-                    Right: <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    Right: <input id="rc-border-right" type="number" default="0" step="1" 
+                    value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
                 
                 <span>
-                    Top: <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    Top: <input id="rc-border-top" type="number" default="0" step="1" 
+                    value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
                 
                 <span>
-                    Bottom: <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    Bottom: <input id="rc-border-bottom" default="0" step="1" type="number" 
+                    value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
                 </span>
 
                 <button id = "resize-canvas-confirm">Resize canvas</button>
