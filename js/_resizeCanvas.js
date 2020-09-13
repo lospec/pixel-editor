@@ -2,6 +2,23 @@ let resizeCanvasContainer = document.getElementById("resize-canvas");
 
 function openResizeCanvasWindow() {
     showDialogue('resize-canvas');
+    console.log("aperta");
+    initButtons();
+}
+
+function initButtons() {
+    let buttons = document.getElementsByClassName("pivot-button");
+
+    console.log("length: " + buttons.length);
+
+    for (let i=0; i<buttons.length; i++) {
+        buttons[i].addEventListener("click", changePivot);
+    }
+}
+
+function changePivot(event) {
+    console.log("sas");
+    console.log(event.target);
 }
 
 // Use a dialogue
