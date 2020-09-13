@@ -52,6 +52,8 @@
         <li>
             <button>Edit</button>
             <ul>
+                <li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
+                <li><button id="resize-sprite-button">Resize sprite</button></li>
                 <li><button id="undo-button" class="disabled">Undo</button></li>
                 <li><button id="redo-button" class="disabled">Redo</button></li>
             </ul>
@@ -187,6 +189,7 @@
         </li>
     </ul>
 
+    <!-- TOOL PREVIEWS -->
     <div id="eyedropper-preview"></div>
     <div id="brush-preview"></div>
 
@@ -217,7 +220,8 @@
       {{svg "adjust.svg" width="20" height="20" }}
     </div>
 
-    <div id="pop-up-container">
+    <div id="pop-up-container" id = "new-pixel-container">
+        <!-- NEW PIXEL -->
         <div id="new-pixel">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>New Pixel</h1>
@@ -244,6 +248,44 @@
             <div>
                 <button id="create-button" class="default">Create</button>
             </div>
+        </div>
+        <!--CANVAS RESIZE-->
+        <div id = "resize-canvas">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Resize canvas</h1>
+
+            <!--PIVOTS-->
+            <span id = "pivot-menu">
+                <button class="pivot-button" value="topleft">{{svg "arrows/topleft.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="top">{{svg "arrows/top.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="topright">{{svg "arrows/topright.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="left">{{svg "arrows/left.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="middle">{{svg "arrows/middle.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="right">{{svg "arrows/right.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottomleft">{{svg "arrows/bottomleft.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottom">{{svg "arrows/bottom.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottomright">{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
+            </span>
+            <!--BORDERS-->
+            <span id = "borders-menu">
+                <span>
+                    Left: <input id="border-left" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                </span>
+                
+                <span>
+                    Right: <input id="border-right" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                </span>
+                
+                <span>
+                    Top: <input id="border-top" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                </span>
+                
+                <span>
+                    Bottom: <input id="border-bottom" value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                </span>
+
+                <button id = "resize-canvas-confirm">Resize canvas</button>
+            </span>            
         </div>
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>

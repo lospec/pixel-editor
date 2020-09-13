@@ -947,6 +947,102 @@ svg {
 	display: none;
 }
 
+#resize-canvas {
+  display:flex;
+  position:relative;
+  flex-wrap:wrap;
+}
+
+#pivot-menu {
+  position: relative;
+  display:inline-flex;
+  flex-wrap:wrap;
+  vertical-align:middle;
+  text-align:center;
+  width:150px;
+
+  button {
+    margin-right:10px;
+    margin-bottom:10px;
+    position:relative;
+    width:40px;
+    height:40px;
+    background-color:color(base, background);
+    border:none;
+    
+    path {
+      fill:color(menu, foreground);
+    }
+    transition: background 150ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  button:hover,
+  button:focus {
+      cursor:pointer;
+      background-color: color(base, foreground);
+      path {
+        fill:color(base, foreground, bold);
+      }
+      border: 2px solid color(base, foreground);
+  }
+  button:active {
+      transform: scale(0.95);
+  }
+}
+
+#borders-menu {
+  display:flex;
+  position:relative;
+  flex-wrap: wrap;
+  width:250px;
+  float:right;
+  vertical-align:middle;
+  font-size:15px;
+  left:10px;
+  text-align:center;
+
+  input {
+    position:relative;
+    margin-left:10px;
+    width:10px;
+    height:10px;
+  }
+
+  h2 {
+    position:relative;
+    display:inline-block;
+  }
+
+  span {
+    padding-right:10px;
+    float:left;
+    position:relative;
+    display: flex;
+    vertical-align:middle;
+    height:40px;
+  }
+}
+
+#resize-canvas-confirm {
+  background: color(button);
+  border: none;
+  font-size:18px;
+  border-radius: 4px;
+  color: color(button, foreground);
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 0 auto;
+  position:relative;
+  top:10px;
+  display: block;
+  &:hover {
+    background: color(button, background, hover);
+  }
+}
+
 #compatibility-warning {
 	display: flex;
 	justify-content: center;

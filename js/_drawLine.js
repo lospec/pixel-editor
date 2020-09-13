@@ -30,7 +30,5 @@ function line(x0,y0,x1,y1, brushSize) {
 			err +=dx; 
 			y0+=sy;
 		}
-
-		console.log(x0 + ", " + x1);
 	}
 }

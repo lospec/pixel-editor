@@ -26,11 +26,8 @@ function switchMode(currentMode, mustConfirm = true) {
 
     //switch to basic mode
     else {
-
-
 		//if there is a current layer (a document is active)
         if (currentLayer) {
-
         	//confirm with user before flattening image
         	if (mustConfirm ) {
 	            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {

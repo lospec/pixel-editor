@@ -44,6 +44,7 @@
 //=include _checkerboard.js
 //=include _layer.js
 //=include _copyPaste.js
+//=include _resizeCanvas.js
 
 /**load file**/
 //=include _loadImage.js

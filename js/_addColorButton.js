@@ -44,7 +44,7 @@ on('click', 'add-color-button', function(){
     //add new color and make it selected
     var addedColor = addColor(newColor);
     addedColor.classList.add('selected');
-    context.fillStyle = '#' + newColor;
+    currentLayer.context.fillStyle = '#' + newColor;
 
     //add history state
     //saveHistoryState({type: 'addcolor', colorValue: addedColor.firstElementChild.jscolor.toString()});

@@ -6,9 +6,6 @@ let copiedStartY;
 let copiedEndX;
 let copiedEndY;
 
-// BUG: when merging tmp layer to currentLayer there are offset problems
-// FIX: maybe copy the entire tmp layer and paste it so that the merging happens at 0,0
-
 function copySelection() {
 	copiedEndX = endX;
 	copiedEndY = endY;
@@ -65,9 +62,4 @@ function cutSelectionTool() {
 		clipboardData = currentLayer.context.getImageData(startX, startY, endX - startX + 1, endY - startY + 1);
 		currentLayer.context.clearRect(startX - 0.5, startY - 0.5, endX - startX + 1, endY - startY + 1);
 	}
-	
-	// Moving those pixels from the current layer to the tmp layer
-	//TMPLayer.context.putImageData(imageDataToMove, startX + 1, startY);
-
-    //originalDataPosition = [currentPos[0], currentPos[1]];
 }

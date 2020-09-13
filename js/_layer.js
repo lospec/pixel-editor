@@ -160,6 +160,31 @@ class Layer {
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
     }
+
+    setCanvasOffset (offsetLeft, offsetTop) {
+        //horizontal offset
+        var minXOffset = -this.canvasSize[0] * zoom + 164;
+        var maxXOffset = window.innerWidth - 148;
+    
+        if 	(offsetLeft < minXOffset)
+            this.canvas.style.left = minXOffset +'px';
+        else if (offsetLeft > maxXOffset)
+            this.canvas.style.left = maxXOffset +'px';
+        else
+            this.canvas.style.left = offsetLeft +'px';
+    
+        //vertical offset
+        var minYOffset = -this.canvasSize[1] * zoom + 164;
+        var maxYOffset = window.innerHeight - 100;
+    
+        if 	(offsetTop < minYOffset)
+            this.canvas.style.top = minYOffset +'px';
+        else if (offsetTop > maxYOffset)
+            this.canvas.style.top = maxYOffset +'px';
+        else
+            this.canvas.style.top = offsetTop +'px';
+    }
+
     // Copies the otherCanvas' position and size
     copyData(otherCanvas) {
         this.canvas.style.width = otherCanvas.canvas.style.width;
@@ -219,9 +244,10 @@ class Layer {
             layer.menuEntry.classList.add("selected-layer");
             currentLayer = layer;
         }
-
+/*
         canvas = currentLayer.canvas;
         context = currentLayer.context;
+*/
     }
 
     toggleLock() {
