@@ -20,6 +20,7 @@ Suggestions / Planned features:
 - Move colours in palette editor
 - Duplicate layer
 - Hide non-hovered layers
+- Symmetry options
 
 - Custom color picker
     - custom code without dependencies
