@@ -73,28 +73,29 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		colors[0].parentElement.remove();
 	}
 
+	// set the default color variables
+	let fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
+	let bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
+
+	let defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
+	let defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
+
 	//add colors from selected palette
 	var selectedPalette = getText('palette-button');
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
-
 		//if this palette isnt the one specified in the url, then reset the url
-		if (!palettes[selectedPalette].specified)
+		if (!presets[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor/app');
 
+		presets[selectedPalette].colors.push(defaultForegroundColor);
+		presets[selectedPalette].colors.push(defaultBackgroundColor);
+
 		//fill the palette with specified palette
-		createColorPalette(palettes[selectedPalette].colors,true);
+		createColorPalette(presets[selectedPalette].colors,true);
 	}
 	else if (fileContent == null) {
 		//this wasn't a specified palette, so reset the url
 		history.pushState(null, null, '/pixel-editor/app');
-
-		//generate default colors
-		var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
-		var bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
-
-		//convert colors to hex
-		var defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
-		var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
 
 		//add colors to palette
 		addColor(defaultForegroundColor).classList.add('selected');

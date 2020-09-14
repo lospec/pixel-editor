@@ -3,17 +3,23 @@ var presets = {
     'Gameboy Color': {
         width: 240,
         height: 203,
-        palette: 'Gameboy Color'
+        palette: 'Gameboy Color',
+        specified: false,
+        colors: []
     },
     'PICO-8': {
         width: 128,
         height: 128,
         palette: 'PICO-8',
+        specified: false,
+        colors: []
     },
     'Commodore 64': {
         width: 40,
         height: 80,
-        palette: 'Commodore 64'
+        palette: 'Commodore 64',
+        specified: false,
+        colors: []
     }
 };
 
