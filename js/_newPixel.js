@@ -1,5 +1,10 @@
 let firstPixel = true;
 
+// Set the default palettes
+palettes["Commodore 64"] = {"name":"Commodore 64","author":"","colors":["000000","626262","898989","adadad","ffffff","9f4e44","cb7e75","6d5412","a1683c","c9d487","9ae29b","5cab5e","6abfc6","887ecb","50459b","a057a3"]}
+palettes["PICO-8"] = {"name":"PICO-8","author":"","colors":["000000","1D2B53","7E2553","008751","AB5236","5F574F","C2C3C7","FFF1E8","FF004D","FFA300","FFEC27","00E436","29ADFF","83769C","FF77A8","FFCCAA"]}
+palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"","colors":["2e463d","385d49","577b46","7e8416"]}
+
 function newPixel (width, height, editorMode, fileContent = null) {
 	pixelEditorMode = editorMode;
 
@@ -73,29 +78,28 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		colors[0].parentElement.remove();
 	}
 
-	// set the default color variables
-	let fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
-	let bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
-
-	let defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
-	let defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
-
 	//add colors from selected palette
 	var selectedPalette = getText('palette-button');
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
+
 		//if this palette isnt the one specified in the url, then reset the url
-		if (!presets[selectedPalette].specified)
+		if (!palettes[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor/app');
 
-		presets[selectedPalette].colors.push(defaultForegroundColor);
-		presets[selectedPalette].colors.push(defaultBackgroundColor);
-
 		//fill the palette with specified palette
-		createColorPalette(presets[selectedPalette].colors,true);
+		createColorPalette(palettes[selectedPalette].colors,true);
 	}
 	else if (fileContent == null) {
 		//this wasn't a specified palette, so reset the url
 		history.pushState(null, null, '/pixel-editor/app');
+
+		//generate default colors
+		var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
+		var bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
+
+		//convert colors to hex
+		var defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
+		var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
 
 		//add colors to palette
 		addColor(defaultForegroundColor).classList.add('selected');
