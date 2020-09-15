@@ -45,8 +45,8 @@ function changedBorder(event) {
 }
 
 function changedSize(event) {
-    let widthOffset = document.getElementById("rc-width").value - layers[0].canvasSize[0];
-    let heightOffset = document.getElementById("rc-height").value - layers[0].canvasSize[1];
+    let widthOffset = Math.abs(document.getElementById("rc-width").value) - layers[0].canvasSize[0];
+    let heightOffset = Math.abs(document.getElementById("rc-height").value) - layers[0].canvasSize[1];
 
     let left = Math.round(widthOffset / 2);
     let right = widthOffset - left;
@@ -139,11 +139,6 @@ function resizeCanvas(event) {
             break;
     }
 
-    /*
-    leftOffset = Math.abs(leftOffset);
-    topOffset = Math.abs(topOffset);
-    */
-   
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);

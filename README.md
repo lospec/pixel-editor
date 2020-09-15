@@ -14,12 +14,10 @@ Suggestions / Planned features:
 
 - Line tool
 - Resize canvas
-- Snap brush preview to pixel grid
-- Move selection with arrows
+- Resize sprite
 - Load palette from LPE file
-- Move colours in palette editor
+- Move colours in (advanced) palette editor
 - Duplicate layer
-- Hide non-hovered layers
 - Symmetry options
 
 - Custom color picker
@@ -33,9 +31,6 @@ Suggestions / Planned features:
     - Stack colors when too many
     - Fix popups
 
-- Show colors which would need to be added to palette
-
-- Palette option remove unused colors
 - Pixel Grid
     - Another currentLayer.canvas
     - Must be rescaled each zoom
@@ -43,6 +38,17 @@ Suggestions / Planned features:
 - Possibly add collaborate function
 - Bug fix
     - Alt + scroll broken
+	
+- Polish:
+	- Show colors which would need to be added to palette
+	- Warning windows for wrong inputs
+	- Hide non-hovered layers
+	- Snap brush preview to pixel grid
+	- Palette option remove unused colors
+	- Move selection with arrows
+	- Update pivot buttons when resizing canvas
+	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
+	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
 
 ## How to Contribute
 

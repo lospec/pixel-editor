@@ -974,8 +974,8 @@ svg {
     path {
       fill:$basehovericon;
     }
-    transition: background 150ms ease-in-out, 
-                transform 150ms ease;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
     -webkit-appearance: none;
     -moz-appearance: none;
   }
@@ -1003,6 +1003,28 @@ svg {
   font-size:15px;
   left:10px;
   text-align:center;
+
+  button {
+	background:$basehover;
+	border:none;
+    
+    color: $basehovericon;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  button:hover,
+  button:focus {
+      cursor:pointer;
+      background-color: $baseicon;
+      color:$basehovericonhover;
+      border: 2px solid color(base, foreground);
+  }
+  button:active {
+      transform: scale(0.95);
+  }
 
   input {
     position:relative;
