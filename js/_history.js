@@ -3,6 +3,35 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
+function HistoryStateResizeCanvas(newSize, oldSize, imageDatas) {
+    this.oldSize = oldSize;
+    this.newSize = newSize;
+    this.imageDatas = imageDatas;
+
+    this.undo = function() {
+        let dataIndex = 0;
+        console.log("breakpoint");
+        // Resizing the canvas
+        resizeCanvas(null, oldSize);
+        // Putting the image datas
+        for (let i=0; i<imageDatas.length; i++) {
+            if (layers[i].menuEntry != null) {
+                layers[i].context.putImageData(imageDatas[dataIndex], 0, 0);
+                dataIndex++;
+            }
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        resizeCanvas(null, newSize);
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
 function HistoryStateFlattenVisible(flattened) {
     this.nFlattened = flattened;
 

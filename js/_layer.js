@@ -185,13 +185,13 @@ class Layer {
             this.canvas.style.top = offsetTop +'px';
     }
 
-    // Copies the otherCanvas' position and size
-    copyData(otherCanvas) {
-        this.canvas.style.width = otherCanvas.canvas.style.width;
-        this.canvas.style.height = otherCanvas.canvas.style.height;
-
-        this.canvas.style.left = otherCanvas.canvas.style.left;
-        this.canvas.style.top = otherCanvas.canvas.style.top;
+    // Copies the otherLayer's position and size
+    copyData(otherLayer) {
+        this.canvas.style.width = otherLayer.canvas.style.width;
+        this.canvas.style.height = otherLayer.canvas.style.height;
+        
+        this.canvas.style.left = otherLayer.canvas.style.left;
+        this.canvas.style.top = otherLayer.canvas.style.top;
     }
 
     openOptionsMenu(event) {
@@ -601,7 +601,9 @@ function addLayer(id, saveHistory = true) {
     let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
     newLayer.context.fillStyle = currentLayer.context.fillStyle;
     newLayer.copyData(currentLayer);
+
     layers.splice(index, 0, newLayer);
+    
 
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);

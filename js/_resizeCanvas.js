@@ -64,20 +64,40 @@ function changedSize(event) {
     borders.bottom = bottom;
 }
 
-function resizeCanvas(event) {
+function resizeCanvas(event, size) {
     let imageDatas = [];
     let leftOffset = 0;
     let topOffset = 0;
     let copiedDataIndex = 0;
 
+    // If I'm undoing, I manually put the values in the window
+    if (size !== undefined) {
+        document.getElementById("rc-width").value = size.x;
+        document.getElementById("rc-height").value = size.y;
+
+        changedSize();
+    }
+    
     rcUpdateBorders();
-    changedSize();
 
     // Save all imageDatas
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             imageDatas.push(layers[i].context.getImageData(0, 0, layers[i].canvasSize[0], layers[i].canvasSize[1]));
         }
+    }
+
+    // Saving the history only if I'm not already undoing or redoing
+    if (size == undefined) {
+        // Saving history
+        new HistoryStateResizeCanvas(
+            {x: parseInt(layers[0].canvasSize[0]) + borders.left + borders.right, 
+            y: parseInt(layers[0].canvasSize[1]) + borders.top + borders.bottom},
+
+            {x: layers[0].canvasSize[0],
+            y: layers[0].canvasSize[1]},
+            imageDatas
+        );
     }
 
     // Resize the canvases
@@ -135,13 +155,14 @@ function resizeCanvas(event) {
             topOffset = borders.top + borders.bottom;
             break;
         default:
-            console.log('now thats a very weird pivot');
+            console.log('Pivot does not exist, please report an issue at https://github.com/lospec/pixel-editor');
             break;
     }
 
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
+            layers[i].updateLayerPreview();
             copiedDataIndex++;
         }
     }

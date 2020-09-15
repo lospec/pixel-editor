@@ -45,6 +45,7 @@
 //=include _layer.js
 //=include _copyPaste.js
 //=include _resizeCanvas.js
+//=include _resizeSprite.js
 
 /**load file**/
 //=include _loadImage.js

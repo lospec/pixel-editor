@@ -12,8 +12,8 @@ function getCursorPosition(e) {
         y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
     }
 
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
+    x -= currentLayer.canvas.offsetLeft;
+    y -= currentLayer.canvas.offsetTop;
 
     return [Math.round(x), Math.round(y)];
 }
