@@ -460,6 +460,54 @@ function deleteLayer(saveHistory = true) {
     currentLayer.closeOptionsMenu();
 }
 
+function duplicateLayer(event) {
+    let layerIndex = layers.indexOf(currentLayer);
+    let toDuplicate = currentLayer;
+
+    // Increasing z-indexes of the layers above
+    for (let i=layerIndex + 1; i<layers.length - 2; i++) {
+        layers[i].canvas.style.zIndex++;
+    }
+    maxZIndex++;
+
+    // Creating a new canvas
+    let newCanvas = document.createElement("canvas");
+    // Setting up the new canvas
+    canvasView.append(newCanvas);
+    newCanvas.style.zIndex = currentLayer.canvas.style.zIndex;
+    newCanvas.classList.add("drawingCanvas");
+
+	if (!layerListEntry) return console.warn('skipping adding layer because no document');
+
+    // Clone the default layer
+    let toAppend = currentLayer.menuEntry.cloneNode(true);
+    // Setting the default name for the layer
+    toAppend.getElementsByTagName('p')[0].innerHTML += " copy";
+    // Removing the selected class
+    toAppend.classList.remove("selected-layer");
+    // Adding the layer to the list
+    layerCount++;
+
+    // Creating a layer object
+    let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
+    newLayer.context.fillStyle = currentLayer.context.fillStyle;
+    newLayer.copyData(currentLayer);
+
+    layers.splice(layerIndex, 0, newLayer);
+    
+    // Insert it before the Add layer button
+    layerList.insertBefore(toAppend, currentLayer.menuEntry);
+
+    // Copy the layer content
+    newLayer.context.putImageData(currentLayer.context.getImageData(
+        0, 0, currentLayer.canvasSize[0], currentLayer.canvasSize[1]), 0, 0);
+    // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
+    /*if (saveHistory) {
+        new HistoryStateDuplicateLayer(newLayer, index);
+    }*/
+
+}
+
 function renameLayer(event) {
     let layerIndex = layers.indexOf(currentLayer);
     let toRename = currentLayer;
