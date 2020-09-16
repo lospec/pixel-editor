@@ -76,12 +76,13 @@ class Layer {
 
     // Initializes the canvas
     initialize() {
+        /*
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
         var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);
 
         zoom = Math.min(maxHorizontalZoom,maxVerticalZoom);
         if (zoom < 1) zoom = 1;
-
+        */
         //resize canvas
         this.canvas.width = this.canvasSize[0];
         this.canvas.height = this.canvasSize[1];
@@ -584,8 +585,6 @@ function addLayer(id, saveHistory = true) {
     newCanvas.style.zIndex = maxZIndex;
     newCanvas.classList.add("drawingCanvas");
 
-    console.log("Tela creata: " + newCanvas);
-
 	if (!layerListEntry) return console.warn('skipping adding layer because no document');
 
     // Clone the default layer
@@ -604,7 +603,6 @@ function addLayer(id, saveHistory = true) {
 
     layers.splice(index, 0, newLayer);
     
-
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
 

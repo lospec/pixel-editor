@@ -1,5 +1,6 @@
 //init variables
-var canvasSize,zoom;
+var canvasSize;
+var zoom = 3;
 var dragging = false;
 var lastMouseClickPos = [0,0];
 var dialogueOpen = false;
