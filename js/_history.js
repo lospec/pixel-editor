@@ -239,9 +239,11 @@ function HistoryStateAddLayer(layerData, index) {
 
     this.undo = function() {
         redoStates.push(this);
+        layers[this.index + 1].selectLayer();
 
         this.added.canvas.remove();
         this.added.menuEntry.remove();
+
         layers.splice(index, 1);
     };
 
