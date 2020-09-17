@@ -463,10 +463,11 @@ function deleteLayer(saveHistory = true) {
 function duplicateLayer(event) {
     let layerIndex = layers.indexOf(currentLayer);
     let toDuplicate = currentLayer;
+    let menuEntries = layerList.childNodes
 
     // Increasing z-indexes of the layers above
-    for (let i=layerIndex + 1; i<layers.length - 2; i++) {
-        layers[i].canvas.style.zIndex++;
+    for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>0; i--) {
+        getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
     }
     maxZIndex++;
 
@@ -474,7 +475,7 @@ function duplicateLayer(event) {
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
     canvasView.append(newCanvas);
-    newCanvas.style.zIndex = currentLayer.canvas.style.zIndex;
+    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 1;
     newCanvas.classList.add("drawingCanvas");
 
 	if (!layerListEntry) return console.warn('skipping adding layer because no document');
@@ -501,6 +502,7 @@ function duplicateLayer(event) {
     // Copy the layer content
     newLayer.context.putImageData(currentLayer.context.getImageData(
         0, 0, currentLayer.canvasSize[0], currentLayer.canvasSize[1]), 0, 0);
+    newLayer.updateLayerPreview();
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
     /*if (saveHistory) {
         new HistoryStateDuplicateLayer(newLayer, index);
@@ -594,6 +596,16 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
         }
 
     }
+}
+
+function getMenuEntryIndex(list, entry) {
+    for (let i=0; i<list.length; i++) {
+        if (list[i] === entry) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 // Finds a layer given its name
