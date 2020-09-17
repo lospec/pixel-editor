@@ -158,6 +158,27 @@ function HistoryStateRenameLayer(oldName, newName, layer) {
     saveHistoryState(this);
 }
 
+function HistoryStateDuplicateLayer(addedLayer, copiedLayer) {
+    this.addedLayer = addedLayer;
+    this.copiedLayer = copiedLayer;
+
+    this.undo = function() {
+        addedLayer.selectLayer();
+        deleteLayer(false);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        copiedLayer.selectLayer();
+        duplicateLayer(null, false);
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
 function HistoryStateDeleteLayer(layerData, before, index) {
     this.deleted = layerData;
     this.before = before;

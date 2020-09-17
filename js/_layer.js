@@ -460,7 +460,7 @@ function deleteLayer(saveHistory = true) {
     currentLayer.closeOptionsMenu();
 }
 
-function duplicateLayer(event) {
+function duplicateLayer(event, saveHistory = true) {
     let layerIndex = layers.indexOf(currentLayer);
     let toDuplicate = currentLayer;
     let menuEntries = layerList.childNodes
@@ -504,10 +504,9 @@ function duplicateLayer(event) {
         0, 0, currentLayer.canvasSize[0], currentLayer.canvasSize[1]), 0, 0);
     newLayer.updateLayerPreview();
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
-    /*if (saveHistory) {
-        new HistoryStateDuplicateLayer(newLayer, index);
-    }*/
-
+    if (saveHistory) {
+        new HistoryStateDuplicateLayer(newLayer, currentLayer);
+    }
 }
 
 function renameLayer(event) {
