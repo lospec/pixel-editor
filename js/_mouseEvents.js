@@ -157,16 +157,23 @@ window.addEventListener("mouseup", function (mouseEvent) {
 }, false);
 
 // TODO: Make it snap to the pixel grid
-function setPreviewPosition(preview, cursor, size){
+function setPreviewPosition(preview, size){
+	let toAdd = 0;
+
+	// This prevents the brush to be placed in the middle of pixels
+	if (size % 2 == 0) {
+		toAdd = 0.5;
+	}
+
     preview.style.left = (
         currentLayer.canvas.offsetLeft
         + Math.floor(cursor[0]/zoom) * zoom
-        - Math.floor(size / 2) * zoom
+        - Math.floor(size / 2) * zoom + toAdd
     ) + 'px';
     preview.style.top = (
         currentLayer.canvas.offsetTop
         + Math.floor(cursor[1]/zoom) * zoom
-        - Math.floor(size / 2) * zoom
+        - Math.floor(size / 2) * zoom + toAdd
     ) + 'px';
 }
 

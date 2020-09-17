@@ -2,7 +2,7 @@
 function getCursorPosition(e) {
     var x;
     var y;
-
+    
     if (e.pageX != undefined && e.pageY != undefined) {
         x = e.pageX;
         y = e.pageY;

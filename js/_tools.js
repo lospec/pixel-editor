@@ -95,8 +95,14 @@ class Tool {
 	}
 
 	moveBrushPreview(cursorLocation) {
-		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2) + 'px';
-		brushPreview.style.top = (Math.ceil(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2) + 'px';
+		let toSub = 0;
+		// Prevents the brush to be put in the middle of pixels
+		if (this.currentBrushSize % 2 == 0) {
+			toSub = 0.5;
+		}		
+
+		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
+		brushPreview.style.top = (Math.ceil(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
 	}
 }
 
