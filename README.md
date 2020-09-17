@@ -41,7 +41,6 @@ Suggestions / Planned features:
 	- Show colors which would need to be added to palette
 	- Warning windows for wrong inputs
 	- Hide non-hovered layers
-	- Snap brush preview to pixel grid
 	- Palette option remove unused colors
 	- Move selection with arrows
 	- Update pivot buttons when resizing canvas
