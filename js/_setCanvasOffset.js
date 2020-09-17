@@ -1,7 +1,7 @@
 function setCanvasOffset (canvas, offsetLeft, offsetTop) {
     //horizontal offset
     var minXOffset = -canvasSize[0]*zoom+ 164;
-    var maxXOffset = window.innerWidth - 148;
+    var maxXOffset = window.innerWidth - 300;
 
     if 	(offsetLeft < minXOffset)
         canvas.style.left = minXOffset +'px';

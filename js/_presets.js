@@ -8,7 +8,7 @@ var presets = {
     'PICO-8': {
         width: 128,
         height: 128,
-        palette: 'PICO-8',
+        palette: 'PICO-8'
     },
     'Commodore 64': {
         width: 40,

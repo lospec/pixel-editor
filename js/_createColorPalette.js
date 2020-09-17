@@ -1,5 +1,5 @@
 
-function createColorPalette(selectedPalette, fillBackground, deletePreviousPalette = true) {
+function createColorPalette(paletteColors, fillBackground, deletePreviousPalette = true) {
     //remove current palette
     if (deletePreviousPalette) {
         colors = document.getElementsByClassName('color-button');
@@ -11,8 +11,8 @@ function createColorPalette(selectedPalette, fillBackground, deletePreviousPalet
     var lightestColor = '#000000';
     var darkestColor = '#ffffff';
 
-    for (var i = 0; i < selectedPalette.length; i++) {
-        var newColor = selectedPalette[i];
+    for (var i = 0; i < paletteColors.length; i++) {
+        var newColor = paletteColors[i];
         var newColorElement = addColor(newColor);
 
         var newColorHex = hexToRgb(newColor);
