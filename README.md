@@ -13,11 +13,9 @@ The next version is mostly focused on adding missing essential features and port
 Suggestions / Planned features:
 
 - Line tool
-- Resize canvas
 - Resize sprite
 - Load palette from LPE file
 - Move colours in (advanced) palette editor
-- Duplicate layer
 - Symmetry options
 
 - Custom color picker

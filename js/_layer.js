@@ -463,7 +463,7 @@ function deleteLayer(saveHistory = true) {
 function duplicateLayer(event, saveHistory = true) {
     let layerIndex = layers.indexOf(currentLayer);
     let toDuplicate = currentLayer;
-    let menuEntries = layerList.childNodes
+    let menuEntries = layerList.children;
 
     // Increasing z-indexes of the layers above
     for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>0; i--) {
