@@ -57,6 +57,8 @@ class Layer {
         if (menuEntry != null) {
             this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
             menuEntry.id = "layer" + id;
+            menuEntry.onmouseover = () => this.hover();
+            menuEntry.onmouseout = () => this.unhover();
             menuEntry.onclick = () => this.selectLayer();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
@@ -98,6 +100,24 @@ class Layer {
 
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
+    }
+
+    hover() {
+        // Hide all the layers but the current one
+        for (let i=1; i<layers.length - 2; i++) {
+            if (layers[i] !== this) {
+                layers[i].canvas.style.opacity = 0.3;
+            }
+        }
+    }
+
+    unhover() {
+        // Show all the layers again
+        for (let i=1; i<layers.length - 2; i++) {
+            if (layers[i] !== this) {
+                layers[i].canvas.style.opacity = 1;
+            }
+        }
     }
 
     setID(id) {
