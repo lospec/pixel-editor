@@ -486,7 +486,7 @@ function duplicateLayer(event, saveHistory = true) {
     let menuEntries = layerList.children;
 
     // Increasing z-indexes of the layers above
-    for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>0; i--) {
+    for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>=0; i--) {
         getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
     }
     maxZIndex++;
