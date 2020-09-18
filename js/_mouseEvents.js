@@ -259,7 +259,7 @@ function draw (mouseEvent) {
 		}
 		else if (currentTool.name == 'pan' && dragging) {
 			// Setting first layer position
-			setCanvasOffset(layers[0].canvas, layers[0].canvas.offsetLeft + (cursorLocation[0] - lastMouseClickPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastMouseClickPos[1]));
+			layers[0].setCanvasOffset(layers[0].canvas.offsetLeft + (cursorLocation[0] - lastMouseClickPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastMouseClickPos[1]));
 			// Copying that position to the other layers
 			for (let i=1; i<layers.length; i++) {
 				layers[i].copyData(layers[0]);
