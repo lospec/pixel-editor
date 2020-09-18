@@ -53,7 +53,7 @@
             <button>Edit</button>
             <ul>
                 <li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
-                <li><button id="resize-sprite-button">Resize sprite</button></li>
+                <li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Resize sprite</button></li>
                 <li><button id="undo-button" class="disabled">Undo</button></li>
                 <li><button id="redo-button" class="disabled">Redo</button></li>
             </ul>
@@ -253,6 +253,53 @@
                 <button id="create-button" class="default">Create</button>
             </div>
         </div>
+        <!--SPRITE RESIZE-->
+        <div id = "resize-sprite">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Resize sprite</h1>
+            <!-- SIZE-->
+            <span id = "rc-size-menu">
+                <h2>New size</h2>
+                <div>
+                    <span>
+                        Width: <input id="rs-width" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Height: <input id="rs-height" default="0" step="1" type="number" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                </div>
+            </span>        
+            <!--BORDERS-->
+            <span id = "borders-menu">
+                <h2>Resize percentages</h2>
+                <div>
+                    <span>
+                        Left: <input id="rs-border-left" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Right: <input id="rs-border-right" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Top: <input id="rs-border-top" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Bottom: <input id="rs-border-bottom" default="0" step="1" type="number" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                </div>
+                <button id = "resize-sprite-confirm">Resize sprite</button>
+            </span>            
+        </div>
+
         <!--CANVAS RESIZE-->
         <div id = "resize-canvas">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
