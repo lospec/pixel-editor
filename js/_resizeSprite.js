@@ -41,6 +41,8 @@ function initResizeSpriteInputs() {
 
 function resizeSprite() {
     let newWidth, newHeight;
+    let imageDatas = [];
+    let layerIndex = 0;
 
     rcPivot = "middle";
     // Updating values if the user didn't press enter
@@ -67,12 +69,27 @@ function resizeSprite() {
 
     console.log(newWidth + ", " + newHeight);
 
+    // Get all the image datas
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            imageDatas.push(layers[i].context.getImageData(
+                0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1])
+            );
+        }
+    }
+
     // Resizing the canvas
     resizeCanvas(null, {x: newWidth, y: newHeight});
-    // Get all the image datas
-    // Resize the canvases
-    // Resize the image datas
+
     // Put the image datas on the new canvases
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            layers[i].context.putImageData(
+                resizeImageData(imageDatas[layerIndex], newWidth, newHeight, 'nearest-neighbor'), 0, 0
+            );
+            layerIndex++;
+        }
+    }
     closeDialogue();
 }
 
