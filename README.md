@@ -45,6 +45,7 @@ Suggestions / Planned features:
 	- Update pivot buttons when resizing canvas
 	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
 	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
+    - Trim canvas
 
 ## How to Contribute
 

@@ -1,5 +1,5 @@
 let resizeCanvasContainer = document.getElementById("resize-canvas");
-let pivot = "middle";
+let rcPivot = "middle";
 let currentPivotObject;
 let resizeCanvasInitialized = false;
 let borders = {left: 0, right: 0, top: 0, bottom: 0};
@@ -25,26 +25,26 @@ function initResizeCanvasInputs() {
     document.getElementById("rc-width").value = layers[0].canvasSize[0];
     document.getElementById("rc-height").value = layers[0].canvasSize[1];
 
-    document.getElementById("rc-border-left").addEventListener("change", changedBorder);
-    document.getElementById("rc-border-right").addEventListener("change", changedBorder);
-    document.getElementById("rc-border-top").addEventListener("change", changedBorder);
-    document.getElementById("rc-border-bottom").addEventListener("change", changedBorder);
+    document.getElementById("rc-border-left").addEventListener("change", rcChangedBorder);
+    document.getElementById("rc-border-right").addEventListener("change", rcChangedBorder);
+    document.getElementById("rc-border-top").addEventListener("change", rcChangedBorder);
+    document.getElementById("rc-border-bottom").addEventListener("change", rcChangedBorder);
 
-    document.getElementById("rc-width").addEventListener("change", changedSize);
-    document.getElementById("rc-height").addEventListener("change", changedSize);
+    document.getElementById("rc-width").addEventListener("change", rcChangedSize);
+    document.getElementById("rc-height").addEventListener("change", rcChangedSize);
 
     document.getElementById("resize-canvas-confirm").addEventListener("click", resizeCanvas);
     console.log("Pivot selezionato: " + currentPivotObject);
 }
 
-function changedBorder(event) {
+function rcChangedBorder(event) {
     rcUpdateBorders();
     
     document.getElementById("rc-width").value = parseInt(layers[0].canvasSize[0]) + borders.left + borders.right;
     document.getElementById("rc-height").value = parseInt(layers[0].canvasSize[1]) + borders.top + borders.bottom;
 }
 
-function changedSize(event) {
+function rcChangedSize(event) {
     let widthOffset = Math.abs(document.getElementById("rc-width").value) - layers[0].canvasSize[0];
     let heightOffset = Math.abs(document.getElementById("rc-height").value) - layers[0].canvasSize[1];
 
@@ -75,7 +75,7 @@ function resizeCanvas(event, size) {
         document.getElementById("rc-width").value = size.x;
         document.getElementById("rc-height").value = size.y;
 
-        changedSize();
+        rcChangedSize();
     }
     
     rcUpdateBorders();
@@ -116,7 +116,7 @@ function resizeCanvas(event, size) {
     fillCheckerboard();
 
     // Put the imageDatas in the right position
-    switch (pivot)
+    switch (rcPivot)
     {
         case 'topleft':
             leftOffset = 0;
@@ -185,7 +185,7 @@ function rcUpdateBorders() {
 }
 
 function changePivot(event) {
-    pivot = event.target.getAttribute("value");
+    rcPivot = event.target.getAttribute("value");
 
     // Setting the selected class
     currentPivotObject.classList.remove("rc-selected-pivot");
