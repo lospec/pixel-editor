@@ -3,6 +3,22 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
+function HistoryStateResizeSprite(newPercs, oldPercs, algo) {
+    this.newPercs = newPercs;
+    this.oldPercs = oldPercs;
+    this.algo = algo;
+
+    this.undo = function() {
+
+    };
+
+    this.redo = function() {
+
+    };
+
+    saveHistoryState(this);
+}
+
 function HistoryStateResizeCanvas(newSize, oldSize, imageDatas) {
     this.oldSize = oldSize;
     this.newSize = newSize;

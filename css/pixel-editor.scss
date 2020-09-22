@@ -1118,8 +1118,8 @@ svg {
 		}
 
 		option:checked, option:hover {
-			background-color: $basehovericon;
-			color:$basehovericonhover;
+			box-shadow: 0 0 10px 100px $basehovericon inset;
+			color: $basehovericonhover;
 		}
 	}
 }

@@ -1,22 +1,22 @@
-let resizeSpriteInitialized = false;
+
 let keepRatio = true;
 let currentRatio;
+let currentAlgo = 'nearest-neighbor';
 let data = {width: 0, height: 0, widthPercentage: 100, heightPercentage: 100};
 let startData = {width: 0, height:0, widthPercentage: 100, heightPercentage: 100};
 
 function openResizeSpriteWindow() {
-    if (!resizeSpriteInitialized) {
-        resizeSpriteInitialized = true;
-        initResizeSpriteInputs();
-    }
+    initResizeSpriteInputs();
 
     currentRatio = layers[0].canvasSize[0] / layers[0].canvasSize[1];
 
     data.width = layers[0].canvasSize[0];
     data.height = layers[1].canvasSize[1];
 
-    startData.width = data.width;
-    startData.height = data.height;
+    startData.width = parseInt(data.width);
+    startData.height = parseInt(data.height);
+    startData.heightPercentage = 100;
+    startData.widthPercentage = 100;
 
     showDialogue('resize-sprite');
 }
@@ -37,6 +37,7 @@ function initResizeSpriteInputs() {
 
     document.getElementById("resize-sprite-confirm").addEventListener("click", resizeSprite);
     document.getElementById("rs-keep-ratio").addEventListener("click", toggleRatio);
+    document.getElementById("resize-algorithm-combobox").addEventListener("change", changedAlgorithm);
 }
 
 function resizeSprite() {
@@ -85,11 +86,19 @@ function resizeSprite() {
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             layers[i].context.putImageData(
-                resizeImageData(imageDatas[layerIndex], newWidth, newHeight, 'nearest-neighbor'), 0, 0
+                resizeImageData(imageDatas[layerIndex], newWidth, newHeight, currentAlgo), 0, 0
             );
             layerIndex++;
         }
     }
+
+    // Updating start values when I finish scaling the sprite
+    // OPTIMIZABLE? Can't I just assign data to startData? Is js smart enough to understand?
+    startData.width = data.width;
+    startData.height = data.height;
+    startData.widthPercentage = data.widthPercentage;
+    startData.heightPercentage = data.heightPercentage;
+
     closeDialogue();
 }
 
@@ -120,7 +129,7 @@ function changedWidth(event) {
 }
 
 function changedHeight(event) {
-    let oldValue = data.height;
+    let oldValue = 100;
     let ratio;
     let newWidth, newWidthPerc, newHeightPerc;
 
@@ -146,7 +155,7 @@ function changedHeight(event) {
 }
 
 function changedWidthPercentage(event) {
-    let oldValue = data.widthPercentage;
+    let oldValue = 100;
     let ratio;
     let newWidth, newHeight, newHeightPerc;
 
@@ -155,9 +164,11 @@ function changedWidthPercentage(event) {
 
     ratio = data.widthPercentage / oldValue;
 
-    newHeight = document.getElementById("rs-height").value * ratio;
+    console.log("old value: " + oldValue + ", ratio: " + ratio);
+
+    newHeight = startData.height * ratio;
     newHeightPerc = data.widthPercentage / currentRatio;
-    newWidth = document.getElementById("rs-width").value * ratio;
+    newWidth = startData.width * ratio;
 
     if (keepRatio) {
         document.getElementById("rs-height-percentage").value = newHeightPerc;
@@ -181,9 +192,9 @@ function changedHeightPercentage(event) {
 
     ratio = data.heightPercentage / oldValue;
 
-    newWidth = document.getElementById("rs-width").value * ratio;
+    newWidth = startData.width * ratio;
     newWidthPerc = data.heightPercentage * currentRatio;
-    newHeight = document.getElementById("rs-height").value * ratio;
+    newHeight = startData.height * ratio;
 
     if (keepRatio) {
         document.getElementById("rs-width-percentage").value = data.heightPercentage * currentRatio;
@@ -199,5 +210,8 @@ function changedHeightPercentage(event) {
 
 function toggleRatio(event) {
     keepRatio = !keepRatio;
-    console.log(keepRatio);
+}
+
+function changedAlgorithm(event) {
+    currentAlgo = event.target.value;
 }

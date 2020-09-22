@@ -53,7 +53,7 @@
             <button>Edit</button>
             <ul>
                 <li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
-                <li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Resize sprite</button></li>
+                <li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Scale sprite</button></li>
                 <li><button id="undo-button" class="disabled">Undo</button></li>
                 <li><button id="redo-button" class="disabled">Redo</button></li>
             </ul>
@@ -257,7 +257,7 @@
         <!--SPRITE RESIZE-->
         <div id = "resize-sprite">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
-            <h1>Resize sprite</h1>
+            <h1>Scale sprite</h1>
             <!-- SIZE-->
             <h2>New size</h2>
             <span id = "rs-size-menu">
@@ -292,14 +292,14 @@
                         Keep current ratio <input type = "checkbox" id = "rs-keep-ratio"/>
                     </span>
                     <span>
-                        Resizing algorithm:
-                        <select name = "resize-algorithm">
+                        Scaling algorithm:
+                        <select name = "resize-algorithm" id = "resize-algorithm-combobox">
                             <option value = "nearest-neighbor">Nearest neighbour</option>
                             <option value = "bilinear-interpolation">Bilinear</option>
                         </select>
                     </span>
                     </br>
-                    <button id = "resize-sprite-confirm">Resize sprite</button>
+                    <button id = "resize-sprite-confirm">Scale sprite</button>
                 </div>
             </span>            
         </div>
