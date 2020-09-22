@@ -1,14 +1,10 @@
 let resizeCanvasContainer = document.getElementById("resize-canvas");
 let rcPivot = "middle";
 let currentPivotObject;
-let resizeCanvasInitialized = false;
 let borders = {left: 0, right: 0, top: 0, bottom: 0};
 
 function openResizeCanvasWindow() {
-    if (!resizeCanvasInitialized) {
-        resizeCanvasInitialized = true;
-        initResizeCanvasInputs();
-    }
+    initResizeCanvasInputs();
     showDialogue('resize-canvas');
 }
 

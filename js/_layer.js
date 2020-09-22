@@ -184,8 +184,8 @@ class Layer {
 
     setCanvasOffset (offsetLeft, offsetTop) {
         //horizontal offset
-        var minXOffset = -this.canvasSize[0] * zoom + 300;
-        var maxXOffset = window.innerWidth - 148;
+        var minXOffset = -this.canvasSize[0] * zoom;
+        var maxXOffset = window.innerWidth - 300;
     
         if 	(offsetLeft < minXOffset)
             this.canvas.style.left = minXOffset +'px';

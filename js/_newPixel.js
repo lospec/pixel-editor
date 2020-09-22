@@ -39,7 +39,12 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
 	    currentLayer = layers[1];
 
-	    currentLayer.canvas.style.zIndex = 2;
+		currentLayer.canvas.style.zIndex = 2;
+		
+		// Updating canvas size
+		for (let i=0; i<nLayers; i++) {
+			layers[i].canvasSize = [width, height];
+		}
 	}
 
     // Adding the checkerboard behind it

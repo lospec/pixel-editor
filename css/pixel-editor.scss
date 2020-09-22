@@ -1102,6 +1102,26 @@ svg {
 		width:400px;
 		justify-content: center;
 	}
+
+	select {
+		height:30px;
+		background-color: $basehover;
+		color: $basehovericon;
+		border:none;
+		position:relative;
+		left:10px;
+
+		option {
+			background-color: $basehover;
+			color:$basehovericon;
+			padding:5px;
+		}
+
+		option:checked, option:hover {
+			background-color: $basehovericon;
+			color:$basehovericonhover;
+		}
+	}
 }
 
 #rs-keep-ratio {
