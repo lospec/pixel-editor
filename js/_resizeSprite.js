@@ -40,12 +40,17 @@ function initResizeSpriteInputs() {
     document.getElementById("resize-algorithm-combobox").addEventListener("change", changedAlgorithm);
 }
 
-function resizeSprite() {
+function resizeSprite(event, ratio) {
+    let oldWidth, oldHeight;
     let newWidth, newHeight;
-    let imageDatas = [];
+    let rsImageDatas = [];
     let layerIndex = 0;
+    let imageDatasCopy = [];
 
+    oldWidth = layers[0].canvasSize[0];
+    oldHeight = layers[1].canvasSize[1];
     rcPivot = "middle";
+
     // Updating values if the user didn't press enter
     switch (document.activeElement.id) {
         case "rs-width-percentage":
@@ -65,18 +70,27 @@ function resizeSprite() {
             break;
     }
 
-    newWidth = data.width;
-    newHeight = data.height;
-
-    console.log(newWidth + ", " + newHeight);
-
+    if (ratio == null) {
+        newWidth = data.width;
+        newHeight = data.height;
+    }
+    else {
+        newWidth = layers[0].canvasSize[0] * ratio[0];
+        newHeight = layers[1].canvasSize[1] * ratio[1];
+    }
+    
     // Get all the image datas
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
-            imageDatas.push(layers[i].context.getImageData(
+            rsImageDatas.push(layers[i].context.getImageData(
                 0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1])
             );
         }
+    }
+
+    if (ratio == null) {
+        imageDatasCopy = rsImageDatas.slice();
+        new HistoryStateResizeSprite(newWidth / oldWidth, newHeight / oldHeight, currentAlgo, imageDatasCopy);
     }
 
     // Resizing the canvas
@@ -86,18 +100,26 @@ function resizeSprite() {
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             layers[i].context.putImageData(
-                resizeImageData(imageDatas[layerIndex], newWidth, newHeight, currentAlgo), 0, 0
+                resizeImageData(rsImageDatas[layerIndex], newWidth, newHeight, currentAlgo), 0, 0
             );
+            layers[i].updateLayerPreview();
             layerIndex++;
         }
     }
 
     // Updating start values when I finish scaling the sprite
     // OPTIMIZABLE? Can't I just assign data to startData? Is js smart enough to understand?
-    startData.width = data.width;
-    startData.height = data.height;
-    startData.widthPercentage = data.widthPercentage;
-    startData.heightPercentage = data.heightPercentage;
+    if (ratio == null) {
+        startData.width = data.width;
+        startData.height = data.height;
+    }
+    else {
+        startData.width = layers[0].canvasSize[0];
+        startData.height = layers[0].canvasSize[1];
+    }
+
+    startData.widthPercentage = 100;
+    startData.heightPercentage = 100;
 
     closeDialogue();
 }

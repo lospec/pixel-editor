@@ -3,19 +3,36 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
-function HistoryStateResizeSprite(newPercs, oldPercs, algo) {
-    this.newPercs = newPercs;
-    this.oldPercs = oldPercs;
+function HistoryStateResizeSprite(xRatio, yRatio, algo, oldData) {
+    this.xRatio = xRatio;
+    this.yRatio = yRatio;
     this.algo = algo;
+    this.oldData = oldData;
 
     this.undo = function() {
+        let layerIndex = 0;
 
+        currentAlgo = algo;
+        resizeSprite(null, [1 / this.xRatio, 1 / this.yRatio]);
+
+        // Also putting the old data
+        for (let i=0; i<layers.length; i++) {
+            if (layers[i].menuEntry != null) {
+                layers[i].context.putImageData(this.oldData[layerIndex], 0, 0);
+                layerIndex++;
+                layers[i].updateLayerPreview();
+            }
+        }
+
+        redoStates.push(this);
     };
 
     this.redo = function() {
-
+        currentAlgo = algo;
+        resizeSprite(null, [this.xRatio, this.yRatio]);
+        undoStates.push(this);
     };
-
+    
     saveHistoryState(this);
 }
 
