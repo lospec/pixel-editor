@@ -13,7 +13,7 @@ The next version is mostly focused on adding missing essential features and port
 Suggestions / Planned features:
 
 - Line tool
-- Resize sprite
+- Tiled mode
 - Load palette from LPE file
 - Move colours in (advanced) palette editor
 - Symmetry options
@@ -28,14 +28,8 @@ Suggestions / Planned features:
     - Maybe rearrange UI on portrait
     - Stack colors when too many
     - Fix popups
-
-- Pixel Grid
-    - Another currentLayer.canvas
-    - Must be rescaled each zoom
-
+    
 - Possibly add collaborate function
-- Bug fix
-    - Alt + scroll broken
 	
 - Polish:
 	- Show colors which would need to be added to palette

@@ -1,0 +1,1 @@
+pixelGridCanvas = document.getElementById("pixel-grid");

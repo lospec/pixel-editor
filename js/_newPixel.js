@@ -54,7 +54,10 @@ function newPixel (width, height, editorMode, fileContent = null) {
     VFXLayer = new Layer(width, height, VFXCanvas);
 
     // Tmp layer to draw previews on
-    TMPLayer = new Layer(width, height, TMPCanvas);
+	TMPLayer = new Layer(width, height, TMPCanvas);
+	
+	// Pixel grid
+	pixelGrid = new Layer(width, height, pixelGridCanvas);
 
 	canvasSize = currentLayer.canvasSize;
 

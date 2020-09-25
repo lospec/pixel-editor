@@ -7,16 +7,6 @@ var dialogueOpen = false;
 var documentCreated = false;
 var pixelEditorMode;
 
-// Checkerboard management
-// Checkerboard color 1
-var firstCheckerBoardColor = 'rgba(179, 173, 182, 1)';
-// Checkerboard color 2
-var secondCheckerBoardColor = 'rgba(204, 200, 206, 1)';
-// Square size for the checkerboard
-var checkerBoardSquareSize = 16;
-// Checkerboard canvas
-var checkerBoardCanvas = document.getElementById('checkerboard');
-
 //common elements
 var brushPreview = document.getElementById("brush-preview");
 var eyedropperPreview = document.getElementById("eyedropper-preview");
@@ -43,3 +33,8 @@ var VFXCanvas = document.getElementById('vfx-canvas');
 var TMPLayer;
 // TMP canvas
 var TMPCanvas = document.getElementById('tmp-canvas');
+
+// Pixel grid layer
+var pixelGrid;
+// Pixel grid canvas
+var pixelGridCanvas;
