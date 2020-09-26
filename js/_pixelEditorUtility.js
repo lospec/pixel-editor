@@ -183,3 +183,11 @@ function resizeImageData (image, width, height, algorithm) {
   
 	return result
   }
+
+  function getPixelPosition(index) {
+	  let linearIndex = index / 4;
+	  let y = linearIndex / layers[0].canvasSize[0];
+	  let x = linearIndex - y * layers[0].canvasSize[0];
+
+	  return [x, y];
+  }

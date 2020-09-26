@@ -166,6 +166,48 @@ function resizeCanvas(event, size) {
     closeDialogue();
 }
 
+function trimCanvas() {
+    let minX, minY = Infinity;
+    let maxX, maxY = -Infinity;
+
+    rcPivot = "middle";
+    console.log("trimmo");
+
+    for (let i=1; i<nAppLayers; i++) {
+        let imageData = layers[i].context.getImageData(0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1]);
+        let pixelPosition;
+
+        for (let i=0; i<imageData.length; i+=4) {
+            if (!isPixelEmpty([imageData[i], imageData[i + 1], imageData[i + 2], imageData[i + 3]])) {
+                pixelPosition = getPixelPosition(i);        
+
+                if (pixelPosition.x > maxX) {
+                    maxX = pixelPosition[0];
+                }
+                else if (pixelPosition.x < minX) {
+                    minX = pixelPosition[0];
+                }
+
+                if (pixelPosition.y > maxY) {
+                    maxY = pixelPosition[1];
+                }
+                else if (pixelPosition.y < minY) {
+                    minY = pixelPosition[1];
+                }
+            }
+        }
+    }
+
+    console.log(maxX + ", " + minX + ", " + maxY + ", " + minY);
+
+    borders.right = maxX - layers[0].canvasSize[0];
+    borders.left = -minX;
+    borders.top = maxY - layers[0].canvasSize[1];
+    borders.bottom = minY;
+
+    resizeCanvas(null);
+}
+
 function rcUpdateBorders() {
     // Getting input
     borders.left = document.getElementById("rc-border-left").value;
