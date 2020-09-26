@@ -104,7 +104,7 @@ class Layer {
 
     hover() {
         // Hide all the layers but the current one
-        for (let i=1; i<layers.length - 2; i++) {
+        for (let i=1; i<layers.length - nAppLayers; i++) {
             if (layers[i] !== this) {
                 layers[i].canvas.style.opacity = 0.3;
             }
@@ -113,7 +113,7 @@ class Layer {
 
     unhover() {
         // Show all the layers again
-        for (let i=1; i<layers.length - 2; i++) {
+        for (let i=1; i<layers.length - nAppLayers; i++) {
             if (layers[i] !== this) {
                 layers[i].canvas.style.opacity = 1;
             }

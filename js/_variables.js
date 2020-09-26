@@ -38,3 +38,8 @@ var TMPCanvas = document.getElementById('tmp-canvas');
 var pixelGrid;
 // Pixel grid canvas
 var pixelGridCanvas;
+
+// Index of the first layer the user can use in the layers array
+var firstUserLayerIndex = 2;
+// Number of layers that are only used by the editor
+var nAppLayers = 3;

@@ -12,7 +12,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	}
 	else {
 		let nLayers = layers.length;
-		for (let i=2; i < layers.length - 2; i++) {
+		for (let i=2; i < layers.length - nAppLayers; i++) {
 			let currentEntry = layers[i].menuEntry;
 			let associatedLayer;
 
@@ -31,7 +31,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		}
 
 		// Removing the old layers from the list
-		for (let i=2; i<nLayers - 2; i++) {
+		for (let i=2; i<nLayers - nAppLayers; i++) {
 			layers.splice(2, 1);
 		}
 
@@ -70,6 +70,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		layers.push(currentLayer);
 		layers.push(VFXLayer);
 		layers.push(TMPLayer);
+		layers.push(pixelGrid);
 	}
 
 	//remove current palette
@@ -113,6 +114,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 	//fill background of canvas with bg color
 	fillCheckerboard();
+	fillPixelGrid();
 
 	//reset undo and redo states
 	undoStates = [];

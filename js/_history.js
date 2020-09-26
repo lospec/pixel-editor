@@ -124,7 +124,7 @@ function HistoryStateFlattenAll(nFlattened) {
     this.nFlattened = nFlattened;
 
     this.undo = function() {
-        for (let i=0; i<this.nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened - nAppLayers; i++) {
             undo();
         }
 
@@ -132,7 +132,7 @@ function HistoryStateFlattenAll(nFlattened) {
     };
 
     this.redo = function() {
-        for (let i=0; i<this.nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened - nAppLayers; i++) {
             redo();
         }
 
@@ -292,8 +292,16 @@ function HistoryStateAddLayer(layerData, index) {
     this.index = index;
 
     this.undo = function() {
+        console.log("uo");
+
         redoStates.push(this);
-        layers[this.index + 1].selectLayer();
+        if (layers.length - nAppLayers > this.index + 1) {
+            layers[this.index + 1].selectLayer();
+        }
+        else {
+            layers[this.index - 1].selectLayer();
+        }
+        
 
         this.added.canvas.remove();
         this.added.menuEntry.remove();
