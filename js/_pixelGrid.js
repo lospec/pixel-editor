@@ -1,7 +1,22 @@
 let pixelGridColor = "#0000FF";
 let lineDistance = 12;
+let pixelGridVisible = false;
 pixelGridCanvas = document.getElementById("pixel-grid");
 
+function togglePixelGrid(event) {
+    let button = document.getElementById("toggle-pixelgrid-button");
+
+    pixelGridVisible = !pixelGridVisible;
+
+    if (pixelGridVisible) {
+        button.innerHTML = "Hide pixel grid";
+        pixelGridCanvas.style.display = "inline-block";
+    }
+    else {
+        button.innerHTML = "Show pixel grid";
+        pixelGridCanvas.style.display = "none";
+    }
+}
 
 function fillPixelGrid() {
     let context = pixelGridCanvas.getContext("2d");
@@ -29,5 +44,9 @@ function fillPixelGrid() {
         context.lineTo(originalSize[0] * lineDistance, i * lineDistance + 0.5);
         context.stroke();
         context.closePath();    
+    }
+
+    if (!pixelGridVisible) {
+        pixelGridCanvas.style.display = 'none';
     }
 }
