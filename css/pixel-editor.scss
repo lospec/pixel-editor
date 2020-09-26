@@ -305,10 +305,16 @@ svg {
 	background: transparent;
 }
 
-#tmp-canvas {
+#pixel-grid {
 	z-index: 3;
 	background: transparent;
 }
+
+#tmp-canvas {
+	z-index: 4;
+	background: transparent;
+}
+
 
 #vfx-canvas {
 	z-index: -5000;
@@ -855,9 +861,11 @@ svg {
 	color: #c0bfc1;
 }
 
-#settings-container {
+.settings-entry {
 	display: flex;
 	align-items: baseline;
+	margin-top:10px;
+
 	label {
 		flex: 1;
 	}
@@ -865,6 +873,7 @@ svg {
 		width: 90px !important;
 		display: block;
 		box-sizing: border-box;
+		float:right;
 	}
 }
 
