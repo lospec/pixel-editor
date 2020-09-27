@@ -75,11 +75,11 @@ function resizeCanvas(event, size) {
     }
     
     rcUpdateBorders();
-
+    console.log("sus");
     // Save all imageDatas
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
-            imageDatas.push(layers[i].context.getImageData(0, 0, layers[i].canvasSize[0], layers[i].canvasSize[1]));
+            imageDatas.push(layers[i].context.getImageData(0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1]));
         }
     }
 
@@ -92,7 +92,7 @@ function resizeCanvas(event, size) {
 
             {x: layers[0].canvasSize[0],
             y: layers[0].canvasSize[1]},
-            imageDatas
+            imageDatas.slice()
         );
     }
 
@@ -167,8 +167,10 @@ function resizeCanvas(event, size) {
 }
 
 function trimCanvas() {
-    let minX, minY = Infinity;
-    let maxX, maxY = -Infinity;
+    let minY = Infinity;
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
 
     rcPivot = "middle";
     console.log("trimmo");
@@ -177,33 +179,38 @@ function trimCanvas() {
         let imageData = layers[i].context.getImageData(0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1]);
         let pixelPosition;
 
-        for (let i=0; i<imageData.length; i+=4) {
-            if (!isPixelEmpty([imageData[i], imageData[i + 1], imageData[i + 2], imageData[i + 3]])) {
+        for (let i=0; i<imageData.data.length; i+=4) {
+            if (!isPixelEmpty(
+                [imageData.data[i], imageData.data[i + 1], 
+                -imageData.data[i + 2], imageData.data[i + 3]])) {
                 pixelPosition = getPixelPosition(i);        
 
-                if (pixelPosition.x > maxX) {
+                if (pixelPosition[0] > maxX) {
                     maxX = pixelPosition[0];
                 }
-                else if (pixelPosition.x < minX) {
+                else if (pixelPosition[0] < minX) {
                     minX = pixelPosition[0];
                 }
 
-                if (pixelPosition.y > maxY) {
+                if (pixelPosition[1] > maxY) {
                     maxY = pixelPosition[1];
                 }
-                else if (pixelPosition.y < minY) {
+                else if (pixelPosition[1] < minY) {
                     minY = pixelPosition[1];
                 }
             }
         }
     }
 
-    console.log(maxX + ", " + minX + ", " + maxY + ", " + minY);
-
     borders.right = maxX - layers[0].canvasSize[0];
     borders.left = -minX;
     borders.top = maxY - layers[0].canvasSize[1];
     borders.bottom = minY;
+
+    document.getElementById("rc-border-left").value = borders.left;
+    document.getElementById("rc-border-right").value = borders.right;
+    document.getElementById("rc-border-top").value = borders.top;
+    document.getElementById("rc-border-bottom").value = borders.bottom;
 
     resizeCanvas(null);
 }

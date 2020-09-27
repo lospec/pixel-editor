@@ -32,6 +32,7 @@ Suggestions / Planned features:
 - Possibly add collaborate function
 	
 - Polish:
+    - ctrl + a to select everything / selection -> all, same for deselection
 	- Show colors which would need to be added to palette
 	- Warning windows for wrong inputs
 	- Palette option remove unused colors

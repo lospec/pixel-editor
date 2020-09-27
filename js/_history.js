@@ -47,9 +47,9 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas) {
         // Resizing the canvas
         resizeCanvas(null, oldSize);
         // Putting the image datas
-        for (let i=0; i<imageDatas.length; i++) {
+        for (let i=0; i<layers.length; i++) {
             if (layers[i].menuEntry != null) {
-                layers[i].context.putImageData(imageDatas[dataIndex], 0, 0);
+                layers[i].context.putImageData(this.imageDatas[dataIndex], 0, 0);
                 dataIndex++;
             }
         }

@@ -182,12 +182,14 @@ function resizeImageData (image, width, height, algorithm) {
 	resize(image, result)
   
 	return result
-  }
+}
 
-  function getPixelPosition(index) {
-	  let linearIndex = index / 4;
-	  let y = linearIndex / layers[0].canvasSize[0];
-	  let x = linearIndex - y * layers[0].canvasSize[0];
+function getPixelPosition(index) {
+	let linearIndex = index / 4;
+	let x = linearIndex % layers[0].canvasSize[0];
+	let y = Math.floor(linearIndex / layers[0].canvasSize[0]);
 
-	  return [x, y];
-  }
+	console.log("pos: " + x + ", " + y);
+
+	return [Math.round(x), Math.round(y)];
+}
