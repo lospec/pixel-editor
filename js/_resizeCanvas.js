@@ -60,14 +60,14 @@ function rcChangedSize(event) {
     borders.bottom = bottom;
 }
 
-function resizeCanvas(event, size) {
+function resizeCanvas(event, size, customData) {
     let imageDatas = [];
     let leftOffset = 0;
     let topOffset = 0;
     let copiedDataIndex = 0;
 
     // If I'm undoing, I manually put the values in the window
-    if (size !== undefined) {
+    if (size != null) {
         document.getElementById("rc-width").value = size.x;
         document.getElementById("rc-height").value = size.y;
 
@@ -154,10 +154,18 @@ function resizeCanvas(event, size) {
             console.log('Pivot does not exist, please report an issue at https://github.com/lospec/pixel-editor');
             break;
     }
-
+    
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
-            layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
+            if (customData == undefined) {
+                layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
+            }
+            else {
+                console.log("sgancio " + layers[i].canvasSize + ", [" + 
+                customData[copiedDataIndex].width + "," + customData[copiedDataIndex].height
+                 + "]");
+                layers[i].context.putImageData(customData[copiedDataIndex], 0, 0);
+            }
             layers[i].updateLayerPreview();
             copiedDataIndex++;
         }
@@ -171,48 +179,71 @@ function trimCanvas() {
     let minX = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
+    let tmp;
+    let imageDatas = [];
 
-    rcPivot = "middle";
-    console.log("trimmo");
+    rcPivot = "topleft";
+    console.log("debug");
 
-    for (let i=1; i<nAppLayers; i++) {
+    for (let i=1; i<layers.length - nAppLayers; i++) {
         let imageData = layers[i].context.getImageData(0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1]);
         let pixelPosition;
 
-        for (let i=0; i<imageData.data.length; i+=4) {
+        for (let i=imageData.data.length - 1; i>= 0; i-=4) {
             if (!isPixelEmpty(
-                [imageData.data[i], imageData.data[i + 1], 
-                -imageData.data[i + 2], imageData.data[i + 3]])) {
+                [imageData.data[i - 3], imageData.data[i - 2], 
+                -imageData.data[i - 1], imageData.data[i]])) {
                 pixelPosition = getPixelPosition(i);        
 
+                // max x
                 if (pixelPosition[0] > maxX) {
                     maxX = pixelPosition[0];
                 }
-                else if (pixelPosition[0] < minX) {
+                // min x
+                if (pixelPosition[0] < minX) {
                     minX = pixelPosition[0];
                 }
-
+                // max y
                 if (pixelPosition[1] > maxY) {
                     maxY = pixelPosition[1];
                 }
-                else if (pixelPosition[1] < minY) {
+                // min y
+                if (pixelPosition[1] < minY) {
                     minY = pixelPosition[1];
                 }
             }
         }
     }
 
-    borders.right = maxX - layers[0].canvasSize[0];
+    tmp = minY;
+    minY = maxY;
+    maxY = tmp;
+
+    minY = layers[0].canvasSize[1] - minY;
+    maxY = layers[0].canvasSize[1] - maxY;
+
+    borders.right = (maxX - layers[0].canvasSize[0]) + 1;
     borders.left = -minX;
-    borders.top = maxY - layers[0].canvasSize[1];
-    borders.bottom = minY;
+    borders.top = maxY - layers[0].canvasSize[1] + 1;
+    borders.bottom = -minY;
+
+    // Saving the data
+    for (let i=0; i<layers.length; i++) {
+        if (layers[i].menuEntry != null) {
+            console.log(`Rect: ${minX} ${maxY}, ${maxX - minX}, ${maxY - minY}`);
+            imageDatas.push(layers[i].context.getImageData(minX - 1, layers[i].canvasSize[1] - maxY, maxX-minX + 1, maxY-minY + 1));
+        }
+    }
+
+    console.log(imageDatas);
+    //console.log("sx: " + borders.left + "dx: " + borders.right + "top: " + borders.top + "btm: " + borders.bottom);
 
     document.getElementById("rc-border-left").value = borders.left;
     document.getElementById("rc-border-right").value = borders.right;
     document.getElementById("rc-border-top").value = borders.top;
     document.getElementById("rc-border-bottom").value = borders.bottom;
 
-    resizeCanvas(null);
+    resizeCanvas(null, null, imageDatas.slice());
 }
 
 function rcUpdateBorders() {

@@ -189,7 +189,5 @@ function getPixelPosition(index) {
 	let x = linearIndex % layers[0].canvasSize[0];
 	let y = Math.floor(linearIndex / layers[0].canvasSize[0]);
 
-	console.log("pos: " + x + ", " + y);
-
-	return [Math.round(x), Math.round(y)];
+	return [Math.ceil(x), Math.ceil(y)];
 }
