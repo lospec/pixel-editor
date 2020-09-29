@@ -60,7 +60,7 @@ function rcChangedSize(event) {
     borders.bottom = bottom;
 }
 
-function resizeCanvas(event, size, customData, saveHistory) {
+function resizeCanvas(event, size, customData, saveHistory = true) {
     let imageDatas = [];
     let leftOffset = 0;
     let topOffset = 0;
@@ -84,7 +84,7 @@ function resizeCanvas(event, size, customData, saveHistory) {
     }
 
     // Saving the history only if I'm not already undoing or redoing
-    if (size == undefined && (saveHistory != null && saveHistory)) {
+    if (saveHistory) {
         // Saving history
         new HistoryStateResizeCanvas(
             {x: parseInt(layers[0].canvasSize[0]) + borders.left + borders.right, 
@@ -92,8 +92,10 @@ function resizeCanvas(event, size, customData, saveHistory) {
 
             {x: layers[0].canvasSize[0],
             y: layers[0].canvasSize[1]},
-            imageDatas.slice(), imageDatas != undefined && saveHistory != undefined && saveHistory
+            imageDatas.slice(), customData != null && saveHistory
         );
+
+        console.log("salvata");
     }
 
     // Resize the canvases
@@ -182,6 +184,7 @@ function trimCanvas(event, saveHistory) {
     let tmp;
     let imageDatas = [];
     let historySave = saveHistory == null;
+    let prevPivot = rcPivot;
 
     rcPivot = "topleft";
     console.log("debug");
@@ -244,6 +247,8 @@ function trimCanvas(event, saveHistory) {
     document.getElementById("rc-border-bottom").value = borders.bottom;
 
     resizeCanvas(null, null, imageDatas.slice(), historySave);
+    // Resetting the previous pivot
+    rcPivot = prevPivot;
 }
 
 function rcUpdateBorders() {

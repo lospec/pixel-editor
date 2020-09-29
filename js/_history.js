@@ -46,7 +46,7 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
         let dataIndex = 0;
         console.log("breakpoint");
         // Resizing the canvas
-        resizeCanvas(null, oldSize);
+        resizeCanvas(null, oldSize, null, false);
         // Putting the image datas
         for (let i=0; i<layers.length; i++) {
             if (layers[i].menuEntry != null) {
@@ -61,8 +61,7 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
     this.redo = function() {
         console.log("trim: " + this.trim);
         if (!this.trim) {
-            resizeCanvas(null, newSize);
-            undoStates.push(this);
+            resizeCanvas(null, newSize, null, false);
         }
         else {
             trimCanvas(null, false);
