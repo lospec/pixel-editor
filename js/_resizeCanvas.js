@@ -60,14 +60,14 @@ function rcChangedSize(event) {
     borders.bottom = bottom;
 }
 
-function resizeCanvas(event, size, customData) {
+function resizeCanvas(event, size, customData, saveHistory) {
     let imageDatas = [];
     let leftOffset = 0;
     let topOffset = 0;
     let copiedDataIndex = 0;
 
-    // If I'm undoing, I manually put the values in the window
-    if (size != null) {
+    // If I'm undoing and I'm not trimming, I manually put the values in the window
+    if (size != null && customData == null) {
         document.getElementById("rc-width").value = size.x;
         document.getElementById("rc-height").value = size.y;
 
@@ -75,7 +75,7 @@ function resizeCanvas(event, size, customData) {
     }
     
     rcUpdateBorders();
-    console.log("sus");
+
     // Save all imageDatas
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
@@ -84,7 +84,7 @@ function resizeCanvas(event, size, customData) {
     }
 
     // Saving the history only if I'm not already undoing or redoing
-    if (size == undefined) {
+    if (size == undefined && (saveHistory != null && saveHistory)) {
         // Saving history
         new HistoryStateResizeCanvas(
             {x: parseInt(layers[0].canvasSize[0]) + borders.left + borders.right, 
@@ -92,7 +92,7 @@ function resizeCanvas(event, size, customData) {
 
             {x: layers[0].canvasSize[0],
             y: layers[0].canvasSize[1]},
-            imageDatas.slice()
+            imageDatas.slice(), imageDatas != undefined && saveHistory != undefined && saveHistory
         );
     }
 
@@ -174,13 +174,14 @@ function resizeCanvas(event, size, customData) {
     closeDialogue();
 }
 
-function trimCanvas() {
+function trimCanvas(event, saveHistory) {
     let minY = Infinity;
     let minX = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
     let tmp;
     let imageDatas = [];
+    let historySave = saveHistory == null;
 
     rcPivot = "topleft";
     console.log("debug");
@@ -230,7 +231,6 @@ function trimCanvas() {
     // Saving the data
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
-            console.log(`Rect: ${minX} ${maxY}, ${maxX - minX}, ${maxY - minY}`);
             imageDatas.push(layers[i].context.getImageData(minX - 1, layers[i].canvasSize[1] - maxY, maxX-minX + 1, maxY-minY + 1));
         }
     }
@@ -243,7 +243,7 @@ function trimCanvas() {
     document.getElementById("rc-border-top").value = borders.top;
     document.getElementById("rc-border-bottom").value = borders.bottom;
 
-    resizeCanvas(null, null, imageDatas.slice());
+    resizeCanvas(null, null, imageDatas.slice(), historySave);
 }
 
 function rcUpdateBorders() {

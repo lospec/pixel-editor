@@ -14,7 +14,8 @@ if(!settingsFromCookie) {
         enableBrushPreview: true, //unused - performance
         enableEyedropperPreview: true, //unused - performance
         numberOfHistoryStates: 20,
-        maxColorsOnImportedImage: 128
+        maxColorsOnImportedImage: 128,
+        pixelGridColour: '#0000FF'
     };
 }
 else{
@@ -35,6 +36,9 @@ on('click', 'save-settings', function (){
 
     //save new settings to settings object
     settings.numberOfHistoryStates = getValue('setting-numberOfHistoryStates');
+    settings.pixelGridColour = getValue('setting-pixelGridColour');
+    // Filling pixel grid again if colour changed
+    fillPixelGrid();
 
     //save settings object to cookie
     var cookieValue = JSON.stringify(settings);

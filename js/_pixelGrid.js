@@ -28,7 +28,7 @@ function fillPixelGrid() {
     // OPTIMIZABLE, could probably be a bit more elegant
     // Draw horizontal lines
     for (let i=0; i<pixelGridCanvas.width / lineDistance; i++) {
-        context.strokeStyle = pixelGridColor;
+        context.strokeStyle = settings.pixelGridColour;
 
         context.beginPath();
         context.moveTo(i * lineDistance + 0.5, 0);

@@ -36,10 +36,11 @@ function HistoryStateResizeSprite(xRatio, yRatio, algo, oldData) {
     saveHistoryState(this);
 }
 
-function HistoryStateResizeCanvas(newSize, oldSize, imageDatas) {
+function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
     this.oldSize = oldSize;
     this.newSize = newSize;
     this.imageDatas = imageDatas;
+    this.trim = trim;
 
     this.undo = function() {
         let dataIndex = 0;
@@ -58,7 +59,15 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas) {
     };
 
     this.redo = function() {
-        resizeCanvas(null, newSize);
+        console.log("trim: " + this.trim);
+        if (!this.trim) {
+            resizeCanvas(null, newSize);
+            undoStates.push(this);
+        }
+        else {
+            trimCanvas(null, false);
+        }
+
         undoStates.push(this);
     };
 
