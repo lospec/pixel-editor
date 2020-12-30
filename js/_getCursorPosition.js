@@ -2,7 +2,7 @@
 function getCursorPosition(e) {
     var x;
     var y;
-
+    
     if (e.pageX != undefined && e.pageY != undefined) {
         x = e.pageX;
         y = e.pageY;
@@ -12,28 +12,8 @@ function getCursorPosition(e) {
         y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
     }
 
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
+    x -= currentLayer.canvas.offsetLeft;
+    y -= currentLayer.canvas.offsetTop;
 
-    return [x,y];
-}
-
-//get cursor position relative to canvas
-function getCursorPositionRelative(e, layer) {
-    var x;
-    var y;
-
-    if (e.pageX != undefined && e.pageY != undefined) {
-        x = e.pageX;
-        y = e.pageY;
-    }
-    else {
-        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
-    }
-
-    x -= layer.canvas.offsetLeft;
-    y -= layer.canvas.offsetTop;
-
-    return [x,y];
+    return [Math.round(x), Math.round(y)];
 }

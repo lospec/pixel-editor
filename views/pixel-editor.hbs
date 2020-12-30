@@ -52,14 +52,24 @@
         <li>
             <button>Edit</button>
             <ul>
+                <li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
+                <li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Scale sprite</button></li>
+                <li><button onclick = "trimCanvas()">Trim canvas</button></li>
                 <li><button id="undo-button" class="disabled">Undo</button></li>
                 <li><button id="redo-button" class="disabled">Redo</button></li>
+            </ul>
+        </li>
+        <li>
+            <button>View</button>
+            <ul>
+                <li><button id="toggle-pixelgrid-button" onclick="togglePixelGrid()">Show pixel grid</button></li>
             </ul>
         </li>
         <li>
             <button id = "layer-button">Layer</button>
             <ul>
                 <li><button onclick = "addLayer()">New layer</button></li>
+                <li><button onclick = "duplicateLayer()">Duplicate</button></li>
                 <li><button onclick = "renameLayer()">Rename</button></li>
                 <li><button onclick = "deleteLayer()">Delete</button></li>
                 <li><button onclick = "merge()">Merge below</button></li>
@@ -81,13 +91,13 @@
             <button>Editor</button>
             <ul>
                 <li><button id="switch-mode-button">Switch to basic mode</button></li>
+                <li><button>Settings</button></li>
             </ul>
         </li>
 
         <li>
             <button>Help</button>
             <ul>
-                <li><button>Settings</button></li>
                 <li><button>Help</button></li>
                 <li><button>About</button></li>
                 <li><button>Changelog</button></li>
@@ -171,10 +181,13 @@
 
     <ul id = "layer-properties-menu">
         <li>
-            <button onclick = "deleteLayer()">Delete</button>
+            <button onclick = "renameLayer()">Rename</button>
         </li>
         <li>
-            <button onclick = "renameLayer()">Rename</button>
+            <button onclick = "duplicateLayer()">Duplicate</button>
+        </li>
+        <li>
+            <button onclick = "deleteLayer()">Delete</button>
         </li>
         <li>
             <button onclick = "merge()">Merge below</button>
@@ -187,6 +200,7 @@
         </li>
     </ul>
 
+    <!-- TOOL PREVIEWS -->
     <div id="eyedropper-preview"></div>
     <div id="brush-preview"></div>
 
@@ -196,6 +210,7 @@
         <canvas id = "tmp-canvas" class = "drawingCanvas"></canvas>
         <canvas id="pixel-canvas" class = "drawingCanvas"></canvas>
         <canvas id="checkerboard" class = "drawingCanvas"></canvas>
+        <canvas id="pixel-grid" class = "drawingCanvas"></canvas>
     </div>
     <div id="canvas-view-shadow"></div>
 
@@ -217,7 +232,8 @@
       {{svg "adjust.svg" width="20" height="20" }}
     </div>
 
-    <div id="pop-up-container">
+    <div id="pop-up-container" id = "new-pixel-container">
+        <!-- NEW PIXEL -->
         <div id="new-pixel">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>New Pixel</h1>
@@ -244,6 +260,116 @@
             <div>
                 <button id="create-button" class="default">Create</button>
             </div>
+        </div>
+
+        <!--SPRITE RESIZE-->
+        <div id = "resize-sprite">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Scale sprite</h1>
+            <!-- SIZE-->
+            <h2>New size</h2>
+            <span id = "rs-size-menu">
+                <div>
+                    <span>
+                        Width: <input id="rs-width" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Height: <input id="rs-height" default="0" step="1" type="number" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                </div>
+            </span>        
+            <!--BORDERS-->
+            <h2>Resize percentages</h2>
+            <span id = "rs-percentage-menu">
+                <div>
+                    <span>
+                        Width <input id="rs-width-percentage" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/> %
+                    </span>
+                    
+                    <span>
+                        Height <input id="rs-height-percentage" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/> %
+                    </span>
+                </div>
+                <div id = "rs-ratio-div">
+                    <span>
+                        Keep current ratio <input type = "checkbox" id = "rs-keep-ratio"/>
+                    </span>
+                    <span>
+                        Scaling algorithm:
+                        <select name = "resize-algorithm" id = "resize-algorithm-combobox">
+                            <option value = "nearest-neighbor">Nearest neighbour</option>
+                            <option value = "bilinear-interpolation">Bilinear</option>
+                        </select>
+                    </span>
+                    </br>
+                    <button id = "resize-sprite-confirm">Scale sprite</button>
+                </div>
+            </span>            
+        </div>
+
+        <!--CANVAS RESIZE-->
+        <div id = "resize-canvas">
+            <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+            <h1>Resize canvas</h1>
+
+            <!--PIVOTS-->
+            <span id = "pivot-menu">
+                <button class="pivot-button" value="topleft">{{svg "arrows/topleft.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="top">{{svg "arrows/top.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="topright">{{svg "arrows/topright.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="left">{{svg "arrows/left.svg" width="20" height="20"}}</button>
+                <button class="pivot-button rc-selected-pivot" value="middle">{{svg "arrows/middle.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="right">{{svg "arrows/right.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottomleft">{{svg "arrows/bottomleft.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottom">{{svg "arrows/bottom.svg" width="20" height="20"}}</button>
+                <button class="pivot-button" value="bottomright">{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
+            </span>
+            <!-- SIZE-->
+            <span id = "rc-size-menu">
+                <h2>Size</h2>
+                <div>
+                    <span>
+                        Width: <input id="rc-width" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Height: <input id="rc-height" default="0" step="1" type="number" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                </div>
+            </span>        
+            <!--BORDERS-->
+            <span id = "borders-menu">
+                <h2>Borders offsets</h2>
+                <div>
+                    <span>
+                        Left: <input id="rc-border-left" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Right: <input id="rc-border-right" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Top: <input id="rc-border-top" type="number" default="0" step="1" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                    
+                    <span>
+                        Bottom: <input id="rc-border-bottom" default="0" step="1" type="number" 
+                        value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+                    </span>
+                </div>
+                <button id = "resize-canvas-confirm">Resize canvas</button>
+            </span>            
         </div>
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
@@ -306,7 +432,15 @@
             <h1>Settings</h1>
 
             <div id="settings-container">
-              <label for="setting-numberOfHistoryStates">Number of History States</label> <input id="setting-numberOfHistoryStates" value="20" autocomplete="off" />
+                <h2>History</h2>
+                <div class = "settings-entry">
+                    <label for="setting-numberOfHistoryStates">Number of History States</label> <input id="setting-numberOfHistoryStates" value="20" autocomplete="off" />
+                </div>
+
+                <h2>Pixel grid</h2>
+                <div class = "settings-entry">
+                    <label for="setting-pixelGridColour">Colour of the pixel grid</label><input id="setting-pixelGridColour" value = "#0000FF" autocomplete="off"/>
+                </div>
             </div>
 
             <p id="cookies-disabled-warning">Your browsers cookies are disabled, settings will be lost upon closing this page.</p>

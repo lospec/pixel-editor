@@ -7,13 +7,12 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	if (firstPixel) {
 		layerListEntry = layerList.firstElementChild;
 
-		// Setting up the current layer
 	    currentLayer = new Layer(width, height, canvas, layerListEntry);
-	    canvas.style.zIndex = 2;
+	    currentLayer.canvas.style.zIndex = 2;
 	}
 	else {
 		let nLayers = layers.length;
-		for (let i=2; i < layers.length - 2; i++) {
+		for (let i=2; i < layers.length - nAppLayers; i++) {
 			let currentEntry = layers[i].menuEntry;
 			let associatedLayer;
 
@@ -32,7 +31,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		}
 
 		// Removing the old layers from the list
-		for (let i=2; i<nLayers - 2; i++) {
+		for (let i=2; i<nLayers - nAppLayers; i++) {
 			layers.splice(2, 1);
 		}
 
@@ -40,9 +39,12 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
 	    currentLayer = layers[1];
 
-	    canvas = currentLayer.canvas;
-	    context = currentLayer.context;
-	    canvas.style.zIndex = 2;
+		currentLayer.canvas.style.zIndex = 2;
+		
+		// Updating canvas size
+		for (let i=0; i<nLayers; i++) {
+			layers[i].canvasSize = [width, height];
+		}
 	}
 
     // Adding the checkerboard behind it
@@ -52,7 +54,10 @@ function newPixel (width, height, editorMode, fileContent = null) {
     VFXLayer = new Layer(width, height, VFXCanvas);
 
     // Tmp layer to draw previews on
-    TMPLayer = new Layer(width, height, TMPCanvas);
+	TMPLayer = new Layer(width, height, TMPCanvas);
+	
+	// Pixel grid
+	pixelGrid = new Layer(width, height, pixelGridCanvas);
 
 	canvasSize = currentLayer.canvasSize;
 
@@ -65,6 +70,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		layers.push(currentLayer);
 		layers.push(VFXLayer);
 		layers.push(TMPLayer);
+		layers.push(pixelGrid);
 	}
 
 	//remove current palette
@@ -108,6 +114,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 	//fill background of canvas with bg color
 	fillCheckerboard();
+	fillPixelGrid();
 
 	//reset undo and redo states
 	undoStates = [];

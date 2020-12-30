@@ -1,20 +1,11 @@
 //init variables
-var canvasSize,zoom;
+var canvasSize;
+var zoom = 7;
 var dragging = false;
-var lastPos = [0,0];
+var lastMouseClickPos = [0,0];
 var dialogueOpen = false;
 var documentCreated = false;
 var pixelEditorMode;
-
-// Checkerboard management
-// Checkerboard color 1
-var firstCheckerBoardColor = 'rgba(179, 173, 182, 1)';
-// Checkerboard color 2
-var secondCheckerBoardColor = 'rgba(204, 200, 206, 1)';
-// Square size for the checkerboard
-var checkerBoardSquareSize = 16;
-// Checkerboard canvas
-var checkerBoardCanvas = document.getElementById('checkerboard');
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");
@@ -26,7 +17,6 @@ var popUpContainer = document.getElementById("pop-up-container");
 
 // main canvas
 var canvas = document.getElementById('pixel-canvas');
-var context = canvas.getContext('2d');
 var currentGlobalColor;
 
 // Layers
@@ -43,3 +33,13 @@ var VFXCanvas = document.getElementById('vfx-canvas');
 var TMPLayer;
 // TMP canvas
 var TMPCanvas = document.getElementById('tmp-canvas');
+
+// Pixel grid layer
+var pixelGrid;
+// Pixel grid canvas
+var pixelGridCanvas;
+
+// Index of the first layer the user can use in the layers array
+var firstUserLayerIndex = 2;
+// Number of layers that are only used by the editor
+var nAppLayers = 3;

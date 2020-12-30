@@ -1,9 +1,18 @@
 // This script contains all the functions used to manage the checkboard
+// Checkerboard color 1
+var firstCheckerBoardColor = 'rgba(179, 173, 182, 1)';
+// Checkerboard color 2
+var secondCheckerBoardColor = 'rgba(204, 200, 206, 1)';
+// Square size for the checkerboard
+var checkerBoardSquareSize = 16;
+// Checkerboard canvas
+var checkerBoardCanvas = document.getElementById('checkerboard');
 
 // Setting current colour (each square has a different colour
 var currentColor = firstCheckerBoardColor;
 // Saving number of squares filled until now
 var nSquaresFilled = 0;
+
 
 function fillCheckerboard() {
     // Getting checkerboard context

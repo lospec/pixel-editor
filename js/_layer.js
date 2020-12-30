@@ -57,6 +57,8 @@ class Layer {
         if (menuEntry != null) {
             this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
             menuEntry.id = "layer" + id;
+            menuEntry.onmouseover = () => this.hover();
+            menuEntry.onmouseout = () => this.unhover();
             menuEntry.onclick = () => this.selectLayer();
             menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
             menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
@@ -76,12 +78,13 @@ class Layer {
 
     // Initializes the canvas
     initialize() {
+        /*
         var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
         var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);
 
         zoom = Math.min(maxHorizontalZoom,maxVerticalZoom);
         if (zoom < 1) zoom = 1;
-
+        */
         //resize canvas
         this.canvas.width = this.canvasSize[0];
         this.canvas.height = this.canvasSize[1];
@@ -97,6 +100,24 @@ class Layer {
 
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
+    }
+
+    hover() {
+        // Hide all the layers but the current one
+        for (let i=1; i<layers.length - nAppLayers; i++) {
+            if (layers[i] !== this) {
+                layers[i].canvas.style.opacity = 0.3;
+            }
+        }
+    }
+
+    unhover() {
+        // Show all the layers again
+        for (let i=1; i<layers.length - nAppLayers; i++) {
+            if (layers[i] !== this) {
+                layers[i].canvas.style.opacity = 1;
+            }
+        }
     }
 
     setID(id) {
@@ -160,13 +181,38 @@ class Layer {
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
     }
-    // Copies the otherCanvas' position and size
-    copyData(otherCanvas) {
-        this.canvas.style.width = otherCanvas.canvas.style.width;
-        this.canvas.style.height = otherCanvas.canvas.style.height;
 
-        this.canvas.style.left = otherCanvas.canvas.style.left;
-        this.canvas.style.top = otherCanvas.canvas.style.top;
+    setCanvasOffset (offsetLeft, offsetTop) {
+        //horizontal offset
+        var minXOffset = -this.canvasSize[0] * zoom;
+        var maxXOffset = window.innerWidth - 300;
+    
+        if 	(offsetLeft < minXOffset)
+            this.canvas.style.left = minXOffset +'px';
+        else if (offsetLeft > maxXOffset)
+            this.canvas.style.left = maxXOffset +'px';
+        else
+            this.canvas.style.left = offsetLeft +'px';
+    
+        //vertical offset
+        var minYOffset = -this.canvasSize[1] * zoom + 164;
+        var maxYOffset = window.innerHeight - 100;
+    
+        if 	(offsetTop < minYOffset)
+            this.canvas.style.top = minYOffset +'px';
+        else if (offsetTop > maxYOffset)
+            this.canvas.style.top = maxYOffset +'px';
+        else
+            this.canvas.style.top = offsetTop +'px';
+    }
+
+    // Copies the otherLayer's position and size
+    copyData(otherLayer) {
+        this.canvas.style.width = otherLayer.canvas.style.width;
+        this.canvas.style.height = otherLayer.canvas.style.height;
+        
+        this.canvas.style.left = otherLayer.canvas.style.left;
+        this.canvas.style.top = otherLayer.canvas.style.top;
     }
 
     openOptionsMenu(event) {
@@ -219,9 +265,10 @@ class Layer {
             layer.menuEntry.classList.add("selected-layer");
             currentLayer = layer;
         }
-
+/*
         canvas = currentLayer.canvas;
         context = currentLayer.context;
+*/
     }
 
     toggleLock() {
@@ -433,6 +480,55 @@ function deleteLayer(saveHistory = true) {
     currentLayer.closeOptionsMenu();
 }
 
+function duplicateLayer(event, saveHistory = true) {
+    let layerIndex = layers.indexOf(currentLayer);
+    let toDuplicate = currentLayer;
+    let menuEntries = layerList.children;
+
+    // Increasing z-indexes of the layers above
+    for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>=0; i--) {
+        getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
+    }
+    maxZIndex++;
+
+    // Creating a new canvas
+    let newCanvas = document.createElement("canvas");
+    // Setting up the new canvas
+    canvasView.append(newCanvas);
+    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 1;
+    newCanvas.classList.add("drawingCanvas");
+
+	if (!layerListEntry) return console.warn('skipping adding layer because no document');
+
+    // Clone the default layer
+    let toAppend = currentLayer.menuEntry.cloneNode(true);
+    // Setting the default name for the layer
+    toAppend.getElementsByTagName('p')[0].innerHTML += " copy";
+    // Removing the selected class
+    toAppend.classList.remove("selected-layer");
+    // Adding the layer to the list
+    layerCount++;
+
+    // Creating a layer object
+    let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
+    newLayer.context.fillStyle = currentLayer.context.fillStyle;
+    newLayer.copyData(currentLayer);
+
+    layers.splice(layerIndex, 0, newLayer);
+    
+    // Insert it before the Add layer button
+    layerList.insertBefore(toAppend, currentLayer.menuEntry);
+
+    // Copy the layer content
+    newLayer.context.putImageData(currentLayer.context.getImageData(
+        0, 0, currentLayer.canvasSize[0], currentLayer.canvasSize[1]), 0, 0);
+    newLayer.updateLayerPreview();
+    // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
+    if (saveHistory) {
+        new HistoryStateDuplicateLayer(newLayer, currentLayer);
+    }
+}
+
 function renameLayer(event) {
     let layerIndex = layers.indexOf(currentLayer);
     let toRename = currentLayer;
@@ -521,6 +617,16 @@ function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
     }
 }
 
+function getMenuEntryIndex(list, entry) {
+    for (let i=0; i<list.length; i++) {
+        if (list[i] === entry) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 // Finds a layer given its name
 function getLayerByName(name) {
     for (let i=0; i<layers.length; i++) {
@@ -558,8 +664,6 @@ function addLayer(id, saveHistory = true) {
     newCanvas.style.zIndex = maxZIndex;
     newCanvas.classList.add("drawingCanvas");
 
-    console.log("Tela creata: " + newCanvas);
-
 	if (!layerListEntry) return console.warn('skipping adding layer because no document');
 
     // Clone the default layer
@@ -575,8 +679,9 @@ function addLayer(id, saveHistory = true) {
     let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
     newLayer.context.fillStyle = currentLayer.context.fillStyle;
     newLayer.copyData(currentLayer);
-    layers.splice(index, 0, newLayer);
 
+    layers.splice(index, 0, newLayer);
+    
     // Insert it before the Add layer button
     layerList.insertBefore(toAppend, layerList.childNodes[0]);
 

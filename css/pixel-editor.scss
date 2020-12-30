@@ -305,10 +305,16 @@ svg {
 	background: transparent;
 }
 
-#tmp-canvas {
-	z-index: 3;
+#pixel-grid {
+	z-index: 5000;
 	background: transparent;
 }
+
+#tmp-canvas {
+	z-index: 4;
+	background: transparent;
+}
+
 
 #vfx-canvas {
 	z-index: -5000;
@@ -855,9 +861,11 @@ svg {
 	color: #c0bfc1;
 }
 
-#settings-container {
+.settings-entry {
 	display: flex;
 	align-items: baseline;
+	margin-top:10px;
+
 	label {
 		flex: 1;
 	}
@@ -865,6 +873,7 @@ svg {
 		width: 90px !important;
 		display: block;
 		box-sizing: border-box;
+		float:right;
 	}
 }
 
@@ -945,6 +954,211 @@ svg {
 
 #editor-mode {
 	display: none;
+}
+
+#resize-canvas, #resize-sprite {
+  display:flex;
+  position:relative;
+  flex-wrap:wrap;
+}
+
+#pivot-menu {
+  position: relative;
+  display:inline-flex;
+  flex-wrap:wrap;
+  vertical-align:middle;
+  text-align:center;
+  width:130px;
+  float:left;
+
+  button {
+    margin-right:10px;
+    margin-bottom:10px;
+    position:relative;
+    width:32px;
+    height:32px;
+    background:$basehover;
+	border:none;
+    
+    path {
+      fill:$basehovericon;
+    }
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  button:hover,
+  button:focus,
+  button.rc-selected-pivot {
+      cursor:pointer;
+      background-color: $baseicon;
+      path {
+        fill:$basehovericonhover;
+      }
+      border: 2px solid color(base, foreground);
+  }
+  button:active {
+      transform: scale(0.95);
+  }
+}
+
+#borders-menu, #rc-size-menu, #rs-size-menu, #rs-percentage-menu {
+  display:flex;
+  position:relative;
+  flex-wrap: wrap;
+  width:250px;
+  font-size:15px;
+  left:10px;
+  text-align:center;
+
+  button {
+	background:$basehover;
+	border:none;
+    
+    color: $basehovericon;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  button:hover,
+  button:focus {
+      cursor:pointer;
+      background-color: $baseicon;
+      color:$basehovericonhover;
+      border: 2px solid color(base, foreground);
+  }
+  button:active {
+      transform: scale(0.95);
+  }
+
+  input[type=number] {
+    position:relative;
+    margin-left:10px;
+	height:15px;
+	width:40px;
+	padding:8px;
+  }
+
+  input[type=number]::-webkit-outer-spin-button,
+	input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+	}
+	/* Firefox */
+	input[type=number] {
+	-moz-appearance: textfield;
+	}
+
+  span {
+    padding-right:10px;
+    float:left;
+    position:relative;
+    vertical-align:middle;
+	height:40px;
+	width:100px;
+	display: inline-flex;
+  	align-items: center;
+  }
+}
+
+#rs-percentage-menu {
+	width: 400px;
+	span {
+		width:150px;
+	}
+}
+
+#rs-size-menu {
+	width: 400px;
+	span {
+		width:150px;
+	}
+}
+
+#rs-percentage-menu, #rs-size-menu {
+	justify-content: center;
+
+	div {
+		float: none;
+	}
+}
+
+#borders-menu {
+	width:400px;
+	justify-content: center;
+
+	div {
+		float: none;
+		width: 330px;
+		padding-left:50px;
+
+		span {
+			padding-right:20px;
+		}
+	}
+}
+
+#rs-ratio-div {
+	width:400px;
+	justify-content: center;
+	padding-left:20px;
+
+	span {
+		width:400px;
+		justify-content: center;
+	}
+
+	select {
+		height:30px;
+		background-color: $basehover;
+		color: $basehovericon;
+		border:none;
+		position:relative;
+		left:10px;
+
+		option {
+			background-color: $basehover;
+			color:$basehovericon;
+			padding:5px;
+		}
+
+		option:checked, option:hover {
+			box-shadow: 0 0 10px 100px $basehovericon inset;
+			color: $basehovericonhover;
+		}
+	}
+}
+
+#rs-keep-ratio {
+	background: color(button);
+	border: none;
+	font-size:14px;
+	color: color(button, foreground);
+	padding: 10px 20px;
+	margin: 0 auto;
+	position:relative;
+	display: block;
+}
+
+#resize-canvas-confirm, #resize-sprite-confirm {
+  background: color(button);
+  border: none;
+  font-size:18px;
+  border-radius: 4px;
+  color: color(button, foreground);
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 0 auto;
+  position:relative;
+  top:10px;
+  display: block;
+  &:hover {
+    background: color(button, background, hover);
+  }
 }
 
 #compatibility-warning {

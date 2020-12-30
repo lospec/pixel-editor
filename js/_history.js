@@ -3,6 +3,76 @@ var redoStates = [];
 
 const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
 
+function HistoryStateResizeSprite(xRatio, yRatio, algo, oldData) {
+    this.xRatio = xRatio;
+    this.yRatio = yRatio;
+    this.algo = algo;
+    this.oldData = oldData;
+
+    this.undo = function() {
+        let layerIndex = 0;
+
+        currentAlgo = algo;
+        resizeSprite(null, [1 / this.xRatio, 1 / this.yRatio]);
+
+        // Also putting the old data
+        for (let i=0; i<layers.length; i++) {
+            if (layers[i].menuEntry != null) {
+                layers[i].context.putImageData(this.oldData[layerIndex], 0, 0);
+                layerIndex++;
+                layers[i].updateLayerPreview();
+            }
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        currentAlgo = algo;
+        resizeSprite(null, [this.xRatio, this.yRatio]);
+        undoStates.push(this);
+    };
+    
+    saveHistoryState(this);
+}
+
+function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
+    this.oldSize = oldSize;
+    this.newSize = newSize;
+    this.imageDatas = imageDatas;
+    this.trim = trim;
+
+    this.undo = function() {
+        let dataIndex = 0;
+        console.log("breakpoint");
+        // Resizing the canvas
+        resizeCanvas(null, oldSize, null, false);
+        // Putting the image datas
+        for (let i=0; i<layers.length; i++) {
+            if (layers[i].menuEntry != null) {
+                layers[i].context.putImageData(this.imageDatas[dataIndex], 0, 0);
+                dataIndex++;
+            }
+        }
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        console.log("trim: " + this.trim);
+        if (!this.trim) {
+            resizeCanvas(null, newSize, null, false);
+        }
+        else {
+            trimCanvas(null, false);
+        }
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
 function HistoryStateFlattenVisible(flattened) {
     this.nFlattened = flattened;
 
@@ -62,7 +132,7 @@ function HistoryStateFlattenAll(nFlattened) {
     this.nFlattened = nFlattened;
 
     this.undo = function() {
-        for (let i=0; i<this.nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened - nAppLayers; i++) {
             undo();
         }
 
@@ -70,7 +140,7 @@ function HistoryStateFlattenAll(nFlattened) {
     };
 
     this.redo = function() {
-        for (let i=0; i<this.nFlattened - 2; i++) {
+        for (let i=0; i<this.nFlattened - nAppLayers; i++) {
             redo();
         }
 
@@ -122,6 +192,27 @@ function HistoryStateRenameLayer(oldName, newName, layer) {
 
     this.redo = function() {
         layer.menuEntry.getElementsByTagName("p")[0].innerHTML = newName;
+
+        undoStates.push(this);
+    };
+
+    saveHistoryState(this);
+}
+
+function HistoryStateDuplicateLayer(addedLayer, copiedLayer) {
+    this.addedLayer = addedLayer;
+    this.copiedLayer = copiedLayer;
+
+    this.undo = function() {
+        addedLayer.selectLayer();
+        deleteLayer(false);
+
+        redoStates.push(this);
+    };
+
+    this.redo = function() {
+        copiedLayer.selectLayer();
+        duplicateLayer(null, false);
 
         undoStates.push(this);
     };
@@ -209,10 +300,20 @@ function HistoryStateAddLayer(layerData, index) {
     this.index = index;
 
     this.undo = function() {
+        console.log("uo");
+
         redoStates.push(this);
+        if (layers.length - nAppLayers > this.index + 1) {
+            layers[this.index + 1].selectLayer();
+        }
+        else {
+            layers[this.index - 1].selectLayer();
+        }
+        
 
         this.added.canvas.remove();
         this.added.menuEntry.remove();
+
         layers.splice(index, 1);
     };
 

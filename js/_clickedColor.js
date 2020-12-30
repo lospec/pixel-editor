@@ -8,7 +8,7 @@ function clickedColor (e){
         if (selectedColor) selectedColor.classList.remove('selected');
 
         //set current color
-        for (let i=1; i<layers.length - 2; i++) {
+        for (let i=1; i<layers.length - nAppLayers; i++) {
             layers[i].context.fillStyle = this.style.backgroundColor;
         }
 

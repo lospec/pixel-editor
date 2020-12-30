@@ -64,6 +64,46 @@ class Tool {
 		//change cursor
 		this.updateCursor();
 	}
+
+	updateCursor () {
+		//switch to that tools cursor
+		canvasView.style.cursor = this.cursor || 'default';
+	
+		//if the tool uses a brush preview, make it visible and update the size
+		if (this.brushPreview) {
+			//console.log('brush size',this.currentBrushSize)
+			brushPreview.style.display = 'block';
+			brushPreview.style.width = this.currentBrushSize * zoom + 'px';
+			brushPreview.style.height = this.currentBrushSize * zoom + 'px';
+		}
+	
+		//show / hide eyedropper color preview
+		if (this.eyedropperPreview) eyedropperPreview.style.display = 'block';
+		else eyedropperPreview.style.display = 'none';
+	
+		//moveSelection
+		if (currentTool.name == 'moveselection') {
+			if (cursorInSelectedArea()) {
+				canMoveSelection = true;
+				canvasView.style.cursor = 'move';
+				brushPreview.style.display = 'none';
+			}
+			else {
+				canvasView.style.cursor = 'crosshair';
+			}
+		}
+	}
+
+	moveBrushPreview(cursorLocation) {
+		let toSub = 0;
+		// Prevents the brush to be put in the middle of pixels
+		if (this.currentBrushSize % 2 == 0) {
+			toSub = 0.5;
+		}		
+
+		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
+		brushPreview.style.top = (Math.ceil(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
+	}
 }
 
 

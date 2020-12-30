@@ -87,7 +87,7 @@ function colorChanged(e) {
 
     //if this is the current color, update the drawing color
     if (e.target.colorElement.parentElement.classList.contains('selected')) {
-        for (let i=1; i<layers.length - 2; i++) {
+        for (let i=1; i<layers.length - nAppLayers; i++) {
             layers[i].context.fillStyle = '#'+ rgbToHex(newColor.r,newColor.g,newColor.b);
         }
 

@@ -13,13 +13,10 @@ The next version is mostly focused on adding missing essential features and port
 Suggestions / Planned features:
 
 - Line tool
-- Resize canvas
-- Snap brush preview to pixel grid
-- Move selection with arrows
+- Tiled mode
 - Load palette from LPE file
-- Move colours in palette editor
-- Duplicate layer
-- Hide non-hovered layers
+- Move colours in (advanced) palette editor
+- Symmetry options
 
 - Custom color picker
     - custom code without dependencies
@@ -31,17 +28,19 @@ Suggestions / Planned features:
     - Maybe rearrange UI on portrait
     - Stack colors when too many
     - Fix popups
-
-- Show colors which would need to be added to palette
-
-- Palette option remove unused colors
-- Pixel Grid
-    - Another currentLayer.canvas
-    - Must be rescaled each zoom
-
+    
 - Possibly add collaborate function
-- Bug fix
-    - Alt + scroll broken
+	
+- Polish:
+    - ctrl + a to select everything / selection -> all, same for deselection
+	- Show colors which would need to be added to palette
+	- Warning windows for wrong inputs
+	- Palette option remove unused colors
+	- Move selection with arrows
+	- Update pivot buttons when resizing canvas
+	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
+	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
+    - Trim canvas
 
 ## How to Contribute
 

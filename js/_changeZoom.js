@@ -11,7 +11,7 @@ function changeZoom (layer, direction, cursorLocation) {
 		newHeight = canvasSize[1] * zoom;
 
 		//adjust canvas position
-		setCanvasOffset(layer.canvas, layer.canvas.offsetLeft + (oldWidth - newWidth) *cursorLocation[0]/oldWidth, layer.canvas.offsetTop + (oldHeight - newHeight) *cursorLocation[1]/oldWidth)
+		layer.setCanvasOffset(layer.canvas.offsetLeft + (oldWidth - newWidth) *cursorLocation[0]/oldWidth, layer.canvas.offsetTop + (oldHeight - newHeight) *cursorLocation[1]/oldWidth);
 	}
 	//if you want to zoom in
 	else if (direction == 'in' && zoom + Math.ceil(zoom/10) < window.innerHeight/4){
@@ -20,7 +20,7 @@ function changeZoom (layer, direction, cursorLocation) {
 		newHeight = canvasSize[1] * zoom;
 
 		//adjust canvas position
-		setCanvasOffset(layer.canvas, layer.canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), layer.canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight))
+		layer.setCanvasOffset(layer.canvas.offsetLeft - Math.round((newWidth - oldWidth)*cursorLocation[0]/oldWidth), layer.canvas.offsetTop - Math.round((newHeight - oldHeight)*cursorLocation[1]/oldHeight));
 	}
 
 	//resize canvas
