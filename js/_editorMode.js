@@ -3,7 +3,7 @@ let modes = {
         description: 'Basic mode is perfect if you want to create simple sprites or try out palettes.'
     },
     'Advanced' : {
-        description: 'Choose advanced mode to gain access to features such as layers.'
+        description: 'Choose advanced mode to gain access to more advanced features such as layers.'
     }
 }
 

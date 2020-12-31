@@ -1,16 +1,31 @@
-let resizeCanvasContainer = document.getElementById("resize-canvas");
-let rcPivot = "middle";
-let currentPivotObject;
-let borders = {left: 0, right: 0, top: 0, bottom: 0};
+/* This scripts contains all the code used to handle the canvas resizing */
 
+// Resize canvas pop up window
+let resizeCanvasContainer = document.getElementById("resize-canvas");
+// Start pivot
+let rcPivot = "middle";
+// Selected pivot button
+let currentPivotObject;
+// Border offsets
+let rcBorders = {left: 0, right: 0, top: 0, bottom: 0};
+
+/** Opens the canvas resize window
+ * 
+ */
 function openResizeCanvasWindow() {
+    // Initializes the inputs
     initResizeCanvasInputs();
     showDialogue('resize-canvas');
 }
 
+/** Initializes the canvas resizing input
+ * 
+ */
 function initResizeCanvasInputs() {
+    // Getting the pivot buttons
     let buttons = document.getElementsByClassName("pivot-button");
 
+    // Adding the event handlers for them
     for (let i=0; i<buttons.length; i++) {
         buttons[i].addEventListener("click", changePivot);
         if (buttons[i].getAttribute("value").includes("middle")) {
@@ -33,13 +48,21 @@ function initResizeCanvasInputs() {
     console.log("Pivot selezionato: " + currentPivotObject);
 }
 
+/** Fired when a border offset is changed: it updates the width and height
+ * 
+ * @param {*} event 
+ */
 function rcChangedBorder(event) {
     rcUpdateBorders();
     
-    document.getElementById("rc-width").value = parseInt(layers[0].canvasSize[0]) + borders.left + borders.right;
-    document.getElementById("rc-height").value = parseInt(layers[0].canvasSize[1]) + borders.top + borders.bottom;
+    document.getElementById("rc-width").value = parseInt(layers[0].canvasSize[0]) + rcBorders.left + rcBorders.right;
+    document.getElementById("rc-height").value = parseInt(layers[0].canvasSize[1]) + rcBorders.top + rcBorders.bottom;
 }
 
+/** Fired when width or height are changed: updates the border offsets
+ * 
+ * @param {*} event 
+ */
 function rcChangedSize(event) {
     let widthOffset = Math.abs(document.getElementById("rc-width").value) - layers[0].canvasSize[0];
     let heightOffset = Math.abs(document.getElementById("rc-height").value) - layers[0].canvasSize[1];
@@ -54,12 +77,19 @@ function rcChangedSize(event) {
     document.getElementById("rc-border-top").value = top;
     document.getElementById("rc-border-bottom").value = bottom;
 
-    borders.left = left;
-    borders.right = right;
-    borders.top = top;
-    borders.bottom = bottom;
+    rcBorders.left = left;
+    rcBorders.right = right;
+    rcBorders.top = top;
+    rcBorders.bottom = bottom;
 }
 
+/** Resizes the canvas
+ * 
+ * @param {*} event The event that triggered the canvas resizing
+ * @param {*} size The new size of the picture
+ * @param {*} customData Used when ctrl+z ing
+ * @param {*} saveHistory Should I save the history? You shouldn't if you're undoing
+ */
 function resizeCanvas(event, size, customData, saveHistory = true) {
     let imageDatas = [];
     let leftOffset = 0;
@@ -87,8 +117,8 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
     if (saveHistory) {
         // Saving history
         new HistoryStateResizeCanvas(
-            {x: parseInt(layers[0].canvasSize[0]) + borders.left + borders.right, 
-            y: parseInt(layers[0].canvasSize[1]) + borders.top + borders.bottom},
+            {x: parseInt(layers[0].canvasSize[0]) + rcBorders.left + rcBorders.right, 
+            y: parseInt(layers[0].canvasSize[1]) + rcBorders.top + rcBorders.bottom},
 
             {x: layers[0].canvasSize[0],
             y: layers[0].canvasSize[1]},
@@ -100,8 +130,8 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
 
     // Resize the canvases
     for (let i=0; i<layers.length; i++) {
-        layers[i].canvasSize[0] = parseInt(layers[i].canvasSize[0]) + borders.left + borders.right;
-        layers[i].canvasSize[1] = parseInt(layers[i].canvasSize[1]) + borders.top + borders.bottom;
+        layers[i].canvasSize[0] = parseInt(layers[i].canvasSize[0]) + rcBorders.left + rcBorders.right;
+        layers[i].canvasSize[1] = parseInt(layers[i].canvasSize[1]) + rcBorders.top + rcBorders.bottom;
 
         layers[i].canvas.width = layers[i].canvasSize[0];
         layers[i].canvas.height = layers[i].canvasSize[1];
@@ -121,42 +151,43 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
             topOffset = 0;
             break;
         case 'top':
-            leftOffset = (borders.left + borders.right) / 2;
+            leftOffset = (rcBorders.left + rcBorders.right) / 2;
             topOffset = 0;
             break;
         case 'topright':
-            leftOffset = borders.left + borders.right;
+            leftOffset = rcBorders.left + rcBorders.right;
             topOffset = 0;
             break;
         case 'left':
             leftOffset = 0;
-            topOffset = (borders.top + borders.bottom) / 2;
+            topOffset = (rcBorders.top + rcBorders.bottom) / 2;
             break;
         case 'middle':
-            leftOffset = (borders.left + borders.right) / 2;
-            topOffset = (borders.top + borders.bottom) / 2;
+            leftOffset = (rcBorders.left + rcBorders.right) / 2;
+            topOffset = (rcBorders.top + rcBorders.bottom) / 2;
             break;
         case 'right':
-            leftOffset = borders.left + borders.right;
-            topOffset = (borders.top + borders.bottom) / 2;
+            leftOffset = rcBorders.left + rcBorders.right;
+            topOffset = (rcBorders.top + rcBorders.bottom) / 2;
             break;
         case 'bottomleft':
             leftOffset = 0;
-            topOffset = borders.top + borders.bottom;
+            topOffset = rcBorders.top + rcBorders.bottom;
             break;
         case 'bottom':
-            leftOffset = (borders.left + borders.right) / 2;
-            topOffset = borders.top + borders.bottom;
+            leftOffset = (rcBorders.left + rcBorders.right) / 2;
+            topOffset = rcBorders.top + rcBorders.bottom;
             break;
         case 'bottomright':
-            leftOffset = borders.left + borders.right;
-            topOffset = borders.top + borders.bottom;
+            leftOffset = rcBorders.left + rcBorders.right;
+            topOffset = rcBorders.top + rcBorders.bottom;
             break;
         default:
             console.log('Pivot does not exist, please report an issue at https://github.com/lospec/pixel-editor');
             break;
     }
     
+    // Putting all the data for each layer with the right offsets (decided by the pivot)
     for (let i=0; i<layers.length; i++) {
         if (layers[i].menuEntry != null) {
             if (customData == undefined) {
@@ -176,6 +207,11 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
     closeDialogue();
 }
 
+/** Trims the canvas so tat the sprite is perfectly contained in it
+ * 
+ * @param {*} event 
+ * @param {*} saveHistory Should I save the history? You shouldn't if you're undoing
+ */
 function trimCanvas(event, saveHistory) {
     let minY = Infinity;
     let minX = Infinity;
@@ -189,6 +225,7 @@ function trimCanvas(event, saveHistory) {
     rcPivot = "topleft";
     console.log("debug");
 
+    // Computing the min and max coordinates in which there's a non empty pixel
     for (let i=1; i<layers.length - nAppLayers; i++) {
         let imageData = layers[i].context.getImageData(0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1]);
         let pixelPosition;
@@ -226,10 +263,11 @@ function trimCanvas(event, saveHistory) {
     minY = layers[0].canvasSize[1] - minY;
     maxY = layers[0].canvasSize[1] - maxY;
 
-    borders.right = (maxX - layers[0].canvasSize[0]) + 1;
-    borders.left = -minX;
-    borders.top = maxY - layers[0].canvasSize[1] + 1;
-    borders.bottom = -minY;
+    // Setting the borders coherently with the values I've just computed
+    rcBorders.right = (maxX - layers[0].canvasSize[0]) + 1;
+    rcBorders.left = -minX;
+    rcBorders.top = maxY - layers[0].canvasSize[1] + 1;
+    rcBorders.bottom = -minY;
 
     // Saving the data
     for (let i=0; i<layers.length; i++) {
@@ -241,11 +279,12 @@ function trimCanvas(event, saveHistory) {
     console.log(imageDatas);
     //console.log("sx: " + borders.left + "dx: " + borders.right + "top: " + borders.top + "btm: " + borders.bottom);
 
-    document.getElementById("rc-border-left").value = borders.left;
-    document.getElementById("rc-border-right").value = borders.right;
-    document.getElementById("rc-border-top").value = borders.top;
-    document.getElementById("rc-border-bottom").value = borders.bottom;
+    document.getElementById("rc-border-left").value = rcBorders.left;
+    document.getElementById("rc-border-right").value = rcBorders.right;
+    document.getElementById("rc-border-top").value = rcBorders.top;
+    document.getElementById("rc-border-bottom").value = rcBorders.bottom;
 
+    // Resizing the canvas with the decided border offsets
     resizeCanvas(null, null, imageDatas.slice(), historySave);
     // Resetting the previous pivot
     rcPivot = prevPivot;
@@ -253,16 +292,16 @@ function trimCanvas(event, saveHistory) {
 
 function rcUpdateBorders() {
     // Getting input
-    borders.left = document.getElementById("rc-border-left").value;
-    borders.right = document.getElementById("rc-border-right").value;
-    borders.top = document.getElementById("rc-border-top").value;
-    borders.bottom = document.getElementById("rc-border-bottom").value;
+    rcBorders.left = document.getElementById("rc-border-left").value;
+    rcBorders.right = document.getElementById("rc-border-right").value;
+    rcBorders.top = document.getElementById("rc-border-top").value;
+    rcBorders.bottom = document.getElementById("rc-border-bottom").value;
 
     // Validating input
-    borders.left == "" ? borders.left = 0 : borders.left = Math.round(parseInt(borders.left));
-    borders.right == "" ? borders.right = 0 : borders.right = Math.round(parseInt(borders.right));
-    borders.top == "" ? borders.top = 0 : borders.top = Math.round(parseInt(borders.top));
-    borders.bottom == "" ? borders.bottom = 0 : borders.bottom = Math.round(parseInt(borders.bottom));
+    rcBorders.left == "" ? rcBorders.left = 0 : rcBorders.left = Math.round(parseInt(rcBorders.left));
+    rcBorders.right == "" ? rcBorders.right = 0 : rcBorders.right = Math.round(parseInt(rcBorders.right));
+    rcBorders.top == "" ? rcBorders.top = 0 : rcBorders.top = Math.round(parseInt(rcBorders.top));
+    rcBorders.bottom == "" ? rcBorders.bottom = 0 : rcBorders.bottom = Math.round(parseInt(rcBorders.bottom));
 }
 
 function changePivot(event) {

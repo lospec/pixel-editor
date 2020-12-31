@@ -1,5 +1,9 @@
 var spacePressed = false;
 
+/** Just listens to hotkeys and calls the linked functions
+ * 
+ * @param {*} e 
+ */
 function KeyPress(e) {
     var keyboardEvent = window.event? event : e;
 

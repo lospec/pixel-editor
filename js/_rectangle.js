@@ -1,16 +1,23 @@
-
+// Saving the empty rect svg
 var emptySVG = document.getElementById("empty-button-svg");
+// and the full rect svg so that I can change them when the user changes rect modes
 var fullSVG = document.getElementById("full-button-svg");
 
+// The start mode is empty rectangle
 var drawMode = 'empty';
+// I'm not drawing a rectangle at the beginning
 var isDrawingRect = false;
 
+// Rect coordinates
 let startRectX;
 let startRectY;
 let endRectX;
 let endRectY;
 
-
+/** Starts drawing the rect, saves the start coordinates
+ * 
+ * @param {*} mouseEvent 
+ */
 function startRectDrawing(mouseEvent) {
     // Putting the vfx layer on top of everything
     VFXCanvas.style.zIndex = MAX_Z_INDEX;
@@ -25,13 +32,22 @@ function startRectDrawing(mouseEvent) {
     drawRectangle(startRectX, startRectY);
 }
 
+/** Updates the rectangle preview depending on the position of the mouse
+ * 
+ * @param {*} mouseEvent The mouseEvent from which we'll get the mouse position
+ */
 function updateRectDrawing(mouseEvent) {
 	let pos = getCursorPosition(mouseEvent);
 
-	// Drawing the rect
+	// Drawing the rect at the right position
 	drawRectangle(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
 }
 
+/** Finishes drawing the rect, decides the end coordinates and moves the preview rectangle to the
+ *  current layer
+ * 
+ * @param {*} mouseEvent event from which we'll get the mouse position
+ */
 function endRectDrawing(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
@@ -61,14 +77,17 @@ function endRectDrawing(mouseEvent) {
 	endRectX -= 0.5;
 	startRectX -= 0.5;
 
+	// Setting the correct linewidth and colour
 	currentLayer.context.lineWidth = tool.rectangle.brushSize;
 	currentLayer.context.fillStyle = currentGlobalColor;
 
+	// Drawing the rect using 4 lines
 	line(startRectX, startRectY, endRectX, startRectY, tool.rectangle.brushSize);
 	line(endRectX, startRectY, endRectX, endRectY, tool.rectangle.brushSize);
 	line(endRectX, endRectY, startRectX, endRectY, tool.rectangle.brushSize);
 	line(startRectX, endRectY, startRectX, startRectY, tool.rectangle.brushSize);
 
+	// If I have to fill it, I do so
 	if (drawMode == 'fill') {
 		currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
 	}
@@ -77,6 +96,12 @@ function endRectDrawing(mouseEvent) {
 	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
 }
 
+/** Draws a rectangle with end coordinates given by x and y on the VFX layer (draws
+ *  the preview for the rectangle tool)
+ * 
+ * @param {*} x The current end x of the rectangle
+ * @param {*} y The current end y of the rectangle
+ */
 function drawRectangle(x, y) {
 	// Getting the vfx context
 	let vfxContext = VFXCanvas.getContext("2d");
@@ -98,10 +123,12 @@ function drawRectangle(x, y) {
 	}
 
 	vfxContext.setLineDash([]);
-
     vfxContext.stroke();
 }
 
+/** Sets the correct tool icon depending on its mode
+ * 
+ */
 function setRectToolSvg() {
     if (drawMode == 'empty') {
         emptySVG.setAttribute('display', 'visible');

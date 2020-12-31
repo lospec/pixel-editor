@@ -1,15 +1,26 @@
-
+/* This scripts contains all the code used to handle the sprite scaling */
+// Should I keep the sprite ratio?
 let keepRatio = true;
+// Used to store the current ratio
 let currentRatio;
+// The currenty selected resizing algorithm (nearest-neighbor or bilinear-interpolation)
 let currentAlgo = 'nearest-neighbor';
+// Current resize data
 let data = {width: 0, height: 0, widthPercentage: 100, heightPercentage: 100};
+// Start resize data
 let startData = {width: 0, height:0, widthPercentage: 100, heightPercentage: 100};
 
+/** Opens the sprite resizing window
+ * 
+ */
 function openResizeSpriteWindow() {
+    // Inits the sprie resize inputs
     initResizeSpriteInputs();
 
+    // Computing the current ratio
     currentRatio = layers[0].canvasSize[0] / layers[0].canvasSize[1];
 
+    // Initializing the input fields
     data.width = layers[0].canvasSize[0];
     data.height = layers[1].canvasSize[1];
 
@@ -18,9 +29,13 @@ function openResizeSpriteWindow() {
     startData.heightPercentage = 100;
     startData.widthPercentage = 100;
 
+    // Opening the pop up now that it's ready
     showDialogue('resize-sprite');
 }
 
+/** Initalizes the input values and binds the elements to their events
+ * 
+ */
 function initResizeSpriteInputs() {
     document.getElementById("rs-width").value = layers[0].canvasSize[0];
     document.getElementById("rs-height").value = layers[0].canvasSize[1];
@@ -40,11 +55,21 @@ function initResizeSpriteInputs() {
     document.getElementById("resize-algorithm-combobox").addEventListener("change", changedAlgorithm);
 }
 
+/** Resizes (scales) the sprite
+ * 
+ * @param {*} event 
+ * @param {*} ratio Keeps infos about the x ratio and y ratio
+ */
 function resizeSprite(event, ratio) {
+    // Old data
     let oldWidth, oldHeight;
+    // New data
     let newWidth, newHeight;
+    // Current imageDatas
     let rsImageDatas = [];
+    // Index that will be used a few lines below
     let layerIndex = 0;
+    // Copy of the imageDatas that will be stored in the history
     let imageDatasCopy = [];
 
     oldWidth = layers[0].canvasSize[0];
@@ -70,6 +95,7 @@ function resizeSprite(event, ratio) {
             break;
     }
 
+    // Computing newWidth and newHeight
     if (ratio == null) {
         newWidth = data.width;
         newHeight = data.height;
@@ -88,8 +114,11 @@ function resizeSprite(event, ratio) {
         }
     }
 
+    // ratio is null when the user is undoing
     if (ratio == null) {
+        // Copying the image data
         imageDatasCopy = rsImageDatas.slice();
+        // Saving the history
         new HistoryStateResizeSprite(newWidth / oldWidth, newHeight / oldHeight, currentAlgo, imageDatasCopy);
     }
 
@@ -124,6 +153,12 @@ function resizeSprite(event, ratio) {
     closeDialogue();
 }
 
+/* Trust me, the math for the functions below works. If you want to optimize them feel free to have a look, though */
+
+/** Fired when the input field for width is changed. Updates th othe input fields consequently
+ * 
+ * @param {*} event 
+ */
 function changedWidth(event) {
     let oldValue = data.width;
     let ratio;
@@ -150,6 +185,10 @@ function changedWidth(event) {
     document.getElementById("rs-width-percentage").value = newWidthPerc;
 }
 
+/**Fired when the input field for width is changed. Updates the other input fields consequently
+ * 
+ * @param {*} event 
+ */
 function changedHeight(event) {
     let oldValue = 100;
     let ratio;
@@ -176,6 +215,10 @@ function changedHeight(event) {
     data.heightPercentage = newHeightPerc;
 }
 
+/**Fired when the input field for width percentage is changed. Updates the other input fields consequently
+ * 
+ * @param {*} event 
+ */
 function changedWidthPercentage(event) {
     let oldValue = 100;
     let ratio;
@@ -204,6 +247,10 @@ function changedWidthPercentage(event) {
     data.width = newWidth;
 }
 
+/**Fired when the input field for height percentage is changed. Updates the other input fields consequently
+ * 
+ * @param {*} event 
+ */
 function changedHeightPercentage(event) {
     let oldValue = data.heightPercentage;
     let ratio;
@@ -230,10 +277,18 @@ function changedHeightPercentage(event) {
     data.height = newHeight;
 }
 
+/** Toggles the keepRatio value (fired by the checkbox in the pop up window)
+ * 
+ * @param {*} event 
+ */
 function toggleRatio(event) {
     keepRatio = !keepRatio;
 }
 
+/** Changes the scaling algorithm (fired by the combobox in the pop up window)
+ * 
+ * @param {*} event 
+ */
 function changedAlgorithm(event) {
     currentAlgo = event.target.value;
 }

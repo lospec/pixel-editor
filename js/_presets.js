@@ -1,4 +1,4 @@
-//prests
+//presets
 var presets = {
     'Gameboy Color': {
         width: 240,

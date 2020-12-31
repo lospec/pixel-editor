@@ -1,8 +1,8 @@
 //this is called when a user picks a file after selecting "load palette" from the new pixel dialogue
 
+// TODO: load palette from .lpe file
 document.getElementById('load-palette-browse-holder').addEventListener('change', function () {
     if (this.files && this.files[0]) {
-
         //make sure file is allowed filetype
         var fileContentType = this.files[0].type;
         if (fileContentType == 'image/png' || fileContentType == 'image/gif') {
