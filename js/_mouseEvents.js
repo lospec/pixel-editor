@@ -134,7 +134,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
             mode = 'out';
         }
 
-        changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+        changeZoom(mode, getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
@@ -360,7 +360,7 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 	}
 
 	// Changing zoom and position of the first layer
-	changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+	changeZoom(mode, getCursorPosition(mouseEvent));
 
 	for (let i=1; i<layers.length; i++) {
 		// Copying first layer's data into the other layers

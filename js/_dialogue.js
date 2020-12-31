@@ -1,9 +1,17 @@
+/** Shows the dialogue window called dialogueName, which is a child of pop-up-container in pixel-editor.hbs
+ * 
+ * @param {*} dialogueName The name of the window to show
+ * @param {*} trackEvent Should I track the GA event?
+ */
 function showDialogue (dialogueName, trackEvent) {
     if (typeof trackEvent === 'undefined') trackEvent = true; 
 
+    // The pop up window is open
     dialogueOpen = true;
+    // Showing the pop up container
     popUpContainer.style.display = 'block';
 
+    // Showing the window
     document.getElementById(dialogueName).style.display = 'block';
 
     //track google event
@@ -11,6 +19,9 @@ function showDialogue (dialogueName, trackEvent) {
         ga('send', 'event', 'Palette Editor Dialogue', dialogueName); /*global ga*/
 }
 
+/** Closes the current dialogue by hiding the window and the pop-up-container
+ * 
+ */
 function closeDialogue () {
     popUpContainer.style.display = 'none';
 
@@ -22,6 +33,9 @@ function closeDialogue () {
     dialogueOpen = false;
 }
 
+/** Closes a dialogue window if the user clicks everywhere but in the current window
+ * 
+ */
 popUpContainer.addEventListener('click', function (e) {
     if (e.target == popUpContainer)
         closeDialogue();

@@ -1,7 +1,13 @@
+/** Triggered when the "Create" button in the new pixel dialogue is pressed
+ * 
+ */
 on('click', 'create-button', function (){
+    // Getting the values of the form
     var width = getValue('size-width');
     var height = getValue('size-height');
     var mode = getValue("editor-mode");
+
+    // Creating a new pixel with those properties
     newPixel(width, height, mode);
     document.getElementById('new-pixel-warning').style.display = 'block';
 

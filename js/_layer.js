@@ -456,7 +456,7 @@ function deleteLayer(saveHistory = true) {
         unusedIDs.push(toDelete.id);
 
         // Selecting the next layer
-        if (layerIndex != (layers.length - 3)) {
+        if (layerIndex != (layers.length - 4)) {
             layers[layerIndex + 1].selectLayer();
         }
         // or the previous one if the next one doesn't exist

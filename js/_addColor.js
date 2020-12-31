@@ -1,8 +1,11 @@
 let currentPalette = [];
 
-//adds the given color to the palette
-//input hex color string
-//returns list item element
+
+/** Adds the given color to the palette
+ * 
+ * @param {*} newColor the colour to add
+ * @return the list item containing the added colour
+ */
 function addColor (newColor) {
     //add # at beginning if not present
     if (newColor.charAt(0) != '#')

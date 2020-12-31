@@ -1,4 +1,4 @@
-//add color button
+// add-color-button management
 on('click', 'add-color-button', function(){
     if (!documentCreated) return;
 

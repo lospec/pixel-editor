@@ -83,7 +83,7 @@ on('click',"zoom-button", function(){
 //zoom in button
 on('click','zoom-in-button', function(){
     //changeZoom('in',[window.innerWidth/2-canvas.offsetLeft,window.innerHeight/2-canvas.offsetTop]);
-    changeZoom(layers[0],'in', [canvasSize[0] * zoom / 2, canvasSize[1] * zoom / 2]);
+    changeZoom('in', [canvasSize[0] * zoom / 2, canvasSize[1] * zoom / 2]);
 
     for (let i=1; i<layers.length; i++) {
         layers[i].copyData(layers[0]);
@@ -92,7 +92,7 @@ on('click','zoom-in-button', function(){
 
 //zoom out button
 on('click','zoom-out-button', function(){
-    changeZoom(layers[0],'out',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]);
+    changeZoom('out',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]);
 
     for (let i=1; i<layers.length; i++) {
         layers[i].copyData(layers[0]);

@@ -1,5 +1,11 @@
 
-function createColorPalette(paletteColors, fillBackground, deletePreviousPalette = true) {
+/** Creates the colour palette
+ * 
+ * @param {*} paletteColors The colours of the palette
+ * @param {*} deletePreviousPalette Tells if the app should delete the previous palette or not 
+ *                                  (used when opening a file, for example)
+ */
+function createColorPalette(paletteColors, deletePreviousPalette = true) {
     //remove current palette
     if (deletePreviousPalette) {
         colors = document.getElementsByClassName('color-button');
@@ -11,6 +17,7 @@ function createColorPalette(paletteColors, fillBackground, deletePreviousPalette
     var lightestColor = '#000000';
     var darkestColor = '#ffffff';
 
+    // Adding all the colours in the array
     for (var i = 0; i < paletteColors.length; i++) {
         var newColor = paletteColors[i];
         var newColorElement = addColor(newColor);
@@ -42,6 +49,9 @@ function createColorPalette(paletteColors, fillBackground, deletePreviousPalette
     currentLayer.context.fillStyle = darkestColor;
 }
 
+/** Creates the palette with the colours used in all the layers
+ * 
+ */
 function createPaletteFromLayers() {
     let colors = {};
 
@@ -68,8 +78,6 @@ function createPaletteFromLayers() {
         }
     }
 
-    console.log(colors);
-
     //create array out of colors object
     let colorPaletteArray = [];
     for (let color in colors) {
@@ -77,7 +85,6 @@ function createPaletteFromLayers() {
             colorPaletteArray.push('#'+rgbToHex(colors[color]));
         }
     }
-    console.log('COLOR PALETTE ARRAY', colorPaletteArray);
 
     //create palette form colors array
     createColorPalette(colorPaletteArray, false);
