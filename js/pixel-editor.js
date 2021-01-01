@@ -12,6 +12,7 @@
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
 //=include _pixelEditorUtility.js
+//=include sortable.js
 
 /**init**/
 //=include _consts.js

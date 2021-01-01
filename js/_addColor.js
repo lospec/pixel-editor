@@ -1,6 +1,5 @@
 let currentPalette = [];
 
-
 /** Adds the given color to the palette
  * 
  * @param {*} newColor the colour to add

@@ -1,3 +1,8 @@
+// Making the palette list sortable
+new Sortable(document.getElementById("layers-menu"), {
+    animation: 100
+});
+
 // HTML element that contains the layer entries
 let layerList;
 // A single layer entry (used as a prototype to create the new ones)
