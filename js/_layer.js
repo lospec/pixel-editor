@@ -1,8 +1,3 @@
-// Making the palette list sortable
-new Sortable(document.getElementById("layers-menu"), {
-    animation: 100
-});
-
 // HTML element that contains the layer entries
 let layerList;
 // A single layer entry (used as a prototype to create the new ones)
@@ -25,6 +20,8 @@ let layerOptions = document.getElementById("layer-properties-menu");
 let isRenamingLayer = false;
 // I need to save this, trust me
 let oldLayerName = null;
+
+let dragStartLayer;
 
 // Binding the add layer button to the function
 on('click',"add-layer-button", addLayer, false);
@@ -120,57 +117,6 @@ class Layer {
         if (this.menuEntry != null) {
             this.menuEntry.id = id;
         }
-    }
-
-    // NEXTPULL: remove this
-    layerDragStart(element) {
-        layerDragSource = this;
-        element.dataTransfer.effectAllowed = 'move';
-        element.dataTransfer.setData('text/html', this.id);
-
-        this.classList.add('dragElem');
-    }
-
-    // NEXTPULL: remove this
-    layerDragOver(element) {
-        if (element.preventDefault) {
-            element.preventDefault(); // Necessary. Allows us to drop.
-        }
-        this.classList.add('layerdragover');
-
-        element.dataTransfer.dropEffect = 'move';
-
-        return false;
-    }
-
-    // NEXTPULL: remove this
-    layerDragLeave(element) {
-        this.classList.remove('layerdragover');
-    }
-
-    // NEXTPULL: remove this
-    layerDragDrop(element) {
-        if (element.stopPropagation) {
-            element.stopPropagation(); // Stops some browsers from redirecting.
-        }
-
-        // Don't do anything if dropping the same column we're dragging.
-        if (layerDragSource != this) {
-            let toDropID = element.dataTransfer.getData('text/html');
-            let thisID = this.id;
-
-            moveLayers(toDropID, thisID);
-        }
-
-        this.classList.remove('layerdragover');
-        dragging = false;
-
-        return false;
-    }
-
-    // NEXTPULL: remove this
-    layerDragEnd(element) {
-        this.classList.remove('layerdragover');
     }
 
     // Resizes canvas
@@ -438,7 +384,6 @@ function merge(saveHistory = true) {
         // Updating the layer preview
         currentLayer.updateLayerPreview();
     }
-
 }
 
 function deleteLayer(saveHistory = true) {
@@ -541,78 +486,6 @@ function renameLayer(event) {
     isRenamingLayer = true;
 }
 
-// Swaps two layer entries in the layer menu
-function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
-    let toDrop = getLayerByID(toDropLayer);
-    let staticc = getLayerByID(staticLayer);
-    let layerCopy = layers.slice();
-
-    let beforeToDrop = toDrop.menuEntry.nextElementSibling;
-    let nMoved = 0;
-
-    layerCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
-
-    let toDropIndex = layerCopy.indexOf(toDrop);
-    let staticIndex = layerCopy.indexOf(staticc);
-
-    layerList.insertBefore(toDrop.menuEntry, staticc.menuEntry);
-
-    if (toDropIndex < staticIndex) {
-        let tmp = toDrop.canvas.style.zIndex;
-        let tmp2;
-
-        for (let i=toDropIndex+1; i<=staticIndex; i++) {
-            tmp2 = layerCopy[i].canvas.style.zIndex;
-
-            if (saveHistory) {
-                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
-            }
-
-            layerCopy[i].canvas.style.zIndex = tmp;
-            tmp = tmp2;
-            nMoved++;
-        }
-
-        if (saveHistory) {
-            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
-        }
-
-        toDrop.canvas.style.zIndex = tmp;
-
-        if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
-        }
-    }
-    else {
-        // BUG QUI
-        let tmp = toDrop.canvas.style.zIndex;
-        let tmp2;
-
-        for (let i=toDropIndex-1; i>staticIndex; i--) {
-            tmp2 = layerCopy[i].canvas.style.zIndex;
-
-            if (saveHistory) {
-                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
-            }
-
-            layerCopy[i].canvas.style.zIndex = tmp;
-            tmp = tmp2;
-            nMoved++;
-        }
-
-        if (saveHistory) {
-            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
-        }
-
-        toDrop.canvas.style.zIndex = tmp;
-
-        if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
-        }
-
-    }
-}
-
 function getMenuEntryIndex(list, entry) {
     for (let i=0; i<list.length; i++) {
         if (list[i] === entry) {
@@ -692,4 +565,46 @@ function addLayer(id, saveHistory = true) {
     return newLayer;
 }
 
+function layerDragStart(event) {
+    dragStartLayer = getLayerByID(layerList.children[event.oldIndex].id);
+}
+
+function layerDragDrop(event) {
+    let movedLayer = dragStartLayer;
+    let otherLayer = getLayerByID(layerList.children[event.oldIndex].id);
+
+    let oldIndex = event.oldDraggableIndex;
+    let newIndex = event.newDraggableIndex;
+
+    let movedZIndex = dragStartLayer.canvas.style.zIndex;
+
+    if (oldIndex > newIndex)
+    {
+        for (let i=newIndex; i<oldIndex; i++) {
+            console.log("catena: " + getLayerByID(layerList.children[i].id).canvas.style.zIndex + "->" + getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex);
+            getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex;
+        }
+    }
+    else
+    {
+        for (let i=newIndex; i>oldIndex; i--) {
+            console.log("catena: " + getLayerByID(layerList.children[i].id).canvas.style.zIndex + "->" + getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex);
+            getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex;
+        }
+    }
+
+    getLayerByID(layerList.children[oldIndex].id).canvas.style.zIndex = movedZIndex;
+
+    dragging = false;
+}
+
 layerList = document.getElementById("layers-menu");
+
+// Making the layers list sortable
+new Sortable(document.getElementById("layers-menu"), {
+    animation: 100,
+    filter: ".layer-button",
+    draggable: ".layers-menu-entry",
+    onStart: layerDragStart,
+    onEnd: layerDragDrop
+});

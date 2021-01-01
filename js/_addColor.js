@@ -41,7 +41,7 @@ function addColor (newColor) {
         button.parentElement.firstChild.jscolor.show();
     });
 
-    console.log(currentPalette);
+    //console.log(currentPalette);
 
     return listItem;
 }
