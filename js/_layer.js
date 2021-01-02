@@ -565,14 +565,19 @@ function addLayer(id, saveHistory = true) {
     return newLayer;
 }
 
+/** Saves the layer that is being moved when the dragging starts
+ * 
+ * @param {*} event 
+ */
 function layerDragStart(event) {
     dragStartLayer = getLayerByID(layerList.children[event.oldIndex].id);
 }
 
+/** Sets the z indexes of the layers when the user drops the layer in the menu
+ * 
+ * @param {*} event 
+ */
 function layerDragDrop(event) {
-    let movedLayer = dragStartLayer;
-    let otherLayer = getLayerByID(layerList.children[event.oldIndex].id);
-
     let oldIndex = event.oldDraggableIndex;
     let newIndex = event.newDraggableIndex;
 
@@ -581,14 +586,12 @@ function layerDragDrop(event) {
     if (oldIndex > newIndex)
     {
         for (let i=newIndex; i<oldIndex; i++) {
-            console.log("catena: " + getLayerByID(layerList.children[i].id).canvas.style.zIndex + "->" + getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex);
             getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex;
         }
     }
     else
     {
         for (let i=newIndex; i>oldIndex; i--) {
-            console.log("catena: " + getLayerByID(layerList.children[i].id).canvas.style.zIndex + "->" + getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex);
             getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex;
         }
     }
