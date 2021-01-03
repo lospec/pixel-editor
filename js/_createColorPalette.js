@@ -87,5 +87,5 @@ function createPaletteFromLayers() {
     }
 
     //create palette form colors array
-    createColorPalette(colorPaletteArray, false);
+    //createColorPalette(colorPaletteArray, false);
 }

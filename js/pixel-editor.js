@@ -13,6 +13,7 @@
 //=include libraries/cookies.js
 //=include _pixelEditorUtility.js
 //=include sortable.js
+//=include _algorithms.js
 
 /**init**/
 //=include _consts.js
@@ -48,6 +49,7 @@
 //=include _copyPaste.js
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
+//=include _colorPicker.js
 
 /**load file**/
 //=include _loadImage.js

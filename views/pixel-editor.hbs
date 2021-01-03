@@ -139,14 +139,7 @@
         <li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
     </ul>
 
-    <!-- PALETTE -->
     <ul id="colors-menu">
-
-        {{!
-        <li class="noshrink"><button id="current-color" class="jscolor {valueElement: 'current-color-value', styleElement: 'current-color-preview', onFineChange:'setColor(this)', width:151, position: 'left', padding:0,
-    borderWidth:14, borderColor: '#332f35',backgroundColor: '#332f35', insetColor:'transparent'}"><div id="current-color-preview"></div></button><input id="current-color-value" class="color-value" value="#000000" autocomplete="off" /></li>
-        }}
-
         <li class="noshrink"><button title="Add Current Color To Palette" id="add-color-button">{{svg "./plus.svg" width="30" height="30"}}</button></li>
     </ul>
 
@@ -232,9 +225,9 @@
       {{svg "adjust.svg" width="20" height="20" }}
     </div>
 
-    <div id="pop-up-container" id = "new-pixel-container">
+    <div id="pop-up-container">
         <!-- NEW PIXEL -->
-        <div id="new-pixel">
+        <div id="new-pixel" class="update">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>New Pixel</h1>
 
@@ -263,7 +256,7 @@
         </div>
 
         <!--SPRITE RESIZE-->
-        <div id = "resize-sprite">
+        <div class="update" id = "resize-sprite">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>Scale sprite</h1>
             <!-- SIZE-->
@@ -313,7 +306,7 @@
         </div>
 
         <!--CANVAS RESIZE-->
-        <div id = "resize-canvas">
+        <div class="update" id = "resize-canvas">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>Resize canvas</h1>
 
@@ -371,6 +364,80 @@
                 <button id = "resize-canvas-confirm">Resize canvas</button>
             </span>            
         </div>
+
+        <!-- PALETTE -->
+        <div id = "palette-block">
+            <h1>Edit palette</h1>
+            <!--<div id = "palette-container" onresize="updateSizeData()">
+                <ul id = "palette-list">
+                    <li style = "background-color:rgb(255,0,0);width:50px;height:50px;"></li>
+                    <li style = "background-color:rgb(0,255,0);width:50px;height:50px;"></li>
+                </ul>
+            </div>-->
+            
+            <!--
+            <div id="pb-options">
+                <ul id = "palette-options">
+                    <li><button title="Add colours to palette" onclick="addColours()">{{svg "plus.svg" width="15px" height="15px"}}</button></li>
+                    <li><button title="Remove colours from palette" onclick="removeColours()">{{svg "minus.svg" width="15px" height="15px"}}</button></li>
+                </ul>
+            </div>
+            -->
+            <div id = "colour-picker">
+                <div id = "cp-modes">
+                    <button id="cp-rgb" class="cp-selected-mode" onclick="changePickerMode(this, 'rgb')">RGB</button>
+                    <button id="cp-hsv" onclick="changePickerMode(this, 'hsv')">HSV</button>
+                    <button id="cp-hsl" onclick="changePickerMode(this, 'hsl')">HSL</button>
+                    
+                    <div id="cp-colour-preview" class="cp-colour-preview"></div>
+                    <input id="cp-hex" type="text" value="#123456" onchange="hexUpdated()"/>
+                </div>
+
+                <div id = "sliders-container">
+                    <div class = "cp-slider-entry">
+                        <label for = "first-slider">R</label>
+                        <input type="range" min="0" max="255" class="colour-picker-slider" id="first-slider" onmousemove="updateSliderValue(1)" onclick="updateSliderValue(1)"/>
+                        <input type = "text" value = "128" onchange="inputChanged(this,1)"/>
+                    </div>
+
+                    <div class = "cp-slider-entry">
+                        <label for = "second-slider">G</label>
+                        <input type="range" min="0" max ="255" class="colour-picker-slider" id="second-slider" onmousemove="updateSliderValue(2)" onclick="updateSliderValue(2)"/>
+                        <input type = "text" value = "128" onchange="inputChanged(this,2)"/>
+                    </div>
+
+                    <div class = "cp-slider-entry">
+                        <label for = "third-slider">B</label>
+                        <input type="range" min = "0" max = "255" class = "colour-picker-slider" id = "third-slider" onmousemove="updateSliderValue(3)" onclick="updateSliderValue(3)"/>
+                        <input type = "text" value = "128" onchange="inputChanged(this,3)"/>
+                    </div>
+                </div>
+
+                <div id = "cp-minipicker">
+                    <input type = "range" min = "0" max = "100" id = "cp-minipicker-slider" onmousemove="miniSliderInput(event)" onclick="miniSliderInput(event)"/>
+                    <div id="cp-canvas-container" onmousemove="movePickerIcon(event)">
+                        <canvas id = "cp-spectrum"></canvas>
+                        <div id="cp-active-icon" class="cp-picker-icon"></div>
+                    </div>
+
+                    <div id = "cp-colours-previews">
+                        <div class = "cp-colour-preview">
+                            #123456
+                        </div>
+                    </div>
+
+                    <div id = "cp-colour-picking-modes">
+                        <button class="cp-selected-mode" onclick="changePickingMode(event,'mono')">Mono</button>
+                        <button onclick="changePickingMode(event,'analog')">Anlgs</button>
+                        <button onclick="changePickingMode(event,'cmpt')">Cmpt</button>
+                        <button onclick="changePickingMode(event,'tri')">Tri</button>
+                        <button onclick="changePickingMode(event,'scmpt')">Scmpt</button>
+                        <button onclick="changePickingMode(event,'tetra')">Tetra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="help">
             <button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
             <h1>Help</h1>

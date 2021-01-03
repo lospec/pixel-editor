@@ -19,6 +19,7 @@ function addColor (newColor) {
     button.style.backgroundColor = newColor;
     button.addEventListener('mouseup', clickedColor);
     listItem.appendChild(button);
+    listItem.classList.add("draggable-colour")
 
     //insert new listItem element at the end of the colors menu (right before add button)
     colorsMenu.insertBefore(listItem, colorsMenu.children[colorsMenu.children.length-1]);
@@ -37,11 +38,21 @@ function addColor (newColor) {
         //hide edit button
         button.parentElement.lastChild.classList.add('hidden');
 
-        //show jscolor picker
-        button.parentElement.firstChild.jscolor.show();
+        //show jscolor picker, if basic mode is enabled
+        if (pixelEditorMode == 'Basic')
+            button.parentElement.firstChild.jscolor.show();
+        else
+            showDialogue("palette-block", false);
     });
 
     //console.log(currentPalette);
 
     return listItem;
 }
+
+new Sortable(document.getElementById("colors-menu"), {
+    animation:100,
+    filter: ".noshrink",
+    draggable: ".draggable-colour",
+    onEnd: makeIsDraggingFalse
+});

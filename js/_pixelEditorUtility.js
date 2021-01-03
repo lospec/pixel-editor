@@ -261,3 +261,10 @@ function getPixelPosition(index) {
 
 	return [Math.ceil(x), Math.ceil(y)];
 }
+
+/** Sets isDragging to false, used when the user interacts with sortable lists
+ * 
+ */
+function makeIsDraggingFalse(event) {
+	dragging = false;
+}

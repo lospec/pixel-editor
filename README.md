@@ -14,6 +14,8 @@ Suggestions / Planned features:
 
 - Documentation
 
+- Possibility to hide and resize menus (layers, palette)
+- What's new window to show the latest updates
 - Line tool
 - Tiled mode
 - Load palette from LPE file

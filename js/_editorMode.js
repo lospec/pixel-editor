@@ -18,12 +18,11 @@ function switchMode(currentMode, mustConfirm = true) {
 		// Show the layer menus
 		layerList.style.display = "inline-block";
 		document.getElementById('layer-button').style.display = 'inline-block';
-		// Move the palette menu
-        document.getElementById('colors-menu').style.right = '200px';
+		// Hide the palette menu
+        document.getElementById('colors-menu').style.right = '200px'
 
         pixelEditorMode = 'Advanced';
     }
-
     //switch to basic mode
     else {
 		//if there is a current layer (a document is active)
@@ -47,8 +46,10 @@ function switchMode(currentMode, mustConfirm = true) {
 		// Hide the layer menus
 		layerList.style.display = 'none';
 		document.getElementById('layer-button').style.display = 'none';
-		// Move the palette menu
-		document.getElementById('colors-menu').style.right = '0px';
+		// Show the palette menu
+        document.getElementById('colors-menu').style.display = 'flex';
+        // Move the palette menu
+        document.getElementById('colors-menu').style.right = '0px';
 
 		pixelEditorMode = 'Basic';
     }
