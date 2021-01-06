@@ -14,6 +14,10 @@ function showDialogue (dialogueName, trackEvent) {
     // Showing the window
     document.getElementById(dialogueName).style.display = 'block';
 
+    // If I'm opening the palette window, I initialize the colour picker
+    if (dialogueName == 'palette-block')
+        cpInit();
+
     //track google event
     if (trackEvent)
         ga('send', 'event', 'Palette Editor Dialogue', dialogueName); /*global ga*/

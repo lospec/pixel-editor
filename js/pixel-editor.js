@@ -50,6 +50,7 @@
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
 //=include _colorPicker.js
+//=include _paletteBlock.js
 
 /**load file**/
 //=include _loadImage.js

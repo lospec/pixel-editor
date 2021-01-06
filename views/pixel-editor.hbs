@@ -368,21 +368,7 @@
         <!-- PALETTE -->
         <div id = "palette-block">
             <h1>Edit palette</h1>
-            <!--<div id = "palette-container" onresize="updateSizeData()">
-                <ul id = "palette-list">
-                    <li style = "background-color:rgb(255,0,0);width:50px;height:50px;"></li>
-                    <li style = "background-color:rgb(0,255,0);width:50px;height:50px;"></li>
-                </ul>
-            </div>-->
             
-            <!--
-            <div id="pb-options">
-                <ul id = "palette-options">
-                    <li><button title="Add colours to palette" onclick="addColours()">{{svg "plus.svg" width="15px" height="15px"}}</button></li>
-                    <li><button title="Remove colours from palette" onclick="removeColours()">{{svg "minus.svg" width="15px" height="15px"}}</button></li>
-                </ul>
-            </div>
-            -->
             <div id = "colour-picker">
                 <div id = "cp-modes">
                     <button id="cp-rgb" class="cp-selected-mode" onclick="changePickerMode(this, 'rgb')">RGB</button>
@@ -435,6 +421,20 @@
                         <button onclick="changePickingMode(event,'tetra')">Tetra</button>
                     </div>
                 </div>
+            </div>
+
+            <div id = "palette-container" onresize="updateSizeData()">
+                <ul id = "palette-list">
+                    <li style = "background-color:rgb(255,0,0);width:50px;height:50px;" onmousedown="startRampSelection(event)"
+                    onmousemove="updateRampSelection(event)" onmouseup="endRampSelection(event)"></li>
+                    <li style = "background-color:rgb(0,255,0);width:50px;height:50px;"onmousedown="startRampSelection(event)"
+                    onmousemove="updateRampSelection(event)" onmouseup="endRampSelection(event)"></li>
+                </ul>
+            </div>
+
+            <div id="pb-options" class="update">
+                <button title="Add colours to palette" onclick="pbAddColours()">Add colours</button>
+                <button title="Remove colours from palette" onclick="pbRemoveColours()">Remove colours</button>
             </div>
         </div>
 

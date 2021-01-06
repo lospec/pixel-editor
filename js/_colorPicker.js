@@ -370,8 +370,6 @@ function movePickerIcon(event) {
 
         let left = (cursorPos[0] - startPickerIconPos[0][0] - 8);
         let top = (cursorPos[1] - startPickerIconPos[0][1] - 8);
-        
-        console.log(left + "," + top);
 
         if (left > -8 && top > -8 && left < canvasRect.width-8 && top < canvasRect.height-8){
             activePickerIcon.style["left"] = "" + left + "px";
@@ -506,7 +504,7 @@ function updateMiniPickerColour() {
 function getMiniPickerColour() {
     let hex;
     let pickedColour;
-    console.log(currPickerIconPos[0]);
+
      pickedColour = miniPickerCanvas.getContext('2d').getImageData(currPickerIconPos[0][0] + 8, 
         currPickerIconPos[0][1] + 8, 1, 1).data;
 
@@ -583,7 +581,6 @@ function changePickingMode(event, newMode) {
         canvasContainer.removeChild(canvasContainer.children[2]);
 
         // Deleting extra hex containers
-        console.log("Deleting :O");
         hexContainers[0].parentElement.removeChild(hexContainers[0].parentElement.children[1]);
         hexContainers[i] = null;
     }
@@ -760,7 +757,6 @@ function updateOtherIcons() {
     }
     // If I'm using analogous mode, I place the current colour in the middle
     else {
-        console.log("si si si sonooo sono qui");
         hexContainers[1].style.backgroundColor = colourValue.value;
         hexContainers[1].innerHTML = colourValue.value;
 

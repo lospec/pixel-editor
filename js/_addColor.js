@@ -45,8 +45,6 @@ function addColor (newColor) {
             showDialogue("palette-block", false);
     });
 
-    //console.log(currentPalette);
-
     return listItem;
 }
 

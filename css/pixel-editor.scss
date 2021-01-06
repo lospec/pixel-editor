@@ -1231,6 +1231,7 @@ svg {
 #colour-picker {
 	background-color:$basecolor;
 	width:250px;
+	height:350px;
 	position:absolute;
 	display:inline-block;
 
@@ -1297,6 +1298,7 @@ svg {
 	display:flex;
 	font-family: 'Roboto', sans-serif;
 	background-color:$basetextweak;
+	width:100%;
 	
 	button {
 		font-size:14px;
@@ -1459,7 +1461,6 @@ div#palette-block {
 	z-index:1000;
 	position:relative;
 	resize: horizontal;
-	padding: 0 0 0 0;
 	margin: 0 0 0 0;
 	width:600px;
 	height:400px;
@@ -1468,10 +1469,14 @@ div#palette-block {
 div#palette-container {
 	display:inline-block;
 	background-color:black;
-	position:relative;
+	position:absolute;
 	scrollbar-color: #332f35 #232125;
 	scroll-behavior: smooth;
-/*
+	left:300px;
+	width:300px;
+	height:280px;
+	overflow-y: scroll;
+
 	&::-webkit-scrollbar {
 		background: #232125;
 		width: 0.5em;
@@ -1488,7 +1493,6 @@ div#palette-container {
 	&::-webkit-scrollbar-corner {
 		background: #232125;
 	}
-*/
 }
 
 ul#palette-list {
@@ -1508,5 +1512,27 @@ ul#palette-list {
 		min-height:20px;
 		max-width:75px;
 		max-height:75px;
+	}
+}
+
+
+div#pb-options {
+	position:relative;
+	left:300px;
+	height:100px;
+	width:300px;
+	top:280px;
+
+	button {
+		position:relative;
+		width:50%;
+		height:100%;
+		text-align:center;
+		cursor: pointer;
+	}
+
+	button:hover {
+		color: $basehovertext;
+		background-color: $basehover;
 	}
 }
