@@ -462,6 +462,8 @@ function updatePickerByHex(hex) {
     activePickerIcon.style.left = '' + xPos + 'px';
     activePickerIcon.style.top = '' + (miniPickerCanvas.height - yPos) + 'px';
     activePickerIcon.style.backgroundColor = '#' + getMiniPickerColour();
+
+    colourPreview.style.backgroundColor = hex;
     
     updateOtherIcons();
     updateMiniSlider(hex);
@@ -521,6 +523,7 @@ function updateMiniSlider(hex) {
     styles[1] += "background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 0%, " +
     "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",1) 100%);}";
 
+    updateMiniPickerSpectrum();
     updateStyles();
 }
 
@@ -785,7 +788,6 @@ function getSelectedColours() {
 }
 
 function getHexPreviewColour(hex) {
-
     //if brightness is over threshold, make the text dark
     if (colorBrightness(hex) > 110) {
         return '#332f35'

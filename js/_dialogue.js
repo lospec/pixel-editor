@@ -1,3 +1,5 @@
+let currentOpenDialogue = "";
+
 /** Shows the dialogue window called dialogueName, which is a child of pop-up-container in pixel-editor.hbs
  * 
  * @param {*} dialogueName The name of the window to show
@@ -6,6 +8,8 @@
 function showDialogue (dialogueName, trackEvent) {
     if (typeof trackEvent === 'undefined') trackEvent = true; 
 
+    // Updating currently open dialogue
+    currentOpenDialogue = dialogueName;
     // The pop up window is open
     dialogueOpen = true;
     // Showing the pop up container
@@ -30,14 +34,14 @@ function showDialogue (dialogueName, trackEvent) {
  */
 function closeDialogue () {
     popUpContainer.style.display = 'none';
-
     var popups = popUpContainer.children;
+
     for (var i = 0; i < popups.length; i++) {
         popups[i].style.display = 'none';
+    }
 
-        if (popups[i].id == "palette-block") {
-            pbAddToSimplePalette();
-        }
+    if (currentOpenDialogue == "palette-block") {
+        pbAddToSimplePalette();
     }
 
     dialogueOpen = false;

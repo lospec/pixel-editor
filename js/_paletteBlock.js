@@ -1,3 +1,5 @@
+/** INIT is called when it shouldn't **/
+
 let coloursList = document.getElementById("palette-list");
 
 let rampMenu = document.getElementById("pb-ramp-options");
@@ -21,17 +23,18 @@ new ResizeObserver(updateSizeData).observe(coloursList.parentElement);
 // Initializes the palette block
 function pbInit() {
     let simplePalette = document.getElementById("colors-menu");
+    let childCount = coloursList.childElementCount;
 
     currentSquareSize = coloursList.children[0].clientWidth;
     coloursList = document.getElementById("palette-list");
 
     // Remove all the colours
-    for (let i=0; i<coloursList.childElementCount; i++) {
+    for (let i=0; i<childCount; i++) {
         coloursList.children[0].remove();
     }
 
-    // Add all the colours in the simplepalette
-    for (let i=0; i<simplePalette.childElementCount; i++) {
+    // Add all the colours from the simplepalette
+    for (let i=0; i<simplePalette.childElementCount-1; i++) {
         addSingleColour(cssToHex(simplePalette.children[i].children[0].style.backgroundColor));
     }
 }
@@ -77,11 +80,11 @@ function addSingleColour(colour) {
         li.addEventListener("mousedown", startRampSelection);
         li.addEventListener("mouseup", endRampSelection);
         li.addEventListener("mousemove", updateRampSelection);
+        li.addEventListener("onclick", endRampSelection);
 
         coloursList.appendChild(li);
     }
 }
-
 /** Adds all the colours currently selected in the colour picker
  * 
  */
@@ -209,12 +212,28 @@ function clearBorders() {
  * @param {*} mouseEvent 
  */
 function endRampSelection(mouseEvent) {
-    if (mouseEvent.which == 3) {
-        // I'm not selecting a ramp anymore
-        isRampSelecting = false;
-        // Setting the end coordinates
-        currentSelection.endCoords = getColourCoordinates(getElementIndex(mouseEvent.target));
+    let col;
+
+    if (currentSelection.startCoords.length == 0) {
+        currentSelection.endIndex = getElementIndex(mouseEvent.target);
+        currentSelection.startIndex = currentSelection.endIndex;
+        currentSelection.startCoords = getColourCoordinates(currentSelection.startIndex);
     }
+
+    // I'm not selecting a ramp anymore
+    isRampSelecting = false;
+    // Setting the end coordinates
+    currentSelection.endCoords = getColourCoordinates(getElementIndex(mouseEvent.target));
+
+    // Setting the colour in the colour picker
+    col = cssToHex(coloursList.children[currentSelection.startIndex].style.backgroundColor);
+    updatePickerByHex(col);
+    updateSlidersByHex(col);
+    updateMiniPickerColour();
+
+    updateRampSelection();
+
+    currentSelection.startCoords = [];
 }
 
 function closeAllSubmenus() {
@@ -259,8 +278,6 @@ function closeAllSubmenus() {
             return i;
         }
     }
-
-    alert("Couldn't find the selected colour");
 }
 
 /** Resizes the squares depending on the scroll amount (only resizes if the user is 
@@ -297,14 +314,22 @@ function cssToHex(rgb) {
 
 function pbAddToSimplePalette() {
     let simplePalette = document.getElementById("colors-menu");
+    let childCount = simplePalette.childElementCount;
 
     // Removing all the colours
-    for (let i=0; i<simplePalette.childElementCount; i++) {
-        simplePalette.children[0].remove();
+    for (let i=0; i<childCount-1; i++) {
+        simplePalette.removeChild(simplePalette.children[0]);
     }
 
     // Adding the new ones
     for (let i=0; i<coloursList.childElementCount; i++) {
-        addColor(cssToHex(coloursList.children[i].style.backgroundColor));
+        let col = coloursList.children[i].style.backgroundColor;
+		
+		if (col.includes("rgb")) {
+            addColor(cssToHex(col));
+        }
+		else  {
+            addColor(col);
+        }
     }
 }
