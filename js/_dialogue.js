@@ -15,8 +15,10 @@ function showDialogue (dialogueName, trackEvent) {
     document.getElementById(dialogueName).style.display = 'block';
 
     // If I'm opening the palette window, I initialize the colour picker
-    if (dialogueName == 'palette-block')
+    if (dialogueName == 'palette-block' && documentCreated) {
         cpInit();
+        pbInit();
+    }
 
     //track google event
     if (trackEvent)
@@ -32,6 +34,10 @@ function closeDialogue () {
     var popups = popUpContainer.children;
     for (var i = 0; i < popups.length; i++) {
         popups[i].style.display = 'none';
+
+        if (popups[i].id == "palette-block") {
+            pbAddToSimplePalette();
+        }
     }
 
     dialogueOpen = false;
@@ -49,6 +55,6 @@ popUpContainer.addEventListener('click', function (e) {
 var cancelButtons = popUpContainer.getElementsByClassName('close-button');
 for (var i = 0; i < cancelButtons.length; i++) {
     cancelButtons[i].addEventListener('click', function () {
-        closeDialogue();	
+        closeDialogue();
     });
 }

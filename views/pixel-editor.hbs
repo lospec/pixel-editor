@@ -414,25 +414,25 @@
 
                     <div id = "cp-colour-picking-modes">
                         <button class="cp-selected-mode" onclick="changePickingMode(event,'mono')">Mono</button>
-                        <button onclick="changePickingMode(event,'analog')">Anlgs</button>
+                        <button onclick="changePickingMode(event,'analog')">Nlgs</button>
                         <button onclick="changePickingMode(event,'cmpt')">Cmpt</button>
                         <button onclick="changePickingMode(event,'tri')">Tri</button>
-                        <button onclick="changePickingMode(event,'scmpt')">Scmpt</button>
+                        <button onclick="changePickingMode(event,'scmpt')">Scm</button>
                         <button onclick="changePickingMode(event,'tetra')">Tetra</button>
                     </div>
                 </div>
             </div>
 
-            <div id = "palette-container" onresize="updateSizeData()">
+            <div id = "palette-container">
                 <ul id = "palette-list">
-                    <li style = "background-color:rgb(255,0,0);width:50px;height:50px;" onmousedown="startRampSelection(event)"
+                    <li style = "background-color:rgb(255,0,0);width:40px;height:40px;" onmousedown="startRampSelection(event)"
                     onmousemove="updateRampSelection(event)" onmouseup="endRampSelection(event)"></li>
-                    <li style = "background-color:rgb(0,255,0);width:50px;height:50px;"onmousedown="startRampSelection(event)"
+                    <li style = "background-color:rgb(0,255,0);width:40px;height:40px;"onmousedown="startRampSelection(event)"
                     onmousemove="updateRampSelection(event)" onmouseup="endRampSelection(event)"></li>
                 </ul>
             </div>
 
-            <div id="pb-options" class="update">
+            <div id="pb-options">
                 <button title="Add colours to palette" onclick="pbAddColours()">Add colours</button>
                 <button title="Remove colours from palette" onclick="pbRemoveColours()">Remove colours</button>
             </div>

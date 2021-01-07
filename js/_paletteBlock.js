@@ -4,7 +4,7 @@ let rampMenu = document.getElementById("pb-ramp-options");
 let pbRampDialogue = document.getElementById("pb-ramp-dialogue");
 
 let currentSquareSize = coloursList.children[0].clientWidth;
-let blockData = {blockWidth: 500, blockHeight: 200, squareSize: 50};
+let blockData = {blockWidth: 300, blockHeight: 320, squareSize: 40};
 let isRampSelecting = false;
 let ramps = [];
 let currentSelection = {startIndex:0, endIndex:0, startCoords:[], endCoords: [], name: "", colour: "", label: null};
@@ -17,6 +17,24 @@ new Sortable(document.getElementById("palette-list"), {
 
 // Listening for the palette block resize
 new ResizeObserver(updateSizeData).observe(coloursList.parentElement);
+
+// Initializes the palette block
+function pbInit() {
+    let simplePalette = document.getElementById("colors-menu");
+
+    currentSquareSize = coloursList.children[0].clientWidth;
+    coloursList = document.getElementById("palette-list");
+
+    // Remove all the colours
+    for (let i=0; i<coloursList.childElementCount; i++) {
+        coloursList.children[0].remove();
+    }
+
+    // Add all the colours in the simplepalette
+    for (let i=0; i<simplePalette.childElementCount; i++) {
+        addSingleColour(cssToHex(simplePalette.children[i].children[0].style.backgroundColor));
+    }
+}
 
 /** Listens for the mouse wheel, used to change the size of the squares in the palette list
  * 
@@ -129,7 +147,7 @@ function updateRampSelection(mouseEvent) {
 
         let startIndex = currentSelection.startIndex;
         let endIndex = currentSelection.endIndex;
-
+        
         if (currentSelection.startIndex > endIndex) {
             let tmp = startIndex;
             startIndex = endIndex;
@@ -145,7 +163,7 @@ function updateRampSelection(mouseEvent) {
         for (let i=startIndex; i<=endIndex; i++) {
             let currentSquare = coloursList.children[i];
             let currentCoords = getColourCoordinates(i);
-            let borderStyle = "4px solid white";
+            let borderStyle = "3px solid white";
             let bordersToSet = [];        
 
             // Deciding which borders to use to make the outline
@@ -163,7 +181,6 @@ function updateRampSelection(mouseEvent) {
                 bordersToSet.push("border-right");
             }
             if (bordersToSet != []) {
-                console.log("qui");
                 currentSquare.style["box-sizing"] = "border-box";
 
                 for (let i=0; i<bordersToSet.length; i++) {
@@ -173,19 +190,17 @@ function updateRampSelection(mouseEvent) {
         }
     }
 }
+
 /** Removes all the borders from all the squares. The borders are cleared only for the
  *  current selection, so every border that is not white is kept.
  * 
  */
 function clearBorders() {
     for (let i=0; i<coloursList.childElementCount; i++) {
-        // Resetting borders
-        if (coloursList.children[i].style["border-top"].includes("white")) {
-            coloursList.children[i].style["border-top"] = "none";
-            coloursList.children[i].style["border-left"] = "none";  
-            coloursList.children[i].style["border-right"] = "none";
-            coloursList.children[i].style["border-bottom"] = "none";
-        }
+        coloursList.children[i].style["border-top"] = "none";
+        coloursList.children[i].style["border-left"] = "none";  
+        coloursList.children[i].style["border-right"] = "none";
+        coloursList.children[i].style["border-bottom"] = "none";
     }
 }
 
@@ -278,4 +293,18 @@ function cssToHex(rgb) {
         return ("0" + parseInt(x).toString(16)).slice(-2);
     }
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function pbAddToSimplePalette() {
+    let simplePalette = document.getElementById("colors-menu");
+
+    // Removing all the colours
+    for (let i=0; i<simplePalette.childElementCount; i++) {
+        simplePalette.children[0].remove();
+    }
+
+    // Adding the new ones
+    for (let i=0; i<coloursList.childElementCount; i++) {
+        addColor(cssToHex(coloursList.children[i].style.backgroundColor));
+    }
 }
