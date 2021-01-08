@@ -40,11 +40,14 @@ function closeDialogue () {
         popups[i].style.display = 'none';
     }
 
+    dialogueOpen = false;
+
     if (currentOpenDialogue == "palette-block") {
         pbAddToSimplePalette();
     }
-
-    dialogueOpen = false;
+    else if (currentOpenDialogue == "features-log") {
+        showDialogue("new-pixel");
+    }
 }
 
 /** Closes a dialogue window if the user clicks everywhere but in the current window

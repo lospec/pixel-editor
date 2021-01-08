@@ -9,6 +9,7 @@ var settingsFromCookie = Cookies.get('pixelEditorSettings');
 if(!settingsFromCookie) {
     console.log('settings cookie not found');
     settings = {
+        showLog: true,
         switchToChangedColor: true,
         enableDynamicCursorOutline: true, //unused - performance
         enableBrushPreview: true, //unused - performance
@@ -26,8 +27,9 @@ else{
 console.log(settings);
 
 //on clicking the save button in the settings dialog
-on('click', 'save-settings', function (){
+on('click', 'save-settings', saveSettings);
 
+function saveSettings() {
     //check if values are valid
     if (isNaN(getValue('setting-numberOfHistoryStates'))) {
         alert('Invalid value for numberOfHistoryStates');
@@ -37,6 +39,7 @@ on('click', 'save-settings', function (){
     //save new settings to settings object
     settings.numberOfHistoryStates = getValue('setting-numberOfHistoryStates');
     settings.pixelGridColour = getValue('setting-pixelGridColour');
+    settings.showLog = false;
     // Filling pixel grid again if colour changed
     fillPixelGrid();
 
@@ -46,4 +49,4 @@ on('click', 'save-settings', function (){
 
     //close window
     closeDialogue();
-});
+}

@@ -36,6 +36,7 @@
 //=include _colorChanged.js
 //=include _initColor.js
 //=include _dialogue.js
+//=include _featuresLog.js
 //=include _updateCursor.js
 //=include _drawLine.js
 //=include _getCursorPosition.js

@@ -15,16 +15,10 @@ Suggestions / Planned features:
 - Documentation
 
 - Possibility to hide and resize menus (layers, palette)
-- What's new window to show the latest updates
 - Line tool
 - Tiled mode
 - Load palette from LPE file
-- Move colours in (advanced) palette editor
 - Symmetry options
-
-- Custom color picker
-    - custom code without dependencies
-    - more features such as sliders / color modes
 
 - Mobile
     - Touch equivalent for mouse clicks
@@ -40,11 +34,9 @@ Suggestions / Planned features:
 	- Warning windows for wrong inputs
 	- Palette option remove unused colors
 	- Move selection with arrows
-	- Update pivot buttons when resizing canvas
 	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
 	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
     - Scale selection
-    - Use sortable.js for sorting the layers
 
 ## How to Contribute
 

@@ -8,5 +8,6 @@ window.onload = function(){
     newPixel(getValue('size-width'),getValue('size-height'), getValue('editor-mode'));
   else
     //otherwise show the new pixel dialog
-    showDialogue('new-pixel', false);
+    if (settings.showLog != undefined && !settings.showLog)
+      showDialogue('new-pixel', false);
 };
