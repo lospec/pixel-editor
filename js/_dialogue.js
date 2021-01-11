@@ -45,9 +45,6 @@ function closeDialogue () {
     if (currentOpenDialogue == "palette-block") {
         pbAddToSimplePalette();
     }
-    else if (currentOpenDialogue == "features-log") {
-        showDialogue("new-pixel");
-    }
 }
 
 /** Closes a dialogue window if the user clicks everywhere but in the current window
