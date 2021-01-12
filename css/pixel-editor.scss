@@ -1552,7 +1552,8 @@ div#pb-options {
 
 	#splash-input {
 		width:70%;
-		height:100% !important;
+		height:100vh !important;
+		color:$baselink;
 
 		#splash-menu {
 			position:relative;
@@ -1565,8 +1566,7 @@ div#pb-options {
 			font-weight:bold;
 			text-transform:uppercase;
 			font-size:20px;
-			color:$baselink;
-			height:40vh;
+			height:35vh;
 			width:100%;
 			position:relative;
 
@@ -1579,7 +1579,7 @@ div#pb-options {
 			width:100%;
 			height:100%;
 			position:relative;
-			background-color:rgba(0,0,0,0.25);
+			background-color:rgba(0,0,0,0.2);
 		}
 
 		#sp-coverdata {
@@ -1597,17 +1597,26 @@ div#pb-options {
 			}
 
 			a {
+				font-size:17px;
 				bottom:20px;
+				text-decoration:underline;
 			}
 		}
 	}
 
 	#sp-quickstart {
-		color:$baselink;
+		position:relative;
 		width: 80%;
+		margin-top:-20px;
 		margin-left:10%;
-		padding:20px;
 		left:0px;
+	}
+
+	#sp-quickstart-title {
+		padding:20px;
+		font-size:27px;
+		text-transform: uppercase;
+		font-weight: bold;
 	}
 
 	.sp-template {
@@ -1630,7 +1639,7 @@ div#pb-options {
 		p {
 			span {
 				display:block;
-				font-size:16px !important;
+				font-size:14px !important;
 				margin: 0 0 0 0;
 				padding: 0 0 0 0;
 			}
@@ -1639,6 +1648,16 @@ div#pb-options {
 			height:100%;
 			vertical-align: middle;
 		}
+	}
+
+	#sp-mode-palette {
+		text-align: center;
+		position: absolute;
+		width:70%;
+		bottom:40px;
+		height:40px;
+		font-size:18px;
+		font-weight: bold;
 	}
 
 	#splash-news {
