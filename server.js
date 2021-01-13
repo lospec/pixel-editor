@@ -10,13 +10,9 @@ const PORT = process.argv[3] || 3000;
 app.get('/', (req, res) => { 
     res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
         if(err){
-            console.log('error sending file',err);
+            console.log('error sending file', err);
         } else {
-            setTimeout(()=>{
-                console.log('closing server');
-                server.close();
-                process.exit();
-            },1000*10);
+            console.log("Server: Successfully served index.html");
         }
     });
 });
