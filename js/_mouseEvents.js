@@ -346,6 +346,14 @@ function draw (mouseEvent) {
 				updateMovePreview(getCursorPosition(mouseEvent));
 			}
 		}
+		else if (currentTool.name === "line") {
+			if (dragging) {
+				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
+					diagLine(lastMouseClickPos, zoom, cursorLocation);
+				}
+			}
+			currentLayer.updateLayerPreview();
+		}
 	}
 }
 

@@ -75,33 +75,14 @@ on('click',"eyedropper-button", function(){
 	tool.eyedropper.switchTo();
 }, false);
 
-//zoom tool button
-on('click',"zoom-button", function(){
-	tool.zoom.switchTo();
-}, false);
-
-//zoom in button
-on('click','zoom-in-button', function(){
-    //changeZoom('in',[window.innerWidth/2-canvas.offsetLeft,window.innerHeight/2-canvas.offsetTop]);
-    changeZoom('in', [canvasSize[0] * zoom / 2, canvasSize[1] * zoom / 2]);
-
-    for (let i=1; i<layers.length; i++) {
-        layers[i].copyData(layers[0]);
-    }
-}, false);
-
-//zoom out button
-on('click','zoom-out-button', function(){
-    changeZoom('out',[canvasSize[0]*zoom/2,canvasSize[1]*zoom/2]);
-
-    for (let i=1; i<layers.length; i++) {
-        layers[i].copyData(layers[0]);
-    }
-}, false);
-
 //rectangular selection button
 on('click', "rectselect-button", function(){
     tool.rectselect.switchTo();
+}, false);
+
+//line
+on('click',"line-button", function(){
+    tool.line.switchTo();
 }, false);
 
 /*global on */
