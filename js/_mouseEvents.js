@@ -22,7 +22,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		else if (mouseEvent.altKey)
 			currentTool = tool.eyedropper;
 		else if (mouseEvent.target.className == 'drawingCanvas' &&
-			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle'))
+			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name === 'line'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool.name == 'moveselection') {
 			if (!cursorInSelectedArea() && 
@@ -50,6 +50,10 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		currentTool = tool.resizerectangle;
 		tool.rectangle.previousBrushSize = tool.rectangle.brushSize;
 	}
+	else if (currentTool.name == 'line' && mouseEvent.which == 3) {
+		currentTool = tool.resizeline;
+		tool.line.previousBrushSize = tool.line.brushSize;
+	}
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas')
 	    eyedropperPreview.style.display = 'block';
@@ -68,6 +72,15 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 	if (currentLayer != null && !isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
 		currentLayer.closeOptionsMenu();	
+	}
+
+	// If the user finished placing down a line, clear the tmp canvas and copy the data to the current layer
+	if (currentTool.name === "line") {
+		const tmpCanvas = document.getElementById('tmp-canvas');
+		currentLayer.context.drawImage(tmpCanvas, 0, 0);
+
+		const tmpContext = tmpCanvas.getContext('2d');
+		tmpContext.clearRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 	}
 
 	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
@@ -347,6 +360,11 @@ function draw (mouseEvent) {
 			}
 		}
 		else if (currentTool.name === "line") {
+			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas') {
+				brushPreview.style.visibility = 'visible';
+			} else {
+				brushPreview.style.visibility = 'hidden';
+			}
 			if (dragging) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
 					diagLine(lastMouseClickPos, zoom, cursorLocation);

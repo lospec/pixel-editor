@@ -11,11 +11,31 @@ function diagLine(lastMouseClickPos, zoom, cursorLocation) {
 	let sy = (y0 < y1 ? 1 : -1);
     let err = dx-dy;
 
-    const brushSize = 1;
+    const brushSize = tool.line.brushSize;
+    
+    const canvas = document.getElementById('tmp-canvas');
+    const context = canvas.getContext('2d');
 
-	
-    if (currentTool.name !== 'line') return;
+    context.fillStyle=currentGlobalColor;
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
-	
+	while (true) {
+        if (currentTool.name !== 'line') return;
+
+        context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+
+		//if we've reached the end goal, exit the loop
+		if ((x0==x1) && (y0==y1)) break;
+		var e2 = 2*err;
+
+		if (e2 >-dy) {
+			err -=dy; 
+			x0+=sx;
+		}
+
+		if (e2 < dx) {
+			err +=dx; 
+			y0+=sy;
+		}
+    }
 }

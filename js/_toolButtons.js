@@ -85,4 +85,14 @@ on('click',"line-button", function(){
     tool.line.switchTo();
 }, false);
 
+on('click',"line-bigger-button", function(){
+    tool.line.brushSize++;
+}, false);
+
+on('click',"line-smaller-button", function(){
+    if(tool.line.brushSize > 1)
+    	tool.line.brushSize--;
+}, false);
+
+
 /*global on */
