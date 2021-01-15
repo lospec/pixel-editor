@@ -50,6 +50,9 @@ function KeyPress(e) {
 			case 52: case 80:
 				tool.pan.switchTo();
 				break;
+			case 76:
+				tool.line.switchTo();
+				break;
 			//zoom - 5
 			case 53:
 			  tool.zoom.switchTo();

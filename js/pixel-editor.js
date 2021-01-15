@@ -41,6 +41,7 @@
 //=include _drawLine.js
 //=include _getCursorPosition.js
 //=include _fill.js
+//=include _line.js
 //=include _history.js
 //=include _deleteColor.js
 //=include _replaceAllOfColor.js
