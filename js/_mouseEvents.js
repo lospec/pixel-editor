@@ -338,6 +338,21 @@ function draw (mouseEvent) {
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
+		else if (currentTool.name == 'resizeline' && dragging) {
+			//get new brush size based on x distance from original clicking location
+			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
+			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
+			//this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
+			var lineSizeChange = Math.round(distanceFromClick/10);
+			var newLineSize = tool.line.previousBrushSize + lineSizeChange;
+
+			//set the brush to the new size as long as its bigger than 1
+			tool.line.brushSize = Math.max(1, newLineSize);
+
+			//fix offset so the cursor stays centered
+			tool.line.moveBrushPreview(lastMouseClickPos);
+			currentTool.updateCursor();
+		}
 		else if (currentTool.name == 'rectselect') {
 			if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
 				isRectSelecting = true;

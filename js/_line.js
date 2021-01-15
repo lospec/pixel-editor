@@ -16,7 +16,8 @@ function diagLine(lastMouseClickPos, zoom, cursorLocation) {
     const canvas = document.getElementById('tmp-canvas');
     const context = canvas.getContext('2d');
 
-    context.fillStyle=currentGlobalColor;
+	context.fillStyle=currentGlobalColor;
+	canvas.style.zIndex = MAX_Z_INDEX;
     context.clearRect(0, 0, canvas.width, canvas.height);
 
 	while (true) {
