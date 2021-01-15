@@ -430,13 +430,13 @@ function duplicateLayer(event, saveHistory = true) {
     for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>=0; i--) {
         getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
     }
-    maxZIndex++;
+    maxZIndex+=2;
 
     // Creating a new canvas
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
     canvasView.append(newCanvas);
-    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 1;
+    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 2;
     newCanvas.classList.add("drawingCanvas");
 
 	if (!layerListEntry) return console.warn('skipping adding layer because no document');
@@ -529,7 +529,7 @@ function addLayer(id, saveHistory = true) {
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
     canvasView.append(newCanvas);
-    maxZIndex++;
+    maxZIndex+=2;
     newCanvas.style.zIndex = maxZIndex;
     newCanvas.classList.add("drawingCanvas");
 

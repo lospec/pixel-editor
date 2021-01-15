@@ -20,7 +20,7 @@ let endRectY;
  */
 function startRectDrawing(mouseEvent) {
     // Putting the vfx layer on top of everything
-    VFXCanvas.style.zIndex = MAX_Z_INDEX;
+    VFXCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;;
     // Updating flag
     isDrawingRect = true;
 
@@ -141,5 +141,5 @@ function setRectToolSvg() {
 }
 
 function applyChanges() {
-    VFXCanvas.style.zIndex = MIN_Z_INDEX;
+    //VFXCanvas.style.zIndex = MIN_Z_INDEX;
 }
