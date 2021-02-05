@@ -1553,8 +1553,6 @@ div#pb-options {
 
 	background-color: #232125 !important;
 	opacity: 1 !important;
-
-	display: none !important;
 	
 	#splash-input {
 		width:70%;
@@ -1661,9 +1659,44 @@ div#pb-options {
 		position: absolute;
 		width:70%;
 		bottom:40px;
-		height:40px;
 		font-size:18px;
 		font-weight: bold;
+
+		div.button-menu {
+			border:3px solid $basetextweak;
+			border-radius:5px;
+			position:relative;
+			display:inline-block;
+			padding: 0 0 0 0;
+			text-align:left;
+			-ms-transform: translateY(38%);
+			transform: translateY(38%);
+
+			div {
+				border:none;
+				padding:none;
+				margin:none;
+				background-color:transparent;
+				width:100px;
+				float:left;
+				text-align: center;
+				height:30px;
+				cursor:pointer;
+
+				p {
+					-ms-transform: translateY(-50%);
+					transform: translateY(-50%);
+				}
+			}
+
+			.bm-right {
+				border-left:3px solid $basetextweak;
+			}
+
+			.sp-interface-selected {
+				background-color: $basetextweak;
+			}
+		}
 	}
 
 	#splash-news {

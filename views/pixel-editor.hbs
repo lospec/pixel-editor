@@ -13,7 +13,6 @@
 </head>
 
 <body oncontextmenu="return false;">
-
     <div id="compatibility-warning">
       <div><div>
         <p><strong>Warning: a modern, desktop, web browser is required to use this tool.</strong></p>
@@ -247,9 +246,9 @@
             <h2>Size</h2>
             <input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
             <h2>Palette</h2>
-            <button id="palette-button" class="dropdown-button">Choose a palette...</button>
+            <!--<button id="palette-button" class="dropdown-button">Choose a palette...</button>
             <div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
-
+-->
             <div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
             <div>
                 <button id="create-button" class="default">Create</button>
@@ -336,10 +335,27 @@
                         Quickstart
                     </div>
 
+                    <div id="sp-mode-palette">
+                        <span>Interface mode: 
+                            <div class="button-menu">
+                                <div class="bm-left"><p>Basic</p></div>
+                                <div class="sp-interface-selected bm-right"><p>Advanced</p></div>
+                            </div> 
+                        </span>
+
+                        <span>Palette: 
+                            <button id="palette-button" class="dropdown-button">Choose a palette...</button>
+                                <div id="palette-menu" class="dropdown-menu">
+                                    <button id="no-palette-button">Empty Palette</button>
+                                    <button id="load-palette-button">Load palette...</button>
+                                </div>
+                        </span>
+                    </div>
+
                     <div id="sp-quickstart">
                         <div class="sp-template"><p>Load</p></div>
                         <div class="sp-template"><p><span>New</span> custom</p></div>
-                        <div class="sp-template"><p><span>New</span> Gameboy</p></div>
+                        <div class="sp-template" onclick="newPixel()"><p><span>New</span> Gameboy</p></div>
                         <div class="sp-template"><p><span>New</span> C64</p></div>
                         <div class="sp-template"><p><span>New</span> Pico8</p></div>
                         <div class="sp-template"><p><span>New</span> 32x32</p></div>
@@ -347,17 +363,6 @@
                         <div class="sp-template"><p><span>New</span> 128x128</p></div>
                         <div class="sp-template"><p><span>New</span> 256x256</p></div>
                         <div class="sp-template"><p><span>New</span> 512x512</p></div>
-                    </div>
-                    
-                    <div id="sp-mode-palette">
-                        <span>Interface mode: 
-                            <span class="button-menu">
-                                <button>Basic mode</button>
-                                <button class="button-menu-selected">Advanced mode</button>
-                            </span> 
-                        </span>
-
-                        <span>Palette: </span>
                     </div>
                 </div>
             </div>

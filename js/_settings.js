@@ -9,7 +9,6 @@ var settingsFromCookie = Cookies.get('pixelEditorSettings');
 if(!settingsFromCookie) {
     console.log('settings cookie not found');
     settings = {
-        showLog: true,
         switchToChangedColor: true,
         enableDynamicCursorOutline: true, //unused - performance
         enableBrushPreview: true, //unused - performance
@@ -39,7 +38,6 @@ function saveSettings() {
     //save new settings to settings object
     settings.numberOfHistoryStates = getValue('setting-numberOfHistoryStates');
     settings.pixelGridColour = getValue('setting-pixelGridColour');
-    settings.showLog = false;
     // Filling pixel grid again if colour changed
     fillPixelGrid();
 
