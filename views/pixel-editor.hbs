@@ -246,9 +246,9 @@
             <h2>Size</h2>
             <input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
             <h2>Palette</h2>
-            <!--<button id="palette-button" class="dropdown-button">Choose a palette...</button>
+            <button id="palette-button" class="dropdown-button">Choose a palette...</button>
             <div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
--->
+
             <div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
             <div>
                 <button id="create-button" class="default">Create</button>
@@ -261,7 +261,7 @@
                  <div id="latest-update">
                     <h1>Latest updates</h1>
                     <strong>Hey! Unsettled here.</strong><br><br>
-                    Welcome to the features-log.html! From now on, it will show all the 
+                    Welcome to the latest update page! From now on, it will show all the 
                     latest features that have been added to the editor, so that everyone knows what's going on.
 
                     <h2>Canvas and sprite resizing</h2>
@@ -283,7 +283,7 @@
 
                     <h2>Advanced mode: advanced palette editor</h2>
                     If you are a proud user of the advanced mode (Edit->Switch to advance mode if you want to experience the thrill),
-                    we (and with we I mean I) have great news: right click on a colour to open the old picker, click on the edit
+                    we have great news: right click on a colour to open the old picker, click on the edit
                     colour button if you want to try out the new palette editor. In it, you'll find:
 
                     <h2>Advanced mode: advanced colour picker</h2>
@@ -331,6 +331,33 @@
                         </div>
                     </div>
 
+                    <div id="sp-newpixel">
+                        <h1>New Custom Pixel</h1>
+                        <!-- Editor mode-->
+                        <h2>Editor mode</h2>
+                        <div class="sp-np-entry" id="sp-mode-palette">
+                            <div class="button-menu">
+                                <div class="bm-left"><p>Basic</p></div>
+                                <div class="sp-interface-selected bm-right"><p>Advanced</p></div>
+                            </div> 
+                        </div>
+
+                        <h2>Size</h2>
+                        <div class="sp-np-entry">
+                            <input id="size-width-splash" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+                        </div>
+                        
+                        <h2>Palette</h2>
+                        <button id="palette-button-splash" class="dropdown-button">Choose a palette...</button>
+                        <div id="palette-menu-splash" class="dropdown-menu"><button id="no-palette-button-splash">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
+
+
+                        <div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
+                        <div class="sp-np-entry">
+                            <button id="create-button-splash" class="default">Create</button>
+                        </div>
+                    </div>
+                    
                     <div id = "sp-quickstart-container">
                         <div id="sp-quickstart-title">
                             Quickstart
@@ -341,33 +368,12 @@
                             <div class="sp-template"><p><span>New</span> Gameboy</p></div>
                             <div class="sp-template"><p><span>New</span> C64</p></div>
                             <div class="sp-template"><p><span>New</span> Pico8</p></div>
+                            <div class="sp-template"><p><span>New</span> 16x16</p></div>
                             <div class="sp-template"><p><span>New</span> 32x32</p></div>
                             <div class="sp-template"><p><span>New</span> 64x64</p></div>
                             <div class="sp-template"><p><span>New</span> 128x128</p></div>
                             <div class="sp-template"><p><span>New</span> 256x256</p></div>
-                        </div>
-                    </div>
-
-                    <div id="sp-newpixel">
-                        <h1>New Custom Pixel</h1>
-                        <!-- Editor mode-->
-                        <h2>Editor mode</h2>
-                        <div id="sp-mode-palette">
-                            <div class="button-menu">
-                                <div class="bm-left"><p>Basic</p></div>
-                                <div class="sp-interface-selected bm-right"><p>Advanced</p></div>
-                            </div> 
-                        </div>
-
-                        <h2>Size</h2>
-                        <input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
-                        <h2>Palette</h2>
-                        <button id="palette-button" class="dropdown-button">Choose a palette...</button>
-                        <div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
-
-                        <div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
-                        <div>
-                            <button id="create-button" class="default">Create</button>
+                            <div class="sp-template"><p><span>New</span> 512x512</p></div>
                         </div>
                     </div>
                 </div>

@@ -805,7 +805,6 @@ svg {
 	*/
 
 	button.default {
-		float: right;
 		background: $basehover;
 		border: none;
 		border-radius: 4px;
@@ -1553,9 +1552,10 @@ div#pb-options {
 
 	background-color: #232125 !important;
 	opacity: 1 !important;
-	
+	overflow-y: scroll;
+
 	#splash-input {
-		width:70%;
+		width:74%;
 		height:100vh !important;
 		color:$baselink;
 
@@ -1608,11 +1608,12 @@ div#pb-options {
 		}
 	}
 
-	#sp-quickstart {
-		position:relative;
-		width: 70%;
-		margin-top:-20px;
-		margin-left:20px
+	#sp-quickstart-container {
+		left:250px;
+		height:65vh;
+		width:650px;
+		display:inline;
+		float:right;
 	}
 
 	#sp-quickstart-title {
@@ -1630,7 +1631,7 @@ div#pb-options {
 		width:100px;
 		height:100px;
 		border-radius:5%;
-		margin-right:40px;
+		margin-right:30px;
 		margin-top:30px;
 		background-color:$basecolor;
 		float:left;
@@ -1655,29 +1656,48 @@ div#pb-options {
 
 	#sp-newpixel {
 		display: inline-block;
-		width:35%;
+		width:220px;
 		height:64vh;
 		padding:20px;
 		position:relative;
 		background-color:$basecolor;
-		top:-47px;
+
+		.sp-np-entry {
+			width:100%;
+			text-align:center;
+		}
+
+		input {
+			border:none;
+			background-color: #232125;
+			color:$basetext;
+			font-size:14px;
+			width:40px;
+			padding:7px;
+			text-align:center;
+		}
+
+		#create-button {
+			font-size:18px;
+			width:150px;
+			margin-top:40px;
+			font-weight: bold;
+		}
 
 		#sp-mode-palette {
 			text-align: center;
 			position: relative;
 			float:bottom;
-			font-size:18px;
+			font-size:16px;
 			font-weight: bold;
 	
 			div.button-menu {
-				border:3px solid $basetextweak;
+				border:2px solid $basetextweak;
 				border-radius:5px;
 				position:relative;
 				display:inline-block;
 				padding: 0 0 0 0;
-				text-align:left;
-				-ms-transform: translateY(38%);
-				transform: translateY(38%);
+				text-align:left;				
 	
 				div {
 					border:none;
@@ -1687,12 +1707,12 @@ div#pb-options {
 					width:100px;
 					float:left;
 					text-align: center;
-					height:30px;
+					height:25px;
 					cursor:pointer;
 	
 					p {
-						-ms-transform: translateY(-50%);
-						transform: translateY(-50%);
+						-ms-transform: translateY(-60%);
+						transform: translateY(-60%);
 					}
 				}
 	
@@ -1723,7 +1743,7 @@ div#pb-options {
 		line-height: 1.5;
 		position:absolute;
 		top:40px;
-		right:40px;
+		right:0px;
 
 		&::-webkit-scrollbar {
 			background: #232125;
