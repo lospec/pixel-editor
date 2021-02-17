@@ -1610,10 +1610,9 @@ div#pb-options {
 
 	#sp-quickstart {
 		position:relative;
-		width: 80%;
+		width: 70%;
 		margin-top:-20px;
-		margin-left:10%;
-		left:0px;
+		margin-left:20px
 	}
 
 	#sp-quickstart-title {
@@ -1654,47 +1653,56 @@ div#pb-options {
 		}
 	}
 
-	#sp-mode-palette {
-		text-align: center;
-		position: absolute;
-		width:70%;
-		bottom:40px;
-		font-size:18px;
-		font-weight: bold;
+	#sp-newpixel {
+		display: inline-block;
+		width:35%;
+		height:64vh;
+		padding:20px;
+		position:relative;
+		background-color:$basecolor;
+		top:-47px;
 
-		div.button-menu {
-			border:3px solid $basetextweak;
-			border-radius:5px;
-			position:relative;
-			display:inline-block;
-			padding: 0 0 0 0;
-			text-align:left;
-			-ms-transform: translateY(38%);
-			transform: translateY(38%);
-
-			div {
-				border:none;
-				padding:none;
-				margin:none;
-				background-color:transparent;
-				width:100px;
-				float:left;
-				text-align: center;
-				height:30px;
-				cursor:pointer;
-
-				p {
-					-ms-transform: translateY(-50%);
-					transform: translateY(-50%);
+		#sp-mode-palette {
+			text-align: center;
+			position: relative;
+			float:bottom;
+			font-size:18px;
+			font-weight: bold;
+	
+			div.button-menu {
+				border:3px solid $basetextweak;
+				border-radius:5px;
+				position:relative;
+				display:inline-block;
+				padding: 0 0 0 0;
+				text-align:left;
+				-ms-transform: translateY(38%);
+				transform: translateY(38%);
+	
+				div {
+					border:none;
+					padding:none;
+					margin:none;
+					background-color:transparent;
+					width:100px;
+					float:left;
+					text-align: center;
+					height:30px;
+					cursor:pointer;
+	
+					p {
+						-ms-transform: translateY(-50%);
+						transform: translateY(-50%);
+					}
 				}
-			}
-
-			.bm-right {
-				border-left:3px solid $basetextweak;
-			}
-
-			.sp-interface-selected {
-				background-color: $basetextweak;
+	
+				.bm-right {
+					border-left:3px solid $basetextweak;
+				}
+	
+				.sp-interface-selected {
+					background-color: $basetextweak;
+				}
 			}
 		}
 	}
