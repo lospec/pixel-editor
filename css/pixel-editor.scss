@@ -1709,8 +1709,10 @@ div#pb-options {
 					text-align: center;
 					height:25px;
 					cursor:pointer;
-	
+					z-index:1;
+
 					p {
+						z-index:0;
 						-ms-transform: translateY(-60%);
 						transform: translateY(-60%);
 					}

@@ -1,5 +1,3 @@
-// OPTIMIZABLE: palette is known here, so why not pass it to _newPixel.js?
-
 function create(isSplash) {
     var splashPostfix = '';
     // If I'm creating from the splash menu, I append '-splash' so I get the corresponding values

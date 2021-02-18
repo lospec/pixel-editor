@@ -1,5 +1,3 @@
-const { on } = require("gulp");
-
 //populate palettes list in new pixel menu
 Object.keys(palettes).forEach(function(paletteName,index) {
 
@@ -16,7 +14,6 @@ Object.keys(palettes).forEach(function(paletteName,index) {
         setText('palette-button-splash', paletteName)
         //Show empty palette option
         document.getElementById('no-palette-button').style.display = 'block';
-        document.getElementById('no-palette-button-splash').style.display = 'block';
     }
 
     var buttonEvent = function() {
@@ -29,7 +26,6 @@ Object.keys(palettes).forEach(function(paletteName,index) {
 
         //show empty palette option
         document.getElementById('no-palette-button').style.display = 'block';
-        document.getElementById('no-palette-button-splash').style.display = 'block';
 
         //set the text of the dropdown to the newly selected preset
         setText('palette-button', paletteName);
@@ -49,23 +45,16 @@ Object.keys(palettes).forEach(function(paletteName,index) {
     splashPalettes.appendChild(copyButton);
 });
 
-//select no palette
-on('click', 'no-palette-button', function () {
+var noPaletteButtonClickEvent = function () {
     document.getElementById('no-palette-button').style.display = 'none';
     setText('palette-button', 'Choose a palette...');
+}
 
-    // Same for splash page
-    document.getElementById('no-palette-button-splash').style.display = 'none';
-    setText('palette-button-splash', 'Choose a palette...');
-});
-
-//select load palette
-on('click', 'load-palette-button', function () {
+var loadPaletteButtonEvent = function () {
     document.getElementById('load-palette-browse-holder').click();
-});
+}
 
-
-on('click', 'palette-button', function (e){
+var clickPaletteButtonEvent = function (e){
     toggle('palette-button');
     toggle('palette-menu');
 
@@ -76,11 +65,20 @@ on('click', 'palette-button', function (e){
     toggle('palette-button-splash');
     toggle('palette-menu-splash');
 
-    deselect('preset-button-splash');
-    deselect('preset-menu-splash');
-
     e.stopPropagation();
-});
+}
+
+//select no palette
+on('click', 'no-palette-button', noPaletteButtonClickEvent);
+
+//select load palette
+on('click', 'load-palette-button', loadPaletteButtonEvent);
+//select load palette
+on('click', 'load-palette-button-splash', loadPaletteButtonEvent);
+
+// Palette menu click
+on('click', 'palette-button', clickPaletteButtonEvent);
+on('click', 'palette-button-splash', clickPaletteButtonEvent);
 
 on('click', 'new-pixel', function (){
     deselect('editor-mode-menu');
@@ -93,5 +91,3 @@ on('click', 'new-pixel', function (){
     deselect('palette-button-splash');
     deselect('palette-menu-splash');
 });
-
-// ISSUE: use the same functions for the splash menu

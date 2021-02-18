@@ -8,11 +8,29 @@ let modes = {
 }
 
 let infoBox = document.getElementById('editor-mode-info');
+let currentSplashButton;
 
-function switchMode(currentMode, mustConfirm = true) {
+function splashMode(mouseEvent, mode) {
+    if (currentSplashButton == undefined) {
+        currentSplashButton = mouseEvent.target;
+        return;
+    }
+
+    if (mode !== pixelEditorMode) {
+        console.log("Mode target: " + mouseEvent.target);
+        // Remove selected class to old button
+        currentSplashButton.classList.remove("sp-interface-selected");
+        // Add selected class to new button
+        mouseEvent.target.classList.add("sp-interface-selected");
+    }
+
+    currentSplashButton = mouseEvent.target;
+}
+
+function switchMode(mustConfirm = true) {
 
 	//switch to advanced mode
-    if (currentMode == 'Basic') {
+    if (pixelEditorMode == 'Basic') {
         // Switch to advanced ez pez lemon squez
         document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
 		// Show the layer menus
@@ -56,7 +74,7 @@ function switchMode(currentMode, mustConfirm = true) {
 }
 
 on('click', 'switch-mode-button', function (e) {
-    switchMode(pixelEditorMode);
+    switchMode();
 });
 
 // Makes the menu open

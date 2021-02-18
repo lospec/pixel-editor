@@ -26,8 +26,6 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
                     var colorPalette = [];
                     var imagePixelData = loadPaletteContext.getImageData(0,0,this.width, this.height).data;
 
-                    console.log(imagePixelData);
-
                     //loop through pixels looking for colors to add to palette
                     for (var i = 0; i < imagePixelData.length; i += 4) {
                         var color = '#'+rgbToHex(imagePixelData[i],imagePixelData[i + 1],imagePixelData[i + 2]);
@@ -40,6 +38,8 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
                     palettes['Loaded palette'] = {};
                     palettes['Loaded palette'].colors = colorPalette;
                     setText('palette-button', 'Loaded palette');
+                    setText('palette-button-splash', 'Loaded palette');
+                    toggle('palette-menu-splash');
                 };
                 img.src = e.target.result;
             };

@@ -95,7 +95,11 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	}
 
 	//add colors from selected palette
-	var selectedPalette = getText('palette-button');
+	var selectedPalette;
+	if (!firstPixel)
+		var selectedPalette = getText('palette-button');
+	else
+		var selectedPalette = getText('palette-button-splash');
 
 	// If the user selected a palette and isn't opening a file, I load the selected palette
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
@@ -103,7 +107,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor/app');
-
+		
 		//fill the palette with specified colours
 		createColorPalette(palettes[selectedPalette].colors,true);
 	}
