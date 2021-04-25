@@ -28,10 +28,5 @@ app.use(express.static(path.join(__dirname, BUILDDIR)));
 var server = app.listen(PORT, () => {
     console.log(`\nTemp server started at http://localhost:${PORT}!`);
     //console.log('press ctrl+c to stop ');
-
-    var opn = require('open');
-
-    // opens the url in the default browser
-    opn(`http://localhost:${PORT}`);
 });
 
