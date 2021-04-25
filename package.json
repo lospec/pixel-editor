@@ -7,7 +7,7 @@
     "build": "node ./build.js ./build",
     "serve": "node ./server.js ./build 3000",
     "test": "npm run build && npm run serve",
-    "hot": "./node_modules/.bin/nodemon --exec npm test"
+    "hot": "nodemon --exec npm test"
   },
   "author": "Lospec",
   "license": "ISC",
