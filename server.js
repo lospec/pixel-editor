@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-
+const reload = require('reload');
 const app = express();
 
 const BUILDDIR = process.argv[2] || './build';
@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
         } else {
             setTimeout(()=>{
                 console.log('closing server');
-                server.close();
+                res.app.server.close();
                 process.exit();
             },1000*10);
         }
@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
 //ROUTE - other files
 app.use(express.static(path.join(__dirname, BUILDDIR)));
 
-//start server
-var server = app.listen(PORT, () => {
-    console.log(`\nTemp server started at http://localhost:${PORT}!`);
-    //console.log('press ctrl+c to stop ');
+reload(app).then(() => {
+    //start server
+    app.server = app.listen(PORT, function () {
+        console.log('Web server listening on port ' + PORT)
+    })
 });
-
