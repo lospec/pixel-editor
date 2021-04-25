@@ -1,4 +1,5 @@
-_ext
+/_ext/*
+!/_ext/svg/
 routes
 build
 node_modules
