@@ -90,6 +90,7 @@
             <button>Editor</button>
             <ul>
                 <li><button id="switch-mode-button">Switch to basic mode</button></li>
+                <li><button onclick="showDialogue('splash', false)">Return to splash page</button></li>
                 <li><button>Settings</button></li>
             </ul>
         </li>
@@ -260,7 +261,7 @@
             <div class="splash-news">
                  <div id="latest-update">
                     <h1>Latest updates</h1>
-                    HMMM Yes Lorem ipsum dolor sit amet consectetur ascendit sit amet.HMMM Yes Lorem ipsum dolor sit amet consectetur ascendit sit amet.HMMM Yes Lorem ipsum dolor sit amet consectetur ascendit sit amet.HMMM Yes Lorem ipsum dolor sit amet consectetur ascendit sit amet.HMMM Yes Lorem ipsum dolor sit amet consectetur ascendit sit amet.
+                    
                 </div>
             </div>
 
@@ -309,16 +310,16 @@
                         </div>
 
                         <div id="sp-quickstart">
-                            <div class="sp-template"><p>Load</p></div>
-                            <div class="sp-template"><p><span>New</span> Gameboy</p></div>
-                            <div class="sp-template"><p><span>New</span> C64</p></div>
-                            <div class="sp-template"><p><span>New</span> Pico8</p></div>
-                            <div class="sp-template"><p><span>New</span> 16x16</p></div>
-                            <div class="sp-template"><p><span>New</span> 32x32</p></div>
-                            <div class="sp-template"><p><span>New</span> 64x64</p></div>
-                            <div class="sp-template"><p><span>New</span> 128x128</p></div>
-                            <div class="sp-template"><p><span>New</span> 256x256</p></div>
-                            <div class="sp-template"><p><span>New</span> 512x512</p></div>
+                            <div class="sp-template" onclick="document.getElementById('open-image-browse-holder').click()"><p>Load</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('Gameboy Color')"><p><span>New</span> Gameboy</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('Commodore 64')"><p><span>New</span> C64</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('PICO-8')"><p><span>New</span> Pico8</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',16,16)"><p><span>New</span> 16x16</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',32,32)"><p><span>New</span> 32x32</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',64,64)"><p><span>New</span> 64x64</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',128,128)"><p><span>New</span> 128x128</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',256,256)"><p><span>New</span> 256x256</p></div>
+                            <div class="sp-template" onclick="newFromTemplate('',512,512)"><p><span>New</span> 512x512</p></div>
                         </div>
                     </div>
                 </div>

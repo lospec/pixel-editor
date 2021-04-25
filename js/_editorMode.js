@@ -8,12 +8,12 @@ let modes = {
 }
 
 let infoBox = document.getElementById('editor-mode-info');
-let currentSplashButton;
+let currentSplashButton = document.getElementById("sp-mode-palette").children[0].children[1];
 
 function splashMode(mouseEvent, mode) {
+    console.log("UE");
     if (currentSplashButton == undefined) {
-        currentSplashButton = mouseEvent.target;
-        return;
+        currentSplashButton = mouseEvent.target.parentElement;
     }
 
     if (mode !== pixelEditorMode) {
@@ -21,10 +21,14 @@ function splashMode(mouseEvent, mode) {
         // Remove selected class to old button
         currentSplashButton.classList.remove("sp-interface-selected");
         // Add selected class to new button
-        mouseEvent.target.classList.add("sp-interface-selected");
+        mouseEvent.target.parentElement.classList.add("sp-interface-selected");
+
+        // Setting the new mode
+        pixelEditorMode = mode;
     }
 
-    currentSplashButton = mouseEvent.target;
+    // Setting the new selected button
+    currentSplashButton = mouseEvent.target.parentElement;
 }
 
 function switchMode(mustConfirm = true) {

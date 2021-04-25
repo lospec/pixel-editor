@@ -196,9 +196,21 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 	// Applying the correct editor mode
 	if (pixelEditorMode == 'Basic') {
-		switchMode('Advanced', false);
+		switchMode(false);
 	}
 	else {
-		switchMode('Basic', false);
+		switchMode(false);
 	}
+}
+
+function newFromTemplate(preset, x, y) {
+	if (preset != '') {
+		setText('palette-button-splash', presets[preset].palette);
+		setText('palette-button', presets[preset].palette);
+		
+		x = presets[preset].width;
+		y = presets[preset].height;
+	}
+
+	newPixel(x, y, pixelEditorMode == 'Advanced' ? 'Basic' : 'Advanced');
 }

@@ -75,27 +75,29 @@ on('click', 'create-button-splash', function (){
     // Getting the values of the form
     var width = getValue('size-width-splash');
     var height = getValue('size-height-splash');
-    var mode = 'basic';
+    var mode = pixelEditorMode;
+
+    if (mode == 'Advanced')
+        mode = "Basic";
+    else
+        mode = "Advanced";
 
     // Creating a new pixel with those properties
     newPixel(width, height, mode);
-    document.getElementById('new-pixel-warning').style.display = 'block';
-
-    //get selected palette name
-    /*var selectedPalette = getText('palette-button');
-    if (selectedPalette == 'Choose a palette...') */
-        selectedPalette = 'none';
 
     //track google event
     ga('send', 'event', 'Pixel Editor New', selectedPalette, width+'/'+height); /*global ga*/
+    document.getElementById('new-pixel-warning').style.display = 'block';
 
+    // Resetting the new pixel values
+    selectedPalette = 'none';
 
-    //reset new form
+    //reset new pixel form
     setValue('size-width-splash', 64);
     setValue('size-height-splash', 64);
-    /*setValue("editor-mode", 'Advanced')
+    setValue("editor-mode", 'Advanced')
 
     setText('editor-mode-button', 'Choose a mode...');
     setText('palette-button', 'Choose a palette...');
-    setText('preset-button', 'Choose a preset...');*/   
+    setText('preset-button', 'Choose a preset...');
 });

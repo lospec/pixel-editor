@@ -1640,6 +1640,11 @@ div#pb-options {
 		text-align:center;
 		font-weight: bold;
 
+		&:hover {
+			cursor:pointer;
+			background-color:$baseselected;
+		}
+
 		p {
 			span {
 				display:block;
