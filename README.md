@@ -44,9 +44,9 @@ Requirements: you must have node.js and git installed.
 
 1. Click **Fork** above. It will automatically create a copy of this repository and add it to your account.
 2. Clone the repository to your computer.
-3. Open the folder in command prompt and run **npm install**
+3. Open the folder in command prompt and run **`npm install`**
 4. Make any changes you would like to suggest.
-5. In command prompt run **node build.js** which will compile it to the */build* folder, where you can make sure it works
+5. In command prompt run **`npm run build`** which will compile it to the `/build` folder, where you can make sure it works – the easiest way to do so is to run **`npm run serve`**. You can also do both at once by running `npm test`.
 6. Add, Commit and Push your changes to your fork.
 7. On the github page for your fork, click **New Pull Request** above the file list.
 8. Change the **head repository** dropdown to your fork.
