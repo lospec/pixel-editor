@@ -20,8 +20,8 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
                 // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
                 reader.onload = function (e) {
                     let dictionary = JSON.parse(e.target.result);
-
-                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary['editorMode'], dictionary);
+                    let mode = dictionary['editorMode'] == 'Advanced' ? 'Basic' : 'Advanced';
+                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], mode, dictionary);
                 }
             }
             else {
@@ -35,7 +35,6 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
 
                         //draw the image onto the canvas
                         currentLayer.context.drawImage(img, 0, 0);
-                        console.log("qui");
                         createPaletteFromLayers();
 
                         //track google event
