@@ -35,6 +35,7 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
 
                         //draw the image onto the canvas
                         currentLayer.context.drawImage(img, 0, 0);
+                        console.log("qui");
                         createPaletteFromLayers();
 
                         //track google event

@@ -86,6 +86,6 @@ function createPaletteFromLayers() {
         }
     }
 
-    //create palette form colors array
-    //createColorPalette(colorPaletteArray, false);
+    //create palette from colors array
+    createColorPalette(colorPaletteArray, true);
 }

@@ -154,7 +154,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	// This is not the first Pixel anymore
 	firstPixel = false;
 
-	// Now, if I opened a file
+	// Now, if I opened an LPE file
 	if (fileContent != null) {
 		// I add every layer the file had in it
 		for (let i=0; i<fileContent['nLayers']; i++) {
@@ -207,7 +207,7 @@ function newFromTemplate(preset, x, y) {
 	if (preset != '') {
 		setText('palette-button-splash', presets[preset].palette);
 		setText('palette-button', presets[preset].palette);
-		
+
 		x = presets[preset].width;
 		y = presets[preset].height;
 	}
