@@ -40,7 +40,13 @@ Suggestions / Planned features:
 
 ## How to Contribute
 
-Requirements: you must have node.js and git installed.
+### Requirements
+
+You must have node.js and git installed.
+
+You also need `npm` in version 7 (because of 2nd version of lockfile which was introduced there) which comes with Node.js 15 or newer. To simplify installation of proper versions you can make use of [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) and run `nvm install` – it will activate proper Node.js version in your current command prompt session.
+
+### Contribution Workflow
 
 1. Click **Fork** above. It will automatically create a copy of this repository and add it to your account.
 2. Clone the repository to your computer.
