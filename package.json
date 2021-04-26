@@ -6,11 +6,17 @@
   "scripts": {
     "build": "node ./build.js ./build",
     "serve": "node ./server.js ./build 3000",
-    "test": "npm run build && npm run serve"
+    "test": "npm run build && npm run serve",
+    "hot": "concurrently \"nodemon --exec npm test\" \"await tcp localhost:3000 && open-cli http://localhost:3000\""
   },
   "author": "Lospec",
   "license": "ISC",
+  "nodemonConfig": {
+    "ext": "js,hbs,scss",
+    "ignore": "build/"
+  },
   "dependencies": {
+    "concurrently": "^6.0.2",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
     "gulp": "^4.0.2",
@@ -20,7 +26,12 @@
     "gulp-sass": "^4.0.2",
     "handlebars-helper-svg": "git+https://bitbucket.org/skeddles/npm-handlebars-helper-svg-lospec-open-source.git",
     "nodemon": "^2.0.7",
-    "open": "^6.0.0",
+    "open": "^8.0.6",
+    "open-cli": "^6.0.1",
     "sass": "^1.17.3"
+  },
+  "devDependencies": {
+    "reload": "^3.1.1",
+    "wait-cli": "^1.0.0"
   }
 }
