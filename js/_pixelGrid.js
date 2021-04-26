@@ -1,27 +1,44 @@
+// Start colour of the pixel grid (can be changed in the preferences)
 let pixelGridColor = "#0000FF";
+// Distance between one line and another in HTML pixels
 let lineDistance = 12;
+// The grid is not visible at the beginning
 let pixelGridVisible = false;
+// Saving the canvas containing the pixel grid
 pixelGridCanvas = document.getElementById("pixel-grid");
 
+/** Shows or hides the pixel grid depening on its current visibility
+ *  (triggered by the show pixel grid button in the top menu)
+ * 
+ */
 function togglePixelGrid(event) {
+    // Getting the button because I have to change its text
     let button = document.getElementById("toggle-pixelgrid-button");
 
+    // Toggling the state
     pixelGridVisible = !pixelGridVisible;
 
+    // If it was visible, I hide it
     if (pixelGridVisible) {
         button.innerHTML = "Hide pixel grid";
         pixelGridCanvas.style.display = "inline-block";
     }
+    // Otherwise, I show it
     else {
         button.innerHTML = "Show pixel grid";
         pixelGridCanvas.style.display = "none";
     }
 }
 
+/** Fills the pixelGridCanvas with the pixelgrid
+ * 
+ */
 function fillPixelGrid() {
     let context = pixelGridCanvas.getContext("2d");
     let originalSize = layers[0].canvasSize;
 
+    // The pixelGridCanvas is lineDistance times bigger so that the lines don't take 1 canvas pixel 
+    // (which would cover the whole canvas with the pixelGridColour), but they take 1/lineDistance canvas pixels
     pixelGridCanvas.width = originalSize[0] * lineDistance;
     pixelGridCanvas.height = originalSize[1] * lineDistance;
 

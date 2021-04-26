@@ -1,0 +1,1 @@
+showDialogue("splash", false);

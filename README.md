@@ -12,15 +12,13 @@ The next version is mostly focused on adding missing essential features and port
 
 Suggestions / Planned features:
 
+- Documentation
+
+- Possibility to hide and resize menus (layers, palette)
 - Line tool
 - Tiled mode
 - Load palette from LPE file
-- Move colours in (advanced) palette editor
 - Symmetry options
-
-- Custom color picker
-    - custom code without dependencies
-    - more features such as sliders / color modes
 
 - Mobile
     - Touch equivalent for mouse clicks
@@ -32,15 +30,13 @@ Suggestions / Planned features:
 - Possibly add collaborate function
 	
 - Polish:
-    - ctrl + a to select everything / selection -> all, same for deselection
-	- Show colors which would need to be added to palette
+    - ctrl a to select everything / selection -> all, same for deselection
 	- Warning windows for wrong inputs
 	- Palette option remove unused colors
 	- Move selection with arrows
-	- Update pivot buttons when resizing canvas
 	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
 	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
-    - Trim canvas
+    - Scale selection
 
 ## How to Contribute
 
@@ -48,9 +44,9 @@ Requirements: you must have node.js and git installed.
 
 1. Click **Fork** above. It will automatically create a copy of this repository and add it to your account.
 2. Clone the repository to your computer.
-3. Open the folder in command prompt and run **npm install**
+3. Open the folder in command prompt and run **`npm install`**
 4. Make any changes you would like to suggest.
-5. In command prompt run **node build.js** which will compile it to the */build* folder, where you can make sure it works
+5. In command prompt run **`npm run build`** which will compile it to the `/build` folder, where you can make sure it works – the easiest way to do so is to run **`npm run serve`**. You can also do both at once by running `npm test`.
 6. Add, Commit and Push your changes to your fork.
 7. On the github page for your fork, click **New Pull Request** above the file list.
 8. Change the **head repository** dropdown to your fork.

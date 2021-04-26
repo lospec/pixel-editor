@@ -7,11 +7,6 @@ function fill(cursorLocation) {
         tempImage.data[pixelPos + 1] = fillColor.g;
         tempImage.data[pixelPos + 2] = fillColor.b;
         tempImage.data[pixelPos + 3] = 255;
-        /*
-            tempImage.data[pixelPos] = fillColor.r;
-        tempImage.data[pixelPos + 1] = fillColor.g;
-        tempImage.data[pixelPos + 2] = fillColor.b;
-        */
     }
 
     //change x y to color value passed from the function and use that as the original color 

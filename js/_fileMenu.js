@@ -18,8 +18,6 @@ for (var i = 1; i < mainMenuItems.length; i++) {
     var subMenu = menuItem.children[1];
     var subMenuItems = subMenu.children;
 
-
-
     //when you click an item within a menu button
     for (var j = 0; j < subMenuItems.length; j++) {
 

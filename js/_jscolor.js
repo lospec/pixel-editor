@@ -1,3 +1,5 @@
+// NEXTPULL: to remove when the new palette system is added
+
 /**
  * jscolor - JavaScript Color Picker
  *

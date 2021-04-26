@@ -1,5 +1,9 @@
 var spacePressed = false;
 
+/** Just listens to hotkeys and calls the linked functions
+ * 
+ * @param {*} e 
+ */
 function KeyPress(e) {
     var keyboardEvent = window.event? event : e;
 
@@ -45,6 +49,9 @@ function KeyPress(e) {
 			//pan - 4, p,
 			case 52: case 80:
 				tool.pan.switchTo();
+				break;
+			case 76:
+				tool.line.switchTo();
 				break;
 			//zoom - 5
 			case 53:

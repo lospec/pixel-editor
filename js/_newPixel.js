@@ -1,16 +1,32 @@
 let firstPixel = true;
 
+/** Creates a new, empty file
+ * 
+ * @param {*} width Start width of the canvas
+ * @param {*} height Start height of the canvas
+ * @param {*} editorMode The editor mode chosen by the user (advanced or basic)
+ * @param {*} fileContent If fileContent != null, then the newPixel is being called from the open menu
+ */
 function newPixel (width, height, editorMode, fileContent = null) {
+	// Saving the editor mode
 	pixelEditorMode = editorMode;
 
+	// The palette is empty, at the beginning
 	currentPalette = [];
+
+	// If this is the first pixel I'm creating since the app has started
 	if (firstPixel) {
+		// I configure the layers elements
 		layerListEntry = layerList.firstElementChild;
 
+		// Creating the first layer
 	    currentLayer = new Layer(width, height, canvas, layerListEntry);
 	    currentLayer.canvas.style.zIndex = 2;
 	}
 	else {
+		// If it's not the first Pixel, I have to reset the app
+
+		// Deleting all the extra layers and canvases, leaving only one
 		let nLayers = layers.length;
 		for (let i=2; i < layers.length - nAppLayers; i++) {
 			let currentEntry = layers[i].menuEntry;
@@ -38,10 +54,9 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		// Setting up the current layer
 	    layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
 	    currentLayer = layers[1];
-
 		currentLayer.canvas.style.zIndex = 2;
 		
-		// Updating canvas size
+		// Updating canvas size to the new size
 		for (let i=0; i<nLayers; i++) {
 			layers[i].canvasSize = [width, height];
 		}
@@ -58,7 +73,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	
 	// Pixel grid
 	pixelGrid = new Layer(width, height, pixelGridCanvas);
-
+	// Setting the general canvasSize
 	canvasSize = currentLayer.canvasSize;
 
 	if (firstPixel) {
@@ -80,16 +95,23 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	}
 
 	//add colors from selected palette
-	var selectedPalette = getText('palette-button');
+	var selectedPalette;
+	if (!firstPixel)
+		var selectedPalette = getText('palette-button');
+	else
+		var selectedPalette = getText('palette-button-splash');
+
+	// If the user selected a palette and isn't opening a file, I load the selected palette
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
 
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor/app');
-
-		//fill the palette with specified palette
+		
+		//fill the palette with specified colours
 		createColorPalette(palettes[selectedPalette].colors,true);
 	}
+	// Otherwise, I just generate 2 semirandom colours
 	else if (fileContent == null) {
 		//this wasn't a specified palette, so reset the url
 		history.pushState(null, null, '/pixel-editor/app');
@@ -120,15 +142,21 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	undoStates = [];
 	redoStates = [];
 
+	// Closing the "New Pixel dialogue"
 	closeDialogue();
+	// Updating the cursor of the current tool
 	currentTool.updateCursor();
 
+	// The user is now able to export the Pixel
 	document.getElementById('export-button').classList.remove('disabled');
 	documentCreated = true;
 
+	// This is not the first Pixel anymore
 	firstPixel = false;
 
+	// Now, if I opened an LPE file
 	if (fileContent != null) {
+		// I add every layer the file had in it
 		for (let i=0; i<fileContent['nLayers']; i++) {
 			let layerData = fileContent['layer' + i];
 			let layerImage = fileContent['layer' + i + 'ImageData'];
@@ -166,10 +194,23 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		deleteLayer(false);
 	}
 
+	// Applying the correct editor mode
 	if (pixelEditorMode == 'Basic') {
-		switchMode('Advanced', false);
+		switchMode(false);
 	}
 	else {
-		switchMode('Basic', false);
+		switchMode(false);
 	}
+}
+
+function newFromTemplate(preset, x, y) {
+	if (preset != '') {
+		setText('palette-button-splash', presets[preset].palette);
+		setText('palette-button', presets[preset].palette);
+
+		x = presets[preset].width;
+		y = presets[preset].height;
+	}
+
+	newPixel(x, y, pixelEditorMode == 'Advanced' ? 'Basic' : 'Advanced');
 }

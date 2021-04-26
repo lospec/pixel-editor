@@ -1,3 +1,17 @@
+/** How the history works
+ * - undoStates stores the states that can be undone
+ * - redoStates stores the states that can be redone
+ * - undo() undoes an action and adds it to the redoStates
+ * - redo() redoes an action and adds it to the undoStates
+ * - Each HistoryState must implement an undo() and redo() function 
+ *      Those functions actually implement the undo and redo mechanism for that action,
+ *      so you'll need to save the data you need as attributes in the constructor. For example,
+ *      for the HistoryStateAddColour, the added colour is saved so that it can be removed in 
+ *      undo() or added back in redo().
+ * - Each HistoryState must call saveHistoryState(this) so that it gets added to the stack
+ * 
+ */
+
 var undoStates = [];
 var redoStates = [];
 
@@ -473,8 +487,6 @@ function saveHistoryState (state) {
 }
 
 function undo () {
-    //console.log('%cundo', undoLogStyle);
-
     //if there are any states saved to undo
     if (undoStates.length > 0) {
         document.getElementById('redo-button').classList.remove('disabled');
@@ -496,8 +508,6 @@ function undo () {
 }
 
 function redo () {
-    //console.log('%credo', undoLogStyle);
-
     if (redoStates.length > 0) {
 
         //enable undo button

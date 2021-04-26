@@ -17,7 +17,7 @@ function clickedColor (e){
         e.target.parentElement.classList.add('selected');
 
     } else if (e.which == 3) { //right clicked color
-        console.log('right clicked color button');
+        //console.log('right clicked color button');
 
         //hide edit color button (to prevent it from showing)
         e.target.parentElement.lastChild.classList.add('hidden');

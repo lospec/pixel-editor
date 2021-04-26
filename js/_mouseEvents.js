@@ -22,7 +22,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		else if (mouseEvent.altKey)
 			currentTool = tool.eyedropper;
 		else if (mouseEvent.target.className == 'drawingCanvas' &&
-			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle'))
+			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name === 'line'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool.name == 'moveselection') {
 			if (!cursorInSelectedArea() && 
@@ -50,6 +50,10 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		currentTool = tool.resizerectangle;
 		tool.rectangle.previousBrushSize = tool.rectangle.brushSize;
 	}
+	else if (currentTool.name == 'line' && mouseEvent.which == 3) {
+		currentTool = tool.resizeline;
+		tool.line.previousBrushSize = tool.line.brushSize;
+	}
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas')
 	    eyedropperPreview.style.display = 'block';
@@ -68,6 +72,15 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 	if (currentLayer != null && !isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
 		currentLayer.closeOptionsMenu();	
+	}
+
+	// If the user finished placing down a line, clear the tmp canvas and copy the data to the current layer
+	if (currentTool.name === "line") {
+		const tmpCanvas = document.getElementById('tmp-canvas');
+		currentLayer.context.drawImage(tmpCanvas, 0, 0);
+
+		const tmpContext = tmpCanvas.getContext('2d');
+		tmpContext.clearRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 	}
 
 	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
@@ -134,7 +147,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
             mode = 'out';
         }
 
-        changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+        changeZoom(mode, getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
@@ -325,6 +338,21 @@ function draw (mouseEvent) {
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
+		else if (currentTool.name == 'resizeline' && dragging) {
+			//get new brush size based on x distance from original clicking location
+			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
+			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
+			//this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
+			var lineSizeChange = Math.round(distanceFromClick/10);
+			var newLineSize = tool.line.previousBrushSize + lineSizeChange;
+
+			//set the brush to the new size as long as its bigger than 1
+			tool.line.brushSize = Math.max(1, newLineSize);
+
+			//fix offset so the cursor stays centered
+			tool.line.moveBrushPreview(lastMouseClickPos);
+			currentTool.updateCursor();
+		}
 		else if (currentTool.name == 'rectselect') {
 			if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
 				isRectSelecting = true;
@@ -346,6 +374,19 @@ function draw (mouseEvent) {
 				updateMovePreview(getCursorPosition(mouseEvent));
 			}
 		}
+		else if (currentTool.name === "line") {
+			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas') {
+				brushPreview.style.visibility = 'visible';
+			} else {
+				brushPreview.style.visibility = 'hidden';
+			}
+			if (dragging) {
+				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
+					diagLine(lastMouseClickPos, zoom, cursorLocation);
+				}
+			}
+			currentLayer.updateLayerPreview();
+		}
 	}
 }
 
@@ -360,7 +401,7 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 	}
 
 	// Changing zoom and position of the first layer
-	changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+	changeZoom(mode, getCursorPosition(mouseEvent));
 
 	for (let i=1; i<layers.length; i++) {
 		// Copying first layer's data into the other layers

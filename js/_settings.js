@@ -26,8 +26,9 @@ else{
 console.log(settings);
 
 //on clicking the save button in the settings dialog
-on('click', 'save-settings', function (){
+on('click', 'save-settings', saveSettings);
 
+function saveSettings() {
     //check if values are valid
     if (isNaN(getValue('setting-numberOfHistoryStates'))) {
         alert('Invalid value for numberOfHistoryStates');
@@ -46,4 +47,4 @@ on('click', 'save-settings', function (){
 
     //close window
     closeDialogue();
-});
+}

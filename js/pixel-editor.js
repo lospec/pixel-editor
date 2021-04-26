@@ -12,6 +12,8 @@
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
 //=include _pixelEditorUtility.js
+//=include sortable.js
+//=include _algorithms.js
 
 /**init**/
 //=include _consts.js
@@ -34,10 +36,12 @@
 //=include _colorChanged.js
 //=include _initColor.js
 //=include _dialogue.js
+//=include _featuresLog.js
 //=include _updateCursor.js
 //=include _drawLine.js
 //=include _getCursorPosition.js
 //=include _fill.js
+//=include _line.js
 //=include _history.js
 //=include _deleteColor.js
 //=include _replaceAllOfColor.js
@@ -47,6 +51,8 @@
 //=include _copyPaste.js
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
+//=include _colorPicker.js
+//=include _paletteBlock.js
 
 /**load file**/
 //=include _loadImage.js
