@@ -13,11 +13,12 @@ app.get('/', (req, res) => {
             console.log('error sending file', err);
         } else {
             console.log("Server: Successfully served index.html");
-            setTimeout(()=>{
+            
+            /*setTimeout(()=>{
                 console.log('closing server');
                 res.app.server.close();
                 process.exit();
-            },1000*10);            
+            },1000*10);          */  
         }
     });
 });
@@ -27,7 +28,7 @@ app.use(express.static(path.join(__dirname, BUILDDIR)));
 
 reload(app).then(() => {
     //start server
-    app.server = app.listen(PORT, function () {
+    app.server = app.listen(3000, function () {
         console.log('Web server listening on port ' + PORT)
     })
 });

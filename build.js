@@ -17,6 +17,9 @@ console.log('Building Pixel Editor');
 function copy_images(){
     gulp.src('./images/*.png')
         .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    
+    gulp.src('./images/Splash images/*.png')
+        .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
 }
 
 function render_js(){

@@ -53,6 +53,7 @@
 //=include _resizeSprite.js
 //=include _colorPicker.js
 //=include _paletteBlock.js
+//=include _splashPage.js
 
 /**load file**/
 //=include _loadImage.js
