@@ -15,11 +15,14 @@ console.log('Building Pixel Editor');
 
 
 function copy_images(){
-    gulp.src('./images/*.png')
-        .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
-    
-    gulp.src('./images/Splash images/*.png')
-        .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    // Icons
+    gulp.src('./images/*.png').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    // Splash images
+    gulp.src('./images/Splash images/*.png').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+}
+
+function copy_logs() {
+    gulp.src('logs/*.html').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
 }
 
 function render_js(){
@@ -59,4 +62,4 @@ function compile_page(){
 // empty the build folder, or create it
 fs.rmdirSync(BUILDDIR, { recursive: true });
 fs.mkdirSync(BUILDDIR);
-gulp.parallel(copy_images, render_js, render_css, compile_page)();
+gulp.parallel(copy_images, copy_logs, render_js, render_css, compile_page)();

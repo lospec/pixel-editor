@@ -54,6 +54,7 @@
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include _splashPage.js
+//=include _logs.js
 
 /**load file**/
 //=include _loadImage.js
