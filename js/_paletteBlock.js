@@ -113,8 +113,6 @@ function pbRemoveColours() {
         coloursList.removeChild(coloursList.children[startIndex]);
     }
     clearBorders();
-
-    // TODO: make it so that ramps update correctly (change start and end indexes if necessary)
 }
 
 /** Starts selecting a ramp. Saves the data needed to draw the outline.

@@ -1610,7 +1610,7 @@ div#pb-options {
 	}
 
 	#sp-quickstart-container {
-		left:250px;
+		left:200px;
 		height:65vh;
 		width:650px;
 		display:inline;
@@ -1748,10 +1748,15 @@ div#pb-options {
 		width:350px !important;
 		height:90%;
 		overflow-y: scroll;
+		overflow-x:hidden;
 		line-height: 1.5;
 		position:absolute;
 		top:40px;
 		right:0px;
+
+		img {
+			width:350px;
+		}
 
 		&::-webkit-scrollbar {
 			background: #232125;

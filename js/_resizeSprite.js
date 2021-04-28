@@ -20,6 +20,8 @@ function openResizeSpriteWindow() {
     // Computing the current ratio
     currentRatio = layers[0].canvasSize[0] / layers[0].canvasSize[1];
 
+    console.log("Current ratio: " + currentRatio);
+
     // Initializing the input fields
     data.width = layers[0].canvasSize[0];
     data.height = layers[1].canvasSize[1];
@@ -232,7 +234,7 @@ function changedWidthPercentage(event) {
     console.log("old value: " + oldValue + ", ratio: " + ratio);
 
     newHeight = startData.height * ratio;
-    newHeightPerc = data.widthPercentage / currentRatio;
+    newHeightPerc = data.widthPercentage;
     newWidth = startData.width * ratio;
 
     if (keepRatio) {
@@ -262,7 +264,7 @@ function changedHeightPercentage(event) {
     ratio = data.heightPercentage / oldValue;
 
     newWidth = startData.width * ratio;
-    newWidthPerc = data.heightPercentage * currentRatio;
+    newWidthPerc = data.heightPercentage;
     newHeight = startData.height * ratio;
 
     if (keepRatio) {

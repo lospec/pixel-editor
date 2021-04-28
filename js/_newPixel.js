@@ -201,6 +201,10 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	else {
 		switchMode(false);
 	}
+
+	// Resetting history
+	undoStates = [];
+	redoStates = [];
 }
 
 function newFromTemplate(preset, x, y) {

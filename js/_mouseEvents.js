@@ -169,7 +169,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 }, false);
 
-// TODO: Make it snap to the pixel grid
 function setPreviewPosition(preview, size){
 	let toAdd = 0;
 
