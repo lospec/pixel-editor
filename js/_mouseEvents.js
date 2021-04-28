@@ -22,7 +22,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		else if (mouseEvent.altKey)
 			currentTool = tool.eyedropper;
 		else if (mouseEvent.target.className == 'drawingCanvas' &&
-			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name === 'line'))
+			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name == 'ellipse' || currentTool.name === 'line'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool.name == 'moveselection') {
 			if (!cursorInSelectedArea() && 
@@ -46,6 +46,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	    currentTool = tool.resizeeraser;
 	    tool.eraser.previousBrushSize = tool.eraser.brushSize;
     }
+	// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 	else if (currentTool.name == 'rectangle' && mouseEvent.which == 3) {
 		currentTool = tool.resizerectangle;
 		tool.rectangle.previousBrushSize = tool.rectangle.brushSize;
@@ -160,6 +161,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		endRectDrawing(mouseEvent);
 		currentLayer.updateLayerPreview();
 	}
+	else if (currentTool.name == 'ellipse' && isDrawingEllipse) {
+		endEllipseDrawing(mouseEvent);
+		currentLayer.updateLayerPreview();
+	}
 
 	dragging = false;
 	currentTool = currentToolTemp;
@@ -269,6 +274,21 @@ function draw (mouseEvent) {
 				updateRectDrawing(mouseEvent);
 			}
 		}
+		else if (currentTool.name == 'ellipse')
+		{
+			//hide brush preview outside of canvas / canvas view
+			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
+			brushPreview.style.visibility = 'visible';
+			else
+			brushPreview.style.visibility = 'hidden';
+
+			if (!isDrawingEllipse && dragging) {
+				startEllipseDrawing(mouseEvent);
+			}
+			else if (dragging){
+				updateEllipseDrawing(mouseEvent);
+			}
+		}
 		else if (currentTool.name == 'pan' && dragging) {
 			// Setting first layer position
 			layers[0].setCanvasOffset(layers[0].canvas.offsetLeft + (cursorLocation[0] - lastMouseClickPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastMouseClickPos[1]));
@@ -328,12 +348,15 @@ function draw (mouseEvent) {
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
 			//this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
 			var rectangleSizeChange = Math.round(distanceFromClick/10);
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			var newRectangleSize = tool.rectangle.previousBrushSize + rectangleSizeChange;
 
 			//set the brush to the new size as long as its bigger than 1
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			tool.rectangle.brushSize = Math.max(1,newRectangleSize);
 
 			//fix offset so the cursor stays centered
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}

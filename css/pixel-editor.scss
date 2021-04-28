@@ -688,6 +688,7 @@ svg {
 #tools-menu li button#zoom-in-button,
 #tools-menu li button#eraser-bigger-button,
 #tools-menu li button#rectangle-bigger-button,
+#tools-menu li button#ellipse-bigger-button,
 #tools-menu li button#line-bigger-button {
 	left: 0;
 }
@@ -696,6 +697,7 @@ svg {
 #tools-menu li button#zoom-out-button,
 #tools-menu li button#eraser-smaller-button,
 #tools-menu li button#rectangle-smaller-button,
+#tools-menu li button#ellipse-smaller-button,
 #tools-menu li button#line-smaller-button {
 	right: 0;
 }
@@ -708,6 +710,8 @@ svg {
 #tools-menu li.selected button#eraser-smaller-button,
 #tools-menu li.selected button#rectangle-bigger-button,
 #tools-menu li.selected button#rectangle-smaller-button,
+#tools-menu li.selected button#ellipse-bigger-button,
+#tools-menu li.selected button#ellipse-smaller-button,
 #tools-menu li.selected button#line-bigger-button,
 #tools-menu li.selected button#line-smaller-button {
 	display: block;

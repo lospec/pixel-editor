@@ -65,6 +65,11 @@ function KeyPress(e) {
 		    case 77: case 109:
 				tool.rectselect.switchTo()
 				break;
+			// TODO: [ELLIPSE] Decide on a shortcut to use. "s" was chosen without any in-team consultation.
+		    // ellipse tool, s
+		    case 83:
+				tool.ellipse.switchTo()
+				break;
 		    // rectangle tool, u
 		    case 85:
 				tool.rectangle.switchTo()
