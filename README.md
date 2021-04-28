@@ -52,7 +52,7 @@ You also need `npm` in version 7 (because of 2nd version of lockfile which was i
 2. Clone the repository to your computer.
 3. Open the folder in command prompt and run **`npm install`**
 4. Make any changes you would like to suggest.
-5. In command prompt run **`npm run build`** which will compile it to the `/build` folder, where you can make sure it works – the easiest way to do so is to run **`npm run serve`**. You can also do both at once by running `npm test`.
+5. In command prompt run **`npm run hot`** which will compile app to the `/build` folder, serve under [http://localhost:3000](http://localhost:3000), then open in your browser. Moreover, it restarts server every time you save your changes in a codebase. You can go even further by running `npm run hot:reload`, which will also trigger webpage reloads.
 6. Add, Commit and Push your changes to your fork.
 7. On the github page for your fork, click **New Pull Request** above the file list.
 8. Change the **head repository** dropdown to your fork.
