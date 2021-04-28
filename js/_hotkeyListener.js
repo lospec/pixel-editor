@@ -65,6 +65,10 @@ function KeyPress(e) {
 		    case 77: case 109:
 				tool.rectselect.switchTo()
 				break;
+		    // rectangle tool, u
+		    case 85:
+				tool.rectangle.switchTo()
+				break;
 			// Paste tool
 			case 86: case 118:
 				if (keyboardEvent.ctrlKey && !dragging) {
