@@ -23,6 +23,11 @@ app.get('/', (req, res) => {
     });
 });
 
+// Better to show landing page rather than 404 on editor page reload
+app.get('/pixel-editor/app', (req, res) => {
+    res.redirect('/');
+})
+
 //ROUTE - other files
 app.use(express.static(path.join(__dirname, BUILDDIR)));
 
