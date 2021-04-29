@@ -33,6 +33,7 @@
         <img src="/pixel-editor/zoom-in.png" />
         <img src = "/pixel-editor/eraser.png"/>
         <img src = "/pixel-editor/rectselect.png"/>
+        <!-- TODO: [ELLIPSE] Where is this icon used? Do we need similar one for ellipsis? -->
         <img src= "/pixel-editor/rectangle.png">
     </div>
 
@@ -119,10 +120,22 @@
         </li>
 
         <li class="expanded">
-            <button title="Rectangle Tool (U)" id="rectangle-button">{{svg "rectangle.svg" width="32" height="32" id = "empty-button-svg"}}
-            {{svg "fullrect.svg" width="32" height="32" id = "full-button-svg" display = "none"}}</button>
+            <button title="Rectangle Tool (U)" id="rectangle-button">{{svg "rectangle.svg" width="32" height="32" id = "rectangle-empty-button-svg"}}
+            {{svg "fullrect.svg" width="32" height="32" id = "rectangle-full-button-svg" display = "none"}}</button>
             <button title="Increase Rectangle Size" id="rectangle-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Decrease Rectangle Size" id="rectangle-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+        </li>
+
+        <!-- TODO: [ELLIPSE] Once ellipse is ready for release make it visible by default -->
+        <li class="expanded" id="tools-menu--ellipse" style="display: none">
+            <!-- TODO: [ELLIPSE] Decide on a shortcut to use. "S" was chosen without any in-team consultation. -->
+            <!-- TODO: [ELLIPSE] Decide on icons to use. Current ones are quickly prepared drafts and display with incorrect color. -->
+            <button title="Ellipse Tool (S)" id="ellipse-button">
+                {{svg "ellipse.svg" width="32" height="32" id = "ellipse-empty-button-svg"}}
+                {{svg "filledellipse.svg" width="32" height="32" id = "ellipse-full-button-svg" display = "none"}}
+            </button>
+            <button title="Increase Ellipse Size" id="ellipse-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+            <button title="Decrease Ellipse Size" id="ellipse-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
 
         <li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>

@@ -73,6 +73,7 @@
 //=include _rectSelect.js
 //=include _move.js
 //=include _rectangle.js
+//=include _ellipse.js
 
 /**onload**/
 //=include _onLoad.js
@@ -80,3 +81,6 @@
 
 /**libraries**/
 //=include _jscolor.js
+
+/**feature toggles**/
+//=include _featureToggles.js

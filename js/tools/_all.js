@@ -41,6 +41,10 @@ new Tool('rectangle', {
 	cursor: 'crosshair',
 	brushPreview: true,
 });
+new Tool('ellipse', {
+	cursor: 'crosshair',
+	brushPreview: true,
+});
 new Tool('resizerectangle', {
 	cursor: 'default',
 });

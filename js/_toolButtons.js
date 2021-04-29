@@ -35,17 +35,35 @@ on('click',"eraser-smaller-button", function(e){
 on('click','rectangle-button', function(e){
     // If the user clicks twice on the button, they change the draw mode
     if (currentTool.name == 'rectangle') {
-        if (drawMode == 'empty') {
-            drawMode = 'fill';
+        if (rectangleDrawMode == 'empty') {
+            rectangleDrawMode = 'fill';
             setRectToolSvg();
         }
         else {
-            drawMode = 'empty';
+            rectangleDrawMode = 'empty';
             setRectToolSvg();
         }
     }
     else {
         tool.rectangle.switchTo();
+    }
+}, false);
+
+// ellipse
+on('click','ellipse-button', function(e){
+    // If the user clicks twice on the button, they change the draw mode
+    if (currentTool.name == 'ellipse') {
+        if (ellipseDrawMode == 'empty') {
+            ellipseDrawMode = 'fill';
+            setEllipseToolSvg();
+        }
+        else {
+            ellipseDrawMode = 'empty';
+            setEllipseToolSvg();
+        }
+    }
+    else {
+        tool.ellipse.switchTo();
     }
 }, false);
 
@@ -58,6 +76,17 @@ on('click',"rectangle-bigger-button", function(){
 on('click',"rectangle-smaller-button", function(e){
     if(tool.rectangle.brushSize > 1)
     	tool.rectangle.brushSize--;
+}, false);
+
+// ellipse bigger
+on('click',"ellipse-bigger-button", function(){
+    tool.ellipse.brushSize++;
+}, false);
+
+// ellipse smaller
+on('click',"ellipse-smaller-button", function(e){
+    if(tool.ellipse.brushSize > 1)
+        tool.ellipse.brushSize--;
 }, false);
 
 //fill

@@ -1,10 +1,10 @@
 // Saving the empty rect svg
-var emptySVG = document.getElementById("empty-button-svg");
+var emptyRectangleSVG = document.getElementById("rectangle-empty-button-svg");
 // and the full rect svg so that I can change them when the user changes rect modes
-var fullSVG = document.getElementById("full-button-svg");
+var fullRectangleSVG = document.getElementById("rectangle-full-button-svg");
 
 // The start mode is empty rectangle
-var drawMode = 'empty';
+var rectangleDrawMode = 'empty';
 // I'm not drawing a rectangle at the beginning
 var isDrawingRect = false;
 
@@ -19,7 +19,7 @@ let endRectY;
  * @param {*} mouseEvent 
  */
 function startRectDrawing(mouseEvent) {
-    // Putting the vfx layer on top of everything
+	// Putting the vfx layer on top of everything
     VFXCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;;
     // Updating flag
     isDrawingRect = true;
@@ -88,7 +88,7 @@ function endRectDrawing(mouseEvent) {
 	line(startRectX, endRectY, startRectX, startRectY, tool.rectangle.brushSize);
 
 	// If I have to fill it, I do so
-	if (drawMode == 'fill') {
+	if (rectangleDrawMode == 'fill') {
 		currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
 	}
 
@@ -130,13 +130,13 @@ function drawRectangle(x, y) {
  * 
  */
 function setRectToolSvg() {
-    if (drawMode == 'empty') {
-        emptySVG.setAttribute('display', 'visible');
-        fullSVG.setAttribute('display', 'none');
+    if (rectangleDrawMode == 'empty') {
+        emptyRectangleSVG.setAttribute('display', 'visible');
+        fullRectangleSVG.setAttribute('display', 'none');
     }
     else {
-        emptySVG.setAttribute('display', 'none');
-        fullSVG.setAttribute('display', 'visible');
+        emptyRectangleSVG.setAttribute('display', 'none');
+        fullRectangleSVG.setAttribute('display', 'visible');
     }
 }
 
