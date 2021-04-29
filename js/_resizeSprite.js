@@ -118,7 +118,6 @@ function resizeSprite(event, ratio) {
 
     // event is null when the user is undoing
     if (event != null) {
-        console.log("AO SALVO LA CRONOLOGIA");
         // Copying the image data
         imageDatasCopy = rsImageDatas.slice();
         // Saving the history
