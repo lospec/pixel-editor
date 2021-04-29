@@ -1,8 +1,6 @@
 
 
 ajax('https://api.github.com/repos/lospec/pixel-editor/contributors', response => {
-	console.log(response)
-
 	if (Array.isArray(response)) {
 
 		var html = '';

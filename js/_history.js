@@ -42,6 +42,8 @@ function HistoryStateResizeSprite(xRatio, yRatio, algo, oldData) {
     };
 
     this.redo = function() {
+        console.log("REDOOOO");
+        console.log("Ratio: " + this.xRatio + "," + this.yRatio);
         currentAlgo = algo;
         resizeSprite(null, [this.xRatio, this.yRatio]);
         undoStates.push(this);
@@ -58,7 +60,6 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
 
     this.undo = function() {
         let dataIndex = 0;
-        console.log("breakpoint");
         // Resizing the canvas
         resizeCanvas(null, oldSize, null, false);
         // Putting the image datas
@@ -73,7 +74,6 @@ function HistoryStateResizeCanvas(newSize, oldSize, imageDatas, trim) {
     };
 
     this.redo = function() {
-        console.log("trim: " + this.trim);
         if (!this.trim) {
             resizeCanvas(null, newSize, null, false);
         }
@@ -115,7 +115,6 @@ function HistoryStateFlattenTwoVisibles(belowImageData, afterAbove, layerIndex, 
     this.belowImageData = belowImageData;
 
     this.undo = function() {
-        console.log(afterAbove.menuEntry);
         canvasView.append(aboveLayer.canvas);
         layerList.insertBefore(aboveLayer.menuEntry, afterAbove);
 
@@ -314,7 +313,6 @@ function HistoryStateAddLayer(layerData, index) {
     this.index = index;
 
     this.undo = function() {
-        console.log("uo");
 
         redoStates.push(this);
         if (layers.length - nAppLayers > this.index + 1) {

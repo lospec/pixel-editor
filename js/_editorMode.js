@@ -11,13 +11,11 @@ let infoBox = document.getElementById('editor-mode-info');
 let currentSplashButton = document.getElementById("sp-mode-palette").children[0].children[1];
 
 function splashMode(mouseEvent, mode) {
-    console.log("UE");
     if (currentSplashButton == undefined) {
         currentSplashButton = mouseEvent.target.parentElement;
     }
 
     if (mode !== pixelEditorMode) {
-        console.log("Mode target: " + mouseEvent.target);
         // Remove selected class to old button
         currentSplashButton.classList.remove("sp-interface-selected");
         // Add selected class to new button

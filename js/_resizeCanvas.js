@@ -114,7 +114,7 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
     }
 
     // Saving the history only if I'm not already undoing or redoing
-    if (saveHistory) {
+    if (saveHistory && event != null) {
         // Saving history
         new HistoryStateResizeCanvas(
             {x: parseInt(layers[0].canvasSize[0]) + rcBorders.left + rcBorders.right, 
@@ -194,9 +194,6 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
                 layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
             }
             else {
-                console.log("sgancio " + layers[i].canvasSize + ", [" + 
-                customData[copiedDataIndex].width + "," + customData[copiedDataIndex].height
-                 + "]");
                 layers[i].context.putImageData(customData[copiedDataIndex], 0, 0);
             }
             layers[i].updateLayerPreview();
