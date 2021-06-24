@@ -1547,24 +1547,23 @@ div#pb-options {
 	}
 }
 
-/********FEATURES LOG*************/
+/********SPLASH PAGE*************/
 #splash {
 	width:100% !important;
-	height:100% !important;
+	height:100%!important;
 
 	background-color: #232125 !important;
 	opacity: 1 !important;
-	overflow-y: scroll;
 
 	#splash-input {
 		width:74%;
-		height:100vh !important;
+		height:100% !important;
 		color:$baselink;
 
 		#splash-menu {
 			position:relative;
 			height:100%;
-			left:0; 
+			left:0;
 			top:0;
 		}
 
@@ -1610,15 +1609,43 @@ div#pb-options {
 			}
 		}
 	}
-
+	
 	#sp-quickstart-container {
+		height:100%;
 		width:75%;
 		float:right;
 		position:relative;
+		padding:40px;
+
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+
+	#sp-quickstart {
+		overflow-y:scroll;
+		height:100%;
+
+		// Fancy scrollbar
+		&::-webkit-scrollbar {
+			background: #232125;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-track {
+			margin-top: -0.125em;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #332f35;
+			border-radius: 0.25em;
+			border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+		}
+		&::-webkit-scrollbar-corner {
+			background: #232125;
+		}
 	}
 
 	#sp-quickstart-title {
-		padding:20px;
 		font-size:27px;
 		text-transform: uppercase;
 		font-weight: bold;
@@ -1670,6 +1697,11 @@ div#pb-options {
 		padding:20px;
 		position:relative;
 		background-color:$basecolor;
+		
+		#palette-button-splash {
+			left:5%;
+			width:90%;
+		}
 
 		.sp-np-entry {
 			width:100%;
@@ -1706,14 +1738,15 @@ div#pb-options {
 				position:relative;
 				display:inline-block;
 				padding: 0 0 0 0;
-				text-align:left;				
+				text-align:left;
+				width:90%;
 				
 				div {
 					border:none;
 					padding:none;
 					margin:none;
 					background-color:transparent;
-					width:100px;
+					width:50%;
 					float:left;
 					text-align: center;
 					height:25px;
@@ -1727,10 +1760,6 @@ div#pb-options {
 					}
 				}
 	
-				.bm-right {
-					border-left:3px solid $basetextweak;
-				}
-	
 				.sp-interface-selected {
 					background-color: $basetextweak;
 				}
@@ -1739,22 +1768,22 @@ div#pb-options {
 	}
 
 	#splash-news {
-		position:relative;
-		width:26%;
-		height:95%;
+		width:23%;
+		height:100%;
 		background-color: #232125 !important;
+		float: right;
 	}
 
 	#latest-update {
-		float: right;
-		width:23%;
+		width:100%;
 		font-size:15px;
 		height:90%;
-		overflow-y: scroll;
-		overflow-x: scroll;
 		line-height: 1.5;
 		position:relative;
 		top:20px;
+
+		overflow-y:scroll;
+		box-sizing: border-box;
 
 		img {
 			width:100%;
