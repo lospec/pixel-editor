@@ -1612,7 +1612,7 @@ div#pb-options {
 	
 	#sp-quickstart-container {
 		height:100%;
-		width:75%;
+		width:70%;
 		float:right;
 		position:relative;
 		padding:40px;
@@ -1656,11 +1656,10 @@ div#pb-options {
 		vertical-align: middle;
 		text-transform: uppercase;
 		position:relative;
-		width:100px;
-		height:100px;
+		width:15%;
 		border-radius:5%;
-		margin-right:30px;
-		margin-top:30px;
+		margin-right:5%;
+		margin-top:5%;
 		background-color:$basecolor;
 		float:left;
 
@@ -1684,6 +1683,11 @@ div#pb-options {
 			width:100%;
 			height:100%;
 			vertical-align: middle;
+
+			padding-bottom: 25%;
+			padding-top:25%;
+			float:left;
+			position:relative;
 		}
 	}
 
@@ -1692,7 +1696,7 @@ div#pb-options {
 		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 		box-sizing: border-box;         /* Opera/IE 8+ */
 		display: inline-block;
-		width:25%;
+		width: 30% !important;
 		height:65vh;
 		padding:20px;
 		position:relative;
@@ -1768,7 +1772,7 @@ div#pb-options {
 	}
 
 	#splash-news {
-		width:23%;
+		width:24%;
 		height:100%;
 		background-color: #232125 !important;
 		float: right;
