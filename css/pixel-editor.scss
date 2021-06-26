@@ -1611,22 +1611,38 @@ div#pb-options {
 	}
 	
 	#sp-quickstart-container {
-		height:100%;
 		width:70%;
+		max-height: 500px;
 		float:right;
-		position:relative;
 		padding:40px;
 
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 		box-sizing: border-box;         /* Opera/IE 8+ */
+
+		overflow-y: scroll;
+		&::-webkit-scrollbar {
+			background: #232125;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-track {
+			margin-top: -0.125em;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #332f35;
+			border-radius: 0.25em;
+			border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+		}
+		&::-webkit-scrollbar-corner {
+			background: #232125;
+		}
 	}
 
 	#sp-quickstart {
 		display:flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		overflow-y:scroll;
 		height:100%;
 
 		// Fancy scrollbar
@@ -1656,19 +1672,17 @@ div#pb-options {
 
 	.sp-template {
 		display: flex;
-  		align-items: center;
 		text-transform: uppercase;
-		position:relative;
 		width:16%;
 		border-radius:5%;
 		margin-right:4%;
 		margin-top:4%;
 		background-color:$basecolor;
-		float:left;
-
+		align-items: center;
 		font-size: 18px;
 		text-align:center;
 		font-weight: bold;
+		min-width: 100px;
 
 		&:hover {
 			cursor:pointer;
