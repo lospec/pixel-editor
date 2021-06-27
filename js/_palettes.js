@@ -1,93 +1,91 @@
 //populate palettes list in new pixel menu
-Object.keys(palettes).forEach(function(paletteName,index) {
+(() => {
+    const palettesMenu = document.getElementById('palette-menu');
+    const splashPalettes = document.getElementById('palette-menu-splash');
+    const noPaletteButton = document.getElementById('no-palette-button');
+    const newPixelElement = document.getElementById('new-pixel');
+    const paletteButton = document.getElementById('palette-button');
+    const paletteButtonSplash = document.getElementById('palette-button-splash');
+    const loadPaletteButton = document.getElementById('load-palette-button');
+    const loadPaletteButtonSplash = document.getElementById('load-palette-button-splash');
 
-    var palettesMenu = document.getElementById('palette-menu');
-    var splashPalettes = document.getElementById('palette-menu-splash');
+    Object.keys(palettes).forEach((paletteName,) => {
 
-    //create button
-    var button = document.createElement('button');
-    button.appendChild(document.createTextNode(paletteName));
+        const button = document.createElement('button');
+        button.appendChild(document.createTextNode(paletteName));
 
-    //if the palette was specified by the user, change the dropdown to it
-    if (palettes[paletteName].specified == true) {
-        setText('palette-button', paletteName);
-        setText('palette-button-splash', paletteName)
-        //Show empty palette option
-        document.getElementById('no-palette-button').style.display = 'block';
+        //if the palette was specified by the user, change the dropdown to it
+        if (palettes[paletteName].specified) {
+            Utility().setText('palette-button', paletteName);
+            Utility().setText('palette-button-splash', paletteName)
+            //Show empty palette option
+            noPaletteButton.style.display = 'block';
+        }
+
+        const buttonEvent = () => {
+            //hide the dropdown menu
+            Utility().deselect('palette-menu');
+            Utility().deselect('palette-button');
+            Utility().deselect('palette-menu-splash');
+            Utility().deselect('palette-button-splash');
+
+            //show empty palette option
+            noPaletteButton.style.display = 'block';
+
+            //set the text of the dropdown to the newly selected preset
+            Utility().setText('palette-button', paletteName);
+            Utility().setText('palette-button-splash', paletteName);
+        }
+
+        // Making a copy for the splash page too
+        const copyButton = button.cloneNode(true);
+        copyButton.addEventListener('click', buttonEvent);
+        button.addEventListener('click', buttonEvent);
+
+        // Appending it to the splash palette menu
+        splashPalettes.appendChild(copyButton);
+        palettesMenu.appendChild(button);
+    });
+
+
+    const loadPaletteButtonEvent = () => {
+        document.getElementById('load-palette-browse-holder').click();
     }
+    const clickPaletteButtonEvent = (e) => {
+        Utility().toggle('palette-button');
+        Utility().toggle('palette-menu');
 
-    var buttonEvent = function() {
+        Utility().deselect('preset-button');
+        Utility().deselect('preset-menu');
 
-        //hide the dropdown menu
-        deselect('palette-menu');
-        deselect('palette-button');
-        deselect('palette-menu-splash');
-        deselect('palette-button-splash');
+        // Splash version
+        Utility().toggle('palette-button-splash');
+        Utility().toggle('palette-menu-splash');
 
-        //show empty palette option
-        document.getElementById('no-palette-button').style.display = 'block';
+        e.stopPropagation();
+    }
+    // Load Palettes
+    loadPaletteButton.addEventListener('click', loadPaletteButtonEvent);
+    loadPaletteButtonSplash.addEventListener('click', loadPaletteButtonEvent);
 
-        //set the text of the dropdown to the newly selected preset
-        setText('palette-button', paletteName);
-        setText('palette-button-splash', paletteName);
-    };
+    // Palette menu click
+    paletteButtonSplash.addEventListener('click', clickPaletteButtonEvent);
+    paletteButton.addEventListener('click', clickPaletteButtonEvent);
 
-    on('click', button, buttonEvent);
+    noPaletteButton.addEventListener('click', () => {
+        noPaletteButton.style.display = 'none';
+        Utility().setText('palette-button', 'Choose a palette...');
+    })
 
-    //insert new element
-    palettesMenu.appendChild(button);
+    newPixelElement.addEventListener('click', () => {
+        Utility().deselect('editor-mode-menu');
+        Utility().deselect('preset-button');
+        Utility().deselect('preset-menu');
+        Utility().deselect('palette-button');
+        Utility().deselect('palette-menu');
 
-    // Making a copy for the splash page too
-    var copyButton = button.cloneNode(true);
-    // Attaching the same event
-    on('click', copyButton, buttonEvent);
-    // Appending it to the splash palette menu
-    splashPalettes.appendChild(copyButton);
-});
-
-var noPaletteButtonClickEvent = function () {
-    document.getElementById('no-palette-button').style.display = 'none';
-    setText('palette-button', 'Choose a palette...');
-}
-
-var loadPaletteButtonEvent = function () {
-    document.getElementById('load-palette-browse-holder').click();
-}
-
-var clickPaletteButtonEvent = function (e){
-    toggle('palette-button');
-    toggle('palette-menu');
-
-    deselect('preset-button');
-    deselect('preset-menu');
-
-    // Splash version
-    toggle('palette-button-splash');
-    toggle('palette-menu-splash');
-
-    e.stopPropagation();
-}
-
-//select no palette
-on('click', 'no-palette-button', noPaletteButtonClickEvent);
-
-//select load palette
-on('click', 'load-palette-button', loadPaletteButtonEvent);
-//select load palette
-on('click', 'load-palette-button-splash', loadPaletteButtonEvent);
-
-// Palette menu click
-on('click', 'palette-button', clickPaletteButtonEvent);
-on('click', 'palette-button-splash', clickPaletteButtonEvent);
-
-on('click', 'new-pixel', function (){
-    deselect('editor-mode-menu');
-    deselect('preset-button');
-    deselect('preset-menu');
-    deselect('palette-button');
-    deselect('palette-menu');
-
-    // Splash version
-    deselect('palette-button-splash');
-    deselect('palette-menu-splash');
-});
+        // Splash version
+        Utility().deselect('palette-button-splash');
+        Utility().deselect('palette-menu-splash');
+    })
+})();
