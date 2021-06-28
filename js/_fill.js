@@ -16,8 +16,9 @@ function fill(cursorLocation) {
         var r = tempImage.data[pixelPos];
         var g = tempImage.data[pixelPos + 1];
         var b = tempImage.data[pixelPos + 2];
+        var a = tempImage.data[pixelPos + 3];
         //console.log(r == color[0] && g == color[1] && b == color[2]);
-        return (r == color[0] && g == color[1] && b == color[2]);
+        return (r == color[0] && g == color[1] && b == color[2] && a == color[3]);
     }
 
     //save history state
@@ -36,7 +37,7 @@ function fill(cursorLocation) {
     var startingPosition = (topmostPixelsArray[0][1] * canvasSize[0] + topmostPixelsArray[0][0]) * 4;
 
     //the color of the cluster that is being filled
-    var clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2]];
+    var clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2], tempImage.data[startingPosition+3]];
 
     //the new color to fill with
     var fillColor = hexToRgb(currentLayer.context.fillStyle);
@@ -44,7 +45,8 @@ function fill(cursorLocation) {
     //if you try to fill with the same color that's already there, exit the function
     if (clusterColor[0] == fillColor.r &&
         clusterColor[1] == fillColor.g &&
-        clusterColor[2] == fillColor.b )
+        clusterColor[2] == fillColor.b &&
+        clusterColor[3] == fillColor.a)
         return;
 
     //loop until there are no more values left in this array
