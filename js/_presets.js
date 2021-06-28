@@ -1,56 +1,60 @@
-(() => {
+const presetsModule = (() => {
     const presets = {
-        'Gameboy Color': {
-            width: 240,
-            height: 203,
-            palette: 'Gameboy Color'
-        },
-        'PICO-8': {
-            width: 128,
-            height: 128,
-            palette: 'PICO-8'
-        },
-        'Commodore 64': {
-            width: 40,
-            height: 80,
-            palette: 'Commodore 64'
-        }
+        'Gameboy Color': {width: 240, height: 203, palette: 'Gameboy Color'},
+        'PICO-8': {width: 128, height: 128, palette: 'PICO-8'},
+        'Commodore 64': {width: 40, height: 80, palette: 'Commodore 64'}
     };
-    const presetsMenu = document.getElementById('preset-menu');
-    Object.keys(presets).forEach((presetName,) => {
 
-        const button = document.createElement('button');
-        button.appendChild(document.createTextNode(presetName));
+    function instrumentPresetMenu() {
+        console.info("Initializing presets..");
+        // Add a button for all the presets available
+        const presetsMenu = document.getElementById('preset-menu');
+        Object.keys(presets).forEach((presetName,) => {
 
-        presetsMenu.appendChild(button);
+            const button = document.createElement('button');
+            button.appendChild(document.createTextNode(presetName));
 
-        button.addEventListener('click', () => {
-            //change dimentions on new pixel form
-            Utility().setValue('size-width', presets[presetName].width);
-            Utility().setValue('size-height', presets[presetName].height);
+            presetsMenu.appendChild(button);
 
-            //set the text of the dropdown to the newly selected preset
-            Utility().setText('palette-button', presets[presetName].palette);
+            button.addEventListener('click', () => {
+                //change dimentions on new pixel form
+                Util.setValue('size-width', presets[presetName].width);
+                Util.setValue('size-height', presets[presetName].height);
 
-            //hide the dropdown menu
-            Utility().deselect('preset-menu');
-            Utility().deselect('preset-button');
+                //set the text of the dropdown to the newly selected preset
+                Util.setText('palette-button', presets[presetName].palette);
 
-            //set the text of the dropdown to the newly selected preset
-            Utility().setText('preset-button', presetName);
+                //hide the dropdown menu
+                Util.deselect('preset-menu');
+                Util.deselect('preset-button');
 
+                //set the text of the dropdown to the newly selected preset
+                Util.setText('preset-button', presetName);
+
+            });
         });
-    });
-    const presetButton = document.getElementById('preset-button');
-    presetButton.addEventListener('click', (e) => {
-        //open or close the preset menu
-        Utility().toggle('preset-button');
-        Utility().toggle('preset-menu');
 
-        //close the palette menu
-        Utility().deselect('palette-button');
-        Utility().deselect('palette-menu');
+        const presetButton = document.getElementById('preset-button');
+        presetButton.addEventListener('click', (e) => {
+            //open or close the preset menu
+            Util.toggle('preset-button');
+            Util.toggle('preset-menu');
 
-        e.stopPropagation();
-    });
+            //close the palette menu
+            Util.deselect('palette-button');
+            Util.deselect('palette-menu');
+
+            e.stopPropagation();
+        });
+    }
+
+    function propertiesOf(presetId) {
+        return presets[presetId];
+    }
+
+    return {
+        propertiesOf,
+        instrumentPresetMenu
+    };
+    
 })();

@@ -14,6 +14,7 @@
 //=include _pixelEditorUtility.js
 //=include sortable.js
 //=include _algorithms.js
+//=include Util.js
 
 /**init**/
 //=include _consts.js
@@ -82,3 +83,6 @@
 
 /**feature toggles**/
 //=include _featureToggles.js
+
+// Controls execution of this preset module
+presetsModule.instrumentPresetMenu();
