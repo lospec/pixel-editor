@@ -85,4 +85,4 @@
 //=include _featureToggles.js
 
 // Controls execution of this preset module
-presetsModule.instrumentPresetMenu();
+PresetModule.instrumentPresetMenu();
