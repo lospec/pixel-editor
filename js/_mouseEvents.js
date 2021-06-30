@@ -30,9 +30,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 				tool.pencil.switchTo();
 				canDraw = false;
 			}
-		}
-		
-		currentTool.updateCursor();
+		}		
 
 		if (!currentLayer.isLocked && !currentLayer.isVisible && canDraw) {
 			draw(mouseEvent);
@@ -420,6 +418,13 @@ function draw (mouseEvent) {
 			currentLayer.updateLayerPreview();
 		}
 	}
+
+	if (mouseEvent.target.className == 'drawingCanvas')
+		currentTool.updateCursor();
+	else
+		canvasView.style.cursor = 'default';
+
+	console.log("Cursor: " + canvasView.style.cursor);
 }
 
 //mousewheel scroll
