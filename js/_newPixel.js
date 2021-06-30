@@ -209,12 +209,12 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 function newFromTemplate(preset, x, y) {
 	if (preset != '') {
-		setText('palette-button-splash', presets[preset].palette);
-		setText('palette-button', presets[preset].palette);
+		const presetProperties = PresetModule.propertiesOf(preset);
+		Util.setText('palette-button-splash', presetProperties.palette);
+		Util.setText('palette-button', presetProperties.palette);
 
-		x = presets[preset].width;
-		y = presets[preset].height;
+		x = presetProperties.width;
+		y = presetProperties.height;
 	}
-
 	newPixel(x, y, pixelEditorMode == 'Advanced' ? 'Basic' : 'Advanced');
 }
