@@ -231,7 +231,6 @@ function draw (mouseEvent) {
 			//draw line to current pixel
 			if (dragging) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-					console.log("Mouse coords: " + (cursorLocation[0] / zoom) + "," + cursorLocation[1] / zoom);
 					line(Math.floor(lastMouseClickPos[0]/zoom),
 						 Math.floor(lastMouseClickPos[1]/zoom),
 						 Math.floor(cursorLocation[0]/zoom),

@@ -41,13 +41,17 @@ function fill(cursorLocation) {
 
     //the new color to fill with
     var fillColor = hexToRgb(currentLayer.context.fillStyle);
+    console.log("here");
 
     //if you try to fill with the same color that's already there, exit the function
     if (clusterColor[0] == fillColor.r &&
         clusterColor[1] == fillColor.g &&
         clusterColor[2] == fillColor.b &&
-        clusterColor[3] == fillColor.a)
-        return;
+        clusterColor[3] != 0) {
+            console.log("Returned");
+            return;
+        }
+        
 
     //loop until there are no more values left in this array
     while (topmostPixelsArray.length) {
