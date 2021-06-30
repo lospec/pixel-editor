@@ -101,8 +101,13 @@ class Tool {
 			toSub = 0.5;
 		}		
 
-		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
+		brushPreview.style.left = (Math.ceil(cursorLocation[0] / zoom) * zoom  // Stick to pixel grid
+		 + currentLayer.canvas.offsetLeft  // Account for canvas offset
+		 - this.currentBrushSize * zoom / 2 // Center the brush preview
+		 - zoom / 2 - toSub * zoom) + 'px'; // ???
 		brushPreview.style.top = (Math.ceil(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 - toSub * zoom) + 'px';
+
+		console.log("Brush coords: " + brushPreview.style.left + "," + brushPreview.style.top);
 	}
 }
 
