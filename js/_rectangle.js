@@ -40,7 +40,7 @@ function updateRectDrawing(mouseEvent) {
 	let pos = getCursorPosition(mouseEvent);
 
 	// Drawing the rect at the right position
-	drawRectangle(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
+	drawRectangle(Math.floor(pos[0] / zoom) + 0.5, Math.floor(pos[1] / zoom) + 0.5);
 }
 
 /** Finishes drawing the rect, decides the end coordinates and moves the preview rectangle to the
@@ -53,8 +53,8 @@ function endRectDrawing(mouseEvent) {
 	let currentPos = getCursorPosition(mouseEvent);
 	let vfxContext = VFXCanvas.getContext("2d");
 
-	endRectX = Math.round(currentPos[0] / zoom) + 0.5;
-	endRectY = Math.round(currentPos[1] / zoom) + 0.5;
+	endRectX = Math.floor(currentPos[0] / zoom) + 0.5;
+	endRectY = Math.floor(currentPos[1] / zoom) + 0.5;
 
 	// Inverting end and start (start must always be the top left corner)
 	if (endRectX < startRectX) {
