@@ -1611,6 +1611,7 @@ div#pb-options {
 	}
 	
 	#sp-quickstart-container {
+		height:100%;
 		max-height: 500px;
 		width:70%;
 		float:right;
@@ -1675,7 +1676,6 @@ div#pb-options {
   		align-items: center;
 		text-transform: uppercase;
 		width:16%;
-		min-width: 100px;
 		border-radius:5%;
 		margin-right:4%;
 		margin-top:4%;
