@@ -1,5 +1,5 @@
 new Tool('eraser', {
-	cursor: 'crosshair',
+	cursor: 'none',
 	brushPreview: true,
 });
 new Tool('resizeeraser', {
@@ -15,7 +15,7 @@ new Tool('fill', {
 });
 
 new Tool('line', {
-	cursor: 'crosshair',
+	cursor: 'none',
 	brushPreview: true,
 });
 new Tool('resizeline', {
@@ -30,7 +30,7 @@ new Tool('pan', {
 });
 
 new Tool('pencil', {
-	cursor: 'crosshair',
+	cursor: 'none',
 	brushPreview: true,
 });
 new Tool('resizebrush', {
@@ -38,11 +38,11 @@ new Tool('resizebrush', {
 });
 
 new Tool('rectangle', {
-	cursor: 'crosshair',
+	cursor: 'none',
 	brushPreview: true,
 });
 new Tool('ellipse', {
-	cursor: 'crosshair',
+	cursor: 'none',
 	brushPreview: true,
 });
 new Tool('resizerectangle', {
