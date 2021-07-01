@@ -13,7 +13,9 @@ var currentColor = firstCheckerBoardColor;
 // Saving number of squares filled until now
 var nSquaresFilled = 0;
 
-
+/** Fills the checkerboard canvas with squares with alternating colours
+ * 
+ */
 function fillCheckerboard() {
     // Getting checkerboard context
     var context = checkerBoard.context;

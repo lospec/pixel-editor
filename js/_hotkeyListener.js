@@ -1,5 +1,9 @@
 var spacePressed = false;
 
+/** Just listens to hotkeys and calls the linked functions
+ * 
+ * @param {*} e 
+ */
 function KeyPress(e) {
     var keyboardEvent = window.event? event : e;
 
@@ -46,6 +50,9 @@ function KeyPress(e) {
 			case 52: case 80:
 				tool.pan.switchTo();
 				break;
+			case 76:
+				tool.line.switchTo();
+				break;
 			//zoom - 5
 			case 53:
 			  tool.zoom.switchTo();
@@ -57,6 +64,15 @@ function KeyPress(e) {
 		    // Rectangular selection
 		    case 77: case 109:
 				tool.rectselect.switchTo()
+				break;
+			// TODO: [ELLIPSE] Decide on a shortcut to use. "s" was chosen without any in-team consultation.
+		    // ellipse tool, s
+		    case 83:
+				tool.ellipse.switchTo()
+				break;
+		    // rectangle tool, u
+		    case 85:
+				tool.rectangle.switchTo()
 				break;
 			// Paste tool
 			case 86: case 118:

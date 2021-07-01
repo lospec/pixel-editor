@@ -1,18 +1,27 @@
+/** Loads a file (.png or .lpe)
+ * 
+ */
 document.getElementById('open-image-browse-holder').addEventListener('change', function () {
     let fileName = document.getElementById("open-image-browse-holder").value;
+    // Getting the extension
     let extension = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName;
 
+    // I didn't write this check and I have no idea what it does
     if (this.files && this.files[0]) {
+        // Btw, checking if the extension is supported
         if (extension == 'png' || extension == 'gif' || extension == 'lpe') {
+            // If it's a Lospec Pixel Editor tm file, I load the project
             if (extension == 'lpe') {
                 let file = this.files[0];  
                 let reader = new FileReader();
 
+                // Getting all the data
                 reader.readAsText(file, "UTF-8");
+                // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
                 reader.onload = function (e) {
                     let dictionary = JSON.parse(e.target.result);
-
-                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary['editorMode'], dictionary);
+                    let mode = dictionary['editorMode'] == 'Advanced' ? 'Basic' : 'Advanced';
+                    newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], mode, dictionary);
                 }
             }
             else {

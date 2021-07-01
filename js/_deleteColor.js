@@ -9,19 +9,19 @@ function deleteColor (color) {
 
     //if color is a string, then find the corresponding button
     if (typeof color === 'string') {
-        console.log('trying to find ',color);
+        //console.log('trying to find ',color);
         //get all colors in palette
         colors = document.getElementsByClassName('color-button');
 
         //loop through colors
         for (var i = 0; i < colors.length; i++) {
-            console.log(color,'=',colors[i].jscolor.toString());
+            //console.log(color,'=',colors[i].jscolor.toString());
 
             if (color == colors[i].jscolor.toString()) {
-                console.log('match');
+                //console.log('match');
                 //set color to the color button
                 color = colors[i];
-                console.log('found color', color);
+                //console.log('found color', color);
 
                 //exit loop 
                 break;
@@ -30,7 +30,7 @@ function deleteColor (color) {
 
         //if the color wasn't found
         if (typeof color === 'string') {
-            console.log('color not found');
+            //console.log('color not found');
             //exit function
             return;
         }

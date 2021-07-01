@@ -7,18 +7,13 @@ for (var i = 1; i < mainMenuItems.length; i++) {
     var menuItem = mainMenuItems[i];
     var menuButton = menuItem.children[0];
 
-    console.log(mainMenuItems);
-
     //when you click a main menu items button
     on('click', menuButton, function (e, button) {
-        console.log('parent ', button.parentElement);
         select(button.parentElement);
     });
 
     var subMenu = menuItem.children[1];
     var subMenuItems = subMenu.children;
-
-
 
     //when you click an item within a menu button
     for (var j = 0; j < subMenuItems.length; j++) {

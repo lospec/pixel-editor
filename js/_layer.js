@@ -1,31 +1,29 @@
-/** TODO LIST FOR LAYERS
-
-    GENERAL REQUIREMENTS:
-    - Saving the state of an artwork to a .lospec file so that people can work on it later keeping
-      the layers they created? That'd be cool, even for the app users, that could just double click on a lospec
-      file for it to be opened right in the pixel editor
-
-    OPTIONAL:
-
-    1 - Fix issues
-*/
-
+// HTML element that contains the layer entries
 let layerList;
+// A single layer entry (used as a prototype to create the new ones)
 let layerListEntry;
-
+// NEXTPULL: remove the drag n drop system and use Sortable.js instead
 let layerDragSource = null;
 
+// Number of layers at the beginning
 let layerCount = 1;
+// Current max z index (so that I know which z-index to assign to new layers)
 let maxZIndex = 3;
 
+// When a layer is deleted, its id is added to this array and can be reused
 let unusedIDs = [];
+// Id for the next added layer
 let currentID = layerCount;
-let idToDelete;
+// Layer menu
 let layerOptions = document.getElementById("layer-properties-menu");
-
+// Is the user currently renaming a layer?
 let isRenamingLayer = false;
+// I need to save this, trust me
 let oldLayerName = null;
 
+let dragStartLayer;
+
+// Binding the add layer button to the function
 on('click',"add-layer-button", addLayer, false);
 
 /** Handler class for a single canvas (a single layer)
@@ -54,6 +52,7 @@ class Layer {
 
         this.id = "layer" + id;
 
+        // Binding the events
         if (menuEntry != null) {
             this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
             menuEntry.id = "layer" + id;
@@ -78,20 +77,13 @@ class Layer {
 
     // Initializes the canvas
     initialize() {
-        /*
-        var maxHorizontalZoom = Math.floor(window.innerWidth/this.canvasSize[0]*0.75);
-        var maxVerticalZoom = Math.floor(window.innerHeight/this.canvasSize[1]*0.75);
-
-        zoom = Math.min(maxHorizontalZoom,maxVerticalZoom);
-        if (zoom < 1) zoom = 1;
-        */
         //resize canvas
         this.canvas.width = this.canvasSize[0];
         this.canvas.height = this.canvasSize[1];
         this.canvas.style.width = (this.canvas.width*zoom)+'px';
         this.canvas.style.height = (this.canvas.height*zoom)+'px';
 
-        //unhide canvas
+        //show canvas
         this.canvas.style.display = 'block';
 
         //center canvas in window
@@ -103,7 +95,7 @@ class Layer {
     }
 
     hover() {
-        // Hide all the layers but the current one
+        // Hides all the layers but the current one
         for (let i=1; i<layers.length - nAppLayers; i++) {
             if (layers[i] !== this) {
                 layers[i].canvas.style.opacity = 0.3;
@@ -112,7 +104,7 @@ class Layer {
     }
 
     unhover() {
-        // Show all the layers again
+        // Shows all the layers again
         for (let i=1; i<layers.length - nAppLayers; i++) {
             if (layers[i] !== this) {
                 layers[i].canvas.style.opacity = 1;
@@ -125,52 +117,6 @@ class Layer {
         if (this.menuEntry != null) {
             this.menuEntry.id = id;
         }
-    }
-
-    layerDragStart(element) {
-        layerDragSource = this;
-        element.dataTransfer.effectAllowed = 'move';
-        element.dataTransfer.setData('text/html', this.id);
-
-        this.classList.add('dragElem');
-    }
-
-    layerDragOver(element) {
-        if (element.preventDefault) {
-            element.preventDefault(); // Necessary. Allows us to drop.
-        }
-        this.classList.add('layerdragover');
-
-        element.dataTransfer.dropEffect = 'move';
-
-        return false;
-    }
-
-    layerDragLeave(element) {
-        this.classList.remove('layerdragover');
-    }
-
-    layerDragDrop(element) {
-        if (element.stopPropagation) {
-            element.stopPropagation(); // Stops some browsers from redirecting.
-        }
-
-        // Don't do anything if dropping the same column we're dragging.
-        if (layerDragSource != this) {
-            let toDropID = element.dataTransfer.getData('text/html');
-            let thisID = this.id;
-
-            moveLayers(toDropID, thisID);
-        }
-
-        this.classList.remove('layerdragover');
-        dragging = false;
-
-        return false;
-    }
-
-    layerDragEnd(element) {
-        this.classList.remove('layerdragover');
     }
 
     // Resizes canvas
@@ -217,20 +163,20 @@ class Layer {
 
     openOptionsMenu(event) {
         if (event.which == 3) {
+            let selectedId;
             let target = event.target;
-            let offsets = getElementAbsolutePosition(this);
 
             while (target != null && target.classList != null && !target.classList.contains("layers-menu-entry")) {
                 target = target.parentElement;
             }
 
-            idToDelete = target.id;
+            selectedId = target.id;
 
             layerOptions.style.visibility = "visible";
             layerOptions.style.top = "0";
             layerOptions.style.marginTop = "" + (event.clientY - 25) + "px";
 
-            getLayerByID(idToDelete).selectLayer();
+            getLayerByID(selectedId).selectLayer();
         }
     }
 
@@ -265,10 +211,6 @@ class Layer {
             layer.menuEntry.classList.add("selected-layer");
             currentLayer = layer;
         }
-/*
-        canvas = currentLayer.canvas;
-        context = currentLayer.context;
-*/
     }
 
     toggleLock() {
@@ -442,7 +384,6 @@ function merge(saveHistory = true) {
         // Updating the layer preview
         currentLayer.updateLayerPreview();
     }
-
 }
 
 function deleteLayer(saveHistory = true) {
@@ -456,7 +397,7 @@ function deleteLayer(saveHistory = true) {
         unusedIDs.push(toDelete.id);
 
         // Selecting the next layer
-        if (layerIndex != (layers.length - 3)) {
+        if (layerIndex != (layers.length - 4)) {
             layers[layerIndex + 1].selectLayer();
         }
         // or the previous one if the next one doesn't exist
@@ -489,13 +430,13 @@ function duplicateLayer(event, saveHistory = true) {
     for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>=0; i--) {
         getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
     }
-    maxZIndex++;
+    maxZIndex+=2;
 
     // Creating a new canvas
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
     canvasView.append(newCanvas);
-    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 1;
+    newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 2;
     newCanvas.classList.add("drawingCanvas");
 
 	if (!layerListEntry) return console.warn('skipping adding layer because no document');
@@ -545,78 +486,6 @@ function renameLayer(event) {
     isRenamingLayer = true;
 }
 
-// Swaps two layer entries in the layer menu
-function moveLayers(toDropLayer, staticLayer, saveHistory = true) {
-    let toDrop = getLayerByID(toDropLayer);
-    let staticc = getLayerByID(staticLayer);
-    let layerCopy = layers.slice();
-
-    let beforeToDrop = toDrop.menuEntry.nextElementSibling;
-    let nMoved = 0;
-
-    layerCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
-
-    let toDropIndex = layerCopy.indexOf(toDrop);
-    let staticIndex = layerCopy.indexOf(staticc);
-
-    layerList.insertBefore(toDrop.menuEntry, staticc.menuEntry);
-
-    if (toDropIndex < staticIndex) {
-        let tmp = toDrop.canvas.style.zIndex;
-        let tmp2;
-
-        for (let i=toDropIndex+1; i<=staticIndex; i++) {
-            tmp2 = layerCopy[i].canvas.style.zIndex;
-
-            if (saveHistory) {
-                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
-            }
-
-            layerCopy[i].canvas.style.zIndex = tmp;
-            tmp = tmp2;
-            nMoved++;
-        }
-
-        if (saveHistory) {
-            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
-        }
-
-        toDrop.canvas.style.zIndex = tmp;
-
-        if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
-        }
-    }
-    else {
-        // BUG QUI
-        let tmp = toDrop.canvas.style.zIndex;
-        let tmp2;
-
-        for (let i=toDropIndex-1; i>staticIndex; i--) {
-            tmp2 = layerCopy[i].canvas.style.zIndex;
-
-            if (saveHistory) {
-                new HistoryStateMoveTwoLayers(layerCopy[i], tmp2, tmp);
-            }
-
-            layerCopy[i].canvas.style.zIndex = tmp;
-            tmp = tmp2;
-            nMoved++;
-        }
-
-        if (saveHistory) {
-            new HistoryStateMoveTwoLayers(toDrop, toDrop.canvas.style.zIndex, tmp);
-        }
-
-        toDrop.canvas.style.zIndex = tmp;
-
-        if (saveHistory) {
-            new HistoryStateMoveLayer(beforeToDrop, toDrop, staticc, nMoved);
-        }
-
-    }
-}
-
 function getMenuEntryIndex(list, entry) {
     for (let i=0; i<list.length; i++) {
         if (list[i] === entry) {
@@ -660,7 +529,7 @@ function addLayer(id, saveHistory = true) {
     let newCanvas = document.createElement("canvas");
     // Setting up the new canvas
     canvasView.append(newCanvas);
-    maxZIndex++;
+    maxZIndex+=2;
     newCanvas.style.zIndex = maxZIndex;
     newCanvas.classList.add("drawingCanvas");
 
@@ -696,4 +565,49 @@ function addLayer(id, saveHistory = true) {
     return newLayer;
 }
 
+/** Saves the layer that is being moved when the dragging starts
+ * 
+ * @param {*} event 
+ */
+function layerDragStart(event) {
+    dragStartLayer = getLayerByID(layerList.children[event.oldIndex].id);
+}
+
+/** Sets the z indexes of the layers when the user drops the layer in the menu
+ * 
+ * @param {*} event 
+ */
+function layerDragDrop(event) {
+    let oldIndex = event.oldDraggableIndex;
+    let newIndex = event.newDraggableIndex;
+
+    let movedZIndex = dragStartLayer.canvas.style.zIndex;
+
+    if (oldIndex > newIndex)
+    {
+        for (let i=newIndex; i<oldIndex; i++) {
+            getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex;
+        }
+    }
+    else
+    {
+        for (let i=newIndex; i>oldIndex; i--) {
+            getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex;
+        }
+    }
+
+    getLayerByID(layerList.children[oldIndex].id).canvas.style.zIndex = movedZIndex;
+
+    dragging = false;
+}
+
 layerList = document.getElementById("layers-menu");
+
+// Making the layers list sortable
+new Sortable(document.getElementById("layers-menu"), {
+    animation: 100,
+    filter: ".layer-button",
+    draggable: ".layers-menu-entry",
+    onStart: layerDragStart,
+    onEnd: layerDragDrop
+});

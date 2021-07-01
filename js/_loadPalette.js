@@ -1,8 +1,8 @@
 //this is called when a user picks a file after selecting "load palette" from the new pixel dialogue
 
+// TODO: load palette from .lpe file
 document.getElementById('load-palette-browse-holder').addEventListener('change', function () {
     if (this.files && this.files[0]) {
-
         //make sure file is allowed filetype
         var fileContentType = this.files[0].type;
         if (fileContentType == 'image/png' || fileContentType == 'image/gif') {
@@ -26,8 +26,6 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
                     var colorPalette = [];
                     var imagePixelData = loadPaletteContext.getImageData(0,0,this.width, this.height).data;
 
-                    console.log(imagePixelData);
-
                     //loop through pixels looking for colors to add to palette
                     for (var i = 0; i < imagePixelData.length; i += 4) {
                         var color = '#'+rgbToHex(imagePixelData[i],imagePixelData[i + 1],imagePixelData[i + 2]);
@@ -40,6 +38,8 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
                     palettes['Loaded palette'] = {};
                     palettes['Loaded palette'].colors = colorPalette;
                     setText('palette-button', 'Loaded palette');
+                    setText('palette-button-splash', 'Loaded palette');
+                    toggle('palette-menu-splash');
                 };
                 img.src = e.target.result;
             };

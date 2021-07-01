@@ -1,4 +1,4 @@
-//get cursor position relative to canvas
+//gets cursor position relative to canvas
 function getCursorPosition(e) {
     var x;
     var y;

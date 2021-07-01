@@ -22,7 +22,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		else if (mouseEvent.altKey)
 			currentTool = tool.eyedropper;
 		else if (mouseEvent.target.className == 'drawingCanvas' &&
-			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle'))
+			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name == 'ellipse' || currentTool.name === 'line'))
 		    new HistoryStateEditCanvas();
 		else if (currentTool.name == 'moveselection') {
 			if (!cursorInSelectedArea() && 
@@ -30,13 +30,14 @@ window.addEventListener("mousedown", function (mouseEvent) {
 				tool.pencil.switchTo();
 				canDraw = false;
 			}
-		}
-		
-		currentTool.updateCursor();
+		}		
 
 		if (!currentLayer.isLocked && !currentLayer.isVisible && canDraw) {
 			draw(mouseEvent);
 		}
+	}
+	else if (mouseEvent.which == 2) {
+		currentTool = tool.pan;
 	}
 	else if (currentTool.name == 'pencil' && mouseEvent.which == 3) {
 		currentTool = tool.resizebrush;
@@ -46,9 +47,14 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	    currentTool = tool.resizeeraser;
 	    tool.eraser.previousBrushSize = tool.eraser.brushSize;
     }
+	// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 	else if (currentTool.name == 'rectangle' && mouseEvent.which == 3) {
 		currentTool = tool.resizerectangle;
 		tool.rectangle.previousBrushSize = tool.rectangle.brushSize;
+	}
+	else if (currentTool.name == 'line' && mouseEvent.which == 3) {
+		currentTool = tool.resizeline;
+		tool.line.previousBrushSize = tool.line.brushSize;
 	}
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas')
@@ -68,6 +74,15 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	
 	if (currentLayer != null && !isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
 		currentLayer.closeOptionsMenu();	
+	}
+
+	// If the user finished placing down a line, clear the tmp canvas and copy the data to the current layer
+	if (currentTool.name === "line") {
+		const tmpCanvas = document.getElementById('tmp-canvas');
+		currentLayer.context.drawImage(tmpCanvas, 0, 0);
+
+		const tmpContext = tmpCanvas.getContext('2d');
+		tmpContext.clearRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 	}
 
 	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
@@ -134,7 +149,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
             mode = 'out';
         }
 
-        changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+        changeZoom(mode, getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
@@ -147,6 +162,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		endRectDrawing(mouseEvent);
 		currentLayer.updateLayerPreview();
 	}
+	else if (currentTool.name == 'ellipse' && isDrawingEllipse) {
+		endEllipseDrawing(mouseEvent);
+		currentLayer.updateLayerPreview();
+	}
 
 	dragging = false;
 	currentTool = currentToolTemp;
@@ -156,7 +175,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 }, false);
 
-// TODO: Make it snap to the pixel grid
 function setPreviewPosition(preview, size){
 	let toAdd = 0;
 
@@ -182,6 +200,8 @@ function setPreviewPosition(preview, size){
 
 //mouse is moving on canvas
 window.addEventListener("mousemove", draw, false);
+window.addEventListener("mousedown", draw, false);
+
 function draw (mouseEvent) {
 	if (!dialogueOpen)
 	{
@@ -209,7 +229,12 @@ function draw (mouseEvent) {
 			//draw line to current pixel
 			if (dragging) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
-					line(Math.floor(lastMouseClickPos[0]/zoom),Math.floor(lastMouseClickPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom), tool.pencil.brushSize);
+					line(Math.floor(lastMouseClickPos[0]/zoom),
+						 Math.floor(lastMouseClickPos[1]/zoom),
+						 Math.floor(cursorLocation[0]/zoom),
+						 Math.floor(cursorLocation[1]/zoom), 
+						 tool.pencil.brushSize
+					);
 					lastMouseClickPos = cursorLocation;
 				}
 			}
@@ -255,6 +280,21 @@ function draw (mouseEvent) {
 			}
 			else if (dragging){
 				updateRectDrawing(mouseEvent);
+			}
+		}
+		else if (currentTool.name == 'ellipse')
+		{
+			//hide brush preview outside of canvas / canvas view
+			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
+			brushPreview.style.visibility = 'visible';
+			else
+			brushPreview.style.visibility = 'hidden';
+
+			if (!isDrawingEllipse && dragging) {
+				startEllipseDrawing(mouseEvent);
+			}
+			else if (dragging){
+				updateEllipseDrawing(mouseEvent);
 			}
 		}
 		else if (currentTool.name == 'pan' && dragging) {
@@ -316,13 +356,31 @@ function draw (mouseEvent) {
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
 			//this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
 			var rectangleSizeChange = Math.round(distanceFromClick/10);
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			var newRectangleSize = tool.rectangle.previousBrushSize + rectangleSizeChange;
 
 			//set the brush to the new size as long as its bigger than 1
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			tool.rectangle.brushSize = Math.max(1,newRectangleSize);
 
 			//fix offset so the cursor stays centered
+			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
+			currentTool.updateCursor();
+		}
+		else if (currentTool.name == 'resizeline' && dragging) {
+			//get new brush size based on x distance from original clicking location
+			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
+			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
+			//this doesnt work in reverse...  because... it's not basing it off of the brush size which it should be
+			var lineSizeChange = Math.round(distanceFromClick/10);
+			var newLineSize = tool.line.previousBrushSize + lineSizeChange;
+
+			//set the brush to the new size as long as its bigger than 1
+			tool.line.brushSize = Math.max(1, newLineSize);
+
+			//fix offset so the cursor stays centered
+			tool.line.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
 		else if (currentTool.name == 'rectselect') {
@@ -346,7 +404,27 @@ function draw (mouseEvent) {
 				updateMovePreview(getCursorPosition(mouseEvent));
 			}
 		}
+		else if (currentTool.name === "line") {
+			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas') {
+				brushPreview.style.visibility = 'visible';
+			} else {
+				brushPreview.style.visibility = 'hidden';
+			}
+			if (dragging) {
+				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
+					diagLine(lastMouseClickPos, zoom, cursorLocation);
+				}
+			}
+			currentLayer.updateLayerPreview();
+		}
 	}
+
+	if (mouseEvent.target.className == 'drawingCanvas')
+		currentTool.updateCursor();
+	else
+		canvasView.style.cursor = 'default';
+
+	console.log("Cursor: " + canvasView.style.cursor);
 }
 
 //mousewheel scroll
@@ -360,7 +438,7 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 	}
 
 	// Changing zoom and position of the first layer
-	changeZoom(layers[0], mode, getCursorPosition(mouseEvent));
+	changeZoom(mode, getCursorPosition(mouseEvent));
 
 	for (let i=1; i<layers.length; i++) {
 		// Copying first layer's data into the other layers

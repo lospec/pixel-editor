@@ -1,5 +1,7 @@
+// NEXTPULL: to remove when the new palette system is added
 
-//format a color button
+
+//formats a color button
 function initColor (colorElement) {
     //console.log('initColor()');
     //console.log(document.getElementById('jscolor-hex-input'))

@@ -12,6 +12,9 @@
 //=include utilities/hslToRgb.js
 //=include libraries/cookies.js
 //=include _pixelEditorUtility.js
+//=include sortable.js
+//=include _algorithms.js
+//=include Util.js
 
 /**init**/
 //=include _consts.js
@@ -28,16 +31,16 @@
 //=include tools/*.js
 //=include _newPixel.js
 //=include _createColorPalette.js
-//=include _setCanvasOffset.js
 //=include _changeZoom.js
 //=include _addColor.js
 //=include _colorChanged.js
 //=include _initColor.js
 //=include _dialogue.js
-//=include _updateCursor.js
+//=include _featuresLog.js
 //=include _drawLine.js
 //=include _getCursorPosition.js
 //=include _fill.js
+//=include _line.js
 //=include _history.js
 //=include _deleteColor.js
 //=include _replaceAllOfColor.js
@@ -47,6 +50,10 @@
 //=include _copyPaste.js
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
+//=include _colorPicker.js
+//=include _paletteBlock.js
+//=include _splashPage.js
+//=include _logs.js
 
 /**load file**/
 //=include _loadImage.js
@@ -65,6 +72,7 @@
 //=include _rectSelect.js
 //=include _move.js
 //=include _rectangle.js
+//=include _ellipse.js
 
 /**onload**/
 //=include _onLoad.js
@@ -72,3 +80,9 @@
 
 /**libraries**/
 //=include _jscolor.js
+
+/**feature toggles**/
+//=include _featureToggles.js
+
+// Controls execution of this preset module
+PresetModule.instrumentPresetMenu();
