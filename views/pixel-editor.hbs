@@ -138,17 +138,17 @@
             <button title="Decrease Ellipse Size" id="ellipse-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
 
-        <li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>
-
-        <li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="32" height="32"}}</button></li>
-
-        <li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="32" height="32"}}</button></li>
-        
         <li class="expanded">
             <button title="Line Tool (L)" id="line-button">{{svg "line.svg" width="32" height="32"}}</button>
             <button title="Increase Line Size" id="line-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
             <button title="Decrease Line Size" id="line-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
         </li>
+
+        <li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>
+
+        <li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="32" height="32"}}</button></li>
+
+        <li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="32" height="32"}}</button></li>
 
         <li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
     </ul>
@@ -532,19 +532,38 @@
             </ul>
             <h2>Hotkeys</h2>
             <ul>
-                <li>Pencil: <span class="keyboard-key">B</span> or <span class="keyboard-key">1</span></li>
-                <li>Fill: <span class="keyboard-key">F</span> or <span class="keyboard-key">2</span></li>
-                <li>Eyedropper: <span class="keyboard-key">E</span> or <span class="keyboard-key">3</span></li>
-                <li>Pan: <span class="keyboard-key">P</span> or <span class="keyboard-key">M</span> or <span class="keyboard-key">4</span></li>
-                <li>Zoom: <span class="keyboard-key">Z</span> or <span class="keyboard-key">5</span></li>
-                <li>Undo: Ctrl + <span class="keyboard-key">Z</span></li>
-                <li>Redo: Ctrl + <span class="keyboard-key">Y</span> or Ctrl + Alt + <span class="keyboard-key">Z</span></li>
+                <li><strong>Pencil:</strong> <span class="keyboard-key">B</span> or <span class="keyboard-key">1</span></li>
+                <li><strong>Eraser:</strong> <span class="keyboard-key">R</span></li>
+                <li><strong>Rectangle:</strong> <span class="keyboard-key">U</span></li>
+                <li><strong>Line:</strong> <span class="keyboard-key">L</span></li>
+                <li><strong>Fill:</strong> <span class="keyboard-key">F</span> or <span class="keyboard-key">2</span></li>
+                <li><strong>Eyedropper:</strong> <span class="keyboard-key">E</span> or <span class="keyboard-key">3</span></li>
+                <li><strong>Pan:</strong> <span class="keyboard-key">P</span> or <span class="keyboard-key">M</span> or <span class="keyboard-key">4</span></li>
+                <li><strong>Zoom:</strong> <span class="keyboard-key">Z</span> or <span class="keyboard-key">5</span></li>
+                <li><strong>Undo:</strong> Ctrl + <span class="keyboard-key">Z</span></li>
+                <li><strong>Redo:</strong> Ctrl + <span class="keyboard-key">Y</span> or Ctrl + Alt + <span class="keyboard-key">Z</span></li>
+                <li><strong>Rectangular selection:</strong> <span class="keyboard-key">M</span></li>
             </ul>
             <h2>Mouse Shortcuts</h2>
             <ul>
-                <li>Alt + Click - Eyedropper</li>
-                <li>Space + Click - Pan</li>
-                <li>Alt + Scroll Wheel - Zoom</li>
+                <li><strong>Eyedropper: </strong>Alt + Click</li>
+                <li><strong>Pan: </strong>Space + Click</li>
+                <li><strong>Zoom: </strong>Alt + Scroll Wheel</li>
+            </ul>
+            <h2>Layers</h2>
+            <ul>
+                <li>{{svg "visible.svg" width="15" height="15" class = "default-icon"}}: show / hide layer</li>
+                <li>{{svg "lockedpadlock.svg" width="15" height="15" class = "default-icon"}}: lock / unlock layer, when a layer is locked it's not possible to draw on it</li>
+                <li>Right click on a layer to open the <strong>menu</strong>:
+                    <ul>
+                        <li><strong>Rename:</strong> change the name of the layer</li>
+                        <li><strong>Duplicate:</strong> duplicate the layer</li>
+                        <li><strong>Delete:</strong> delete the layer (doesn't work if there's only one layer)</li>
+                        <li><strong>Merge below:</strong> merges the selected the layer with the one below it</li>
+                        <li><strong>Flatten visible:</strong> merges all the visible layers</li>
+                        <li></strong>Flatten all:</strong> merges all the layers</li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <div id="about">
