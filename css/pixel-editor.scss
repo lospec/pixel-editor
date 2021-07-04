@@ -40,6 +40,33 @@ body {
 	/* Disable Android and iOS callouts*/
 }
 
+#help {
+	max-height: 500px;
+	overflow-y:scroll;
+
+	li {
+		margin-top:5px;
+	}
+
+	// Fancy scrollbar
+	&::-webkit-scrollbar {
+		background: #232125;
+		width: 0.5em;
+	}
+	&::-webkit-scrollbar-track {
+		margin-top: -0.125em;
+		width: 0.5em;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #332f35;
+		border-radius: 0.25em;
+		border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+	}
+	&::-webkit-scrollbar-corner {
+		background: #232125;
+	}
+}
+
 #layer-properties-menu {
 	visibility: hidden;
 	margin: 0;
