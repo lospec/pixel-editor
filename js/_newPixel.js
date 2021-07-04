@@ -12,7 +12,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	pixelEditorMode = editorMode;
 
 	// The palette is empty, at the beginning
-	currentPalette = [];
+	ColorModule.currentPalette.length = 0;
 
 	// If this is the first pixel I'm creating since the app has started
 	if (firstPixel) {
@@ -125,8 +125,8 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
 
 		//add colors to palette
-		addColor(defaultForegroundColor).classList.add('selected');
-		addColor(defaultBackgroundColor);
+		ColorModule.addColor(defaultForegroundColor).classList.add('selected');
+		ColorModule.addColor(defaultBackgroundColor);
 
 		//set current drawing color as foreground color
 		currentLayer.context.fillStyle = '#'+defaultForegroundColor;

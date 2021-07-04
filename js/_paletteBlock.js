@@ -309,25 +309,3 @@ function cssToHex(rgb) {
     }
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
-
-function pbAddToSimplePalette() {
-    let simplePalette = document.getElementById("colors-menu");
-    let childCount = simplePalette.childElementCount;
-
-    // Removing all the colours
-    for (let i=0; i<childCount-1; i++) {
-        simplePalette.removeChild(simplePalette.children[0]);
-    }
-
-    // Adding the new ones
-    for (let i=0; i<coloursList.childElementCount; i++) {
-        let col = coloursList.children[i].style.backgroundColor;
-		
-		if (col.includes("rgb")) {
-            addColor(cssToHex(col));
-        }
-		else  {
-            addColor(col);
-        }
-    }
-}
