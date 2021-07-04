@@ -162,10 +162,10 @@ const ColorModule = (() => {
             newColor = '#' + newColor;
         currentPalette.push(newColor);
         //create list item
-        var listItem = document.createElement('li');   
+        const listItem = document.createElement('li');   
     
         //create button
-        var button = document.createElement('button');
+        const button = document.createElement('button');
         button.classList.add('color-button');
         button.style.backgroundColor = newColor;
         button.addEventListener('mouseup', clickedColor);
@@ -179,13 +179,11 @@ const ColorModule = (() => {
         initColor(button);
     
         //add edit button
-        var editButtonTemplate = document.getElementsByClassName('color-edit-button')[0];
+        const editButtonTemplate = document.getElementsByClassName('color-edit-button')[0];
         newEditButton = editButtonTemplate.cloneNode(true);
         listItem.appendChild(newEditButton);
-    
-        //when you click the edit button
-        on('click', newEditButton, function (event, button) {
-    
+        
+        newEditButton.addEventListener('click', (e,button) => {
             //hide edit button
             button.parentElement.lastChild.classList.add('hidden');
     
@@ -195,7 +193,7 @@ const ColorModule = (() => {
             else
                 showDialogue("palette-block", false);
         });
-    
+
         return listItem;
     }
 
