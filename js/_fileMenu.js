@@ -147,7 +147,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
                     //Palette Menu
                 case 'Add color':
-                    addColor('#eeeeee');
+                    ColorModule.addColor('#eeeeee');
                     break;
                     // SELECTION MENU
                 case 'Paste':
@@ -207,8 +207,8 @@ function getProjectData() {
     // save editor mode
     dictionary['editorMode'] = pixelEditorMode;
     // save palette
-    for (let i=0; i<currentPalette.length; i++) {
-        dictionary["color" + i] = currentPalette[i];
+    for (let i=0; i<ColorModule.currentPalette.length; i++) {
+        dictionary["color" + i] = ColorModule.currentPalette[i];
     }
 
     // save number of layers

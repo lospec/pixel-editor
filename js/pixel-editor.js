@@ -32,9 +32,7 @@
 //=include _newPixel.js
 //=include _createColorPalette.js
 //=include _changeZoom.js
-//=include _addColor.js
-//=include _colorChanged.js
-//=include _initColor.js
+//=include ColorModule.js
 //=include _dialogue.js
 //=include _featuresLog.js
 //=include _drawLine.js
@@ -65,7 +63,6 @@
 
 /**buttons**/
 //=include _toolButtons.js
-//=include _addColorButton.js
 //=include _clickedColor.js
 //=include _fileMenu.js
 //=include _createButton.js

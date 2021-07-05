@@ -43,7 +43,7 @@ function closeDialogue () {
     dialogueOpen = false;
 
     if (currentOpenDialogue == "palette-block") {
-        pbAddToSimplePalette();
+        ColorModule.AddToSimplePalette();
     }
 }
 

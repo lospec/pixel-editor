@@ -20,7 +20,7 @@ function createColorPalette(paletteColors, deletePreviousPalette = true) {
     // Adding all the colours in the array
     for (var i = 0; i < paletteColors.length; i++) {
         var newColor = paletteColors[i];
-        var newColorElement = addColor(newColor);
+        var newColorElement = ColorModule.addColor(newColor);
 
         var newColorHex = hexToRgb(newColor);
 
