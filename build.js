@@ -2,11 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const include = require('gulp-include');
-const hb = require('gulp-hb');
+const handlebars = require('gulp-hb');
 const sass = require('gulp-sass');
 const rename = require('gulp-rename');
 
-const hb_svg = require('handlebars-helper-svg');
+//const hb_svg = require('handlebars-helper-svg');
 
 const BUILDDIR = process.argv[2] || './build/';
 
@@ -30,7 +30,6 @@ function copy_logs() {
 function render_js(){
     gulp.src('./js/*.js')
         .pipe(include({includePaths: [
-            '_ext/scripts',
             'js',
             '!js/_*.js',
         ]}))
@@ -41,16 +40,18 @@ function render_js(){
 
 function render_css(){
     gulp.src('css/*.scss')
-        .pipe(sass({includePaths: ['css', '_ext/sass', '_ext/modules/css']}))
+        .pipe(sass({includePaths: ['css']}))
         .pipe(gulp.dest(BUILDDIR));
 }
 
 function compile_page(){
     gulp.src(path.join('./views/index.hbs'))
-        .pipe(hb({encoding: 'utf8'})
-            .partials('./_ext/modules/_*.hbs')
-            .helpers({ svg: hb_svg })
-            .helpers('./_ext/modules/hbs/helpers/**/*.js')
+		.pipe(include({includePaths: ['/svg']}))
+
+        .pipe(handlebars({encoding: 'utf8', debug: true, bustCache: true})
+            .partials('./views/[!index]*.hbs')
+            //.helpers({ svg: hb_svg })
+            .helpers('./helpers/**/*.js')
             .data({
                 projectSlug: 'pixel-editor',
                 title: 'Lospec Pixel Editor',

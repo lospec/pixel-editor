@@ -103,7 +103,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 	// If the user selected a palette and isn't opening a file, I load the selected palette
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
-
+		console.log('HELO', selectedPalette, palettes[selectedPalette])
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor');
