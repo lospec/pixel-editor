@@ -46,13 +46,13 @@ function render_css(){
 }
 
 function compile_page(){
-    gulp.src(path.join('./views/', SLUG + '.hbs'))
+    gulp.src(path.join('./views/index.hbs'))
         .pipe(hb({encoding: 'utf8'})
             .partials('./_ext/modules/_*.hbs')
             .helpers({ svg: hb_svg })
             .helpers('./_ext/modules/hbs/helpers/**/*.js')
             .data({
-                projectSlug: SLUG,
+                projectSlug: 'pixel-editor',
                 title: 'Lospec Pixel Editor',
                 layout: false,
             }))
