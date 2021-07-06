@@ -1,0 +1,286 @@
+
+/********SPLASH PAGE*************/
+#splash {
+	width:100% !important;
+	height:100%!important;
+
+	background-color: #232125 !important;
+	opacity: 1 !important;
+
+	#splash-input {
+		width:74%;
+		height:100% !important;
+		color:$baselink;
+
+		#splash-menu {
+			position:relative;
+			height:100%;
+			left:0;
+			top:0;
+		}
+
+		#editor-logo {
+			font-weight:bold;
+			text-transform:uppercase;
+			font-size:20px;
+			height:35vh;
+			width:100%;
+			position:relative;
+
+			background-image:url('https://cdn.discordapp.com/attachments/506277390050131978/795660870221955082/final.png');
+			background-size:cover;
+			background-position:center;
+			background-repeat:no-repeat;
+		}
+
+		#black {
+			width:100%;
+			height:100%;
+			position:relative;
+			background-color:rgba(0,0,0,0.2);
+		}
+
+		#sp-coverdata {
+			padding:20px;
+			
+			p, a {
+				font-size:15px;
+				position:absolute;
+				text-transform:none;
+				right:20px;
+			}
+
+			p {
+				top:0px;
+			}
+
+			a {
+				font-size:17px;
+				bottom:20px;
+				text-decoration:underline;
+			}
+		}
+	}
+	
+	#sp-quickstart-container {
+		height:100%;
+		max-height: 500px;
+		width:70%;
+		float:right;
+		padding:40px;
+
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+
+		overflow-y: scroll;
+		&::-webkit-scrollbar {
+			background: #232125;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-track {
+			margin-top: -0.125em;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #332f35;
+			border-radius: 0.25em;
+			border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+		}
+		&::-webkit-scrollbar-corner {
+			background: #232125;
+		}
+	}
+
+	#sp-quickstart {
+		display:flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		height:100%;
+
+		// Fancy scrollbar
+		&::-webkit-scrollbar {
+			background: #232125;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-track {
+			margin-top: -0.125em;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #332f35;
+			border-radius: 0.25em;
+			border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+		}
+		&::-webkit-scrollbar-corner {
+			background: #232125;
+		}
+	}
+
+	#sp-quickstart-title {
+		font-size:27px;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+	.sp-template {
+		display: flex;
+  		align-items: center;
+		text-transform: uppercase;
+		width:16%;
+		border-radius:5%;
+		margin-right:4%;
+		margin-top:4%;
+		background-color:$basecolor;
+
+		font-size: 18px;
+		text-align:center;
+		font-weight: bold;
+
+		&:hover {
+			cursor:pointer;
+			background-color:$baseselected;
+		}
+
+		p {
+			span {
+				display:block;
+				font-size:14px !important;
+				margin: 0 0 0 0;
+				padding: 0 0 0 0;
+			}
+			width:100%;
+
+			float:left;
+			position:relative;
+		}
+	}
+
+	.sp-template:before {
+		content:'';
+		float:left;
+		padding-top:100%;
+	}
+
+	#sp-newpixel {
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+		display: inline-block;
+		width: 30% !important;
+		height:65vh;
+		padding:20px;
+		position:relative;
+		background-color:$basecolor;
+		
+		#palette-button-splash {
+			left:5%;
+			width:90%;
+		}
+
+		.sp-np-entry {
+			width:100%;
+			text-align:center;
+		}
+
+		input {
+			border:none;
+			background-color: #232125;
+			color:$basetext;
+			font-size:14px;
+			width:40px;
+			padding:7px;
+			text-align:center;
+		}
+
+		#create-button {
+			font-size:18px;
+			width:150px;
+			margin-top:40px;
+			font-weight: bold;
+		}
+
+		#sp-mode-palette {
+			text-align: center;
+			position: relative;
+			float:bottom;
+			font-size:16px;
+			font-weight: bold;
+	
+			div.button-menu {
+				border:2px solid $basetextweak;
+				border-radius:5px;
+				position:relative;
+				display:inline-block;
+				padding: 0 0 0 0;
+				text-align:left;
+				width:90%;
+				
+				div {
+					border:none;
+					padding:none;
+					margin:none;
+					background-color:transparent;
+					width:50%;
+					float:left;
+					text-align: center;
+					height:25px;
+					cursor:pointer;
+					z-index:1;
+
+					p {
+						z-index:0;
+						-ms-transform: translateY(-60%);
+						transform: translateY(-60%);
+					}
+				}
+	
+				.sp-interface-selected {
+					background-color: $basetextweak;
+				}
+			}
+		}
+	}
+
+	#splash-news {
+		box-sizing: border-box;
+		padding-left:20px;
+		width:26%;
+		height:100%;
+		background-color:#151516 !important;
+		float: right;
+	}
+
+	#latest-update {
+		width:100%;
+		font-size:15px;
+		height:90%;
+		line-height: 1.5;
+		position:relative;
+		top:20px;
+
+		overflow-y:scroll;
+		box-sizing: border-box;
+
+		img {
+			width:100%;
+		}
+
+		&::-webkit-scrollbar {
+			background: #232125;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-track {
+			margin-top: -0.125em;
+			width: 0.5em;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #332f35;
+			border-radius: 0.25em;
+			border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+		}
+		&::-webkit-scrollbar-corner {
+			background: #232125;
+		}
+	}
+}

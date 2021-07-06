@@ -1,0 +1,28 @@
+
+#new-pixel-warning {
+	display: none;
+	text-align: center;
+	margin: 20px 0 0;
+	font-style: italic;
+}
+
+.dimentions-x {
+	margin: -2px 7px;
+	path {
+		fill: $baseicon
+	}
+}
+
+
+#no-palette-button {
+	display: none;
+}
+
+
+#editor-mode-info {
+	font-style: italic;
+}
+
+#editor-mode {
+	display: none;
+}

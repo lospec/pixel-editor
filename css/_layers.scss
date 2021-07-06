@@ -1,0 +1,210 @@
+
+#layer-properties-menu {
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	right: 0;
+	width: 120px;
+	text-align: center;
+
+	margin-right: 200px;
+	/*border:1px solid $basetext;*/
+	list-style: none;
+	position: relative;
+	z-index: 1200;
+	list-style-type: none;
+
+	background-color: $basecolor;
+	position: fixed;
+	overflow: visible;
+
+	li button {
+		color: $basetext;
+		height: 100%;
+		padding: 10px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		width: 100%;
+	}
+
+	li button:hover {
+		background-color: $basehover;
+	}
+}
+
+.preview-canvas {
+	image-rendering: optimizeSpeed;
+	/* Legal fallback */
+	image-rendering: -moz-crisp-edges;
+	/* Firefox        */
+	image-rendering: -o-crisp-edges;
+	/* Opera          */
+	image-rendering: -webkit-optimize-contrast;
+	/* Safari         */
+	image-rendering: optimize-contrast;
+	/* CSS3 Proposed  */
+	image-rendering: crisp-edges;
+	/* CSS4 Proposed  */
+	image-rendering: pixelated;
+	/* CSS4 Proposed  */
+	-ms-interpolation-mode: nearest-neighbor;
+	/* IE8+           */
+}
+
+#layers-menu {
+	&::-webkit-scrollbar {
+		background: #232125;
+		width: 1em;
+	}
+	&::-webkit-scrollbar-track {
+		margin-top: -0.125em;
+		width: 1em;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #332f35;
+		border-radius: 0.25em;
+		border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+	}
+	&::-webkit-scrollbar-corner {
+		background: #232125;
+	}
+	scrollbar-color: #332f35 #232125;
+	scroll-behavior: smooth;
+	width:200px;
+	top: 48px;
+	bottom: 0;
+	right:0;
+	padding: 0;
+	margin: 0;
+	background-color: $basecolor;
+	box-sizing: border-box;
+	position: fixed;
+	z-index: 1120;
+	list-style-type: none;
+	overflow-y:scroll;
+	overflow-x:hidden;
+	#add-layer-button {
+		path {
+			fill: $baseicon;
+		}
+		svg {
+			position: relative;
+			margin-right: 10px;
+		}
+		position:relative;
+		justify-content: center;
+		display:flex;
+		align-items:center;
+		margin-top:2px;
+		font-size: 1.2em;
+		color: $basetext;
+		height: 100%;
+		width: 100%;
+		padding: 17px;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	#add-layer-button:hover {
+		color: $basehovertext;
+		background-color: $basehover;
+	}
+}
+
+.selected-layer {
+	ul.layer-buttons li.layer-button {
+		visibility: visible;
+		button svg path {
+			fill: $baseselectedicon;
+		}
+
+		&:hover button svg path {
+			fill: $baseselectediconhover;
+		}
+	}
+
+	color: $baseselectedtext;
+	background-color: $baseselected !important;
+}
+
+.layerdragover {
+	margin-top: 5px;
+	border-top: 3px solid $basehovertext;
+}
+
+.layers-menu-entry {
+	cursor: pointer;
+	margin-bottom: 2px;
+	font-size: 1em;
+	color: $basetext;
+	background-color: lighten($basecolor, 4%);
+	display: inline-block;
+	height: 50px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+
+	ul.layer-buttons {
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		position: relative;
+		height: 100%;
+		list-style: none;
+
+		path {
+			fill: $basehovericon;
+		}
+		li:hover {
+			path {
+				fill: $basehovericonhover;
+			}
+		}
+
+		.layer-button {
+			visibility: hidden;
+			height: 50%;
+		}
+	}
+
+	.lock-layer-button,
+	.hide-layer-button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		height: 100%;
+		position: relative;
+	}
+
+	canvas {
+		display: inline-block;
+		height: 50px;
+		width: 50px;
+		background-color: lightgrey;
+		left: 4px;
+	}
+
+	p {
+		right: 0;
+		display: inline-block;
+		padding-left: 10px;
+		height: 18px;
+		overflow: hidden;
+		position: relative;
+	}
+
+}
+
+.layers-menu-entry:hover {
+	ul.layer-buttons li {
+		visibility: visible !important;
+	}
+
+	color: $basehovertext;
+	background-color: $basehover;
+}

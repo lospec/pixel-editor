@@ -1,0 +1,116 @@
+
+#tools-menu {
+	left: 0;
+	width: 64px;
+	list-style-type: none;
+	top: 48px;
+	bottom: 0;
+	padding: 0;
+	margin: 0;
+	background-color: $basecolor;
+	box-sizing: border-box;
+	position: fixed;
+	z-index: 1120;
+}
+
+
+
+#tools-menu li {
+	position: relative;
+}
+
+
+
+#tools-menu li button:first-child {
+	text-align: center;
+	border: none;
+	background: none;
+	width: 100%;
+	padding: 0;
+	cursor: pointer;
+	height: 64px;
+}
+
+#tools-menu li button path {
+	fill: $baseicon;
+}
+
+#tools-menu li:hover button:first-child path {
+	fill: $basehovericon;
+}
+
+
+#tools-menu li.selected {
+	background: $baseselected !important;
+}
+
+#tools-menu li.selected button:first-child path {
+	fill: $baseselectedicon;
+}
+
+#tools-menu li.selected.expanded {
+	padding-bottom: 10px;
+}
+
+
+.tools-menu-sub-button {
+	text-align: center;
+	border: none;
+	background: none;
+	cursor: pointer;
+	width: 50%;
+	height: 22px;
+	display: none;
+	line-height: 0;
+	overflow: hidden;
+	position: absolute;
+	bottom: 0;
+
+	path {
+		fill: $baseselectedicon !important;
+	}
+	&:hover {
+		background: $baseselectedhover !important;
+		path {
+			fill: $baseselectediconhover !important;
+		}
+	}
+}
+
+#tools-menu li button#pencil-bigger-button,
+#tools-menu li button#zoom-in-button,
+#tools-menu li button#eraser-bigger-button,
+#tools-menu li button#rectangle-bigger-button,
+#tools-menu li button#ellipse-bigger-button,
+#tools-menu li button#line-bigger-button {
+	left: 0;
+}
+
+#tools-menu li button#pencil-smaller-button,
+#tools-menu li button#zoom-out-button,
+#tools-menu li button#eraser-smaller-button,
+#tools-menu li button#rectangle-smaller-button,
+#tools-menu li button#ellipse-smaller-button,
+#tools-menu li button#line-smaller-button {
+	right: 0;
+}
+
+#tools-menu li.selected button#pencil-bigger-button,
+#tools-menu li.selected button#pencil-smaller-button,
+#tools-menu li.selected button#zoom-in-button,
+#tools-menu li.selected button#zoom-out-button,
+#tools-menu li.selected button#eraser-bigger-button,
+#tools-menu li.selected button#eraser-smaller-button,
+#tools-menu li.selected button#rectangle-bigger-button,
+#tools-menu li.selected button#rectangle-smaller-button,
+#tools-menu li.selected button#ellipse-bigger-button,
+#tools-menu li.selected button#ellipse-smaller-button,
+#tools-menu li.selected button#line-bigger-button,
+#tools-menu li.selected button#line-smaller-button {
+	display: block;
+}
+
+
+#tools-menu li:hover {
+	background: $basehover;
+}
