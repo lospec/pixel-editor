@@ -4,3 +4,4 @@ routes
 build
 node_modules
 .idea
+.history
