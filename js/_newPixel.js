@@ -106,7 +106,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
-		  history.pushState(null, null, '/pixel-editor/app');
+		  history.pushState(null, null, '/pixel-editor');
 		
 		//fill the palette with specified colours
 		createColorPalette(palettes[selectedPalette].colors,true);
@@ -114,7 +114,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	// Otherwise, I just generate 2 semirandom colours
 	else if (fileContent == null) {
 		//this wasn't a specified palette, so reset the url
-		history.pushState(null, null, '/pixel-editor/app');
+		history.pushState(null, null, '/pixel-editor');
 
 		//generate default colors
 		var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
