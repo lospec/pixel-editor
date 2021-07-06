@@ -9,22 +9,22 @@ const rename = require('gulp-rename');
 const hb_svg = require('handlebars-helper-svg');
 
 const BUILDDIR = process.argv[2] || './build/';
-const SLUG = 'pixel-editor';
+
 
 console.log('Building Pixel Editor');
 
 
 function copy_images(){
     // Icons
-    gulp.src('./images/*.png').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    gulp.src('./images/*.png').pipe(gulp.dest(BUILDDIR));
     // Splash images
-    gulp.src('./images/Splash images/*.png').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    gulp.src('./images/Splash images/*.png').pipe(gulp.dest(BUILDDIR));
     // Logs images
-    gulp.src('./images/Logs/*.gif').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    gulp.src('./images/Logs/*.gif').pipe(gulp.dest(BUILDDIR));
 }
 
 function copy_logs() {
-    gulp.src('logs/*.html').pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+    gulp.src('logs/*.html').pipe(gulp.dest(BUILDDIR));
 }
 
 function render_js(){
@@ -35,14 +35,14 @@ function render_js(){
             '!js/_*.js',
         ]}))
         .on('error', console.log)
-        .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+        .pipe(gulp.dest(BUILDDIR));
 }
 
 
 function render_css(){
     gulp.src('css/*.scss')
         .pipe(sass({includePaths: ['css', '_ext/sass', '_ext/modules/css']}))
-        .pipe(gulp.dest(path.join(BUILDDIR, SLUG)));
+        .pipe(gulp.dest(BUILDDIR));
 }
 
 function compile_page(){
