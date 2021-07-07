@@ -30,6 +30,9 @@ function switchMode(mustConfirm = true) {
 		document.querySelector('#sp-quickstart-container .mode-switcher').classList.add('advanced-mode');
 
         pixelEditorMode = 'Advanced';
+
+		//turn pixel grid off
+		togglePixelGrid('off');
     }
     //switch to basic mode
     else {
@@ -64,6 +67,7 @@ function switchMode(mustConfirm = true) {
 		document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove('advanced-mode');
 
 		pixelEditorMode = 'Basic';
+		togglePixelGrid('on');
     }
 }
 
