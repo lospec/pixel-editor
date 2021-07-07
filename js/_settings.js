@@ -15,7 +15,7 @@ if(!settingsFromCookie) {
         enableEyedropperPreview: true, //unused - performance
         numberOfHistoryStates: 20,
         maxColorsOnImportedImage: 128,
-        pixelGridColour: '#0000FF'
+        pixelGridColour: '#000000'
     };
 }
 else{

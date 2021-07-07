@@ -1,5 +1,5 @@
 // Start colour of the pixel grid (can be changed in the preferences)
-let pixelGridColor = "#0000FF";
+let pixelGridColor = "#000000";
 // Distance between one line and another in HTML pixels
 let lineDistance = 12;
 // The grid is not visible at the beginning
