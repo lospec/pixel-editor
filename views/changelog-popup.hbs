@@ -1,0 +1,11 @@
+<div id="changelog">
+	<button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+
+	<h1>Changelog</h1>
+	{{#each changelog}}
+		<h2>Version {{@key}}</h2>
+		<ul>{{#each this}}
+			<li>{{change}} <span class="weak">- {{author}}</span></li>
+		{{/each}}</ul>
+	{{/each}}
+</div>

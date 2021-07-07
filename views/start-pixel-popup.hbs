@@ -1,0 +1,21 @@
+<!-- NEW PIXEL -->
+<div id="new-pixel" class="update">
+	<button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+	<h1>New Pixel</h1>
+
+	<!-- Preset-->
+	<h2>Preset</h2>
+	<button id="preset-button" class="dropdown-button">Choose a preset...</button>
+	<div id="preset-menu" class="dropdown-menu"></div>
+
+	<h2>Size</h2>
+	<input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+	<h2>Palette</h2>
+	<button id="palette-button" class="dropdown-button">Choose a palette...</button>
+	<div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>
+
+	<div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
+	<div>
+		<button id="create-button" class="default">Create</button>
+	</div>
+</div>

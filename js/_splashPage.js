@@ -18,6 +18,6 @@ let coverImage = document.getElementById('editor-logo');
 let authorLink = coverImage.getElementsByTagName('a')[0];
 let chosenImage = images[Math.round(Math.random() * (images.length - 1))];
 
-coverImage.style.backgroundImage = 'url("/pixel-editor/' + chosenImage.path + '.png")';
+coverImage.style.backgroundImage = 'url("' + chosenImage.path + '.png")';
 authorLink.setAttribute('href', chosenImage.link);
 authorLink.innerHTML = 'Art by ' + chosenImage.author;

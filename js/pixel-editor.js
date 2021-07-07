@@ -1,18 +1,18 @@
 /**utilities**/
-//=include utilities/on.js
-//=include utilities/onChildren.js
-//=include utilities/onClick.js
-//=include utilities/onClickChildren.js
-//=include utilities/select.js
-//=include utilities/getSetText.js
-//=include utilities/getSetValue.js
-//=include utilities/hexToRgb.js
-//=include utilities/rgbToHex.js
-//=include utilities/rgbToHsl.js
-//=include utilities/hslToRgb.js
-//=include libraries/cookies.js
+//=include util/on.js
+//=include util/onChildren.js
+//=include util/onClick.js
+//=include util/onClickChildren.js
+//=include util/select.js
+//=include util/getSetText.js
+//=include util/getSetValue.js
+//=include util/hexToRgb.js
+//=include util/rgbToHex.js
+//=include util/rgbToHsl.js
+//=include util/hslToRgb.js
+//=include lib/cookies.js
 //=include _pixelEditorUtility.js
-//=include sortable.js
+//=include lib/sortable.js
 //=include _algorithms.js
 //=include Util.js
 
@@ -34,7 +34,7 @@
 //=include _changeZoom.js
 //=include ColorModule.js
 //=include _dialogue.js
-//=include _featuresLog.js
+//!=include _featuresLog.js
 //=include _drawLine.js
 //=include _getCursorPosition.js
 //=include _fill.js
@@ -51,7 +51,6 @@
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include _splashPage.js
-//=include _logs.js
 
 /**load file**/
 //=include _loadImage.js

@@ -1,0 +1,315 @@
+
+
+
+/***********************COLOUR PICKER*****************************/
+#colour-picker {
+	background-color:$basecolor;
+	width:250px;
+	height:350px;
+	position:absolute;
+	display:inline-block;
+
+	input[type=text] {
+		background-color:$basetext;
+		color:$basecolor;
+		box-shadow:none;
+		border:none;
+	}
+
+	input[type=range] {
+		width: 100%;
+		margin: 2.2px 0;
+		background-color: transparent;
+		-webkit-appearance: none;
+	  }
+	  input[type=range]::-webkit-slider-runnable-track {
+		background: #484d4d;
+		border: 0;
+		width: 100%;
+		height: 25.6px;
+		cursor: pointer;
+	  }
+	  input[type=range]::-webkit-slider-thumb {
+		margin-top: -2.2px;
+		width: 18px;
+		height: 30px;
+		background: $basetext;
+		border: 0;
+		cursor: pointer;
+		-webkit-appearance: none;
+	  }
+	  input[type=range]::-moz-range-track {
+		background: #484d4d;
+		border: 0;
+		width: 100%;
+		height: 25.6px;
+		cursor: pointer;
+	  }
+	  input[type=range]::-moz-range-thumb {
+		width: 18px;
+		height: 30px;
+		background: $basetextweak;
+		border: 0;
+		cursor: pointer;
+	  }
+
+	  /*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
+	  how to remove the vertical space around the range input in IE*/
+	  @supports (-ms-ime-align:auto) {
+		/* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
+		input[type=range].slider {
+		  margin: 0;
+		  /*Edge starts the margin from the thumb, not the track as other browsers do*/
+		}
+	  }	  
+}
+
+#cp-modes {
+	margin: 0 0 0 0;
+	font-size:0;
+	height:40px;
+	float:left;
+	display:flex;
+	font-family: 'Roboto', sans-serif;
+	background-color:$basetextweak;
+	width:100%;
+	
+	button {
+		font-size:14px;
+		left:0;
+		right:0;
+		margin:0 0 0 0;
+		border: none;
+		border-radius: 0;
+		height:100%;
+		width:37x;
+		background-color:$basehover;
+		color:$basetext;
+		cursor:pointer;
+	}
+
+	button:hover {
+		background-color:$baseicon;
+		color:$basetext;
+	}
+
+	button.cp-selected-mode {
+		background-color:$baseicon;
+		color:$basetext;
+	}
+
+	input {
+		width:60px;
+	}
+
+	div {
+		background-color:yellow;
+		width:100%;
+		height:100%;
+		z-index:2;
+		position:relative;
+	}
+}
+
+#sliders-container {
+	padding:10px;
+}
+
+.cp-slider-entry {
+	width:100%;
+	height:30px;
+	display:flex;
+	align-items:center;
+	margin-top:2px;
+	position:relative;
+	
+	label {
+		width: 20px;
+		font-size:15px;
+		font-style: bold;
+	}
+
+	input[type=text] {
+		text-align:center;
+		width: 30px;
+		overflow:visible;
+		margin-left:4px;
+	}
+}
+
+.colour-picker-slider {
+	width:90%;
+}
+
+#cp-minipicker {
+	width:100%;
+	height:100px;
+	position:relative;
+	margin: 0 0 0 0;
+	z-index: inherit 2000;
+
+	input {
+		width:100%;
+		margin: none;
+		padding: none;
+	}
+
+	.cp-colours-previews {
+		width:100%;
+		position:relative;
+	}
+
+	.cp-colour-preview {
+		width:100%;
+		position:relative;
+		background-color:blue;
+		color:$basecolor;
+		float:left;
+		height:30px;
+		justify-content: center;
+		display:flex;
+		align-items: center;
+		font-size:12px;
+	}
+
+	#cp-colour-picking-modes {
+		width:100%;
+		position:relative;
+	}
+
+	button {
+		font-size:14px;
+		left:0;
+		right:0;
+		margin:0 0 0 0;
+		border: none;
+		border-radius: 0;
+		height:30px;
+		width:16.66666%;
+		float:left;
+		overflow:hidden;
+		background-color:$basehover;
+		color:$basetext;
+		cursor:pointer;
+	}
+
+	button:hover {
+		background-color:$baseicon;
+		color:$basetext;
+	}
+
+	button.cp-selected-mode {
+		background-color:$baseicon;
+		color:$basetext;
+	}
+}
+
+#cp-canvas-container {
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+#cp-spectrum {
+	width:100%;
+	height:100px;
+	position:absolute;
+	background-color: transparent;
+}
+
+.cp-picker-icon{
+	width:16px;
+	height:16px;
+	border-radius:100%;
+	position:absolute;
+	background-color:white;
+	z-index:2;
+	border:2px solid black;
+}
+
+
+/***************PALETTE BLOCK****************/
+div#palette-block {
+	z-index:1000;
+	position:relative;
+	resize: horizontal;
+	margin: 0 0 0 0;
+	width:600px;
+	height:400px;
+}
+
+div#palette-container {
+	display:inline-block;
+	background-color: #232125;
+	position:absolute;
+	scrollbar-color: #332f35 #232125;
+	scroll-behavior: smooth;
+	left:300px;
+	width:300px;
+	height:320px;
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		background: #232125;
+		width: 0.5em;
+	}
+	&::-webkit-scrollbar-track {
+		margin-top: -0.125em;
+		width: 0.5em;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #332f35;
+		border-radius: 0.25em;
+		border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+	}
+	&::-webkit-scrollbar-corner {
+		background: #232125;
+	}
+}
+
+ul#palette-list {
+	list-style:none;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	position:relative;
+	display:inline-block;
+	
+	li {
+		float:left;
+		width:50px;
+		height:50px;
+		border:none;
+
+		min-width:20px;
+		min-height:20px;
+		max-width:75px;
+		max-height:75px;
+	}
+}
+
+
+div#pb-options {
+	position:relative;
+	left:280px;
+	height:30px;
+	width:300px;
+	top:300px;
+
+	button {
+		border-radius:none;
+		position:relative;
+		float:left;
+		width:50%;
+		height:100%;
+		text-align:center;
+		cursor: pointer;
+		font-size:16px;
+		background-color:$baseicon;
+		border:none;
+	}
+
+	button:hover {
+		color: $basehovertext;
+		background-color: $basehover;
+	}
+}
