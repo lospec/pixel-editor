@@ -1,0 +1,15 @@
+.settings-entry {
+	display: flex;
+	align-items: baseline;
+	margin-top:10px;
+
+	label {
+		flex: 1;
+	}
+	input {
+		width: 90px !important;
+		display: block;
+		box-sizing: border-box;
+		float:right;
+	}
+}

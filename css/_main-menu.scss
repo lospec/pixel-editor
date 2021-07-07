@@ -1,0 +1,85 @@
+
+#main-menu {
+	height: 48px;
+	left: 0;
+	right: 0;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	background-color: $basecolor;
+	position: fixed;
+	z-index: 1110;
+	overflow: visible;
+	&>li {
+		float: left;
+		height: 100%;
+	}
+	li button,
+	li a {
+		color: $basetext;
+		height: 100%;
+		padding: 17px;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+	li.selected {
+		background-color: $basehover;
+		&>button {
+			color: $basehovertext;
+		}
+		ul {
+			display: block;
+		}
+	}
+	li ul {
+		display: none;
+		position: absolute;
+		top: 48px;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		background-color: $basehover;
+		box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+		padding-bottom: 2px;
+		li {
+			width: 100%;
+			button,
+			a {
+				width: 100%;
+				text-align: left;
+				padding: 8px 32px 8px 16px;
+				font-size: 1em;
+				&:hover {
+					background-color: $baseselected;
+					color: $baseselectedtext;
+				}
+			}
+			a {
+				display: block;
+				text-decoration: none;
+				box-sizing: border-box;
+			}
+		}
+	}
+	.disabled {
+		color: #6f6e70 !important;
+	}
+}
+
+
+
+/*app title*/
+
+.logo {
+	color: lighten($basecolor, 20%);
+	text-transform: uppercase;
+	font-weight: bold;
+	padding: 17px 10px 0;
+	cursor: default;
+	box-sizing: border-box;
+}
+
+#main-menu li.open, #main-menu li button:hover {
+	background: $basehover;
+}

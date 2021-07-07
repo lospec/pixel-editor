@@ -1,0 +1,71 @@
+<!-- Splash page -->
+<div id = "splash">
+	<div id="splash-news">
+			<div id="latest-update">
+			<h1>Latest updates</h1>
+
+			{{> latestLog}}
+		</div>
+	</div>
+
+	<div id="splash-input">
+		<div id="editor-logo">
+			<div id="black">
+				<div id="sp-coverdata">
+					<img src="https://lospec.com/brand/lospec_logo_3x.png"/> pixel editor
+					<p>Version 1.4.0</p>
+					<a href="https://cdn.discordapp.com/attachments/506277390050131978/795660870221955082/final.png">Art by Unsettled</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="splash-menu">
+			<div id="sp-newpixel">
+				<h1>New Custom Pixel</h1>
+
+				<h2>Size</h2>
+				<div class="sp-np-entry">
+					<input id="size-width-splash" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+				</div>
+				
+				<h2>Palette</h2>
+				<button id="palette-button-splash" class="dropdown-button">Choose a palette...</button>
+				<div id="palette-menu-splash" class="dropdown-menu"><button id="load-palette-button-splash">Load palette...</button></div>
+
+				<div id="new-pixel-warning">Creating a new pixel will discard your current one.</div>
+				<div class="sp-np-entry">
+					<button id="create-button-splash" class="default">Create</button>
+				</div>
+			</div>
+			
+			<div id = "sp-quickstart-container">
+				<div id="sp-quickstart-title">
+					Quickstart
+				</div>
+
+				<div id="sp-quickstart">
+					<div class="sp-template" onclick="document.getElementById('open-image-browse-holder').click()"><p>Load</p></div>
+					<div class="sp-template" onclick="newFromTemplate('Gameboy Color')"><p><span>New</span> Gameboy</p></div>
+					<div class="sp-template" onclick="newFromTemplate('Commodore 64')"><p><span>New</span> C64</p></div>
+					<div class="sp-template" onclick="newFromTemplate('PICO-8')"><p><span>New</span> Pico8</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',16,16)"><p><span>New</span> 16x16</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',32,32)"><p><span>New</span> 32x32</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',64,64)"><p><span>New</span> 64x64</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',128,128)"><p><span>New</span> 128x128</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',256,256)"><p><span>New</span> 256x256</p></div>
+					<div class="sp-template" onclick="newFromTemplate('',512,512)"><p><span>New</span> 512x512</p></div>
+				</div>
+
+				<div class="mode-switcher">
+					<span class="basic">You are using Basic Mode.</span> 
+					<span class="advanced">You are using Advanced Mode.</span> 
+					<a id="switch-editor-mode-splash" href="#">
+						<span class="basic">Switch to Advanced Mode.</span> 
+						<span class="advanced">Switch to using Basic Mode.</span> 
+						»
+						</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

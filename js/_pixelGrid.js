@@ -1,9 +1,9 @@
 // Start colour of the pixel grid (can be changed in the preferences)
-let pixelGridColor = "#0000FF";
+let pixelGridColor = "#000000";
 // Distance between one line and another in HTML pixels
 let lineDistance = 12;
-// The grid is not visible at the beginning
-let pixelGridVisible = false;
+// The grid is visible by default
+let pixelGridVisible = true;
 // Saving the canvas containing the pixel grid
 pixelGridCanvas = document.getElementById("pixel-grid");
 
@@ -11,12 +11,15 @@ pixelGridCanvas = document.getElementById("pixel-grid");
  *  (triggered by the show pixel grid button in the top menu)
  * 
  */
-function togglePixelGrid(event) {
+function togglePixelGrid(newState) {
+	console.log('toggling pixel grid', newState)
     // Getting the button because I have to change its text
     let button = document.getElementById("toggle-pixelgrid-button");
 
-    // Toggling the state
-    pixelGridVisible = !pixelGridVisible;
+    //Set the state based on the passed newState variable, otherwise just toggle it
+	if (newState == 'on') pixelGridVisible = true;
+	else if (newState == 'off') pixelGridVisible = false;
+	else pixelGridVisible = !pixelGridVisible;
 
     // If it was visible, I hide it
     if (pixelGridVisible) {

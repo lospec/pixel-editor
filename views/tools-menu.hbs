@@ -1,0 +1,46 @@
+<ul id="tools-menu">
+	<li class="selected expanded">
+		<button title="Pencil Tool (B)" id="pencil-button">{{svg "pencil.svg" width="32" height="32"}}</button>
+		<button title="Increase Brush Size" id="pencil-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+		<button title="Decrease Brush Size" id="pencil-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+	</li>
+
+	<li class = "expanded">
+		<button title="Eraser tool (R)" id="eraser-button">{{svg "eraser.svg" width="32" height="32"}}</button>
+		<button title="Increase Eraser Size" id="eraser-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+		<button title="Decrease Eraser Size" id="eraser-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+	</li>
+
+	<li class="expanded">
+		<button title="Rectangle Tool (U)" id="rectangle-button">{{svg "rectangle.svg" width="32" height="32" id = "rectangle-empty-button-svg"}}
+		{{svg "fullrect.svg" width="32" height="32" id = "rectangle-full-button-svg" display = "none"}}</button>
+		<button title="Increase Rectangle Size" id="rectangle-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+		<button title="Decrease Rectangle Size" id="rectangle-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+	</li>
+
+	<!-- TODO: [ELLIPSE] Once ellipse is ready for release make it visible by default -->
+	<li class="expanded" id="tools-menu--ellipse" style="display: none">
+		<!-- TODO: [ELLIPSE] Decide on a shortcut to use. "S" was chosen without any in-team consultation. -->
+		<!-- TODO: [ELLIPSE] Decide on icons to use. Current ones are quickly prepared drafts and display with incorrect color. -->
+		<button title="Ellipse Tool (S)" id="ellipse-button">
+			{{svg "ellipse.svg" width="32" height="32" id = "ellipse-empty-button-svg"}}
+			{{svg "filledellipse.svg" width="32" height="32" id = "ellipse-full-button-svg" display = "none"}}
+		</button>
+		<button title="Increase Ellipse Size" id="ellipse-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+		<button title="Decrease Ellipse Size" id="ellipse-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+	</li>
+
+	<li class="expanded">
+		<button title="Line Tool (L)" id="line-button">{{svg "line.svg" width="32" height="32"}}</button>
+		<button title="Increase Line Size" id="line-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+		<button title="Decrease Line Size" id="line-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+	</li>
+
+	<li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="32" height="32"}}</button></li>
+
+	<li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="32" height="32"}}</button></li>
+
+	<li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="32" height="32"}}</button></li>
+
+	<li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "32" height = "32"}}</button><li>
+</ul>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="/pixel-editor/pixel-editor.css" />
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+    {{{google-analytics}}}
+    {{{favicons}}}
+</head>
+
+<body oncontextmenu="return false;">
+	{{> compatibility-warning}}
+	{{> preload}}
+
+	{{> main-menu}}
+	{{> tools-menu}}
+	{{> colors-menu}}
+	{{> layers-menu}}
+
+	{{> tool-previews}}
+	{{> canvases}}
+	{{> holders}}
+   
+    <div id="pop-up-container">
+		{{> start-pixel-popup}}
+		{{> splash-page-popup}}
+		{{> sprite-resize-popup}}
+		{{> canvas-resize-popup}}
+		{{> palette-popup}}
+		{{> help-popup}}
+		{{> about-popup}}
+		{{> changelog-popup}}
+		{{> credits-popup}}
+		{{> settings-popup}}
+    </div>
+
+    <script src="/pixel-editor/pixel-editor.js"></script>
+    <script src="/reload/reload.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!-- LAYER MENU -->
+<ul id = "layers-menu">
+	<li class = "layers-menu-entry selected-layer">
+		<canvas class = "preview-canvas"></canvas>
+		<ul class="layer-buttons">
+			<li class = "layer-button">
+				<button title="Lock layer" class="lock-layer-button">
+					{{svg "unlockedpadlock.svg" width="15" height="15" class = "default-icon"}}
+					{{svg "lockedpadlock.svg" width="15" height="15" class = "edited-icon" display = "none"}}
+				</button>
+			</li>
+			<li class = "layer-button">
+				<button title="Show / hide layer" class="hide-layer-button">
+					{{svg "visible.svg" width="15" height="15" class = "default-icon"}}
+					{{svg "invisible.svg" width="15" height="15" class = "edited-icon" display = "none"}}
+				</button>
+			</li>
+		</ul>
+
+		<p>Layer 0<div class = "gradient"></div></p>
+	</li>
+
+	<li>
+		<button id = "add-layer-button">
+			{{svg "plus.svg" width="20" height="20"}} Add layer
+		</button>
+	</li>
+</ul>
+
+<ul id = "layer-properties-menu">
+	<li>
+		<button onclick = "renameLayer()">Rename</button>
+	</li>
+	<li>
+		<button onclick = "duplicateLayer()">Duplicate</button>
+	</li>
+	<li>
+		<button onclick = "deleteLayer()">Delete</button>
+	</li>
+	<li>
+		<button onclick = "merge()">Merge below</button>
+	</li>
+	<li> 
+		<button onclick = "flatten(true)">Flatten visible</button>
+	</li>
+	<li>
+		<button onclick = "flatten(false)">Flatten all</button>
+	</li>
+</ul>

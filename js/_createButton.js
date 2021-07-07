@@ -9,7 +9,7 @@ function create(isSplash) {
     var height = getValue('size-height' + splashPostfix);
 
     // If I'm creating from the splash screen, I use the splashMode variable
-    var mode = isSplash ? splashMode : getValue('editor-mode');
+    var mode = isSplash ? splashMode : pixelEditorMode;
 
     newPixel(width, height, mode);
     
@@ -29,9 +29,7 @@ function create(isSplash) {
     //reset new form
     setValue('size-width', 64);
     setValue('size-height', 64);
-    setValue("editor-mode", 'Advanced')
 
-    setText('editor-mode-button', 'Choose a mode...');
     setText('palette-button', 'Choose a palette...');
     setText('preset-button', 'Choose a preset...');
 }
@@ -43,10 +41,9 @@ on('click', 'create-button', function (){
     // Getting the values of the form
     var width = getValue('size-width');
     var height = getValue('size-height');
-    var mode = getValue("editor-mode");
 
     // Creating a new pixel with those properties
-    newPixel(width, height, mode);
+    newPixel(width, height);
     document.getElementById('new-pixel-warning').style.display = 'block';
 
     //get selected palette name
@@ -61,9 +58,7 @@ on('click', 'create-button', function (){
     //reset new form
     setValue('size-width', 64);
     setValue('size-height', 64);
-    setValue("editor-mode", 'Advanced')
 
-    setText('editor-mode-button', 'Choose a mode...');
     setText('palette-button', 'Choose a palette...');
     setText('preset-button', 'Choose a preset...');
 });
@@ -95,9 +90,7 @@ on('click', 'create-button-splash', function (){
     //reset new pixel form
     setValue('size-width-splash', 64);
     setValue('size-height-splash', 64);
-    setValue("editor-mode", 'Advanced')
 
-    setText('editor-mode-button', 'Choose a mode...');
     setText('palette-button', 'Choose a palette...');
     setText('preset-button', 'Choose a preset...');
 });
