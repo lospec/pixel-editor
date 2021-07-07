@@ -62,6 +62,10 @@
 				bottom:20px;
 				text-decoration:underline;
 			}
+
+			* {
+				filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
+			}
 		}
 	}
 	
@@ -273,7 +277,7 @@
 
 	#splash-news {
 		box-sizing: border-box;
-		padding-left:20px;
+		
 		width:26%;
 		height:100%;
 		background-color:#151516 !important;
@@ -287,6 +291,7 @@
 		line-height: 1.5;
 		position:relative;
 		top:20px;
+		padding: 0 1.5em;
 
 		overflow-y:scroll;
 		box-sizing: border-box;
