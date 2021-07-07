@@ -5,7 +5,7 @@ var dragging = false;
 var lastMouseClickPos = [0,0];
 var dialogueOpen = true;
 var documentCreated = false;
-var pixelEditorMode = "Advanced";
+var pixelEditorMode = "Basic";
 
 //common elements
 var brushPreview = document.getElementById("brush-preview");

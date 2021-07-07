@@ -8,29 +8,14 @@ let modes = {
 }
 
 let infoBox = document.getElementById('editor-mode-info');
-let currentSplashButton = document.getElementById("sp-mode-palette").children[0].children[1];
 
-function splashMode(mouseEvent, mode) {
-    if (currentSplashButton == undefined) {
-        currentSplashButton = mouseEvent.target.parentElement;
-    }
-
-    if (mode !== pixelEditorMode) {
-        // Remove selected class to old button
-        currentSplashButton.classList.remove("sp-interface-selected");
-        // Add selected class to new button
-        mouseEvent.target.parentElement.classList.add("sp-interface-selected");
-
-        // Setting the new mode
-        pixelEditorMode = mode;
-    }
-
-    // Setting the new selected button
-    currentSplashButton = mouseEvent.target.parentElement;
-}
+on('click', 'switch-editor-mode-splash', function (e) {
+	console.log('switching mode')
+    switchMode();
+});
 
 function switchMode(mustConfirm = true) {
-
+	console.log('switching mode', 'current:',pixelEditorMode)
 	//switch to advanced mode
     if (pixelEditorMode == 'Basic') {
         // Switch to advanced ez pez lemon squez
@@ -40,6 +25,9 @@ function switchMode(mustConfirm = true) {
 		document.getElementById('layer-button').style.display = 'inline-block';
 		// Hide the palette menu
         document.getElementById('colors-menu').style.right = '200px'
+
+		//change splash text
+		document.querySelector('#sp-quickstart-container .mode-switcher').classList.add('advanced-mode');
 
         pixelEditorMode = 'Advanced';
     }
@@ -70,6 +58,10 @@ function switchMode(mustConfirm = true) {
         document.getElementById('colors-menu').style.display = 'flex';
         // Move the palette menu
         document.getElementById('colors-menu').style.right = '0px';
+
+
+		//change splash text
+		document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove('advanced-mode');
 
 		pixelEditorMode = 'Basic';
     }

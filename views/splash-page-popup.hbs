@@ -22,14 +22,6 @@
 		<div class="splash-menu">
 			<div id="sp-newpixel">
 				<h1>New Custom Pixel</h1>
-				<!-- Editor mode-->
-				<h2>Editor mode</h2>
-				<div class="sp-np-entry" id="sp-mode-palette">
-					<div class="button-menu">
-						<div class="bm-left" onclick="splashMode(event,'Basic')"><p>Basic</p></div>
-						<div class="sp-interface-selected bm-right" onclick="splashMode(event,'Advanced')"><p>Advanced</p></div>
-					</div> 
-				</div>
 
 				<h2>Size</h2>
 				<div class="sp-np-entry">
@@ -62,6 +54,16 @@
 					<div class="sp-template" onclick="newFromTemplate('',128,128)"><p><span>New</span> 128x128</p></div>
 					<div class="sp-template" onclick="newFromTemplate('',256,256)"><p><span>New</span> 256x256</p></div>
 					<div class="sp-template" onclick="newFromTemplate('',512,512)"><p><span>New</span> 512x512</p></div>
+				</div>
+
+				<div class="mode-switcher">
+					<span class="basic">You are using Basic Mode.</span> 
+					<span class="advanced">You are using Advanced Mode.</span> 
+					<a id="switch-editor-mode-splash" href="#">
+						<span class="basic">Switch to Advanced Mode.</span> 
+						<span class="advanced">Switch to using Basic Mode.</span> 
+						»
+						</a>
 				</div>
 			</div>
 		</div>

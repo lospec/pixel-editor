@@ -18,6 +18,9 @@
 			left:0;
 			top:0;
 		}
+		.splash-menu {
+			display: flex;
+		}
 
 		#editor-logo {
 			font-weight:bold;
@@ -63,17 +66,19 @@
 	}
 	
 	#sp-quickstart-container {
-		height:100%;
-		max-height: 500px;
 		width:70%;
 		float:right;
 		padding:40px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 		box-sizing: border-box;         /* Opera/IE 8+ */
 
-		overflow-y: scroll;
+		overflow-y: auto;
+
 		&::-webkit-scrollbar {
 			background: #232125;
 			width: 0.5em;
@@ -90,13 +95,33 @@
 		&::-webkit-scrollbar-corner {
 			background: #232125;
 		}
+
+		.mode-switcher {
+			margin-top: 2em;
+			font-size: 1.2em;
+			color: $basetext;
+			a {
+				font-weight: bolder;
+				color: white;
+				margin-left: 0.5em;
+			}
+
+			//show the correct info when the .advanced class is added
+			.advanced {display: none};
+			&.advanced-mode {
+				.basic {display: none}
+				.advanced {display: inline}
+			}
+		}
 	}
 
 	#sp-quickstart {
 		display:flex;
-		flex-direction: row;
 		flex-wrap: wrap;
-		height:100%;
+		align-content: flex-start;
+		overflow-y: auto;
+		min-height: 0;
+		flex: 1 1 0;
 
 		// Fancy scrollbar
 		&::-webkit-scrollbar {
@@ -126,6 +151,9 @@
 	.sp-template {
 		display: flex;
   		align-items: center;
+		height: 5em;
+		min-width: 5em;
+		
 		text-transform: uppercase;
 		width:16%;
 		border-radius:5%;
@@ -156,11 +184,12 @@
 		}
 	}
 
+	/*
 	.sp-template:before {
 		content:'';
 		float:left;
 		padding-top:100%;
-	}
+	}*/
 
 	#sp-newpixel {
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
