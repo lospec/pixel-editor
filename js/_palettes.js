@@ -141,7 +141,6 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
     })
 
     newPixelElement.addEventListener('click', () => {
-        Util.deselect('editor-mode-menu');
         Util.deselect('preset-button');
         Util.deselect('preset-menu');
         Util.deselect('palette-button');

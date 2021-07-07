@@ -47,7 +47,7 @@ window.onload = function () {
 					//firstPixel = false;
 
 					//create new document
-					newPixel(width, height, getValue('editor-mode'));
+					newPixel(width, height);
 				}
 				
 				//dimentions were not specified -- show splash screen with palette preselected
