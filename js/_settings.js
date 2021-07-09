@@ -30,14 +30,14 @@ on('click', 'save-settings', saveSettings);
 
 function saveSettings() {
     //check if values are valid
-    if (isNaN(getValue('setting-numberOfHistoryStates'))) {
+    if (isNaN(Util.getValue('setting-numberOfHistoryStates'))) {
         alert('Invalid value for numberOfHistoryStates');
         return;
     }
 
     //save new settings to settings object
-    settings.numberOfHistoryStates = getValue('setting-numberOfHistoryStates');
-    settings.pixelGridColour = getValue('setting-pixelGridColour');
+    settings.numberOfHistoryStates = Util.getValue('setting-numberOfHistoryStates');
+    settings.pixelGridColour = Util.getValue('setting-pixelGridColour');
     // Filling pixel grid again if colour changed
     fillPixelGrid();
 

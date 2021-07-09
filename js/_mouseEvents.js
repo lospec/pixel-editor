@@ -423,8 +423,6 @@ function draw (mouseEvent) {
 		currentTool.updateCursor();
 	else
 		canvasView.style.cursor = 'default';
-
-	console.log("Cursor: " + canvasView.style.cursor);
 }
 
 //mousewheel scroll

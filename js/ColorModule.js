@@ -203,3 +203,5 @@ const ColorModule = (() => {
         AddToSimplePalette
     }
 })();
+
+console.log("Color module: " + ColorModule);

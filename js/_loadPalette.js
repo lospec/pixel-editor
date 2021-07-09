@@ -37,8 +37,8 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
                     //add to palettes so that it can be loaded when they click okay
                     palettes['Loaded palette'] = {};
                     palettes['Loaded palette'].colors = colorPalette;
-                    setText('palette-button', 'Loaded palette');
-                    setText('palette-button-splash', 'Loaded palette');
+                    Util.setText('palette-button', 'Loaded palette');
+                    Util.setText('palette-button-splash', 'Loaded palette');
                     toggle('palette-menu-splash');
                 };
                 img.src = e.target.result;

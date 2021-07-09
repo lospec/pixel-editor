@@ -97,9 +97,9 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	//add colors from selected palette
 	var selectedPalette;
 	if (!firstPixel)
-		var selectedPalette = getText('palette-button');
+		var selectedPalette = Util.getText('palette-button');
 	else
-		var selectedPalette = getText('palette-button-splash');
+		var selectedPalette = Util.getText('palette-button-splash');
 
 	// If the user selected a palette and isn't opening a file, I load the selected palette
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {

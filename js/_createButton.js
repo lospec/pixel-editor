@@ -5,8 +5,8 @@ function create(isSplash) {
         splashPostfix = '-splash';
     }
 
-    var width = getValue('size-width' + splashPostfix);
-    var height = getValue('size-height' + splashPostfix);
+    var width = Util.getValue('size-width' + splashPostfix);
+    var height = Util.getValue('size-height' + splashPostfix);
 
     // If I'm creating from the splash screen, I use the splashMode variable
     var mode = isSplash ? splashMode : pixelEditorMode;
@@ -18,7 +18,7 @@ function create(isSplash) {
         document.getElementById('new-pixel-warning').style.display = 'block';
 
     //get selected palette name
-    var selectedPalette = getText('palette-button' + splashPostfix);
+    var selectedPalette = Util.getText('palette-button' + splashPostfix);
     if (selectedPalette == 'Choose a palette...') 
         selectedPalette = 'none';
 
@@ -27,27 +27,31 @@ function create(isSplash) {
 
 
     //reset new form
-    setValue('size-width', 64);
-    setValue('size-height', 64);
+    Util.setValue('size-width', 64);
+    Util.setValue('size-height', 64);
 
-    setText('palette-button', 'Choose a palette...');
-    setText('preset-button', 'Choose a preset...');
+    Util.setText('palette-button', 'Choose a palette...');
+    Util.setText('preset-button', 'Choose a preset...');
 }
 
 /** Triggered when the "Create" button in the new pixel dialogue is pressed
  * 
  */
 on('click', 'create-button', function (){
+    console.log("Here");
     // Getting the values of the form
-    var width = getValue('size-width');
-    var height = getValue('size-height');
+    var width = Util.getValue('size-width');
+    var height = Util.getValue('size-height');
 
     // Creating a new pixel with those properties
-    newPixel(width, height);
+    if(pixelEditorMode == "Basic")
+        newPixel(width, height, "Advanced");
+    else
+        newPixel(width, height, "Basic");
     document.getElementById('new-pixel-warning').style.display = 'block';
 
     //get selected palette name
-    var selectedPalette = getText('palette-button');
+    var selectedPalette = Util.getText('palette-button');
     if (selectedPalette == 'Choose a palette...') 
         selectedPalette = 'none';
 
@@ -56,11 +60,11 @@ on('click', 'create-button', function (){
 
 
     //reset new form
-    setValue('size-width', 64);
-    setValue('size-height', 64);
+    Util.setValue('size-width', 64);
+    Util.setValue('size-height', 64);
 
-    setText('palette-button', 'Choose a palette...');
-    setText('preset-button', 'Choose a preset...');
+    Util.setText('palette-button', 'Choose a palette...');
+    Util.setText('preset-button', 'Choose a preset...');
 });
 
 /** Triggered when the "Create" button in the new pixel dialogue is pressed
@@ -68,8 +72,8 @@ on('click', 'create-button', function (){
  */
 on('click', 'create-button-splash', function (){
     // Getting the values of the form
-    var width = getValue('size-width-splash');
-    var height = getValue('size-height-splash');
+    var width = Util.getValue('size-width-splash');
+    var height = Util.getValue('size-height-splash');
     var mode = pixelEditorMode;
 
     if (mode == 'Advanced')
@@ -88,9 +92,9 @@ on('click', 'create-button-splash', function (){
     selectedPalette = 'none';
 
     //reset new pixel form
-    setValue('size-width-splash', 64);
-    setValue('size-height-splash', 64);
+    Util.setValue('size-width-splash', 64);
+    Util.setValue('size-height-splash', 64);
 
-    setText('palette-button', 'Choose a palette...');
-    setText('preset-button', 'Choose a preset...');
+    Util.setText('palette-button', 'Choose a palette...');
+    Util.setText('preset-button', 'Choose a preset...');
 });

@@ -31,7 +31,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     break;
                 case 'Save project':
                     //create name
-                    var selectedPalette = getText('palette-button');
+                    var selectedPalette = Util.getText('palette-button');
                     if (selectedPalette != 'Choose a palette...'){
                         var paletteAbbreviation = palettes[selectedPalette].abbreviation;
                         var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
@@ -69,7 +69,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                 case 'Export':
                     if (documentCreated) {
                         //create name
-                        var selectedPalette = getText('palette-button');
+                        var selectedPalette = Util.getText('palette-button');
                         if (selectedPalette != 'Choose a palette...'){
                             var paletteAbbreviation = palettes[selectedPalette].abbreviation;
                             var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
@@ -167,7 +167,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     //Help Menu
                 case 'Settings':
                     //fill form with current settings values
-                    setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
+                    Util.setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
 
                     showDialogue('settings');
                     break;

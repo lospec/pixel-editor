@@ -4,8 +4,6 @@
 //=include util/onClick.js
 //=include util/onClickChildren.js
 //=include util/select.js
-//=include util/getSetText.js
-//=include util/getSetValue.js
 //=include util/hexToRgb.js
 //=include util/rgbToHex.js
 //=include util/rgbToHsl.js
