@@ -243,8 +243,8 @@ function draw (mouseEvent) {
 			var selectedColor = currentLayer.context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
 			var colorLightness = Math.max(selectedColor[0],selectedColor[1],selectedColor[2])
 
-			//for the darkest 50% of colors, change the brush preview to dark mode
-			if (colorLightness>127) brushPreview.classList.remove('dark');
+			//for the darkest 75% of colors, change the brush preview to dark mode
+			if (colorLightness>64) brushPreview.classList.remove('dark');
 			else brushPreview.classList.add('dark');
 
 			currentLayer.updateLayerPreview();
