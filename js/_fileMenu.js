@@ -9,7 +9,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
     //when you click a main menu items button
     on('click', menuButton, function (e, button) {
-        select(button.parentElement);
+        Util.select(button.parentElement);
     });
 
     var subMenu = menuItem.children[1];
@@ -191,7 +191,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 function closeMenu () {
     //remove .selected class from all menu buttons
     for (var i = 0; i < mainMenuItems.length; i++) {
-        deselect(mainMenuItems[i]);
+        Util.deselect(mainMenuItems[i]);
     }
 }
 

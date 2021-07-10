@@ -25,8 +25,8 @@ const PresetModule = (() => {
                 Util.setText('palette-button', presets[presetName].palette);
 
                 //hide the dropdown menu
-                deselect('preset-menu');
-                deselect('preset-button');
+                Util.deselect('preset-menu');
+                Util.deselect('preset-button');
 
                 //set the text of the dropdown to the newly selected preset
                 Util.setText('preset-button', presetName);
@@ -41,8 +41,8 @@ const PresetModule = (() => {
             Util.toggle('preset-menu');
 
             //close the palette menu
-            deselect('palette-button');
-            deselect('palette-menu');
+            Util.deselect('palette-button');
+            Util.deselect('palette-menu');
 
             e.stopPropagation();
         });

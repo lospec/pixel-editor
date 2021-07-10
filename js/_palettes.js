@@ -84,10 +84,10 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
 
 			const buttonEvent = () => {
 				//hide the dropdown menu
-				deselect('palette-menu');
-				deselect('palette-button');
-				deselect('palette-menu-splash');
-				deselect('palette-button-splash');
+				Util.deselect('palette-menu');
+				Util.deselect('palette-button');
+				Util.deselect('palette-menu-splash');
+				Util.deselect('palette-button-splash');
 
 				//show empty palette option
 				noPaletteButton.style.display = 'block';
@@ -115,15 +115,15 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
         document.getElementById('load-palette-browse-holder').click();
     }
     const clickPaletteButtonEvent = (e) => {
-        toggle('palette-button');
-        toggle('palette-menu');
+        Util.toggle('palette-button');
+        Util.toggle('palette-menu');
 
-        deselect('preset-button');
-        deselect('preset-menu');
+        Util.deselect('preset-button');
+        Util.deselect('preset-menu');
 
         // Splash version
-        toggle('palette-button-splash');
-        toggle('palette-menu-splash');
+        Util.toggle('palette-button-splash');
+        Util.toggle('palette-menu-splash');
 
         e.stopPropagation();
     }
@@ -141,13 +141,13 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
     })
 
     newPixelElement.addEventListener('click', () => {
-        deselect('preset-button');
-        deselect('preset-menu');
-        deselect('palette-button');
-        deselect('palette-menu');
+        Util.deselect('preset-button');
+        Util.deselect('preset-menu');
+        Util.deselect('palette-button');
+        Util.deselect('palette-menu');
 
         // Splash version
-        deselect('palette-button-splash');
-        deselect('palette-menu-splash');
+        Util.deselect('palette-button-splash');
+        Util.deselect('palette-menu-splash');
     })
 })(); 
