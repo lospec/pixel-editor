@@ -419,10 +419,10 @@ function getCursorPosMinipicker(e) {
 // Moves the cursor 
 function updatePickerByHex(hex) {
     let hsv = new Color("hex", hex).hsv;
-    let xPos = miniPickerCanvas.width * hsv.h - 8;
-    let yPos = miniPickerCanvas.height * hsv.s + 8;
+    let xPos = miniPickerCanvas.width * hsv.h/360 - 8;
+    let yPos = miniPickerCanvas.height * hsv.s/100 + 8;
 
-    miniPickerSlider.value = hsv.v * 100;
+    miniPickerSlider.value = hsv.v;
 
     currPickerIconPos[0][0] = xPos;
     currPickerIconPos[0][1] = miniPickerCanvas.height - yPos;
@@ -445,14 +445,13 @@ function updatePickerByHex(hex) {
 // Fired when the value of the minislider changes: updates the spectrum gradient and the hex colour
 function miniSliderInput(event) {
     let currColor = new Color("hex", getMiniPickerColour());
-    let newHex = currColor.hex;
     let newHsv = currColor.hsv;
-    let rgb;
+    let newHex;
 
     // Adding slider value to value
-    newHsv.v = parseInt(event.target.value);
+    newHsv = new Color("hsv", newHsv.h, newHsv.s, parseInt(event.target.value));
     // Updating hex
-    newHex = Color.rgbToHex(Color.hsvToRgb(newHsv));
+    newHex = newHsv.hex;
 
     colourValue.value = newHex;
 
@@ -465,6 +464,7 @@ function updateMiniPickerColour() {
     let hex = getMiniPickerColour();
 
     activePickerIcon.style.backgroundColor = '#' + hex;
+    console.log("Mini picker col: #" + hex);
 
     // Update hex and sliders based on hex
     colourValue.value = '#' + hex;
@@ -482,7 +482,7 @@ function getMiniPickerColour() {
      pickedColour = miniPickerCanvas.getContext('2d').getImageData(currPickerIconPos[0][0] + 8, 
         currPickerIconPos[0][1] + 8, 1, 1).data;
 
-    return new Color("rgb", pickedColour[0], pickedColour[1], pickedColour[2]).hex;
+    return new Color("rgb", Math.round(pickedColour[0]), Math.round(pickedColour[1]), Math.round(pickedColour[2])).hex;
 }
 
 // Update the background gradient of the slider in the minipicker
@@ -501,7 +501,7 @@ function updateMiniSlider(hex) {
 function updateMiniPickerSpectrum() {
     let ctx = miniPickerCanvas.getContext('2d');
     let hsv = new Color("hex", colourValue.value).hsv;
-    let tmp;
+    console.log("Spectrum hex: " + new Color("hex", colourValue.value).hex);
     let white = new Color("hsv", hsv.h, 0, parseInt(miniPickerSlider.value)).rgb;
 
     ctx.clearRect(0, 0, miniPickerCanvas.width, miniPickerCanvas.height);
@@ -633,10 +633,10 @@ function updateOtherIcons() {
             newColourHexes[0] = newColourHsv.hex;
 
             // Second colour
-            newColourHsv.h = new Color("hsv", ((currentColourHsv.h + 320) % 360), currentColourHsv.s, currentColourHsv.v);
+            newColourHsv = new Color("hsv", ((currentColourHsv.h + 320) % 360), currentColourHsv.s, currentColourHsv.v);
 
             currPickerIconPos[2][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
-            currPickerIconPos[2][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
+            currPickerIconPos[2][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
         
             newColourHexes[1] = newColourHsv.hex;
             break;

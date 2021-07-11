@@ -48,25 +48,21 @@ class Color {
         } : null;
     }
     static rgbToHex(rgb) {
-        //convert a decimal number to 2-digit hex
-        let hex = "";
-        Object.values(rgb).forEach((color) => {
-            let colorToString = color.toString(16);
-            if (colorToString.length === 1) {
-                colorToString = "0" + colorToString;
-            }
-            hex += colorToString;
-        });
-        return hex;
+        function componentToHex (c) {
+            var hex = Math.round(c).toString(16);
+            return hex.length == 1 ? "0" + hex : hex.substring(0, 2);
+        }
+
+        return componentToHex(rgb.r) + componentToHex(rgb.g) + componentToHex(rgb.b);
     }
 
     static hslToRgb(hsl) {
         let r, g, b;
         let h = hsl.h, s = hsl.s, l = hsl.l;
 
-        h /= 255;
-        s /= 255;
-        l /= 255;        
+        h /= 360;
+        s /= 100;
+        l /= 100;        
 
         if(s == 0){
             r = g = b = l; // achromatic
@@ -116,7 +112,7 @@ class Color {
             hue /= 6;
         }
 
-        return {h:hue, s:saturation, l:luminosity};
+        return {h:hue*360, s:saturation*100, l:luminosity*100};
     }
 
     static hsvToRgb(hsv) {
