@@ -28,7 +28,8 @@ document.getElementById('load-palette-browse-holder').addEventListener('change',
 
                     //loop through pixels looking for colors to add to palette
                     for (var i = 0; i < imagePixelData.length; i += 4) {
-                        var color = '#'+rgbToHex(imagePixelData[i],imagePixelData[i + 1],imagePixelData[i + 2]);
+                        const newColor = {r:imagePixelData[i],g:imagePixelData[i + 1],b:imagePixelData[i + 2]};
+                        var color = '#' + Color.rgbToHex(newColor);
                         if (colorPalette.indexOf(color) == -1) {
                             colorPalette.push(color);
                         }

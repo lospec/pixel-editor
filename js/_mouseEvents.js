@@ -90,7 +90,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
 		var selectedColor = getEyedropperColor(cursorLocation);
-		var newColor = rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
+		const rgbColor = {r:selectedColor[0],g:selectedColor[1],b:selectedColor[2]};
+		var newColor = Color.rgbToHex(rgbColor);
 
 		currentGlobalColor = "#" + newColor;
 
@@ -306,15 +307,17 @@ function draw (mouseEvent) {
 			}
 		}
 		else if (currentTool.name == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
-			let selectedColor = getEyedropperColor(cursorLocation);
 
-			eyedropperPreview.style.borderColor = '#'+rgbToHex(selectedColor[0],selectedColor[1],selectedColor[2]);
+			const selectedColor = getEyedropperColor(cursorLocation);
+			const rgbColor = {r:selectedColor[0],g:selectedColor[1],b:selectedColor[2]};
+			
+			eyedropperPreview.style.borderColor = '#' + Color.rgbToHex(rgbColor);
 			eyedropperPreview.style.display = 'block';
 
 			eyedropperPreview.style.left = cursorLocation[0] + currentLayer.canvas.offsetLeft - 30 + 'px';
 			eyedropperPreview.style.top = cursorLocation[1] + currentLayer.canvas.offsetTop - 30 + 'px';
 
-			var colorLightness = Math.max(selectedColor[0],selectedColor[1],selectedColor[2]);
+			const colorLightness = Math.max(selectedColor[0],selectedColor[1],selectedColor[2]);
 
 			//for the darkest 50% of colors, change the eyedropper preview to dark mode
 			if (colorLightness>127) eyedropperPreview.classList.remove('dark');

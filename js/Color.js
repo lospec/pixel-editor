@@ -39,7 +39,7 @@ class Color {
         //if divisor isn't set, set it to one (so it has no effect)
         divisor = divisor || 1;
         //split given hex code into array of 3 values
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim());
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim());
 
         return result ? {
             r: parseInt(result[1], 16)/divisor,
@@ -49,17 +49,20 @@ class Color {
     }
     static rgbToHex(rgb) {
         //convert a decimal number to 2-digit hex
-        function componentToHex (c) {
-            var hex = c.toString(16);
-            return hex.length == 1 ? "0" + hex : hex;
-        }
-
-        return componentToHex(rgb.r) + componentToHex(rgb.g) + componentToHex(rgb.b);
+        let hex = "";
+        Object.values(rgb).forEach((color) => {
+            let colorToString = color.toString(16);
+            if (colorToString.length === 1) {
+                colorToString = "0" + colorToString;
+            }
+            hex += colorToString;
+        });
+        return hex;
     }
 
     static hslToRgb(hsl) {
-        var r, g, b;
-        var h = hsl.h, s = hsl.s, l = hsl.l;
+        let r, g, b;
+        let h = hsl.h, s = hsl.s, l = hsl.l;
 
         h /= 255;
         s /= 255;
@@ -68,7 +71,7 @@ class Color {
         if(s == 0){
             r = g = b = l; // achromatic
         }else{
-            var hue2rgb = function hue2rgb(p, q, t){
+            const hue2rgb = function hue2rgb(p, q, t){
                 if(t < 0) t += 1;
                 if(t > 1) t -= 1;
                 if(t < 1/6) return p + (q - p) * 6 * t;
@@ -77,8 +80,8 @@ class Color {
                 return p;
             }
 
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            var p = 2 * l - q;
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
 
             r = hue2rgb(p, q, h + 1/3);
             g = hue2rgb(p, q, h);
@@ -92,18 +95,18 @@ class Color {
         };
     }
     static rgbToHsl(rgb) {
-        var r, g, b;
+        let r, g, b;
         r = rgb.r; g = rgb.g; b = rgb.b;
 
         r /= 255, g /= 255, b /= 255;
         
-        var max = Math.max(r, g, b), min = Math.min(r, g, b);
-        var hue, saturation, luminosity = (max + min) / 2;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let hue, saturation, luminosity = (max + min) / 2;
 
         if(max == min){
             hue = saturation = 0; // achromatic
         }else{
-            var d = max - min;
+            const d = max - min;
             saturation = luminosity > 0.5 ? d / (2 - max - min) : d / (max + min);
             switch(max){
                 case r: hue = (g - b) / d + (g < b ? 6 : 0); break;
@@ -117,18 +120,18 @@ class Color {
     }
 
     static hsvToRgb(hsv) {
-        var r, g, b, h, s, v;
+        let r, g, b, h, s, v;
         h = hsv.h; s = hsv.s; v = hsv.v;
     
         h /= 360;
         s /= 100;
         v /= 100;
 
-        var i = Math.floor(h * 6);
-        var f = h * 6 - i;
-        var p = v * (1 - s);
-        var q = v * (1 - f * s);
-        var t = v * (1 - (1 - f) * s);
+        const i = Math.floor(h * 6);
+        const f = h * 6 - i;
+        const p = v * (1 - s);
+        const q = v * (1 - f * s);
+        const t = v * (1 - (1 - f) * s);
     
         switch (i % 6) {
             case 0: r = v, g = t, b = p; break;
