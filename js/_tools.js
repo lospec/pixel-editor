@@ -76,11 +76,6 @@ class Tool {
 			brushPreview.style.width = this.currentBrushSize * zoom + 'px';
 			brushPreview.style.height = this.currentBrushSize * zoom + 'px';
 		}
-	
-		//show / hide eyedropper color preview
-		if (this.eyedropperPreview) eyedropperPreview.style.display = 'block';
-		else eyedropperPreview.style.display = 'none';
-	
 		//moveSelection
 		if (currentTool.name == 'moveselection') {
 			if (cursorInSelectedArea()) {
