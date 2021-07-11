@@ -318,13 +318,10 @@ function flatten(onlyVisible) {
         let nToFlatten = 0;
 
         for (let i=0; i<layers.length; i++) {
-            console.log(layers[i].name);
             if (layers[i].menuEntry != null && layers[i].isVisible) {
                 visibleLayers.push(layers[i]);
             }
         }
-
-        console.log("da piallare: " + visibleLayers.length);
 
         // Sorting them by z-index
         visibleLayers.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? -1 : 1);

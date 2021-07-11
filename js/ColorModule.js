@@ -22,7 +22,7 @@ const ColorModule = (() => {
     // Changes all of one color to another after being changed from color picker
     function colorChanged(colorHexElement) {
         console.log("Clicked:");
-        console.log(colorHexElement);
+        console.log(colorHexElement.target);
         // Get old and new colors from the element
         const hexElement = colorHexElement.target;
         const hexElementValue = hexElement.value;
@@ -31,7 +31,7 @@ const ColorModule = (() => {
 
         //if the color is not a valid hex color, exit this function and do nothing
         const newColorHex = hexElementValue.toLowerCase();
-        if (/^[0-9a-f]{6}$/i.test(newColorHex) == false) return
+        if (/^[0-9a-f]{6}$/i.test(newColorHex) == false) return;
 
         currentPalette.splice(currentPalette.indexOf("#" + newColor), 1);
         newColor.a = 255;
@@ -180,13 +180,13 @@ const ColorModule = (() => {
         newEditButton = editButtonTemplate.cloneNode(true);
         listItem.appendChild(newEditButton);
         
-        newEditButton.addEventListener('click', () => {
+        newEditButton.addEventListener('click', (event) => {
             //hide edit button
-            newEditButton.parentElement.lastChild.classList.add('hidden');
+            event.target.parentElement.lastChild.classList.add('hidden');
     
             //show jscolor picker, if basic mode is enabled
             if (pixelEditorMode == 'Basic')
-                newEditButton.parentElement.firstChild.jscolor.show();
+                event.target.parentElement.firstChild.jscolor.show();
             else
                 showDialogue("palette-block", false);
         });
