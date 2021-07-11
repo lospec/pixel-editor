@@ -71,26 +71,12 @@ function updateSliderValue (sliderIndex, updateMini = true) {
     // Update preview colour
     // get slider values
     sliderValues = getSlidersValues();
-
     // Generate preview colour
-    switch (currentPickerMode) {
-        case 'rgb':
-            hexColour = rgbToHex(sliderValues[0], sliderValues[1], sliderValues[2]);
-            break;
-        case 'hsv':
-            let tmpRgb = hsvToRgb(sliderValues[0], sliderValues[1], sliderValues[2]);
-            hexColour = rgbToHex(parseInt(tmpRgb[0]), parseInt(tmpRgb[1]), parseInt(tmpRgb[2]));
-            break;
-        case 'hsl':
-            hexColour = hslToHex(sliderValues[0], sliderValues[1], sliderValues[2]);
-            break;
-        default:
-            console.log("wtf select a decent picker mode");
-            return;
-    }
+    hexColour = new Color(currentPickerMode, sliderValues[0], sliderValues[1], sliderValues[2]);
+
     // Update preview colour div
-    colourPreview.style.backgroundColor = '#' + hexColour;
-    colourValue.value = '#' + hexColour;
+    colourPreview.style.backgroundColor = '#' + hexColour.hex;
+    colourValue.value = '#' + hexColour.hex;
 
     // Update sliders background
     // there's no other way than creating a custom css file, appending it to the head and
@@ -270,6 +256,7 @@ function changePickerMode(target, newMode) {
     let colArray;
     let rgbTmp;
     let hexColour = colourValue.value.replace('#', '');
+    let currColor = new Color("hex", hexColour);
 
     currentPickerMode = newMode;
     document.getElementsByClassName("cp-selected-mode")[0].classList.remove("cp-selected-mode");
@@ -309,30 +296,16 @@ function changePickerMode(target, newMode) {
     // Putting the current colour in the new slider
     switch(currentPickerMode) {
         case 'rgb':
-            colArray = hexToRgb(hexColour);
+            colArray = currColor.rgb;
             colArray = [colArray.r, colArray.g, colArray.b];
             break;
         case 'hsv':
-            rgbTmp = hexToRgb(hexColour);
-            colArray = rgbToHsv(rgbTmp);
-
-            colArray.h *= 360;
-            colArray.s *= 100;
-            colArray.v *= 100;
-
+            colArray = currColor.hsv;
             colArray = [colArray.h, colArray.s, colArray.v];
-
             break;
         case 'hsl':
-            rgbTmp = hexToRgb(hexColour);
-            colArray = rgbToHsl(rgbTmp);
-
-            colArray.h *= 360;
-            colArray.s *= 100;
-            colArray.l *= 100;
-
+            colArray = currColor.hsl;
             colArray = [colArray.h, colArray.s, colArray.l];
-
             break;
         default:
             break;
@@ -385,14 +358,14 @@ function movePickerIcon(event) {
 
 // Updates the main sliders given a hex value computed with the minipicker
 function updateSlidersByHex(hex, updateMini = true) {
-    let colour;
+    let colour = new Color("hex", hex);
     let mySliders = [sliders[0].getElementsByTagName("input")[0], 
         sliders[1].getElementsByTagName("input")[0], 
         sliders[2].getElementsByTagName("input")[0]];
 
     switch (currentPickerMode) {
         case 'rgb':
-            colour = hexToRgb(hex);
+            colour = colour.rgb;
 
             mySliders[0].value = colour.r;
             mySliders[1].value = colour.g;
@@ -400,7 +373,7 @@ function updateSlidersByHex(hex, updateMini = true) {
 
             break;
         case 'hsv':
-            colour = rgbToHsv(hexToRgb(hex));
+            colour = colour.hsv;
 
             mySliders[0].value = colour.h * 360;
             mySliders[1].value = colour.s * 100;
@@ -408,7 +381,7 @@ function updateSlidersByHex(hex, updateMini = true) {
 
             break;
         case 'hsl':
-            colour = rgbToHsl(hexToRgb(hex));
+            colour = colour.hsl;
 
             mySliders[0].value = colour.h * 360;
             mySliders[1].value = colour.s * 100;
@@ -445,7 +418,7 @@ function getCursorPosMinipicker(e) {
 // Updates the minipicker given a hex computed by the main sliders
 // Moves the cursor 
 function updatePickerByHex(hex) {
-    let hsv = rgbToHsv(hexToRgb(hex));
+    let hsv = new Color("hex", hex).hsv;
     let xPos = miniPickerCanvas.width * hsv.h - 8;
     let yPos = miniPickerCanvas.height * hsv.s + 8;
 
@@ -471,15 +444,15 @@ function updatePickerByHex(hex) {
 
 // Fired when the value of the minislider changes: updates the spectrum gradient and the hex colour
 function miniSliderInput(event) {
-    let newHex;
-    let newHsv = rgbToHsv(hexToRgb(getMiniPickerColour()));
+    let currColor = new Color("hex", getMiniPickerColour());
+    let newHex = currColor.hex;
+    let newHsv = currColor.hsv;
     let rgb;
 
     // Adding slider value to value
     newHsv.v = parseInt(event.target.value);
     // Updating hex
-    rgb = hsvToRgb(newHsv.h * 360, newHsv.s * 100, newHsv.v);
-    newHex = rgbToHex(Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2]));
+    newHex = Color.rgbToHex(Color.hsvToRgb(newHsv));
 
     colourValue.value = newHex;
 
@@ -504,20 +477,17 @@ function updateMiniPickerColour() {
 
 // Returns the current colour of the minipicker
 function getMiniPickerColour() {
-    let hex;
     let pickedColour;
 
      pickedColour = miniPickerCanvas.getContext('2d').getImageData(currPickerIconPos[0][0] + 8, 
         currPickerIconPos[0][1] + 8, 1, 1).data;
 
-    hex = rgbToHex(pickedColour[0], pickedColour[1], pickedColour[2]);
-
-    return hex;
+    return new Color("rgb", pickedColour[0], pickedColour[1], pickedColour[2]).hex;
 }
 
 // Update the background gradient of the slider in the minipicker
 function updateMiniSlider(hex) {
-    let rgb = hexToRgb(hex);
+    let rgb = Color.hexToRgb(hex);
 
     styles[1] = "input[type=range]#cp-minipicker-slider::-webkit-slider-runnable-track { background: rgb(2,0,36);";
     styles[1] += "background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 0%, " +
@@ -530,11 +500,9 @@ function updateMiniSlider(hex) {
 // Updates the gradient of the spectrum canvas in the minipicker
 function updateMiniPickerSpectrum() {
     let ctx = miniPickerCanvas.getContext('2d');
-    let hsv = rgbToHsv(hexToRgb(colourValue.value));
+    let hsv = new Color("hex", colourValue.value).hsv;
     let tmp;
-    let white = {h:hsv.h * 360, s:0, v: parseInt(miniPickerSlider.value)};
-
-    white = hsvToRgb(white.h, white.s, white.v);
+    let white = new Color("hsv", hsv.h, 0, parseInt(miniPickerSlider.value)).rgb;
 
     ctx.clearRect(0, 0, miniPickerCanvas.width, miniPickerCanvas.height);
 
@@ -542,20 +510,16 @@ function updateMiniPickerSpectrum() {
     var hGrad = ctx.createLinearGradient(0, 0, miniPickerCanvas.width, 0);
 
     for (let i=0; i<7; i++) {
-        tmp = hsvToRgb(60 * i, 100, hsv.v * 100);
-        hGrad.addColorStop(i / 6, '#' + rgbToHex(Math.round(tmp[0]), Math.round(tmp[1]), Math.round(tmp[2])));
+        let stopHex = new Color("hsv", 60*i, 100, hsv.v);
+        hGrad.addColorStop(i / 6, '#' + stopHex.hex);
     }
     ctx.fillStyle = hGrad;
     ctx.fillRect(0, 0, miniPickerCanvas.width, miniPickerCanvas.height);
 
     // Drawing sat / lum
     var vGrad = ctx.createLinearGradient(0, 0, 0, miniPickerCanvas.height);
-    vGrad.addColorStop(0, 'rgba(' + white[0] +',' + white[1] + ',' + white[2] + ',0)');
-    /*
-    vGrad.addColorStop(0.1, 'rgba(255,255,255,0)');
-    vGrad.addColorStop(0.9, 'rgba(255,255,255,1)');
-    */
-    vGrad.addColorStop(1, 'rgba(' + white[0] +',' + white[1] + ',' + white[2] + ',1)');
+    vGrad.addColorStop(0, 'rgba(' + white.r +',' + white.g + ',' + white.b + ',0)');
+    vGrad.addColorStop(1, 'rgba(' + white.r +',' + white.g + ',' + white.b + ',1)');
     
     ctx.fillStyle = vGrad;
     ctx.fillRect(0, 0, miniPickerCanvas.width, miniPickerCanvas.height);
@@ -649,13 +613,11 @@ function changePickingMode(event, newMode) {
 }
 
 function updateOtherIcons() {
-    let currentColorHex = colourValue.value;
-    let currentColourHsv = rgbToHsv(hexToRgb(currentColorHex));
-    let newColourHsv = {h:currentColourHsv.h, s:currentColourHsv.s, v:currentColourHsv.v};
+    let currentColorHex = new Color("hex", colourValue.value).hex;
+    let currentColourHsv = new Color("hex", currentColorHex).hsv;
+    let newColourHsv;
     let newColourHexes = ['', '', ''];
     let tmpRgb;
-
-    // Salvo tutti i 
 
     switch (currentPickingMode)
     {
@@ -663,75 +625,65 @@ function updateOtherIcons() {
             break;
         case 'analog':
             // First colour
-            newColourHsv.h = (((currentColourHsv.h*360 + 40) % 360) / 360);
+            newColourHsv = new Color("hsv", ((currentColourHsv.h + 40) % 360), currentColourHsv.s, currentColourHsv.v);
 
-            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
+            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
 
-            tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-            newColourHexes[0] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+            newColourHexes[0] = newColourHsv.hex;
 
             // Second colour
-            newColourHsv.h = (((currentColourHsv.h*360 - 40) % 360) / 360);
-            if (newColourHsv.h < 0) {
-                newColourHsv.h += 1;
-            }
+            newColourHsv.h = new Color("hsv", ((currentColourHsv.h + 320) % 360), currentColourHsv.s, currentColourHsv.v);
 
-            currPickerIconPos[2][0] = miniPickerCanvas.width * newColourHsv.h - 8;
+            currPickerIconPos[2][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
             currPickerIconPos[2][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-            tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-            newColourHexes[1] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+        
+            newColourHexes[1] = newColourHsv.hex;
             break;
         case 'cmpt':
-            newColourHsv.h = (((currentColourHsv.h*360 + 180) % 360) / 360);
+            newColourHsv = new Color("hsv", ((currentColourHsv.h + 180) % 360), currentColourHsv.s, currentColourHsv.v);
 
-            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-            tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-            newColourHexes[0] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
+   
+            newColourHexes[0] = newColourHsv.hex;
             break;
         case 'tri':
             for (let i=1; i< 3; i++) {
-                newColourHsv.h = (((currentColourHsv.h*360 + 120*i) % 360) / 360);
+                newColourHsv = new Color("hsv", (currentColourHsv.h + 120*i) % 360, currentColourHsv.s, currentColourHsv.v);
 
-                currPickerIconPos[i][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-                currPickerIconPos[i][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-                tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-                newColourHexes[i - 1] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+                currPickerIconPos[i][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+                currPickerIconPos[i][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
+      
+                newColourHexes[i - 1] = newColourHsv.hex;
             }
             
             break
         case 'scmpt':
             // First colour
-            newColourHsv.h = (((currentColourHsv.h*360 + 210) % 360) / 360);
+            newColourHsv = new Color("hsv", (currentColourHsv.h + 210) % 360, currentColourHsv.s, currentColourHsv.v);
 
-            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-            tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-            newColourHexes[0] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+            currPickerIconPos[1][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+            currPickerIconPos[1][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
+    
+            newColourHexes[0] = newColourHsv.hex;
 
             // Second colour
-            newColourHsv.h = (((currentColourHsv.h*360 + 150) % 360) / 360);
+            newColourHsv = new Color("hsv", (currentColourHsv.h + 150) % 360, currentColourHsv.s, currentColourHsv.v);
 
-            currPickerIconPos[2][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-            currPickerIconPos[2][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-            tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-            newColourHexes[1] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+            currPickerIconPos[2][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+            currPickerIconPos[2][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
+ 
+            newColourHexes[1] = newColourHsv.hex;
             break;
         case 'tetra':
             for (let i=1; i< 4; i++) {
-                newColourHsv.h = (((currentColourHsv.h*360 + 90*i) % 360) / 360);
+                newColourHsv = new Color("hsv", (currentColourHsv.h + 90*i) % 360, currentColourHsv.s, currentColourHsv.v);
 
-                currPickerIconPos[i][0] = miniPickerCanvas.width * newColourHsv.h - 8;
-                currPickerIconPos[i][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.s + 8);
-
-                tmpRgb = hsvToRgb(newColourHsv.h*360, newColourHsv.s*100, newColourHsv.v*100);            
-                newColourHexes[i - 1] = rgbToHex(Math.round(tmpRgb[0]), Math.round(tmpRgb[1]), Math.round(tmpRgb[2]));
+                currPickerIconPos[i][0] = miniPickerCanvas.width * newColourHsv.hsv.h/360 - 8;
+                currPickerIconPos[i][1] = miniPickerCanvas.height - (miniPickerCanvas.height * newColourHsv.hsv.s/100 + 8);
+      
+                newColourHexes[i - 1] = newColourHsv.hex;
             }
             break;
         default:

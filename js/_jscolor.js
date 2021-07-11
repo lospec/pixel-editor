@@ -553,7 +553,7 @@ if (!window.jscolor) { window.jscolor = (function () {
                         //saveHistoryState({type: 'deletecolor', colorValue: jsc.picker.owner.toString(), canvas: canvas.context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
                         new HistoryStateDeleteColor(jsc.picker.owner.toString());
 
-                        deleteColor(jsc.picker.owner.styleElement);
+                        ColorModule.deleteColor(jsc.picker.owner.styleElement);
                     }
                     else if (e.target.className == 'jscolor-picker-bottom') {
                         //console.log('clicked color picker bottom')
@@ -1071,12 +1071,9 @@ if (!window.jscolor) { window.jscolor = (function () {
             this.hide = function () {
                 ///console.log(this.styleElement)
                 if (isPickerOwner()) {
-
-                    //console.log('color picker hidden')
-
                     //set the color to old color, in case the color is a duplicate that hasn't been resolved yet [lospec]
                     var hexInput = document.getElementById('jscolor-hex-input');
-                    var oldColor = '#'+rgbToHex(hexInput.oldColor);
+                    var oldColor = '#'+Color.rgbToHex(hexInput.oldColor);
                     this.fromString(oldColor);
                     document.getElementById('duplicate-color-warning').style.visibility = 'hidden';
 
@@ -1105,7 +1102,7 @@ if (!window.jscolor) { window.jscolor = (function () {
                 this.exportColor();
 
                 //set old color for updating colors on canvas 
-                hexInput.oldColor = hexToRgb(hexInput.value);
+                hexInput.oldColor = Color.hexToRgb(hexInput.value);
 
                 //set the color element to the clicked button 
                 hexInput.colorElement = this.styleElement;

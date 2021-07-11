@@ -14,22 +14,22 @@ function createColorPalette(paletteColors, deletePreviousPalette = true) {
         }
     }
 
-    var lightestColor = '#000000';
-    var darkestColor = '#ffffff';
+    var lightestColor = new Color("hex", '#000000');
+    var darkestColor = new Color("hex", '#ffffff');
 
     // Adding all the colours in the array
     for (var i = 0; i < paletteColors.length; i++) {
-        var newColor = paletteColors[i];
-        var newColorElement = ColorModule.addColor(newColor);
+        var newColor = new Color("hex", paletteColors[i]);
+        var newColorElement = ColorModule.addColor(newColor.hex);
 
-        var newColorHex = hexToRgb(newColor);
+        var newColRgb = newColor.rgb;
 
-        var lightestColorHex = hexToRgb(lightestColor);
-        if (newColorHex.r + newColorHex.g + newColorHex.b > lightestColorHex.r + lightestColorHex.g + lightestColorHex.b)
+        var lightestColorRgb = lightestColor.rgb;
+        if (newColRgb.r + newColRgb.g + newColRgb.b > lightestColorRgb.r + lightestColorRgb.g + lightestColorRgb.b)
             lightestColor = newColor;
 
-        var darkestColorHex = hexToRgb(darkestColor);
-        if (newColorHex.r + newColorHex.g + newColorHex.b < darkestColorHex.r + darkestColorHex.g + darkestColorHex.b) {
+        var darkestColorRgb = darkestColor.rgb;
+        if (newColRgb.r + newColRgb.g + newColRgb.b < darkestColorRgb.r + darkestColorRgb.g + darkestColorRgb.b) {
 
             //remove current color selection
             var selectedColor = document.querySelector('#colors-menu li.selected');
@@ -37,16 +37,15 @@ function createColorPalette(paletteColors, deletePreviousPalette = true) {
 
             //set as current color
             newColorElement.classList.add('selected');
-
             darkestColor = newColor;
         }
     }
 
 	//prepend # if not present
-	if (!darkestColor.includes('#')) darkestColor = '#' + darkestColor;
+	if (!darkestColor.hex.includes('#')) darkestColor.hex = '#' + darkestColor.hex;
 
     //set as current color
-    currentLayer.context.fillStyle = darkestColor;
+    currentLayer.context.fillStyle = darkestColor.hex;
 }
 
 /** Creates the palette with the colours used in all the layers
@@ -65,7 +64,7 @@ function createPaletteFromLayers() {
                     let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
 
                     if (!colors[color]) {
-                        colors[color] = {r:imageData[j],g:imageData[j + 1],b:imageData[j + 2]};
+                        colors[color] = new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).rgb;
 
                         //don't allow more than 256 colors to be added
                         if (Object.keys(colors).length >= settings.maxColorsOnImportedImage) {
@@ -82,7 +81,7 @@ function createPaletteFromLayers() {
     let colorPaletteArray = [];
     for (let color in colors) {
         if (colors.hasOwnProperty(color)) {
-            colorPaletteArray.push('#'+rgbToHex(colors[color]));
+            colorPaletteArray.push('#'+Color.rgbToHex(colors[color]));
         }
     }
 

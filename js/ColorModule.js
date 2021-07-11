@@ -6,7 +6,6 @@
 const ColorModule = (() => {
     const currentPalette = [];
     const coloursList = document.getElementById("palette-list");
-
     
     console.info("Initialized Color Module..");
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
@@ -22,10 +21,12 @@ const ColorModule = (() => {
 
     // Changes all of one color to another after being changed from color picker
     function colorChanged(colorHexElement) {
+        console.log("Clicked:");
+        console.log(colorHexElement);
         // Get old and new colors from the element
         const hexElement = colorHexElement.target;
         const hexElementValue = hexElement.value;
-        const newColor = hexToRgb(hexElementValue);
+        const newColor = Color.hexToRgb(hexElementValue);
         const oldColor = hexElement.oldColor;
 
         //if the color is not a valid hex color, exit this function and do nothing
@@ -36,7 +37,7 @@ const ColorModule = (() => {
         newColor.a = 255;
 
         //save undo state
-        new HistoryStateEditColor(hexElementValue.toLowerCase(), rgbToHex(oldColor));
+        new HistoryStateEditColor(hexElementValue.toLowerCase(), Color.rgbToHex(oldColor));
 
         //get the currently selected color
         const currentlyEditedColor = document.getElementsByClassName('jscolor-active')[0];
@@ -73,7 +74,7 @@ const ColorModule = (() => {
 
         currentlyEditedColor.firstChild.jscolor.fromString(newColorHex);
 
-        replaceAllOfColor(oldColor, newColor);
+        ColorModule.replaceAllOfColor(oldColor, newColor);
 
         //set new old color to changed color
         hexElement.oldColor = newColor;
@@ -82,7 +83,7 @@ const ColorModule = (() => {
         //if this is the current color, update the drawing color
         if (hexElement.colorElement.parentElement.classList.contains('selected')) {
             for (let i=1; i<layers.length - nAppLayers; i++) {
-                layers[i].context.fillStyle = '#'+ rgbToHex(newColor.r,newColor.g,newColor.b);
+                layers[i].context.fillStyle = '#'+ Color.rgbToHex(newColor);
             }
             currentGlobalColor = newColor;
         }
@@ -90,11 +91,7 @@ const ColorModule = (() => {
 
     function addColorButtonEvent() {
         //generate random color
-        const hue = Math.floor(Math.random()*255);
-        const sat = 130+Math.floor(Math.random()*100);
-        const lit = 70+Math.floor(Math.random()*100);
-        const newColorRgb = hslToRgb(hue,sat,lit);
-        const newColor = rgbToHex(newColorRgb.r,newColorRgb.g,newColorRgb.b);
+        const newColor = new Color("hsl", Math.floor(Math.random()*255), 130+Math.floor(Math.random()*100), 70+Math.floor(Math.random()*100)).hex;
 
         //remove current color selection
         document.querySelector('#colors-menu li.selected').classList.remove('selected');
@@ -183,13 +180,13 @@ const ColorModule = (() => {
         newEditButton = editButtonTemplate.cloneNode(true);
         listItem.appendChild(newEditButton);
         
-        newEditButton.addEventListener('click', (e,button) => {
+        newEditButton.addEventListener('click', () => {
             //hide edit button
-            button.parentElement.lastChild.classList.add('hidden');
+            newEditButton.parentElement.lastChild.classList.add('hidden');
     
             //show jscolor picker, if basic mode is enabled
             if (pixelEditorMode == 'Basic')
-                button.parentElement.firstChild.jscolor.show();
+                newEditButton.parentElement.firstChild.jscolor.show();
             else
                 showDialogue("palette-block", false);
         });
@@ -197,9 +194,100 @@ const ColorModule = (() => {
         return listItem;
     }
 
+    function deleteColor (color) {
+        const logStyle = 'background: #913939; color: white; padding: 5px;';
+
+        //if color is a string, then find the corresponding button
+        if (typeof color === 'string') {
+            //console.log('trying to find ',color);
+            //get all colors in palette
+            colors = document.getElementsByClassName('color-button');
+    
+            //loop through colors
+            for (var i = 0; i < colors.length; i++) {
+                //console.log(color,'=',colors[i].jscolor.toString());
+    
+                if (color == colors[i].jscolor.toString()) {
+                    //set color to the color button
+                    color = colors[i];
+                    break;
+                }
+            }
+    
+            //if the color wasn't found
+            if (typeof color === 'string') {
+                //exit function
+                return;
+            }
+        }
+    
+        //hide color picker
+        color.jscolor.hide();
+    
+        //find lightest color in palette
+        var colors = document.getElementsByClassName('color-button');
+        var lightestColor = [0,null];
+        for (var i = 0; i < colors.length; i++) {
+    
+            //get colors lightness
+            var lightness = Color.rgbToHsl(colors[i].jscolor.toRgb()).l;
+    
+            //if not the color we're deleting
+            if (colors[i] != color) {
+    
+                //if lighter than the current lightest, set as the new lightest 
+                if (lightness > lightestColor[0]) {
+                    lightestColor[0] = lightness;
+                    lightestColor[1] = colors[i];
+                }
+            }
+        }
+
+        //replace deleted color with lightest color
+        ColorModule.replaceAllOfColor(color.jscolor.toString(),lightestColor[1].jscolor.toString());
+    
+        //if the color you are deleting is the currently selected color
+        if (color.parentElement.classList.contains('selected')) {
+            //set current color TO LIGHTEST COLOR
+            lightestColor[1].parentElement.classList.add('selected');
+            currentLayer.context.fillStyle = '#'+lightestColor[1].jscolor.toString();
+        }
+    
+        //delete the element
+        colorsMenu.removeChild(color.parentElement);
+    }
+    
+    //replaces all of a single color on the canvas with a different color
+    //input two rgb color objects {r:0,g:0,b:0}
+    function replaceAllOfColor (oldColor, newColor) {
+
+        //convert strings to objects if nessesary 
+        if (typeof oldColor === 'string') oldColor = Color.hexToRgb(oldColor);
+        if (typeof newColor === 'string') newColor = Color.hexToRgb(newColor);
+
+        //create temporary image from canvas to search through
+        var tempImage = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+
+        //loop through all pixels
+        for (var i=0;i<tempImage.data.length;i+=4) {
+            //check if pixel matches old color
+            if(tempImage.data[i]==oldColor.r && tempImage.data[i+1]==oldColor.g && tempImage.data[i+2]==oldColor.b){
+                //change to new color
+                tempImage.data[i]=newColor.r;
+                tempImage.data[i+1]=newColor.g;
+                tempImage.data[i+2]=newColor.b;
+            }
+        }
+
+        //put temp image back onto canvas
+        currentLayer.context.putImageData(tempImage,0,0);
+    }
+
     return {
         currentPalette,
         addColor,
+        deleteColor,
+        replaceAllOfColor,
         AddToSimplePalette
     }
 })();

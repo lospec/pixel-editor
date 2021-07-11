@@ -379,7 +379,7 @@ function HistoryStateAddColor (colorValue) {
 
     this.undo = function () {
         redoStates.push(this);
-        deleteColor(this.colorValue);
+        ColorModule.deleteColor(this.colorValue);
     };
 
     this.redo = function () {
@@ -410,7 +410,7 @@ function HistoryStateDeleteColor (colorValue) {
         var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
         currentLayer.context.putImageData(this.canvas, 0, 0);
 
-        deleteColor(this.colorValue);
+        ColorModule.deleteColor(this.colorValue);
 
         this.canvas = currentCanvas;
         undoStates.push(this);

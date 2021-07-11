@@ -117,12 +117,12 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		history.pushState(null, null, '/pixel-editor');
 
 		//generate default colors
-		var fg = hslToRgb(Math.floor(Math.random()*255), 230,70);
-		var bg = hslToRgb(Math.floor(Math.random()*255), 230,170);
+		var fg = new Color("hsl", Math.floor(Math.random()*255), 230,70).rgb;
+		var bg = new Color("hsl", Math.floor(Math.random()*255), 230,170).rgb;
 
 		//convert colors to hex
-		var defaultForegroundColor = rgbToHex(fg.r,fg.g,fg.b);
-		var defaultBackgroundColor = rgbToHex(bg.r,bg.g,bg.b);
+		var defaultForegroundColor = Color.rgbToHex(fg);
+		var defaultBackgroundColor = Color.rgbToHex(bg);
 
 		//add colors to palette
 		ColorModule.addColor(defaultForegroundColor).classList.add('selected');

@@ -3,15 +3,11 @@
 //=include util/onChildren.js
 //=include util/onClick.js
 //=include util/onClickChildren.js
-//=include util/hexToRgb.js
-//=include util/rgbToHex.js
-//=include util/rgbToHsl.js
-//=include util/hslToRgb.js
 //=include lib/cookies.js
 //=include _pixelEditorUtility.js
 //=include lib/sortable.js
-//=include _algorithms.js
 //=include Util.js
+//=include Color.js
 
 /**init**/
 //=include _consts.js
@@ -37,8 +33,6 @@
 //=include _fill.js
 //=include _line.js
 //=include _history.js
-//=include _deleteColor.js
-//=include _replaceAllOfColor.js
 //=include _checkerboard.js
 //=include _pixelGrid.js
 //=include _layer.js
