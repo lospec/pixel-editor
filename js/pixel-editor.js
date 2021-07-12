@@ -1,12 +1,9 @@
 /**utilities**/
-//=include util/on.js
-//=include util/onChildren.js
-//=include util/onClick.js
-//=include util/onClickChildren.js
 //=include lib/cookies.js
 //=include _pixelEditorUtility.js
 //=include lib/sortable.js
 //=include Util.js
+//=include Input.js
 //=include Color.js
 
 /**init**/

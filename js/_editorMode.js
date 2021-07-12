@@ -7,7 +7,7 @@ let modes = {
     }
 }
 
-on('click', 'switch-editor-mode-splash', function (e) {
+Input.on('click', 'switch-editor-mode-splash', function (e) {
 	console.log('switching mode')
     switchMode();
 });
@@ -69,6 +69,6 @@ function switchMode(mustConfirm = true) {
     }
 }
 
-on('click', 'switch-mode-button', function (e) {
+Input.on('click', 'switch-mode-button', function (e) {
     switchMode();
 });

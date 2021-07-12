@@ -26,7 +26,7 @@ else{
 console.log(settings);
 
 //on clicking the save button in the settings dialog
-on('click', 'save-settings', saveSettings);
+Input.on('click', 'save-settings', saveSettings);
 
 function saveSettings() {
     //check if values are valid

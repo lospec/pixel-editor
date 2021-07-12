@@ -24,7 +24,7 @@ let oldLayerName = null;
 let dragStartLayer;
 
 // Binding the add layer button to the function
-on('click',"add-layer-button", addLayer, false);
+Input.on('click',"add-layer-button", addLayer, false);
 
 /** Handler class for a single canvas (a single layer)
  *

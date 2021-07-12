@@ -37,7 +37,7 @@ function create(isSplash) {
 /** Triggered when the "Create" button in the new pixel dialogue is pressed
  * 
  */
-on('click', 'create-button', function (){
+Input.on('click', 'create-button', function (){
     console.log("Here");
     // Getting the values of the form
     var width = Util.getValue('size-width');
@@ -70,7 +70,7 @@ on('click', 'create-button', function (){
 /** Triggered when the "Create" button in the new pixel dialogue is pressed
  * 
  */
-on('click', 'create-button-splash', function (){
+ Input.on('click', 'create-button-splash', function (){
     // Getting the values of the form
     var width = Util.getValue('size-width-splash');
     var height = Util.getValue('size-height-splash');

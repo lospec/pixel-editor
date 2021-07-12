@@ -8,7 +8,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
     var menuButton = menuItem.children[0];
 
     //when you click a main menu items button
-    on('click', menuButton, function (e, button) {
+    Input.on('click', menuButton, function (e, button) {
         Util.select(button.parentElement);
     });
 
