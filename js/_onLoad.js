@@ -14,7 +14,7 @@ window.onload = function () {
 		console.log('no url parameters were found');
 
 		//show splash screen
-		showDialogue('splash', false);
+		Dialogue.showDialogue('splash', false);
 	}
 
 	//url parameters were specified
@@ -53,7 +53,7 @@ window.onload = function () {
 				//dimentions were not specified -- show splash screen with palette preselected
 				else {
 					//show splash
-					showDialogue('new-pixel', false);
+					Dialogue.showDialogue('new-pixel', false);
 				}
 				
 			})
@@ -62,7 +62,7 @@ window.onload = function () {
 				console.warn('failed to load palette "'+paletteSlug+'"', error);
 				
 				//proceed to splash screen
-				showDialogue('splash', false);
+				Dialogue.showDialogue('splash', false);
 			});
 	} 
 };

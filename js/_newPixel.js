@@ -143,7 +143,7 @@ function newPixel (width, height, editorMode, fileContent = null) {
 	redoStates = [];
 
 	// Closing the "New Pixel dialogue"
-	closeDialogue();
+	Dialogue.closeDialogue();
 	// Updating the cursor of the current tool
 	currentTool.updateCursor();
 

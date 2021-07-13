@@ -15,7 +15,7 @@ let rcBorders = {left: 0, right: 0, top: 0, bottom: 0};
 function openResizeCanvasWindow() {
     // Initializes the inputs
     initResizeCanvasInputs();
-    showDialogue('resize-canvas');
+    Dialogue.showDialogue('resize-canvas');
 }
 
 /** Initializes the canvas resizing input
@@ -201,7 +201,7 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
         }
     }
 
-    closeDialogue();
+    Dialogue.closeDialogue();
 }
 
 /** Trims the canvas so tat the sprite is perfectly contained in it

@@ -27,7 +27,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
 
                 //File Menu
                 case 'New':
-                    showDialogue('new-pixel');
+                    Dialogue.showDialogue('new-pixel');
                     break;
                 case 'Save project':
                     //create name
@@ -169,17 +169,17 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     //fill form with current settings values
                     Util.setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
 
-                    showDialogue('settings');
+                    Dialogue.showDialogue('settings');
                     break;
                     //Help Menu
                 case 'Help':
-                    showDialogue('help');
+                    Dialogue.showDialogue('help');
                     break;
                 case 'About':
-                    showDialogue('about');
+                    Dialogue.showDialogue('about');
                     break;
                 case 'Changelog':
-                    showDialogue('changelog');
+                    Dialogue.showDialogue('changelog');
                     break;
             }
 

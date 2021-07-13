@@ -5,6 +5,7 @@
 //=include Util.js
 //=include Input.js
 //=include Color.js
+//=include Dialogue.js
 
 /**init**/
 //=include _consts.js
@@ -23,7 +24,6 @@
 //=include _createColorPalette.js
 //=include _changeZoom.js
 //=include ColorModule.js
-//=include _dialogue.js
 //!=include _featuresLog.js
 //=include _drawLine.js
 //=include _getCursorPosition.js

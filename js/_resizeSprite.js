@@ -32,7 +32,7 @@ function openResizeSpriteWindow() {
     startData.widthPercentage = 100;
 
     // Opening the pop up now that it's ready
-    showDialogue('resize-sprite');
+    Dialogue.showDialogue('resize-sprite');
 }
 
 /** Initalizes the input values and binds the elements to their events
@@ -152,7 +152,7 @@ function resizeSprite(event, ratio) {
     startData.widthPercentage = 100;
     startData.heightPercentage = 100;
 
-    closeDialogue();
+    Dialogue.closeDialogue();
 }
 
 /* Trust me, the math for the functions below works. If you want to optimize them feel free to have a look, though */

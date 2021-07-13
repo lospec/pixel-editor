@@ -13,7 +13,6 @@ var eyedropperPreview = document.getElementById("eyedropper-preview");
 var canvasView = document.getElementById("canvas-view");
 var colors = document.getElementsByClassName("color-button");
 var colorsMenu = document.getElementById("colors-menu");
-var popUpContainer = document.getElementById("pop-up-container");
 
 // main canvas
 var canvas = document.getElementById('pixel-canvas');

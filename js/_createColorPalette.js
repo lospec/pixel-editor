@@ -1,5 +1,5 @@
 
-/** Creates the colour palette
+/** Creates the colour palette when starting up the editor from _newPixel.js
  * 
  * @param {*} paletteColors The colours of the palette
  * @param {*} deletePreviousPalette Tells if the app should delete the previous palette or not 

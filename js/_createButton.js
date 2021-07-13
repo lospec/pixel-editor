@@ -67,7 +67,7 @@ Input.on('click', 'create-button', function (){
     Util.setText('preset-button', 'Choose a preset...');
 });
 
-/** Triggered when the "Create" button in the new pixel dialogue is pressed
+/** Triggered when the "Create" button in the splash page is pressed
  * 
  */
  Input.on('click', 'create-button-splash', function (){

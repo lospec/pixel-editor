@@ -46,5 +46,5 @@ function saveSettings() {
     Cookies.set('pixelEditorSettings', cookieValue, { expires: Infinity });
 
     //close window
-    closeDialogue();
+    Dialogue.closeDialogue();
 }
