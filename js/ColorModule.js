@@ -1,17 +1,19 @@
-/** Adds the given color to the palette
+/** ColorModule holds the functions used to implement the basic-mode palette.
  * 
- * @param {*} newColor the colour to add
- * @return the list item containing the added colour
  */
 const ColorModule = (() => {
+    // Array containing the colours of the current palette
     const currentPalette = [];
+    // Reference to the HTML palette
     const coloursList = document.getElementById("palette-list");
     
+    // Binding events to callbacks
     console.info("Initialized Color Module..");
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
     
+    // Making the colours in the HTML menu sortable
     new Sortable(document.getElementById("colors-menu"), {
         animation:100,
         filter: ".noshrink",
@@ -19,10 +21,12 @@ const ColorModule = (() => {
         onEnd: makeIsDraggingFalse
     });
 
-    // Changes all of one color to another after being changed from color picker
+    /** Changes all of one color to another after being changed from the color picker
+     * 
+     * @param {*} colorHexElement The element that has been changed
+     * @returns 
+     */
     function colorChanged(colorHexElement) {
-        console.log("Clicked:");
-        console.log(colorHexElement.target);
         // Get old and new colors from the element
         const hexElement = colorHexElement.target;
         const hexElementValue = hexElement.value;
@@ -48,7 +52,6 @@ const ColorModule = (() => {
 
         //loop through all colors in palette
         for (var i = 0; i < colors.length; i++) {
-
             //if generated color matches this color
             if (newColorHex == colors[i].jscolor.toString()) {
                 //if the color isnt the one that has the picker currently open
@@ -89,8 +92,11 @@ const ColorModule = (() => {
         }
     }
 
+    /** Callback triggered when the user clicks on a colour in the palette menu on the right
+     * 
+     * @param {*} e The event that triggered the callback
+     */
     function clickedColor (e){
-
         //left clicked color
         if (e.which == 1) {
             // remove current color selection
@@ -106,17 +112,19 @@ const ColorModule = (() => {
             //make color selected
             e.target.parentElement.classList.add('selected');
     
-        } else if (e.which == 3) { //right clicked color
-            //console.log('right clicked color button');
-    
+        } 
+        //right clicked color
+        else if (e.which == 3) { 
             //hide edit color button (to prevent it from showing)
             e.target.parentElement.lastChild.classList.add('hidden');
-    
             //show color picker
             e.target.jscolor.show();
         }
     }
 
+    /** Called whenever the user presses the button used to add a new colour to the palette
+     * 
+     */
     function addColorButtonEvent() {
         //generate random color
         const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
@@ -130,7 +138,6 @@ const ColorModule = (() => {
         currentLayer.context.fillStyle = '#' + newColor;
 
         //add history state
-        //saveHistoryState({type: 'addcolor', colorValue: addedColor.firstElementChild.jscolor.toString()});
         new HistoryStateAddColor(addedColor.firstElementChild.jscolor.toString());
 
         //show color picker
@@ -141,7 +148,11 @@ const ColorModule = (() => {
         addedColor.lastChild.classList.add('hidden');
     }
 
-    function AddToSimplePalette() {
+    /** Adds the colors that have been added through the advanced-mode color picker to the 
+     *  basic-mode palette.
+     * 
+     */
+    function addToSimplePalette() {
         const simplePalette = document.getElementById("colors-menu");
         const childCount = simplePalette.childElementCount;
     
@@ -162,7 +173,11 @@ const ColorModule = (() => {
             }
         }
     }
-    //formats a color button
+
+    /** Initializes jscolor for the element passed as a parameter
+     * 
+     * @param {*} colorElement The element of which we need to setup jscolor
+     */
     function initColor (colorElement) {
         //add jscolor picker for this color
         colorElement.jscolor = new jscolor(colorElement.parentElement, {	
@@ -181,6 +196,11 @@ const ColorModule = (() => {
 
     }
 
+    /** Adds a color to the palette
+     * 
+     * @param {*} newColor The color to add in hex format
+     * @returns The HTML palette item that has been created
+     */
     function addColor (newColor) {
         //add # at beginning if not present
         if (newColor.charAt(0) != '#')
@@ -222,12 +242,16 @@ const ColorModule = (() => {
         return listItem;
     }
 
+    /** Deletes a color from the palette
+     * 
+     * @param {*} color A string in hex format or the HTML element corresponding to the color 
+     *                  that should be removed.
+     */
     function deleteColor (color) {
         const logStyle = 'background: #913939; color: white; padding: 5px;';
 
         //if color is a string, then find the corresponding button
         if (typeof color === 'string') {
-            //console.log('trying to find ',color);
             //get all colors in palette
             colors = document.getElementsByClassName('color-button');
     
@@ -285,8 +309,11 @@ const ColorModule = (() => {
         colorsMenu.removeChild(color.parentElement);
     }
     
-    //replaces all of a single color on the canvas with a different color
-    //input two rgb color objects {r:0,g:0,b:0}
+    /** Replaces all of a single color on the canvas with a different color
+     * 
+     * @param {*} oldColor Old colour in {r,g,b} object format
+     * @param {*} newColor New colour in {r,g,b} object format
+     */
     function replaceAllOfColor (oldColor, newColor) {
 
         //convert strings to objects if nessesary 
@@ -316,8 +343,6 @@ const ColorModule = (() => {
         addColor,
         deleteColor,
         replaceAllOfColor,
-        AddToSimplePalette
+        addToSimplePalette
     }
 })();
-
-console.log("Color module: " + ColorModule);
