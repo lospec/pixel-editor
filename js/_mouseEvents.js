@@ -85,7 +85,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		tmpContext.clearRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 	}
 
-	if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
+	if (!documentCreated || Dialogue.isOpen() || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
 		var cursorLocation = getCursorPosition(mouseEvent);
@@ -213,7 +213,7 @@ function draw (mouseEvent) {
 		var cursorLocation = lastMouseMovePos;
 
 		//if a document hasnt yet been created or the current layer is locked, exit this function
-		if (!documentCreated || dialogueOpen || !currentLayer.isVisible || currentLayer.isLocked) return;
+		if (!documentCreated || Dialogue.isOpen() || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 		// Moving brush preview
 		currentTool.moveBrushPreview(cursorLocation);

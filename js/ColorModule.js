@@ -236,7 +236,7 @@ const ColorModule = (() => {
             if (pixelEditorMode == 'Basic')
                 event.target.parentElement.firstChild.jscolor.show();
             else
-                showDialogue("palette-block", false);
+                Dialogue.showDialogue("palette-block", false);
         });
 
         return listItem;
