@@ -41,7 +41,7 @@ const ColorModule = (() => {
         newColor.a = 255;
 
         //save undo state
-        new HistoryStateEditColor(hexElementValue.toLowerCase(), Color.rgbToHex(oldColor));
+        new HistoryStates.EditColor(hexElementValue.toLowerCase(), Color.rgbToHex(oldColor));
 
         //get the currently selected color
         const currentlyEditedColor = document.getElementsByClassName('jscolor-active')[0];
@@ -138,7 +138,7 @@ const ColorModule = (() => {
         currentLayer.context.fillStyle = '#' + newColor;
 
         //add history state
-        new HistoryStateAddColor(addedColor.firstElementChild.jscolor.toString());
+        new HistoryStates.AddColor(addedColor.firstElementChild.jscolor.toString());
 
         //show color picker
         addedColor.firstElementChild.jscolor.show();

@@ -121,7 +121,7 @@ function resizeSprite(event, ratio) {
         // Copying the image data
         imageDatasCopy = rsImageDatas.slice();
         // Saving the history
-        new HistoryStateResizeSprite(newWidth / oldWidth, newHeight / oldHeight, currentAlgo, imageDatasCopy);
+        new HistoryStates.ResizeSprite(newWidth / oldWidth, newHeight / oldHeight, currentAlgo, imageDatasCopy);
     }
 
     // Resizing the canvas

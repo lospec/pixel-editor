@@ -139,10 +139,10 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     break;
                     //Edit Menu
                 case 'Undo':
-                    undo();
+                    History.undo();
                     break;
                 case 'Redo':
-                    redo();
+                    History.redo();
                     break;
 
                     //Palette Menu

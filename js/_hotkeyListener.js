@@ -90,13 +90,13 @@ function KeyPress(e) {
 			case 90:
 			  //CTRL+ALT+Z redo
 			  if (keyboardEvent.altKey && keyboardEvent.ctrlKey)
-			    redo();
+			  	History.redo();
 				if (!selectionCanceled) {
 			    		tool.pencil.switchTo()
 			    	}
 			  //CTRL+Z undo
 			  else if (keyboardEvent.ctrlKey) {
-			    	undo();
+					History.undo();
 			    	if (!selectionCanceled) {
 			    		tool.pencil.switchTo()
 			    	}
@@ -107,9 +107,9 @@ function KeyPress(e) {
 				break;
 			//redo - ctrl y
 			case 89:
-			  if (keyboardEvent.ctrlKey)
-			    redo();
-			  break;
+				if (keyboardEvent.ctrlKey)
+					History.redo();
+					break;
 			case 32:
 			  spacePressed=true;
 			  break;

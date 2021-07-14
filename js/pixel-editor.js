@@ -6,6 +6,7 @@
 //=include Input.js
 //=include Color.js
 //=include Dialogue.js
+//=include History.js
 
 /**init**/
 //=include _consts.js
@@ -29,7 +30,6 @@
 //=include _getCursorPosition.js
 //=include _fill.js
 //=include _line.js
-//=include _history.js
 //=include _checkerboard.js
 //=include _pixelGrid.js
 //=include _layer.js

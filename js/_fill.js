@@ -22,7 +22,7 @@ function fill(cursorLocation) {
     }
 
     //save history state
-    new HistoryStateEditCanvas();
+    new HistoryStates.EditCanvas();
     //saveHistoryState({type: 'canvas', canvas: context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
     //console.log('filling at '+ Math.floor(cursorLocation[0]/zoom) + ','+ Math.floor(cursorLocation[1]/zoom));
 

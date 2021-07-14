@@ -116,7 +116,7 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
     // Saving the history only if I'm not already undoing or redoing
     if (saveHistory && event != null) {
         // Saving history
-        new HistoryStateResizeCanvas(
+        new HistoryStates.ResizeCanvas(
             {x: parseInt(layers[0].canvasSize[0]) + rcBorders.left + rcBorders.right, 
             y: parseInt(layers[0].canvasSize[1]) + rcBorders.top + rcBorders.bottom},
 

@@ -10,7 +10,7 @@ let endY;
  */
 function startRectSelection(mouseEvent) {
     // Saving the canvas
-    new HistoryStateEditCanvas();
+    new HistoryStates.EditCanvas();
     // Putting the vfx layer on top of everything
     VFXCanvas.style.zIndex = MAX_Z_INDEX;
 
