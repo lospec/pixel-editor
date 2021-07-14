@@ -3,7 +3,6 @@ var canvasSize;
 var zoom = 7;
 var dragging = false;
 var lastMouseClickPos = [0,0];
-var dialogueOpen = true;
 var documentCreated = false;
 var pixelEditorMode = "Basic";
 

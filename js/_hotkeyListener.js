@@ -18,7 +18,7 @@ function KeyPress(e) {
     //if no document has been created yet,
     //orthere is a dialog box open
     //ignore hotkeys
-    if (!documentCreated || dialogueOpen) return;
+    if (!documentCreated || Dialogue.isOpen()) return;
 
 	//
 	if (e.key === "Escape") {

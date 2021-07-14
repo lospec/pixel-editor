@@ -3,6 +3,8 @@
  */
 const Dialogue = (() => {
     let currentOpenDialogue = "";
+    let dialogueOpen = true;
+
     const popUpContainer = document.getElementById("pop-up-container");
     const cancelButtons = popUpContainer.getElementsByClassName('close-button');
 
@@ -68,9 +70,14 @@ const Dialogue = (() => {
         }
     }
 
+    function isOpen() {
+        return dialogueOpen;
+    }
+
     return {
         showDialogue,
-        closeDialogue
+        closeDialogue,
+        isOpen
     }
 })();
 

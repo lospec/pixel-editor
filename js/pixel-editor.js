@@ -25,7 +25,6 @@
 //=include _createColorPalette.js
 //=include _changeZoom.js
 //=include ColorModule.js
-//!=include _featuresLog.js
 //=include _drawLine.js
 //=include _getCursorPosition.js
 //=include _fill.js
@@ -38,7 +37,7 @@
 //=include _resizeSprite.js
 //=include _colorPicker.js
 //=include _paletteBlock.js
-//=include _splashPage.js
+//=include SplashPage.js
 
 /**load file**/
 //=include _loadImage.js

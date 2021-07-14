@@ -1077,9 +1077,6 @@ if (!window.jscolor) { window.jscolor = (function () {
                     this.fromString(oldColor);
                     document.getElementById('duplicate-color-warning').style.visibility = 'hidden';
 
-                    //dialog is closed
-                    dialogueOpen = false;
-
                     detachPicker();
                 }
             };
@@ -1087,9 +1084,6 @@ if (!window.jscolor) { window.jscolor = (function () {
             //show the color picker
             this.show = function () {
                 drawPicker();
-
-                //a dialog is open
-                dialogueOpen = true;
 
                 //[lospec]
                 //find the hex input element 

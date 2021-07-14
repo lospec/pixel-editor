@@ -194,14 +194,6 @@ function newPixel (width, height, editorMode, fileContent = null) {
 		deleteLayer(false);
 	}
 
-	// Applying the correct editor mode
-	if (pixelEditorMode == 'Basic') {
-		switchMode(false);
-	}
-	else {
-		switchMode(false);
-	}
-
 	// Resetting history
 	undoStates = [];
 	redoStates = [];

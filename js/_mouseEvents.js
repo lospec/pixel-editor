@@ -8,7 +8,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	canDraw = true;
 
 	//if no document has been created yet, or this is a dialog open, or the currentLayer is locked
-	if (!documentCreated || dialogueOpen || currentLayer.isLocked || !currentLayer.isVisible) return;
+	if (!documentCreated || Dialogue.isOpen() || currentLayer.isLocked || !currentLayer.isVisible) return;
 	//prevent right mouse clicks and such, which will open unwanted menus
 	//mouseEvent.preventDefault();
 
@@ -204,7 +204,7 @@ window.addEventListener("mousemove", draw, false);
 window.addEventListener("mousedown", draw, false);
 
 function draw (mouseEvent) {
-	if (!dialogueOpen)
+	if (!Dialogue.isOpen())
 	{
 		lastMouseMovePos = getCursorPosition(mouseEvent);
 		// Saving the event in case something else needs it

@@ -1,1 +1,0 @@
-Dialogue.showDialogue("splash", false);

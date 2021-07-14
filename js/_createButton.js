@@ -38,7 +38,6 @@ function create(isSplash) {
  * 
  */
 Input.on('click', 'create-button', function (){
-    console.log("Here");
     // Getting the values of the form
     var width = Util.getValue('size-width');
     var height = Util.getValue('size-height');

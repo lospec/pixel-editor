@@ -3,19 +3,17 @@ let modes = {
         description: 'Basic mode is perfect if you want to create simple sprites or try out palettes.'
     },
     'Advanced' : {
-        description: 'Choose advanced mode to gain access to more advanced features such as layers.'
+        description: 'Choose advanced mode to gain access to more advanced features such as layers and advanced palette editing.'
     }
 }
 
 Input.on('click', 'switch-editor-mode-splash', function (e) {
-	console.log('switching mode')
-    switchMode();
+    toggleMode();
 });
 
-function switchMode(mustConfirm = true) {
-	console.log('switching mode', 'current:',pixelEditorMode)
+function switchMode(newMode) {
 	//switch to advanced mode
-    if (pixelEditorMode == 'Basic') {
+    if (newMode == 'Advanced') {
         // Switch to advanced ez pez lemon squez
         document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
 		// Show the layer menus
@@ -36,12 +34,9 @@ function switchMode(mustConfirm = true) {
     else {
 		//if there is a current layer (a document is active)
         if (currentLayer) {
-        	//confirm with user before flattening image
-        	if (mustConfirm ) {
-	            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
-	                return;
-	            }
-	        }
+			if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+				return;
+			}
 
 			// Selecting the current layer
 			currentLayer.selectLayer();
@@ -60,7 +55,6 @@ function switchMode(mustConfirm = true) {
         // Move the palette menu
         document.getElementById('colors-menu').style.right = '0px';
 
-
 		//change splash text
 		document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove('advanced-mode');
 
@@ -69,6 +63,15 @@ function switchMode(mustConfirm = true) {
     }
 }
 
+function toggleMode() {
+	console.log("From " + pixelEditorMode);
+	
+	if (pixelEditorMode == 'Advanced')
+		switchMode('Basic');
+	else
+		switchMode('Advanced');
+}
+
 Input.on('click', 'switch-mode-button', function (e) {
-    switchMode();
+    toggleMode();
 });
