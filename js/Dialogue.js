@@ -48,7 +48,7 @@ const Dialogue = (() => {
         }
 
         //track google event
-        if (trackEvent)
+        if (trackEvent && typeof ga !== 'undefined')
             ga('send', 'event', 'Palette Editor Dialogue', dialogueName); /*global ga*/
     }
 

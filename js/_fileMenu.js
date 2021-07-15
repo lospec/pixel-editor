@@ -49,7 +49,8 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     linkHolder.download = fileName;
                     linkHolder.click();
 
-                    ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+                    if (typeof ga !== 'undefined')
+                        ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
 
                     break;
                 case 'Open':
@@ -117,7 +118,8 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                         exportCanvas.remove();
 
                         //track google event
-                        ga('send', 'event', 'Pixel Editor Export', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+                        if (typeof ga !== 'undefined')
+                            ga('send', 'event', 'Pixel Editor Export', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
                     }
 
                     break;

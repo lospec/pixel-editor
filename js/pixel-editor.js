@@ -1,5 +1,6 @@
 /**utilities**/
 //=include lib/cookies.js
+//=include _jscolor.js
 //=include _pixelEditorUtility.js
 //=include lib/sortable.js
 //=include Util.js
@@ -14,7 +15,6 @@
 //=include _settings.js
 
 /**dropdown formatting**/
-//=include _editorMode.js
 //=include _presets.js
 //=include _palettes.js
 
@@ -38,6 +38,7 @@
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include SplashPage.js
+//=include _editorMode.js
 
 /**load file**/
 //=include _loadImage.js
@@ -59,9 +60,6 @@
 /**onload**/
 //=include _onLoad.js
 //=include _onbeforeunload.js
-
-/**libraries**/
-//=include _jscolor.js
 
 /**feature toggles**/
 //=include _featureToggles.js

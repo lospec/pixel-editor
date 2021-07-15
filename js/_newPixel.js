@@ -4,13 +4,9 @@ let firstPixel = true;
  * 
  * @param {*} width Start width of the canvas
  * @param {*} height Start height of the canvas
- * @param {*} editorMode The editor mode chosen by the user (advanced or basic)
  * @param {*} fileContent If fileContent != null, then the newPixel is being called from the open menu
  */
-function newPixel (width, height, editorMode, fileContent = null) {
-	// Saving the editor mode
-	pixelEditorMode = editorMode;
-
+function newPixel (width, height, fileContent = null) {
 	// The palette is empty, at the beginning
 	ColorModule.currentPalette.length = 0;
 
@@ -208,5 +204,5 @@ function newFromTemplate(preset, x, y) {
 		x = presetProperties.width;
 		y = presetProperties.height;
 	}
-	newPixel(x, y, pixelEditorMode == 'Advanced' ? 'Basic' : 'Advanced');
+	newPixel(x, y);
 }

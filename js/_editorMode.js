@@ -1,3 +1,6 @@
+var pixelEditorMode = "Basic";
+switchMode(pixelEditorMode);
+
 let modes = {
     'Basic' : {
         description: 'Basic mode is perfect if you want to create simple sprites or try out palettes.'
@@ -13,7 +16,7 @@ Input.on('click', 'switch-editor-mode-splash', function (e) {
 
 function switchMode(newMode) {
 	//switch to advanced mode
-    if (newMode == 'Advanced') {
+    if (newMode == 'Advanced' && pixelEditorMode == 'Basic') {
         // Switch to advanced ez pez lemon squez
         document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
 		// Show the layer menus
@@ -64,8 +67,6 @@ function switchMode(newMode) {
 }
 
 function toggleMode() {
-	console.log("From " + pixelEditorMode);
-	
 	if (pixelEditorMode == 'Advanced')
 		switchMode('Basic');
 	else

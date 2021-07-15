@@ -38,7 +38,8 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
                         createPaletteFromLayers();
 
                         //track google event
-                        ga('send', 'event', 'Pixel Editor Load', colorPalette.length, this.width+'/'+this.height); /*global ga*/
+                        if (typeof ga !== 'undefined')
+                            ga('send', 'event', 'Pixel Editor Load', colorPalette.length, this.width+'/'+this.height); /*global ga*/
 
                     };
                     img.src = e.target.result;
