@@ -7,7 +7,7 @@ class Input {
         function (e) {
             // e = event
             //this = element clicked
-            functionCallback(e, this, args);
+            functionCallback(e, ...args);
             //if you need to access the event or this variable, you need to add them
             //when you define the callback, but you cant use the word this, eg:
             //on('click', menuButton, function (e, button) {});
@@ -20,7 +20,7 @@ class Input {
         
         //loop through children and add onClick listener
         for (var i = 0; i < children.length; i++) {
-            on(event, children[i], functionCallback, args);
+            on(event, children[i], functionCallback, ...args);
         }
     }
 }

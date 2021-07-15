@@ -8,8 +8,8 @@ for (var i = 1; i < mainMenuItems.length; i++) {
     var menuButton = menuItem.children[0];
 
     //when you click a main menu items button
-    Input.on('click', menuButton, function (e, button) {
-        Util.select(button.parentElement);
+    Input.on('click', menuButton, function (e) {
+        Util.select(e.target.parentElement);
     });
 
     var subMenu = menuItem.children[1];

@@ -42,12 +42,8 @@ window.onload = function () {
 					let width = dimentions.split('x')[0];
 					let height = dimentions.split('x')[1];
 					
-					console.log('dimentions were specified',width,'x',height)
-					
-					//firstPixel = false;
-
 					//create new document
-					newPixel(width, height);
+					Startup.newPixel(width, height);
 				}
 				
 				//dimentions were not specified -- show splash screen with palette preselected

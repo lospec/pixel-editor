@@ -17,6 +17,7 @@ const PresetModule = (() => {
             presetsMenu.appendChild(button);
 
             button.addEventListener('click', () => {
+                console.log("Preset: " + presetName);
                 //change dimentions on new pixel form
                 Util.setValue('size-width', presets[presetName].width);
                 Util.setValue('size-height', presets[presetName].height);
@@ -30,7 +31,6 @@ const PresetModule = (() => {
 
                 //set the text of the dropdown to the newly selected preset
                 Util.setText('preset-button', presetName);
-
             });
         });
 

@@ -15,13 +15,12 @@
 //=include _settings.js
 
 /**dropdown formatting**/
-//=include _presets.js
+//=include PresetModule.js
 //=include _palettes.js
 
 /**functions**/
 //=include _tools.js
 //=include tools/*.js
-//=include _newPixel.js
 //=include _createColorPalette.js
 //=include _changeZoom.js
 //=include ColorModule.js
@@ -51,11 +50,11 @@
 /**buttons**/
 //=include _toolButtons.js
 //=include _fileMenu.js
-//=include _createButton.js
 //=include _rectSelect.js
 //=include _move.js
 //=include _rectangle.js
 //=include _ellipse.js
+//=include Startup.js
 
 /**onload**/
 //=include _onLoad.js
