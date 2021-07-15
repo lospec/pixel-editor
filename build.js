@@ -49,7 +49,7 @@ function compile_page(){
 		.pipe(include({includePaths: ['/svg']}))
 
         .pipe(handlebars({encoding: 'utf8', debug: true, bustCache: true})
-            .partials('./views/[!index]*.hbs')
+            .partials('./views/[!index]*.hbs').partials('./views/popups/*.hbs')
             //.helpers({ svg: hb_svg })
             .helpers('./helpers/**/*.js')
             .data({
