@@ -23,7 +23,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 			currentTool = tool.eyedropper;
 		else if (mouseEvent.target.className == 'drawingCanvas' &&
 			(currentTool.name == 'pencil' || currentTool.name == 'eraser' || currentTool.name == 'rectangle' || currentTool.name == 'ellipse' || currentTool.name === 'line'))
-		    new HistoryStates.EditCanvas();
+		    new HistoryState().EditCanvas();
 		else if (currentTool.name == 'moveselection') {
 			if (!cursorInSelectedArea() && 
 				((mouseEvent.target.id == 'canvas-view') || mouseEvent.target.className == 'drawingCanvas')) {

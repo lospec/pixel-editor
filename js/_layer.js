@@ -189,7 +189,7 @@ class Layer {
             let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
             this.name = name;
 
-            new HistoryStates.RenameLayer(oldLayerName, name, currentLayer);
+            new HistoryState().RenameLayer(oldLayerName, name, currentLayer);
             oldLayerName = null;
         }
     }
@@ -310,7 +310,7 @@ function flatten(onlyVisible) {
             merge();
         }
 
-        new HistoryStates.FlattenAll(nToFlatten);
+        new HistoryState().FlattenAll(nToFlatten);
     }
     else {
         // Getting all the visible layers
@@ -332,7 +332,7 @@ function flatten(onlyVisible) {
         for (let i=0; i<visibleLayers.length - 1; i++) {
             nToFlatten++;
             console.log(visibleLayers[i].menuEntry.nextElementSibling);
-            new HistoryStates.FlattenTwoVisibles(
+            new HistoryState().FlattenTwoVisibles(
                 visibleLayers[i + 1].context.getImageData(0, 0, visibleLayers[i].canvasSize[0], visibleLayers[i].canvasSize[1]),
                 visibleLayers[i].menuEntry.nextElementSibling,
                 layers.indexOf(visibleLayers[i]),
@@ -347,7 +347,7 @@ function flatten(onlyVisible) {
             layers.splice(layers.indexOf(visibleLayers[i]), 1);
         }
 
-        new HistoryStates.FlattenVisible(nToFlatten);
+        new HistoryState().FlattenVisible(nToFlatten);
         // Updating the layer preview
         currentLayer.updateLayerPreview();
     }
@@ -410,7 +410,7 @@ function deleteLayer(saveHistory = true) {
         layers.splice(layerIndex, 1);
 
         if (saveHistory) {
-            new HistoryStates.DeleteLayer(toDelete, previousSibling, layerIndex);
+            new HistoryState().DeleteLayer(toDelete, previousSibling, layerIndex);
         }
     }
 
@@ -463,7 +463,7 @@ function duplicateLayer(event, saveHistory = true) {
     newLayer.updateLayerPreview();
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
     if (saveHistory) {
-        new HistoryStates.DuplicateLayer(newLayer, currentLayer);
+        new HistoryState().DuplicateLayer(newLayer, currentLayer);
     }
 }
 
@@ -556,7 +556,7 @@ function addLayer(id, saveHistory = true) {
     }
     // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
     if (saveHistory) {
-        new HistoryStates.AddLayer(newLayer, index);
+        new HistoryState().AddLayer(newLayer, index);
     }
 
     return newLayer;

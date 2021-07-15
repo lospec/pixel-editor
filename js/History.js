@@ -20,6 +20,8 @@ const History = (() => {
 
     //rename to add undo state
     function saveHistoryState (state) {
+        console.log("saved history");
+        console.log(state);
         //get current canvas data and save to undoStates array
         undoStates.push(state);
 
@@ -36,49 +38,35 @@ const History = (() => {
     }
 
     function undo () {
-        //if there are any states saved to undo
-        if (undoStates.length > 0) {
-            document.getElementById('redo-button').classList.remove('disabled');
-
-            // get state
-            var undoState = undoStates[undoStates.length-1];
-            // add it to redo states
-            redoStates.push(undoState);
-
-            //remove from the undo list
-            undoStates.splice(undoStates.length-1,1);
-
-            //restore the state
-            undoState.undo();
-
-            //if theres none left to undo, disable the option
-            if (undoStates.length == 0)
-                document.getElementById('undo-button').classList.add('disabled');
-        }
+        undoOrRedo('undo');
     }
 
     function redo () {
-        console.log("Redo");
-        if (redoStates.length > 0) {
+        undoOrRedo('redo');
+    }
 
-            //enable undo button
-            document.getElementById('undo-button').classList.remove('disabled');
+    function undoOrRedo(mode) {
+        if (redoStates.length <= 0 && mode == 'redo') return;
+        if (undoStates.length <= 0 && mode == 'undo') return;
 
-            //get state
-            var redoState = redoStates[redoStates.length-1];
-            // Add it to undo states
-            undoStates.push(redoState);
+        // Enable button
+        document.getElementById(mode + '-button').classList.remove('disabled');
 
-            //remove from redo array (do this before restoring the state, else the flatten state will break)
-            redoStates.splice(redoStates.length-1,1);
-
-            //restore the state
-            redoState.redo();
-
-            //if theres none left to redo, disable the option
-            if (redoStates.length == 0)
-                document.getElementById('redo-button').classList.add('disabled');
+        if (mode == 'undo') {
+            const undoState = undoStates.pop();
+            redoStates.push(undoState); 
+            undoState.undo();
         }
+        else {
+            const redoState = redoStates.pop();
+            undoStates.push(redoState); 
+            redoState.redo();
+        }
+
+
+        // if theres none left, disable the option
+        if (redoStates.length == 0) document.getElementById('redo-button').classList.add('disabled');
+        if (undoStates.length == 0) document.getElementById('undo-button').classList.add('disabled');
     }
 
     return {
@@ -88,8 +76,12 @@ const History = (() => {
     }
 })();
 
-const HistoryStates = {
-    ResizeSprite: function(xRatio, yRatio, algo, oldData) {
+class HistoryState {
+    constructor() {
+        History.saveHistoryState(this);
+    }
+
+    ResizeSprite (xRatio, yRatio, algo, oldData) {
         this.xRatio = xRatio;
         this.yRatio = yRatio;
         this.algo = algo;
@@ -115,11 +107,9 @@ const HistoryStates = {
             currentAlgo = algo;
             resizeSprite(null, [this.xRatio, this.yRatio]);
         };
-        
-        History.saveHistoryState(this);
-    },
+    }
 
-    ResizeCanvas: function (newSize, oldSize, imageDatas, trim) {
+    ResizeCanvas (newSize, oldSize, imageDatas, trim) {
         this.oldSize = oldSize;
         this.newSize = newSize;
         this.imageDatas = imageDatas;
@@ -146,11 +136,9 @@ const HistoryStates = {
                 trimCanvas(null, false);
             }
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    FlattenVisible: function(flattened) {
+    FlattenVisible(flattened) {
         this.nFlattened = flattened;
 
         this.undo = function() {
@@ -164,11 +152,9 @@ const HistoryStates = {
                 redo();
             }
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    FlattenTwoVisibles: function(belowImageData, afterAbove, layerIndex, aboveLayer, belowLayer) {
+    FlattenTwoVisibles(belowImageData, afterAbove, layerIndex, aboveLayer, belowLayer) {
         this.aboveLayer = aboveLayer;
         this.belowLayer = belowLayer;
         this.belowImageData = belowImageData;
@@ -192,11 +178,9 @@ const HistoryStates = {
             aboveLayer.menuEntry.remove();
             layers.splice(layers.indexOf(aboveLayer), 1);
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    FlattenAll: function(nFlattened) {
+    FlattenAll(nFlattened) {
         this.nFlattened = nFlattened;
 
         this.undo = function() {
@@ -210,11 +194,9 @@ const HistoryStates = {
                 redo();
             }
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    MergeLayer: function(aboveIndex, aboveLayer, belowData, belowLayer) {
+    MergeLayer(aboveIndex, aboveLayer, belowData, belowLayer) {
         this.aboveIndex = aboveIndex;
         this.belowData = belowData;
         this.aboveLayer = aboveLayer;
@@ -235,11 +217,9 @@ const HistoryStates = {
             aboveLayer.selectLayer();
             merge(false);
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    RenameLayer: function(oldName, newName, layer) {
+    RenameLayer(oldName, newName, layer) {
         this.edited = layer;
         this.oldName = oldName;
         this.newName = newName;
@@ -251,11 +231,9 @@ const HistoryStates = {
         this.redo = function() {
             layer.menuEntry.getElementsByTagName("p")[0].innerHTML = newName;
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    DuplicateLayer: function(addedLayer, copiedLayer) {
+    DuplicateLayer(addedLayer, copiedLayer) {
         this.addedLayer = addedLayer;
         this.copiedLayer = copiedLayer;
 
@@ -268,11 +246,9 @@ const HistoryStates = {
             copiedLayer.selectLayer();
             duplicateLayer(null, false);
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    DeleteLayer: function(layerData, before, index) {
+    DeleteLayer(layerData, before, index) {
         this.deleted = layerData;
         this.before = before;
         this.index = index;
@@ -292,11 +268,9 @@ const HistoryStates = {
             this.deleted.selectLayer();
             deleteLayer(false);
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    MoveTwoLayers: function(layer, oldIndex, newIndex) {
+    MoveTwoLayers(layer, oldIndex, newIndex) {
         this.layer = layer;
         this.oldIndex = oldIndex;
         this.newIndex = newIndex;
@@ -308,11 +282,9 @@ const HistoryStates = {
         this.redo = function() {
             layer.canvas.style.zIndex = newIndex;
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    MoveLayer: function(afterToDrop, toDrop, staticc, nMoved) {
+    MoveLayer(afterToDrop, toDrop, staticc, nMoved) {
         this.beforeToDrop = afterToDrop;
         this.toDrop = toDrop;
 
@@ -334,11 +306,9 @@ const HistoryStates = {
         this.redo = function() {
             moveLayers(toDrop.menuEntry.id, staticc.menuEntry.id, true);
         };
+    }
 
-        History.saveHistoryState(this);
-    },
-
-    AddLayer: function(layerData, index) {
+    AddLayer(layerData, index) {
         this.added = layerData;
         this.index = index;
 
@@ -361,12 +331,10 @@ const HistoryStates = {
             layerList.prepend(this.added.menuEntry);
             layers.splice(this.index, 0, this.added);
         };
-
-        History.saveHistoryState(this);
-    },
+    }
 
     //prototype for undoing canvas changes
-    EditCanvas: function() {
+    EditCanvas() {
         this.canvasState = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
         this.layerID = currentLayer.id;
 
@@ -390,13 +358,10 @@ const HistoryStates = {
 
             stateLayer.updateLayerPreview();
         };
-
-        //add self to undo array
-        History.saveHistoryState(this);
-    },
+    }
 
     //prototype for undoing added colors
-    AddColor: function(colorValue) {
+    AddColor(colorValue) {
         this.colorValue = colorValue;
 
         this.undo = function () {
@@ -406,13 +371,10 @@ const HistoryStates = {
         this.redo = function () {
             ColorModule.addColor(this.colorValue);
         };
-
-        //add self to undo array
-        History.saveHistoryState(this);
-    },
+    }
 
     //prototype for undoing deleted colors
-    DeleteColor: function(colorValue) {
+    DeleteColor(colorValue) {
         this.colorValue = colorValue;
         this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 
@@ -433,13 +395,10 @@ const HistoryStates = {
 
             this.canvas = currentCanvas;
         };
-
-        //add self to undo array
-        History.saveHistoryState(this);
-    },
+    }
 
     //prototype for undoing colors edits
-    EditColor: function(newColorValue, oldColorValue) {
+    EditColor(newColorValue, oldColorValue) {
         this.newColorValue = newColorValue;
         this.oldColorValue = oldColorValue;
         this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
@@ -477,8 +436,5 @@ const HistoryStates = {
 
             this.canvas = currentCanvas;
         };
-
-        //add self to undo array
-        History.saveHistoryState(this);
     }
 }

@@ -8,7 +8,7 @@ let firstPixel = true;
  */
 function newPixel (width, height, fileContent = null) {
 	// The palette is empty, at the beginning
-	ColorModule.currentPalette.length = 0;
+	ColorModule.resetPalette();
 
 	// If this is the first pixel I'm creating since the app has started
 	if (firstPixel) {
@@ -99,7 +99,6 @@ function newPixel (width, height, fileContent = null) {
 
 	// If the user selected a palette and isn't opening a file, I load the selected palette
 	if (selectedPalette != 'Choose a palette...' && fileContent == null) {
-		console.log('HELO', selectedPalette, palettes[selectedPalette])
 		//if this palette isnt the one specified in the url, then reset the url
 		if (!palettes[selectedPalette].specified)
 		  history.pushState(null, null, '/pixel-editor');

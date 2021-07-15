@@ -3,7 +3,7 @@
  */
 const ColorModule = (() => {
     // Array containing the colours of the current palette
-    const currentPalette = [];
+    let currentPalette = [];
     // Reference to the HTML palette
     const coloursList = document.getElementById("palette-list");
     
@@ -41,7 +41,7 @@ const ColorModule = (() => {
         newColor.a = 255;
 
         //save undo state
-        new HistoryStates.EditColor(hexElementValue.toLowerCase(), Color.rgbToHex(oldColor));
+        new HistoryState().EditColor(hexElementValue.toLowerCase(), Color.rgbToHex(oldColor));
 
         //get the currently selected color
         const currentlyEditedColor = document.getElementsByClassName('jscolor-active')[0];
@@ -138,7 +138,7 @@ const ColorModule = (() => {
         currentLayer.context.fillStyle = '#' + newColor;
 
         //add history state
-        new HistoryStates.AddColor(addedColor.firstElementChild.jscolor.toString());
+        new HistoryState().AddColor(addedColor.firstElementChild.jscolor.toString());
 
         //show color picker
         addedColor.firstElementChild.jscolor.show();
@@ -338,11 +338,20 @@ const ColorModule = (() => {
         currentLayer.context.putImageData(tempImage,0,0);
     }
 
+    function getCurrentPalette() {
+        return currentPalette;
+    }
+
+    function resetPalette() {
+        currentPalette = [];
+    }
+
     return {
-        currentPalette,
+        getCurrentPalette,
         addColor,
         deleteColor,
         replaceAllOfColor,
-        addToSimplePalette
+        addToSimplePalette,
+        resetPalette
     }
 })();

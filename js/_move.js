@@ -106,5 +106,5 @@ function endSelection() {
     currentLayer.updateLayerPreview();
 
     // Saving the history
-    new HistoryStates.EditCanvas();
+    new HistoryState().EditCanvas();
 }

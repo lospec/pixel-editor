@@ -551,7 +551,7 @@ if (!window.jscolor) { window.jscolor = (function () {
                     //if they clicked on the delete button [lospec]
                     if (e.target.className == 'delete-color-button') {
                         //saveHistoryState({type: 'deletecolor', colorValue: jsc.picker.owner.toString(), canvas: canvas.context.getImageData(0, 0, canvasSize[0], canvasSize[1])});
-                        new HistoryStates.DeleteColor(jsc.picker.owner.toString());
+                        new HistoryState().DeleteColor(jsc.picker.owner.toString());
 
                         ColorModule.deleteColor(jsc.picker.owner.styleElement);
                     }
