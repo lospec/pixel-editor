@@ -397,7 +397,7 @@ function deleteLayer(saveHistory = true) {
             layers[layerIndex + 1].selectLayer();
         }
         // or the previous one if the next one doesn't exist
-        else if (layerIndex != 1) {
+        else {
             layers[layerIndex - 1].selectLayer();
         }
 

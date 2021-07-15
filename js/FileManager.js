@@ -153,7 +153,6 @@ const FileManager = (() => {
         // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
         reader.onload = function (e) {
             let dictionary = JSON.parse(e.target.result);
-            let mode = dictionary['editorMode'];
             Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary);
         }
     }

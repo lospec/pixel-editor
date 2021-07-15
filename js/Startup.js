@@ -6,7 +6,7 @@ const Startup = (() => {
     Input.on('click', 'create-button', create, false);
     Input.on('click', 'create-button-splash', create, true);
 
-    function create(e, isSplash) {
+    function create(isSplash) {
         // If I'm creating from the splash menu, I append '-splash' so I get the corresponding values
         if (isSplash) {
             splashPostfix = '-splash';
@@ -33,14 +33,6 @@ const Startup = (() => {
         if (typeof ga !== 'undefined')
             ga('send', 'event', 'Pixel Editor New', selectedPalette, width+'/'+height); /*global ga*/
     }
-
-    /** TODO:
-     *  - Remove firstPixel: it's enough to pass to newPixel whether it's been called from the splash page or not
-     *  - Divide functions depending on their purpose:
-     * 		- initLayers()
-     * 		- initPalette()
-     * 		- openLPE()
-     */    
 
     /** Creates a new, empty file
      * 
@@ -73,7 +65,7 @@ const Startup = (() => {
 
         // Now, if I opened an LPE file
         if (fileContent != null) {
-            loadLPE(fileContent);
+            loadFromLPE(fileContent);
             // Deleting the default layer
             deleteLayer(false);
         }
@@ -196,8 +188,7 @@ const Startup = (() => {
         }
     }
 
-    // REFACTOR: should probably moved to a FileManagement class or something
-    function loadLPE(fileContent) {
+    function loadFromLPE(fileContent) {
         // I add every layer the file had in it
         for (let i=0; i<fileContent['nLayers']; i++) {
             let layerData = fileContent['layer' + i];
@@ -247,7 +238,7 @@ const Startup = (() => {
             const presetProperties = PresetModule.propertiesOf(preset);
             Util.setText('palette-button-splash', presetProperties.palette);
             Util.setText('palette-button', presetProperties.palette);
-    
+            
             x = presetProperties.width;
             y = presetProperties.height;
         }
