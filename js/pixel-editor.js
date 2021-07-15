@@ -40,7 +40,6 @@
 //=include _editorMode.js
 
 /**load file**/
-//=include _loadImage.js
 //=include _loadPalette.js
 
 /**event listeners**/
@@ -49,7 +48,8 @@
 
 /**buttons**/
 //=include _toolButtons.js
-//=include _fileMenu.js
+//=include FileManager.js
+//=include TopMenuModule.js
 //=include _rectSelect.js
 //=include _move.js
 //=include _rectangle.js

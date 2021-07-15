@@ -11,17 +11,17 @@
  * - Each HistoryState must call saveHistoryState(this) so that it gets added to the stack
  * 
  */
-
 const History = (() => {
 
     const undoLogStyle = 'background: #87ff1c; color: black; padding: 5px;';
     let undoStates = [];
     let redoStates = [];
+    
+    Input.on('click', 'undo-button', undo);
+    Input.on('click', 'redo-button', redo);
 
     //rename to add undo state
     function saveHistoryState (state) {
-        console.log("saved history");
-        console.log(state);
         //get current canvas data and save to undoStates array
         undoStates.push(state);
 

@@ -390,7 +390,6 @@ function deleteLayer(saveHistory = true) {
         let toDelete = layers[layerIndex];
         let previousSibling = toDelete.menuEntry.previousElementSibling;
         // Adding the ids to the unused ones
-        console.log("id cancellato: " + toDelete.id);
         unusedIDs.push(toDelete.id);
 
         // Selecting the next layer
@@ -398,7 +397,7 @@ function deleteLayer(saveHistory = true) {
             layers[layerIndex + 1].selectLayer();
         }
         // or the previous one if the next one doesn't exist
-        else {
+        else if (layerIndex != 1) {
             layers[layerIndex - 1].selectLayer();
         }
 

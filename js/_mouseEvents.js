@@ -70,7 +70,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	// Saving the event in case something else needs it
 	currentMouseEvent = mouseEvent;
 
-	closeMenu();
+	TopMenuModule.closeMenu();
 	
 	if (currentLayer != null && !isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
 		currentLayer.closeOptionsMenu();	

@@ -90,8 +90,6 @@ const Startup = (() => {
             currentLayer.canvas.style.zIndex = 2;
         }
         else {
-            // If it's not the first Pixel, I have to reset the app
-
             // Deleting all the extra layers and canvases, leaving only one
             let nLayers = layers.length;
             for (let i=2; i < layers.length - nAppLayers; i++) {
@@ -198,7 +196,7 @@ const Startup = (() => {
         }
     }
 
-    // OPTIMIZABLE: should probably moved to a FileManagement class or something
+    // REFACTOR: should probably moved to a FileManagement class or something
     function loadLPE(fileContent) {
         // I add every layer the file had in it
         for (let i=0; i<fileContent['nLayers']; i++) {
