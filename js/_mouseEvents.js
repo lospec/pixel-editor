@@ -37,8 +37,8 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		}
 	}
 	else if (mouseEvent.which == 2) {
+		tool.pan.brushSize = currentTool.brushSize;
 		currentTool = tool.pan;
-		tool.pan.brushSize = currentToolTemp.brushSize;
 	}
 	else if (currentTool.name == 'pencil' && mouseEvent.which == 3) {
 		currentTool = tool.resizebrush;
