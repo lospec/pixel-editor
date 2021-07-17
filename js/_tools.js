@@ -18,10 +18,10 @@ class Tool {
 
 		if (options.imageCursor) this.cursor = "url(\'/pixel-editor/"+options.imageCursor+".png\'), auto";
 
+		this.currentBrushSize = 1;
+		this.previousBrushSize = 1;
 		if (options.brushPreview) {
 			this.brushPreview = true;
-			this.currentBrushSize = 1;
-			this.previousBrushSize = 1;
 		}
 
 		//add to tool object so it can be referenced
