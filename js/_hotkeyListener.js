@@ -1,3 +1,5 @@
+// REFACTOR: rename Input into Events and have an Input IIFE to take care of hotkeys, cursor ecc?
+
 var spacePressed = false;
 
 /** Just listens to hotkeys and calls the linked functions

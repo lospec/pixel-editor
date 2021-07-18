@@ -161,7 +161,7 @@ const Startup = (() => {
             history.pushState(null, null, '/pixel-editor');
             
             //fill the palette with specified colours
-            createColorPalette(palettes[selectedPalette].colors,true);
+            ColorModule.createColorPalette(palettes[selectedPalette].colors);
         }
         // Otherwise, I just generate 2 semirandom colours
         else {
@@ -206,7 +206,7 @@ const Startup = (() => {
                     createdLayer.updateLayerPreview();
 
                     if (i == (fileContent['nLayers'] - 1)) {
-                        createPaletteFromLayers();
+                        ColorModule.createPaletteFromLayers();
                     }
                 };
 

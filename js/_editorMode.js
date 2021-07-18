@@ -1,3 +1,5 @@
+// REFACTOR: move everything in EditorState?
+
 var pixelEditorMode = "Basic";
 switchMode(pixelEditorMode);
 

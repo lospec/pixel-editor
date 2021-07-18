@@ -132,7 +132,7 @@ const FileManager = (() => {
 
                 //draw the image onto the canvas
                 currentLayer.context.drawImage(img, 0, 0);
-                createPaletteFromLayers();
+                ColorModule.createPaletteFromLayers();
 
                 //track google event
                 if (typeof ga !== 'undefined')

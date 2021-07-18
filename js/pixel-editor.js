@@ -21,7 +21,6 @@
 /**functions**/
 //=include _tools.js
 //=include tools/*.js
-//=include _createColorPalette.js
 //=include _changeZoom.js
 //=include ColorModule.js
 //=include _drawLine.js
@@ -55,10 +54,6 @@
 //=include _rectangle.js
 //=include _ellipse.js
 //=include Startup.js
-
-/**onload**/
-//=include _onLoad.js
-//=include _onbeforeunload.js
 
 /**feature toggles**/
 //=include _featureToggles.js
@@ -115,4 +110,12 @@ window.onload = function () {
 				Dialogue.showDialogue('splash', false);
 			});
 	} 
+};
+
+//prevent user from leaving page with unsaved data
+window.onbeforeunload = function() {
+    if (documentCreated)
+        return 'You will lose your pixel if it\'s not saved!';
+
+    else return;
 };
