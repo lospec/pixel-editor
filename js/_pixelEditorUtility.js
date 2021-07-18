@@ -1,67 +1,6 @@
 /***********MISCELLANEOUS UTILITY FUNCTIONS**************/
 
-/** Merges topLayer onto belowLayer
- * 
- * @param {*} belowLayer The layer on the bottom of the layer stack
- * @param {*} topLayer The layer on the top of the layer stack
- */
-function mergeLayers(belowLayer, topLayer) {
-	// Copying the above content on the layerBelow
-    let belowImageData = belowLayer.getImageData(0, 0, canvas.width, canvas.height);
-    let toMergeImageData = topLayer.getImageData(0, 0, canvas.width, canvas.height);
-
-    for (let i=0; i<belowImageData.data.length; i+=4) {
-        let currentMovePixel = [
-            toMergeImageData.data[i], toMergeImageData.data[i+1], 
-            toMergeImageData.data[i+2], toMergeImageData.data[i+3]
-        ];
-
-        let currentUnderlyingPixel = [
-            belowImageData.data[i], belowImageData.data[i+1], 
-            belowImageData.data[i+2], belowImageData.data[i+3]
-        ];
-
-        if (isPixelEmpty(currentMovePixel)) {
-            if (!isPixelEmpty(belowImageData)) {
-                toMergeImageData.data[i] = currentUnderlyingPixel[0];
-                toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
-                toMergeImageData.data[i+2] = currentUnderlyingPixel[2];
-                toMergeImageData.data[i+3] = currentUnderlyingPixel[3];
-            }
-        }
-    }
-
-	// Putting the top data into the belowdata
-    belowLayer.putImageData(toMergeImageData, 0, 0);
-}
-
-/** Used to programmatically create an input event
- * 
- * @param {*} keyCode KeyCode of the key to press
- * @param {*} ctrl Is ctrl pressed?
- * @param {*} alt Is alt pressed?
- * @param {*} shift Is shift pressed?
- */
-function simulateInput(keyCode, ctrl, alt, shift) {
-	// I just copy pasted this from stack overflow lol please have mercy
-	let keyboardEvent = document.createEvent("KeyboardEvent");
-	let initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-
-	keyboardEvent[initMethod](
-	  "keydown", // event type: keydown, keyup, keypress
-	  true,      // bubbles
-	  true,      // cancelable
-	  window,    // view: should be window
-	  ctrl,     // ctrlKey
-	  alt,     // altKey
-	  shift,     // shiftKey
-	  false,     // metaKey
-	  keyCode,        // keyCode: unsigned long - the virtual key code, else 0
-	  keyCode       // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
-	);
-	document.dispatchEvent(keyboardEvent);
-}
-
+// REFACTOR: put in Canvas class / IIFE
 /** Tells if a pixel is empty (has alpha = 0)
  * 
  * @param {*} pixel 
@@ -79,26 +18,7 @@ function isPixelEmpty(pixel) {
     return false;
 }
 
-/** Tells if element is a child of an element with class className
- * 
- * @param {*} element 
- * @param {*} className 
- */
-function isChildOfByClass(element, className) {
-	// Getting the element with class className
-	while (element != null && element.classList != null && !element.classList.contains(className)) {
-		element = element.parentElement;
-	}
-
-	// If that element exists and its class is the correct one
-	if (element != null && element.classList != null && element.classList.contains(className)) {
-		// Then element is a chld of an element with class className
-		return true;
-	}
-
-	return false;
-}
-
+// REFACTOR: move to eyedropper onMouseUp event?
 /** Gets the eyedropped colour (the colour of the pixel pointed by the cursor when the user is using the eyedropper).
  *  It takes the colour of the canvas with the biggest z-index, basically the one the user can see, since it doesn't
  *  make much sense to sample a colour which is hidden behind a different layer
@@ -135,24 +55,7 @@ function getEyedropperColor(cursorLocation) {
 	return selectedColor;
 }
 
-/** Gets the absolute position of the element (position on the screen)
- * 
- * @param {*} element The element of which we have to get the position
- */
-function getElementAbsolutePosition(element) {
-	// Probably copy pasted this from stack overflow too, if not I don't recall how it works
-	let curleft = curtop = 0;
-
-	if (element.offsetParent) {
-		do {
-			curleft += element.offsetLeft;
-			curtop += element.offsetTop;
-		} while (element = element.offsetParent);
-	}
-
-	return [curleft,curtop];
-}
-
+// REFACTOR: private method of custom ImageData wrapper (PixelImageData?)?
 /** Nearest neighbor algorithm to scale a sprite
  * 
  * @param {*} src The source imageData
@@ -177,6 +80,7 @@ function nearestNeighbor (src, dst) {
 	}
 }
   
+// REFACTOR: private method of custom ImageData wrapper (PixelImageData?)?
 /** Bilinear interpolation used to scale a sprite
  * 
  * @param {*} src The source imageData
@@ -225,7 +129,8 @@ function bilinearInterpolation (src, dst) {
 		}
 	}
 }
-  
+
+// REFACTOR: public static method of custom ImageData wrapper (PixelImageData?)?
 /** Resizes an imageData depending on the algorithm and on the new width and height
  * 
  * @param {*} image The imageData to scale
@@ -250,6 +155,7 @@ function resizeImageData (image, width, height, algorithm) {
 	return result
 }
 
+// REFACTOR: public static method of custom ImageData wrapper (PixelImageData?)?
 /** Gets the position in (x, y) format of the pixel with index "index" 
  * 
  * @param {*} index The index of the pixel of which we need the (x, y) position
@@ -260,11 +166,4 @@ function getPixelPosition(index) {
 	let y = Math.floor(linearIndex / layers[0].canvasSize[0]);
 
 	return [Math.ceil(x), Math.ceil(y)];
-}
-
-/** Sets isDragging to false, used when the user interacts with sortable lists
- * 
- */
-function makeIsDraggingFalse(event) {
-	dragging = false;
 }

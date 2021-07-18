@@ -18,7 +18,7 @@ const ColorModule = (() => {
         animation:100,
         filter: ".noshrink",
         draggable: ".draggable-colour",
-        onEnd: makeIsDraggingFalse
+        onEnd: function() {dragging = false}
     });
 
     /** Changes all of one color to another after being changed from the color picker

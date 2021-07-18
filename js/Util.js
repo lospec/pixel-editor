@@ -1,5 +1,26 @@
 // Acts as a public static class
 class Util {
+
+    /** Tells if element is a child of an element with class className
+     * 
+     * @param {*} element 
+     * @param {*} className 
+     */
+    static isChildOfByClass(element, className) {
+        // Getting the element with class className
+        while (element != null && element.classList != null && !element.classList.contains(className)) {
+            element = element.parentElement;
+        }
+
+        // If that element exists and its class is the correct one
+        if (element != null && element.classList != null && element.classList.contains(className)) {
+            // Then element is a chld of an element with class className
+            return true;
+        }
+
+        return false;
+    }
+
     /** Returns elementOrElementId if the argument is already an element, otherwise it finds
      *  the element by its ID (given by the argument) and returns it
      * 
