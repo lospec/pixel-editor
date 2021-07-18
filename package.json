@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "cross-env": "7.0.3",
-    "reload": "^3.1.1",
+    "reload": "^3.2.0",
     "wait-cli": "^1.0.0"
   }
 }

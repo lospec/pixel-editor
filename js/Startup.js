@@ -108,8 +108,7 @@ const Startup = (() => {
             }
 
             // Setting up the current layer
-            layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
-            currentLayer = layers[1];
+            currentLayer = new Layer(width, height, canvas, layerListEntry);
             currentLayer.canvas.style.zIndex = 2;
             
             // Updating canvas size to the new size
