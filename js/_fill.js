@@ -40,9 +40,8 @@ function fill(cursorLocation) {
     var clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2], tempImage.data[startingPosition+3]];
 
     //the new color to fill with
-    var fillColor = hexToRgb(currentLayer.context.fillStyle);
-    console.log("here");
-
+    var fillColor = Color.hexToRgb(currentLayer.context.fillStyle);
+    
     //if you try to fill with the same color that's already there, exit the function
     if (clusterColor[0] == fillColor.r &&
         clusterColor[1] == fillColor.g &&
