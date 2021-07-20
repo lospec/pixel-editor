@@ -17,7 +17,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	dragging = true;
 	//left or right click ?
 	if (mouseEvent.which == 1) {
-		if (spacePressed)
+		if (Input.spacePressed())
 			currentTool = tool.pan;
 		else if (mouseEvent.altKey)
 			currentTool = tool.eyedropper;

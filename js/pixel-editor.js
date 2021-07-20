@@ -4,7 +4,7 @@
 //=include _pixelEditorUtility.js
 //=include lib/sortable.js
 //=include Util.js
-//=include Input.js
+//=include Events.js
 //=include Color.js
 //=include Dialogue.js
 //=include History.js
@@ -42,7 +42,7 @@
 //=include _loadPalette.js
 
 /**event listeners**/
-//=include _hotkeyListener.js
+//=include Input.js
 //=include _mouseEvents.js
 
 /**buttons**/

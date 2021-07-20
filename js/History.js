@@ -29,8 +29,8 @@ const History = (() => {
     let undoStates = [];
     let redoStates = [];
     
-    Input.on('click', 'undo-button', undo);
-    Input.on('click', 'redo-button', redo);
+    Events.on('click', 'undo-button', undo);
+    Events.on('click', 'redo-button', redo);
 
     //rename to add undo state
     function saveHistoryState (state) {

@@ -13,7 +13,7 @@ const TopMenuModule = (() => {
             const menuButton = menuItem.children[0];
 
             //when you click a main menu items button
-            Input.on('click', menuButton, function (e) {
+            Events.on('click', menuButton, function (e) {
                 // Select the item
                 Util.select(e.target.parentElement);
             });
@@ -29,16 +29,16 @@ const TopMenuModule = (() => {
 
                 switch (currSubmenuButton.textContent) {
                     case 'New':
-                        Input.on('click', currSubmenuButton, Dialogue.showDialogue, 'new-pixel');
+                        Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'new-pixel');
                         break;
                     case 'Save project':
-                        Input.on('click', currSubmenuButton, FileManager.saveProject);
+                        Events.on('click', currSubmenuButton, FileManager.saveProject);
                         break;
                     case 'Open':
-                        Input.on('click', currSubmenuButton, FileManager.open);
+                        Events.on('click', currSubmenuButton, FileManager.open);
                         break;
                     case 'Export':
-                        Input.on('click', currSubmenuButton, FileManager.exportProject);
+                        Events.on('click', currSubmenuButton, FileManager.exportProject);
                         break;
                     case 'Exit':
                         //if a document exists, make sure they want to delete it
@@ -53,31 +53,31 @@ const TopMenuModule = (() => {
                         break;
                     // REFACTOR: move the binding to the Selection IIFE or something like that once it's done
                     case 'Paste':
-                        Input.on('click', currSubmenuButton, pasteSelection);
+                        Events.on('click', currSubmenuButton, pasteSelection);
                         break;
                     case 'Copy':
-                        Input.on('click', currSubmenuButton, copySelection);
+                        Events.on('click', currSubmenuButton, copySelection);
                         break;
                     case 'Cut':
-                        Input.on('click', currSubmenuButton, cutSelectionTool);
+                        Events.on('click', currSubmenuButton, cutSelectionTool);
                         break;
                     case 'Cancel':
-                        Input.on('click', currSubmenuButton, tool.pencil.switchTo);
+                        Events.on('click', currSubmenuButton, tool.pencil.switchTo);
                         break;
                         //Help Menu
                     case 'Settings':
                         //fill form with current settings values
                         //Util.setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
-                        Input.on('click', currSubmenuButton, Dialogue.showDialogue, 'settings');
+                        Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'settings');
                         break;
                     case 'Help':
-                        Input.on('click', currSubmenuButton, Dialogue.showDialogue, 'help');
+                        Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'help');
                         break;
                     case 'About':
-                        Input.on('click', currSubmenuButton, Dialogue.showDialogue, 'about');
+                        Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'about');
                         break;
                     case 'Changelog':
-                        Input.on('click', currSubmenuButton, Dialogue.showDialogue, 'changelog');
+                        Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'changelog');
                         break;
                 }
             }

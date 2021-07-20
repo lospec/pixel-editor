@@ -3,8 +3,8 @@ const Startup = (() => {
     let firstPixel = true;
     let splashPostfix = '';
 
-    Input.on('click', 'create-button', create, false);
-    Input.on('click', 'create-button-splash', create, true);
+    Events.on('click', 'create-button', create, false);
+    Events.on('click', 'create-button-splash', create, true);
 
     function create(isSplash) {
         // If I'm creating from the splash menu, I append '-splash' so I get the corresponding values

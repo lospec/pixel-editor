@@ -24,7 +24,7 @@ let oldLayerName = null;
 let dragStartLayer;
 
 // Binding the add layer button to the function
-Input.on('click',"add-layer-button", addLayer, false);
+Events.on('click',"add-layer-button", addLayer, false);
 
 /** Handler class for a single canvas (a single layer)
  *
@@ -475,7 +475,7 @@ function renameLayer(event) {
     p.classList.add("layer-name-editable");
     p.focus();
 
-    Input.simulateInput(65, true, false, false);
+    Events.simulateInput(65, true, false, false);
 
     isRenamingLayer = true;
 }

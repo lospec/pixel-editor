@@ -2,7 +2,7 @@ const FileManager = (() => {
 
     // Binding the browse holder change event to file loading
     const browseHolder = document.getElementById('open-image-browse-holder');
-    Input.on('change', browseHolder, loadFile);
+    Events.on('change', browseHolder, loadFile);
 
     function saveProject() {
         //create name

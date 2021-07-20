@@ -12,7 +12,7 @@ let modes = {
     }
 }
 
-Input.on('click', 'switch-editor-mode-splash', function (e) {
+Events.on('click', 'switch-editor-mode-splash', function (e) {
     toggleMode();
 });
 
@@ -75,6 +75,6 @@ function toggleMode() {
 		switchMode('Advanced');
 }
 
-Input.on('click', 'switch-mode-button', function (e) {
+Events.on('click', 'switch-mode-button', function (e) {
     toggleMode();
 });
