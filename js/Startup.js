@@ -68,6 +68,8 @@ const Startup = (() => {
             loadFromLPE(fileContent);
             // Deleting the default layer
             deleteLayer(false);
+            // Selecting the new one
+            layers[1].selectLayer();
         }
     }
 
