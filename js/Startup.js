@@ -152,7 +152,7 @@ const Startup = (() => {
         let selectedPalette = Util.getText('palette-button' + splashPostfix);
 
         //remove current palette
-        colors = document.getElementsByClassName('color-button');
+        let colors = document.getElementsByClassName('color-button');
         while (colors.length > 0) {
             colors[0].parentElement.remove();
         }

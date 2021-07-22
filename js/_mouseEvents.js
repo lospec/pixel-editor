@@ -99,13 +99,13 @@ window.addEventListener("mouseup", function (mouseEvent) {
 			layers[i].context.fillStyle = currentGlobalColor;
 		}
 
-		var colors = document.getElementsByClassName('color-button');
-	    for (var i = 0; i < colors.length; i++) {
+		let colors = document.getElementsByClassName('color-button');
+	    for (let i = 0; i < colors.length; i++) {
 
 	      //if picked color matches this color
 	      if (newColor == colors[i].jscolor.toString()) {
 	        //remove current color selection
-	        var selectedColor = document.querySelector("#colors-menu li.selected")
+	        let selectedColor = document.querySelector("#colors-menu li.selected")
 	        if (selectedColor) selectedColor.classList.remove("selected");
 
 	      	//set current color

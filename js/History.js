@@ -416,12 +416,12 @@ class HistoryState {
         this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 
         this.undo = function () {
-            var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+            let currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
             currentLayer.context.putImageData(this.canvas, 0, 0);
 
             //find new color in palette and change it back to old color
-            var colors = document.getElementsByClassName('color-button');
-            for (var i = 0; i < colors.length; i++) {
+            let colors = document.getElementsByClassName('color-button');
+            for (let i = 0; i < colors.length; i++) {
                 //console.log(newColorValue, '==', colors[i].jscolor.toString());
                 if (newColorValue == colors[i].jscolor.toString()) {
                     colors[i].jscolor.fromString(oldColorValue);
@@ -433,12 +433,12 @@ class HistoryState {
         };
 
         this.redo = function () {
-            var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+            let currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
             currentLayer.context.putImageData(this.canvas, 0, 0);
 
             //find old color in palette and change it back to new color
-            var colors = document.getElementsByClassName('color-button');
-            for (var i = 0; i < colors.length; i++) {
+            let colors = document.getElementsByClassName('color-button');
+            for (let i = 0; i < colors.length; i++) {
                 //console.log(oldColorValue, '==', colors[i].jscolor.toString());
                 if (oldColorValue == colors[i].jscolor.toString()) {
                     colors[i].jscolor.fromString(newColorValue);

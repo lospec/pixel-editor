@@ -6,7 +6,9 @@ const ColorModule = (() => {
     let currentPalette = [];
     // Reference to the HTML palette
     const coloursList = document.getElementById("palette-list");
-    
+    // Reference to the colours menu
+    const colorsMenu = document.getElementById("colors-menu");
+     
     // Binding events to callbacks
     console.info("Initialized Color Module..");
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
@@ -52,7 +54,7 @@ const ColorModule = (() => {
         colors = document.getElementsByClassName('color-button');
 
         //loop through all colors in palette
-        for (var i = 0; i < colors.length; i++) {
+        for (let i = 0; i < colors.length; i++) {
             //if generated color matches this color
             if (newColorHex == colors[i].jscolor.toString()) {
                 //if the color isnt the one that has the picker currently open
@@ -254,7 +256,7 @@ const ColorModule = (() => {
         //if color is a string, then find the corresponding button
         if (typeof color === 'string') {
             //get all colors in palette
-            colors = document.getElementsByClassName('color-button');
+            let colors = document.getElementsByClassName('color-button');
     
             //loop through colors
             for (var i = 0; i < colors.length; i++) {
@@ -278,12 +280,12 @@ const ColorModule = (() => {
         color.jscolor.hide();
     
         //find lightest color in palette
-        var colors = document.getElementsByClassName('color-button');
-        var lightestColor = [0,null];
-        for (var i = 0; i < colors.length; i++) {
+        let colors = document.getElementsByClassName('color-button');
+        let lightestColor = [0,null];
+        for (let i = 0; i < colors.length; i++) {
     
             //get colors lightness
-            var lightness = Color.rgbToHsl(colors[i].jscolor.toRgb()).l;
+            let lightness = Color.rgbToHsl(colors[i].jscolor.toRgb()).l;
     
             //if not the color we're deleting
             if (colors[i] != color) {

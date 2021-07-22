@@ -1102,15 +1102,15 @@ if (!window.jscolor) { window.jscolor = (function () {
                 hexInput.colorElement = this.styleElement;
 
                 //disable delete button if last color 
-                var colors = document.getElementsByClassName('color-button');
-                var deleteButton = document.getElementsByClassName('delete-color-button')[0];
+                let colors = document.getElementsByClassName('color-button');
+                let deleteButton = document.getElementsByClassName('delete-color-button')[0];
                 if(colors.length == 1)
                     deleteButton.classList.add('disabled');
                 else
                     deleteButton.classList.remove('disabled');
 
                 //hide duplicate color warning
-                var duplicateColorWarning = document.getElementById('duplicate-color-warning');
+                let duplicateColorWarning = document.getElementById('duplicate-color-warning');
                 duplicateColorWarning.style.visibility = 'hidden';
             };
 

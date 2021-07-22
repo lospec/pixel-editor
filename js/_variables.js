@@ -1,7 +1,7 @@
 //init variables
 var canvasSize; // REFACTOR: Canvas class / getCanvasSize method
 var zoom = 7; // REFACTOR: EditorState class/IIFE?
-var lastMouseClickPos = [0,0]; // REFACTOR: Input IIFE via getter?
+var lastMouseClickPos = [0,0]; // REFACTOR: Input IIFE via getter? <- probably editor state as it is changed by tools
 var documentCreated = false; // REFACTOR: EditorState
 
 //common elements
@@ -11,9 +11,6 @@ var eyedropperPreview = document.getElementById("eyedropper-preview");
 
 // REFACTOR: File class?
 var canvasView = document.getElementById("canvas-view");
-// REFACTOR: find some way to put these in ColorModule?
-var colors = document.getElementsByClassName("color-button");
-var colorsMenu = document.getElementById("colors-menu");
 
 // main canvas
 // REFACTOR: carefully check if it's possible to remove this one
