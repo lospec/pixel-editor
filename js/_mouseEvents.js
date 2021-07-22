@@ -37,6 +37,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 		}
 	}
 	else if (mouseEvent.which == 2) {
+		tool.pan.brushSize = currentTool.brushSize;
 		currentTool = tool.pan;
 	}
 	else if (currentTool.name == 'pencil' && mouseEvent.which == 3) {
@@ -172,6 +173,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	currentTool = currentToolTemp;
 
 	currentTool.updateCursor();
+	var cursorLocation = getCursorPosition(mouseEvent);
+	currentTool.moveBrushPreview(cursorLocation);
 
 
 }, false);
@@ -215,8 +218,6 @@ function draw (mouseEvent) {
 		//if a document hasnt yet been created or the current layer is locked, exit this function
 		if (!documentCreated || Dialogue.isOpen() || !currentLayer.isVisible || currentLayer.isLocked) return;
 
-		// Moving brush preview
-		currentTool.moveBrushPreview(cursorLocation);
 		// Hiding eyedropper, will be shown if it's needed
 		eyedropperPreview.style.display = 'none';
 
@@ -305,6 +306,9 @@ function draw (mouseEvent) {
 			for (let i=1; i<layers.length; i++) {
 				layers[i].copyData(layers[0]);
 			}
+			// Updating cursorLocation with new layer position
+			lastMouseMovePos = getCursorPosition(mouseEvent);
+			cursorLocation = lastMouseMovePos;
 		}
 		else if (currentTool.name == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
 
@@ -420,6 +424,9 @@ function draw (mouseEvent) {
 			}
 			currentLayer.updateLayerPreview();
 		}
+
+		// Moving brush preview
+		currentTool.moveBrushPreview(cursorLocation);
 	}
 
 	if (mouseEvent.target.className == 'drawingCanvas')
