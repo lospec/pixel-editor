@@ -19,7 +19,7 @@ const ColorModule = (() => {
         filter: ".noshrink",
         draggable: ".draggable-colour",
         // REFACTOR: Don't touch dragging, simulate a mouseup event instead
-        onEnd: function() {dragging = false}
+        onEnd: function() {Events.simulateMouseEvent(window, "mouseup");}
     });
 
     /** Changes all of one color to another after being changed from the color picker

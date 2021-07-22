@@ -591,8 +591,7 @@ function layerDragDrop(event) {
     }
 
     getLayerByID(layerList.children[oldIndex].id).canvas.style.zIndex = movedZIndex;
-
-    dragging = false;
+    Events.simulateMouseEvent(window, "mouseup");
 }
 
 
