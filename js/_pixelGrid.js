@@ -3,9 +3,10 @@ let pixelGridColor = "#000000";
 // Distance between one line and another in HTML pixels
 let lineDistance = 12;
 // The grid is visible by default
-let pixelGridVisible = true;
+let pixelGridVisible = false;
 // Saving the canvas containing the pixel grid
 pixelGridCanvas = document.getElementById("pixel-grid");
+
 
 /** Shows or hides the pixel grid depening on its current visibility
  *  (triggered by the show pixel grid button in the top menu)

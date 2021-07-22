@@ -15,8 +15,6 @@ var canvasView = document.getElementById("canvas-view");
 // main canvas
 // REFACTOR: carefully check if it's possible to remove this one
 var canvas = document.getElementById('pixel-canvas');
-// REFACTOR: find some way to put these in ColorModule?
-var currentGlobalColor;
 
 // Layers
 // REFACTOR: File class / IIFE?

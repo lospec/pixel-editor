@@ -64,7 +64,7 @@ function switchMode(newMode) {
 		document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove('advanced-mode');
 
 		pixelEditorMode = 'Basic';
-		togglePixelGrid('on');
+		togglePixelGrid('off');
     }
 }
 

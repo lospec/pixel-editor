@@ -124,8 +124,6 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
             y: layers[0].canvasSize[1]},
             imageDatas.slice(), customData != null && saveHistory
         );
-
-        console.log("salvata");
     }
 
     // Resize the canvases
@@ -137,7 +135,6 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
         layers[i].canvas.height = layers[i].canvasSize[1];
 
         layers[i].resize();
-        layers[i].context.fillStyle = currentGlobalColor;
     }
 
     // Regenerate the checkerboard

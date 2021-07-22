@@ -80,9 +80,8 @@ function endEllipseDrawing(mouseEvent) {
 	endEllipseX -= 0.5;
 	startEllipseX -= 0.5;
 
-	// Setting the correct linewidth and colour
+	// Setting the correct linewidth
 	currentLayer.context.lineWidth = tool.ellipse.brushSize;
-	currentLayer.context.fillStyle = currentGlobalColor;
 
 	// Drawing the ellipse using 4 lines
 	line(startEllipseX, startEllipseY, endEllipseX, startEllipseY, tool.ellipse.brushSize);
@@ -115,7 +114,6 @@ function drawEllipse(x, y) {
 
 	// Drawing the ellipse
 	vfxContext.lineWidth = tool.ellipse.brushSize;
-	vfxContext.strokeStyle = currentGlobalColor;
 
 	// Drawing the ellipse
 	vfxContext.beginPath();

@@ -93,12 +93,8 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		const rgbColor = {r:selectedColor[0],g:selectedColor[1],b:selectedColor[2]};
 		var newColor = Color.rgbToHex(rgbColor);
 
-		currentGlobalColor = "#" + newColor;
-
-		for (let i=1; i<layers.length - 1; i++) {
-			layers[i].context.fillStyle = currentGlobalColor;
-		}
-
+		ColorModule.updateCurrentColor('#' + newColor);
+		
 		let colors = document.getElementsByClassName('color-button');
 	    for (let i = 0; i < colors.length; i++) {
 
@@ -216,6 +212,8 @@ function draw (mouseEvent) {
 		//if a document hasnt yet been created or the current layer is locked, exit this function
 		if (!documentCreated || Dialogue.isOpen() || !currentLayer.isVisible || currentLayer.isLocked) return;
 
+		// Moving brush preview
+		currentTool.moveBrushPreview(cursorLocation);
 		// Hiding eyedropper, will be shown if it's needed
 		eyedropperPreview.style.display = 'none';
 
@@ -307,6 +305,8 @@ function draw (mouseEvent) {
 			// Updating cursorLocation with new layer position
 			lastMouseMovePos = getCursorPosition(mouseEvent);
 			cursorLocation = lastMouseMovePos;
+			// Moving brush preview
+			currentTool.moveBrushPreview(cursorLocation);
 		}
 		else if (currentTool.name == 'eyedropper' && Input.isDragging() && mouseEvent.target.className == 'drawingCanvas') {
 
@@ -422,9 +422,6 @@ function draw (mouseEvent) {
 			}
 			currentLayer.updateLayerPreview();
 		}
-
-		// Moving brush preview
-		currentTool.moveBrushPreview(cursorLocation);
 	}
 
 	if (mouseEvent.target.className == 'drawingCanvas')

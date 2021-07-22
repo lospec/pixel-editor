@@ -19,8 +19,8 @@ let endRectY;
  * @param {*} mouseEvent 
  */
 function startRectDrawing(mouseEvent) {
-	// Putting the vfx layer on top of everything
-    VFXCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;;
+	// Putting the tmp layer on top of everything
+    TMPCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
     // Updating flag
     isDrawingRect = true;
 
@@ -51,7 +51,7 @@ function updateRectDrawing(mouseEvent) {
 function endRectDrawing(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
-	let vfxContext = VFXCanvas.getContext("2d");
+	let tmpContext = TMPCanvas.getContext("2d");
 
 	endRectX = Math.floor(currentPos[0] / zoom) + 0.5;
 	endRectY = Math.floor(currentPos[1] / zoom) + 0.5;
@@ -79,7 +79,6 @@ function endRectDrawing(mouseEvent) {
 
 	// Setting the correct linewidth and colour
 	currentLayer.context.lineWidth = tool.rectangle.brushSize;
-	currentLayer.context.fillStyle = currentGlobalColor;
 
 	// Drawing the rect using 4 lines
 	line(startRectX, startRectY, endRectX, startRectY, tool.rectangle.brushSize);
@@ -92,38 +91,38 @@ function endRectDrawing(mouseEvent) {
 		currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
 	}
 
-	// Clearing the vfx canvas
-	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
+	// Clearing the tmp canvas
+	tmpContext.clearRect(0, 0, TMPCanvas.width, TMPCanvas.height);
 }
 
-/** Draws a rectangle with end coordinates given by x and y on the VFX layer (draws
+/** Draws a rectangle with end coordinates given by x and y on the tmp layer (draws
  *  the preview for the rectangle tool)
  * 
  * @param {*} x The current end x of the rectangle
  * @param {*} y The current end y of the rectangle
  */
 function drawRectangle(x, y) {
-	// Getting the vfx context
-	let vfxContext = VFXCanvas.getContext("2d");
+	console.log("drawing, color: " + TMPCanvas.getContext("2d").fillStyle);
+	// Getting the tmp context
+	let tmpContext = TMPCanvas.getContext("2d");
 
-	// Clearing the vfx canvas
-	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
-
-	// Drawing the rect
-	vfxContext.lineWidth = tool.rectangle.brushSize;
-	vfxContext.strokeStyle = currentGlobalColor;
+	// Clearing the tmp canvas
+	tmpContext.clearRect(0, 0, TMPCanvas.width, TMPCanvas.height);
 
 	// Drawing the rect
-	vfxContext.beginPath();
+	tmpContext.lineWidth = tool.rectangle.brushSize;
+
+	// Drawing the rect
+	tmpContext.beginPath();
 	if ((tool.rectangle.brushSize % 2 ) == 0) {
-		vfxContext.rect(startRectX - 0.5, startRectY - 0.5, x - startRectX, y - startRectY);
+		tmpContext.rect(startRectX - 0.5, startRectY - 0.5, x - startRectX, y - startRectY);
 	}
 	else {
-		vfxContext.rect(startRectX, startRectY, x - startRectX, y - startRectY);
+		tmpContext.rect(startRectX, startRectY, x - startRectX, y - startRectY);
 	}
 
-	vfxContext.setLineDash([]);
-    vfxContext.stroke();
+	tmpContext.setLineDash([]);
+    tmpContext.stroke();
 }
 
 /** Sets the correct tool icon depending on its mode

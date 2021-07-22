@@ -141,9 +141,9 @@ const Startup = (() => {
             // Adding the first layer and the checkerboard to the list of layers
             layers.push(checkerBoard);
             layers.push(currentLayer);
-            layers.push(VFXLayer);
             layers.push(TMPLayer);
             layers.push(pixelGrid);
+            layers.push(VFXLayer);
         }
     }
 
@@ -184,8 +184,7 @@ const Startup = (() => {
             ColorModule.addColor(defaultBackgroundColor);
 
             //set current drawing color as foreground color
-            currentLayer.context.fillStyle = '#'+defaultForegroundColor;
-            currentGlobalColor = '#' + defaultForegroundColor;
+            ColorModule.updateCurrentColor('#'+defaultForegroundColor);
             selectedPalette = 'none';
         }
     }

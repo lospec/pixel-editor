@@ -88,10 +88,7 @@ const ColorModule = (() => {
 
         //if this is the current color, update the drawing color
         if (hexElement.colorElement.parentElement.classList.contains('selected')) {
-            for (let i=1; i<layers.length - nAppLayers; i++) {
-                layers[i].context.fillStyle = '#'+ Color.rgbToHex(newColor);
-            }
-            currentGlobalColor = newColor;
+            updateCurrentColor('#' + Color.rgbToHex(newColor));
         }
     }
 
@@ -100,6 +97,7 @@ const ColorModule = (() => {
      * @param {*} e The event that triggered the callback
      */
     function clickedColor (e){
+        console.log("here bitch");
         //left clicked color
         if (e.which == 1) {
             // remove current color selection
@@ -107,11 +105,8 @@ const ColorModule = (() => {
             if (selectedColor) selectedColor.classList.remove('selected');
     
             //set current color
-            for (let i=1; i<layers.length - nAppLayers; i++) {
-                layers[i].context.fillStyle = this.style.backgroundColor;
-            }
+            updateCurrentColor(e.target.style.backgroundColor);
     
-            currentGlobalColor = this.style.backgroundColor;
             //make color selected
             e.target.parentElement.classList.add('selected');
     
@@ -136,9 +131,9 @@ const ColorModule = (() => {
         document.querySelector('#colors-menu li.selected').classList.remove('selected');
 
         //add new color and make it selected
-        var addedColor = addColor(newColor);
+        let addedColor = addColor(newColor);
         addedColor.classList.add('selected');
-        currentLayer.context.fillStyle = '#' + newColor;
+        updateCurrentColor(newColor);
 
         //add history state
         new HistoryState().AddColor(addedColor.firstElementChild.jscolor.toString());
@@ -305,7 +300,7 @@ const ColorModule = (() => {
         if (color.parentElement.classList.contains('selected')) {
             //set current color TO LIGHTEST COLOR
             lightestColor[1].parentElement.classList.add('selected');
-            currentLayer.context.fillStyle = '#'+lightestColor[1].jscolor.toString();
+            updateCurrentColor('#'+lightestColor[1].jscolor.toString());
         }
     
         //delete the element
@@ -391,7 +386,7 @@ const ColorModule = (() => {
         if (!darkestColor.hex.includes('#')) darkestColor.hex = '#' + darkestColor.hex;
 
         //set as current color
-        currentLayer.context.fillStyle = darkestColor.hex;
+        updateCurrentColor(darkestColor.hex);
     }
 
     /** Creates the palette with the colours used in all the layers
@@ -435,6 +430,16 @@ const ColorModule = (() => {
         createColorPalette(colorPaletteArray);
     }
 
+    function updateCurrentColor(color, refLayer) {
+        if (refLayer)
+            color = refLayer.context.fillStyle;
+        
+        for (let i=0; i<layers.length - 1; i++) {
+            layers[i].context.fillStyle = color;
+            layers[i].context.strokeStyle = color;
+        }
+    }
+
     return {
         getCurrentPalette,
         addColor,
@@ -443,6 +448,7 @@ const ColorModule = (() => {
         addToSimplePalette,
         resetPalette,
         createColorPalette,
-        createPaletteFromLayers
+        createPaletteFromLayers,
+        updateCurrentColor
     }
 })();
