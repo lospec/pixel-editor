@@ -13,7 +13,8 @@
 /**init**/
 //=include _consts.js
 //=include _settings.js
-//=include _layer.js
+//=include LayerList.js
+//=include Layer.js
 //=include Startup.js
 //=include _pixelGrid.js
 //=include _editorMode.js

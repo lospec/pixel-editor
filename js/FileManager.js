@@ -61,14 +61,14 @@ const FileManager = (() => {
             // Merging every layer on the export canvas
             for (let i=0; i<layersCopy.length; i++) {
                 if (layersCopy[i].menuEntry != null && layersCopy[i].isVisible) {
-                    mergeLayers(exportCanvas.getContext('2d'), layersCopy[i].context);
+                    LayerList.mergeLayers(exportCanvas.getContext('2d'), layersCopy[i].context);
                 }
                 // I'm not going to find out why the layer ordering screws up if you don't copy
                 // a blank canvas when layers[i] is not set as visible, but if you have time to
                 // spend, feel free to investigate (comment the else, create 3 layers: hide the 
                 // middle one and export, the other 2 will be swapped in their order)
                 else {
-                    mergeLayers(exportCanvas.getContext('2d'), emptyCanvas.getContext('2d'));
+                    LayerList.mergeLayers(exportCanvas.getContext('2d'), emptyCanvas.getContext('2d'));
                 }
             }
 

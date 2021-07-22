@@ -43,7 +43,7 @@ function switchMode(newMode) {
 			// Selecting the current layer
 			currentLayer.selectLayer();
 			// Flatten the layers
-			flatten(true);
+			LayerList.flatten(true);
         }
 
         //change menu text

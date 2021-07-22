@@ -183,7 +183,7 @@ class HistoryState {
         };
 
         this.redo = function() {
-            mergeLayers(belowLayer.context, aboveLayer.context);
+            LayerList.mergeLayers(belowLayer.context, aboveLayer.context);
 
             // Deleting the above layer
             aboveLayer.canvas.remove();
@@ -227,7 +227,7 @@ class HistoryState {
 
         this.redo = function() {
             aboveLayer.selectLayer();
-            merge(false);
+            LayerList.merge(false);
         };
     }
 
@@ -251,12 +251,12 @@ class HistoryState {
 
         this.undo = function() {
             addedLayer.selectLayer();
-            deleteLayer(false);
+            LayerList.deleteLayer(false);
         };
 
         this.redo = function() {
             copiedLayer.selectLayer();
-            duplicateLayer(null, false);
+            LayerList.duplicateLayer(null, false);
         };
     }
 
@@ -278,7 +278,7 @@ class HistoryState {
 
         this.redo = function() {
             this.deleted.selectLayer();
-            deleteLayer(false);
+            LayerList.deleteLayer(false);
         };
     }
 
@@ -351,7 +351,7 @@ class HistoryState {
         this.layerID = currentLayer.id;
 
         this.undo = function () {
-            var stateLayer = getLayerByID(this.layerID);
+            var stateLayer = LayerList.getLayerByID(this.layerID);
             var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
             stateLayer.context.putImageData(this.canvasState, 0, 0);
 
@@ -361,7 +361,7 @@ class HistoryState {
         };
 
         this.redo = function () {
-            var stateLayer = getLayerByID(this.layerID);
+            var stateLayer = LayerList.getLayerByID(this.layerID);
             var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 
             stateLayer.context.putImageData(this.canvasState, 0, 0);

@@ -67,7 +67,7 @@ const Startup = (() => {
         if (fileContent != null) {
             loadFromLPE(fileContent);
             // Deleting the default layer
-            deleteLayer(false);
+            LayerList.deleteLayer(false);
             // Selecting the new one
             layers[1].selectLayer();
         }
@@ -92,7 +92,7 @@ const Startup = (() => {
 
                 if (currentEntry != null) {
                     // Getting the associated layer
-                    associatedLayer = getLayerByID(currentEntry.id);
+                    associatedLayer = LayerList.getLayerByID(currentEntry.id);
 
                     // Deleting its canvas
                     associatedLayer.canvas.remove();
@@ -197,7 +197,7 @@ const Startup = (() => {
 
             if (layerData != null) {
                 // Setting id
-                let createdLayer = addLayer(layerData.id, false);
+                let createdLayer = LayerList.addLayer(layerData.id, false);
                 // Setting name
                 createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
 
