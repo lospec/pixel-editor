@@ -126,7 +126,7 @@ function applyChanges() {
 // Checks whether the pointer is inside the selected area or not
 function cursorInSelectedArea() {
     // Getting the cursor position
-    let cursorPos = getCursorPosition(currentMouseEvent);
+    let cursorPos = getCursorPosition(Input.getCurrMouseEvent());
     // Getting the coordinates relatively to the canvas
     let x = cursorPos[0] / zoom;
     let y = cursorPos[1] / zoom;

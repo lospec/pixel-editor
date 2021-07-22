@@ -2,6 +2,7 @@
 //=include lib/cookies.js
 //=include _jscolor.js
 //=include _pixelEditorUtility.js
+//=include _variables.js
 //=include lib/sortable.js
 //=include Util.js
 //=include Events.js
@@ -11,8 +12,11 @@
 
 /**init**/
 //=include _consts.js
-//=include _variables.js
 //=include _settings.js
+//=include _layer.js
+//=include Startup.js
+//=include _pixelGrid.js
+//=include _editorMode.js
 
 /**dropdown formatting**/
 //=include PresetModule.js
@@ -28,22 +32,15 @@
 //=include _fill.js
 //=include _line.js
 //=include _checkerboard.js
-//=include _pixelGrid.js
-//=include _layer.js
 //=include _copyPaste.js
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include SplashPage.js
-//=include _editorMode.js
 
 /**load file**/
 //=include _loadPalette.js
-
-/**event listeners**/
-//=include Input.js
-//=include _mouseEvents.js
 
 /**buttons**/
 //=include _toolButtons.js
@@ -53,7 +50,10 @@
 //=include _move.js
 //=include _rectangle.js
 //=include _ellipse.js
-//=include Startup.js
+
+/**event listeners**/
+//=include Input.js
+//=include _mouseEvents.js
 
 /**feature toggles**/
 //=include _featureToggles.js

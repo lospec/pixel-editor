@@ -1,24 +1,24 @@
 const Input = (() => {
     let spaceKeyPressed = false;
     let dragging = false;
+    let currentMouseEvent = undefined;
 
     // Hotkeys when pressing a key
     Events.on("keydown", document, KeyPress);
-
     // Update held keys when releasing a key
-    Events.on("keyup", window, function (e) {
-        if (e.keyCode == 32) spaceKeyPressed = false;
-    });
+    Events.on("keyup", window, function (e) {if (e.keyCode == 32) spaceKeyPressed = false;});
 
     // Update variables on mouse clicks
     Events.on("mousedown", window, onMouseDown);
     Events.on("mouseup", window, onMouseUp);
 
     function onMouseDown(event) {
+        currentMouseEvent = event;
         dragging = true;
     }
 
     function onMouseUp(event) {
+        currentMouseEvent = event;
         dragging = false;
     }
 
@@ -148,8 +148,13 @@ const Input = (() => {
         return dragging;
     }
 
+    function getCurrMouseEvent() {
+        return currentMouseEvent;
+    }
+
     return {
         spacePressed,
-        isDragging
+        isDragging,
+        getCurrMouseEvent
     }
 })();

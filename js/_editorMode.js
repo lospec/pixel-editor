@@ -1,8 +1,5 @@
 // REFACTOR: move everything in EditorState?
 
-var pixelEditorMode = "Basic";
-switchMode(pixelEditorMode);
-
 let modes = {
     'Basic' : {
         description: 'Basic mode is perfect if you want to create simple sprites or try out palettes.'

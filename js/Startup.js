@@ -130,7 +130,7 @@ const Startup = (() => {
         TMPLayer = new Layer(width, height, 'tmp-canvas');
         
         // Pixel grid
-        pixelGrid = new Layer(width, height, pixelGridCanvas);
+        pixelGrid = new Layer(width, height, "pixel-grid");
         // Setting the general canvasSize
         canvasSize = currentLayer.canvasSize;
 

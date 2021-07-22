@@ -1,10 +1,7 @@
-var currentMouseEvent;
 var lastMouseMovePos;
 
 //mousedown - start drawing
 window.addEventListener("mousedown", function (mouseEvent) {
-	// Saving the event in case something else needs it
-	currentMouseEvent = mouseEvent;
 	canDraw = true;
 
 	//if no document has been created yet, or this is a dialog open, or the currentLayer is locked
@@ -67,9 +64,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 
 //mouseup - end drawing
 window.addEventListener("mouseup", function (mouseEvent) {
-	// Saving the event in case something else needs it
-	currentMouseEvent = mouseEvent;
-
 	TopMenuModule.closeMenu();
 	
 	if (currentLayer != null && !Util.isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
@@ -204,8 +198,6 @@ function draw (mouseEvent) {
 	if (!Dialogue.isOpen())
 	{
 		lastMouseMovePos = getCursorPosition(mouseEvent);
-		// Saving the event in case something else needs it
-		currentMouseEvent = mouseEvent;
 
 		var cursorLocation = lastMouseMovePos;
 
