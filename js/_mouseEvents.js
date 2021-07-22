@@ -14,7 +14,6 @@ window.addEventListener("mousedown", function (mouseEvent) {
 
 	lastMouseClickPos = getCursorPosition(mouseEvent);
 
-	dragging = true;
 	//left or right click ?
 	if (mouseEvent.which == 1) {
 		if (Input.spacePressed())
@@ -169,7 +168,6 @@ window.addEventListener("mouseup", function (mouseEvent) {
 		currentLayer.updateLayerPreview();
 	}
 
-	dragging = false;
 	currentTool = currentToolTemp;
 
 	currentTool.updateCursor();
@@ -229,7 +227,7 @@ function draw (mouseEvent) {
 			brushPreview.style.visibility = 'hidden';
 
 			//draw line to current pixel
-			if (dragging) {
+			if (Input.isDragging()) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
 					line(Math.floor(lastMouseClickPos[0]/zoom),
 						 Math.floor(lastMouseClickPos[1]/zoom),
@@ -260,7 +258,7 @@ function draw (mouseEvent) {
 				brushPreview.style.visibility = 'hidden';
 
 			//draw line to current pixel
-			if (dragging) {
+			if (Input.isDragging()) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
 					line(Math.floor(lastMouseClickPos[0]/zoom),Math.floor(lastMouseClickPos[1]/zoom),Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom), currentTool.brushSize);
 					lastMouseClickPos = cursorLocation;
@@ -277,10 +275,10 @@ function draw (mouseEvent) {
 			else
 			brushPreview.style.visibility = 'hidden';
 
-			if (!isDrawingRect && dragging) {
+			if (!isDrawingRect && Input.isDragging()) {
 				startRectDrawing(mouseEvent);
 			}
-			else if (dragging){
+			else if (Input.isDragging()){
 				updateRectDrawing(mouseEvent);
 			}
 		}
@@ -292,14 +290,14 @@ function draw (mouseEvent) {
 			else
 			brushPreview.style.visibility = 'hidden';
 
-			if (!isDrawingEllipse && dragging) {
+			if (!isDrawingEllipse && Input.isDragging()) {
 				startEllipseDrawing(mouseEvent);
 			}
-			else if (dragging){
+			else if (Input.isDragging()){
 				updateEllipseDrawing(mouseEvent);
 			}
 		}
-		else if (currentTool.name == 'pan' && dragging) {
+		else if (currentTool.name == 'pan' && Input.isDragging()) {
 			// Setting first layer position
 			layers[0].setCanvasOffset(layers[0].canvas.offsetLeft + (cursorLocation[0] - lastMouseClickPos[0]), layers[0].canvas.offsetTop + (cursorLocation[1] - lastMouseClickPos[1]));
 			// Copying that position to the other layers
@@ -310,7 +308,7 @@ function draw (mouseEvent) {
 			lastMouseMovePos = getCursorPosition(mouseEvent);
 			cursorLocation = lastMouseMovePos;
 		}
-		else if (currentTool.name == 'eyedropper' && dragging && mouseEvent.target.className == 'drawingCanvas') {
+		else if (currentTool.name == 'eyedropper' && Input.isDragging() && mouseEvent.target.className == 'drawingCanvas') {
 
 			const selectedColor = getEyedropperColor(cursorLocation);
 			const rgbColor = {r:selectedColor[0],g:selectedColor[1],b:selectedColor[2]};
@@ -327,7 +325,7 @@ function draw (mouseEvent) {
 			if (colorLightness>127) eyedropperPreview.classList.remove('dark');
 			else eyedropperPreview.classList.add('dark');
 		}
-		else if (currentTool.name == 'resizebrush' && dragging) {
+		else if (currentTool.name == 'resizebrush' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
 			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
@@ -342,7 +340,7 @@ function draw (mouseEvent) {
 			tool.pencil.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
-		else if (currentTool.name == 'resizeeraser' && dragging) {
+		else if (currentTool.name == 'resizeeraser' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
 			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
@@ -357,7 +355,7 @@ function draw (mouseEvent) {
 			tool.eraser.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
-		else if (currentTool.name == 'resizerectangle' && dragging) {
+		else if (currentTool.name == 'resizerectangle' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
 			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
@@ -375,7 +373,7 @@ function draw (mouseEvent) {
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
 			currentTool.updateCursor();
 		}
-		else if (currentTool.name == 'resizeline' && dragging) {
+		else if (currentTool.name == 'resizeline' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
 			var distanceFromClick = cursorLocation[0] - lastMouseClickPos[0];
 			//var roundingAmount = 20 - Math.round(distanceFromClick/10);
@@ -391,11 +389,11 @@ function draw (mouseEvent) {
 			currentTool.updateCursor();
 		}
 		else if (currentTool.name == 'rectselect') {
-			if (dragging && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
+			if (Input.isDragging() && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
 				isRectSelecting = true;
 				startRectSelection(mouseEvent);
 			}
-			else if (dragging && isRectSelecting) {
+			else if (Input.isDragging() && isRectSelecting) {
 				updateRectSelection(mouseEvent);
 			}
 			else if (isRectSelecting) {
@@ -407,7 +405,7 @@ function draw (mouseEvent) {
 			currentTool.updateCursor();
 
 			// If I'm dragging, I move the preview
-			if (dragging && cursorInSelectedArea()) {
+			if (Input.isDragging() && cursorInSelectedArea()) {
 				updateMovePreview(getCursorPosition(mouseEvent));
 			}
 		}
@@ -417,7 +415,7 @@ function draw (mouseEvent) {
 			} else {
 				brushPreview.style.visibility = 'hidden';
 			}
-			if (dragging) {
+			if (Input.isDragging()) {
 				if (mouseEvent.target.className == 'drawingCanvas' || mouseEvent.target.className == 'drawingCanvas') {
 					diagLine(lastMouseClickPos, zoom, cursorLocation);
 				}

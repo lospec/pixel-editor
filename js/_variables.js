@@ -1,7 +1,6 @@
 //init variables
 var canvasSize; // REFACTOR: Canvas class / getCanvasSize method
 var zoom = 7; // REFACTOR: EditorState class/IIFE?
-var dragging = false; // REFACTOR: Input IIFE via getter?
 var lastMouseClickPos = [0,0]; // REFACTOR: Input IIFE via getter?
 var documentCreated = false; // REFACTOR: EditorState
 
