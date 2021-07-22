@@ -1,3 +1,4 @@
+// LINE TOOL
 function diagLine(lastMouseClickPos, zoom, cursorLocation) {
 
     let x0 = Math.floor(lastMouseClickPos[0]/zoom);

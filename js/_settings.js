@@ -1,3 +1,4 @@
+// REFACTOR: convert to IIFE
 var settings;
 
 if (!Cookies.enabled) {

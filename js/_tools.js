@@ -1,3 +1,4 @@
+// REFACTOR: this is a nice base for the Tool class
 //tools container / list, automatically managed when you create a new Tool();
 var tool = {};
 

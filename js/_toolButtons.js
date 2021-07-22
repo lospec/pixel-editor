@@ -1,3 +1,4 @@
+// REFACTOR: add to single Tool implementations
 //pencil
 Events.on('click',"pencil-button", function(){
     tool.pencil.switchTo();

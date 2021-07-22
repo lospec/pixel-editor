@@ -1,3 +1,4 @@
+// RECT SELECTION TOOL
 var isRectSelecting = false;
 let startX;
 let startY;

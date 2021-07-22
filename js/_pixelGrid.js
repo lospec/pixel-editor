@@ -1,3 +1,5 @@
+// REFACTOR: inherit from Layer, override init method (call super as well)
+
 // Start colour of the pixel grid (can be changed in the preferences)
 let pixelGridColor = "#000000";
 // Distance between one line and another in HTML pixels

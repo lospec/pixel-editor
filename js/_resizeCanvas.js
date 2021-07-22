@@ -1,3 +1,5 @@
+// REFACTOR: method of File class probably
+
 /* This scripts contains all the code used to handle the canvas resizing */
 
 // Resize canvas pop up window

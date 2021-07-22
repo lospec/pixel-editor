@@ -1,6 +1,6 @@
 // REFACTOR: let's keep this one global for now, unfortunately it's used by just some tools to keep track of 
 // their state: I'd wait after we refactor the tools themselves before removing this variable, which should
-// ideally be updated in Input.js
+// ideally be updated in Input.js what a mess what a mess what a mess what a mess
 var lastMouseMovePos;
 
 //mousedown - start drawing

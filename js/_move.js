@@ -1,3 +1,4 @@
+// REFACTOR: let's keep this one for the end
 var imageDataToMove;
 var originalDataPosition;
 var canMoveSelection = false;

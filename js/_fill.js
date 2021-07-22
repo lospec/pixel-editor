@@ -1,3 +1,4 @@
+// REFACTOR: fill tool onMouseDown
 function fill(cursorLocation) {
 
     //changes a pixels color

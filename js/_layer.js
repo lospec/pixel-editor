@@ -2,25 +2,36 @@
 let layerList;
 // A single layer entry (used as a prototype to create the new ones)
 let layerListEntry;
-// NEXTPULL: remove the drag n drop system and use Sortable.js instead
-let layerDragSource = null;
 
 // Number of layers at the beginning
+// REFACTOR: keep in layer class, it's only used here
 let layerCount = 1;
+
 // Current max z index (so that I know which z-index to assign to new layers)
+// REFACTOR: keep in layer class, it's only used here
 let maxZIndex = 3;
 
-// When a layer is deleted, its id is added to this array and can be reused
+// When a layer is deleted, its id is added to this array and can be reus
+// REFACTOR: keep in layer class, it's only used here
 let unusedIDs = [];
+
 // Id for the next added layer
+// REFACTOR: keep in layer class, it's only used here
 let currentID = layerCount;
+
 // Layer menu
+// REFACTOR: keep in layer class, it's only used here
 let layerOptions = document.getElementById("layer-properties-menu");
+
 // Is the user currently renaming a layer?
+// REFACTOR: this one's tricky, might be part of EditorState
 let isRenamingLayer = false;
+
 // I need to save this, trust me
+// REFACTOR: keep in layer class, it's only used here and investigate about why I need to save it
 let oldLayerName = null;
 
+// REFACTOR: keep in layer class, it's only used here
 let dragStartLayer;
 
 // Binding the add layer button to the function
@@ -30,12 +41,16 @@ Events.on('click',"add-layer-button", addLayer, false);
  *
  * @param width Canvas width
  * @param height Canvas height
- * @param canvas HTML canvas element
+ * @param canvas HTML canvas element or the ID of the canvas related to the layer
  */
 class Layer {
     constructor(width, height, canvas, menuEntry) {
+        // REFACTOR: this could just be an attribute of a Canvas class
         this.canvasSize = [width, height];
+        // REFACTOR: the canvas should actually be a Canvas instance
         this.canvas = Util.getElement(canvas);
+        // REFACOTR: the context could be an attribute of the canvas class, but it's a bit easier
+        // to just type layer.context, we should discuss this
         this.context = this.canvas.getContext('2d');
         this.isSelected = false;
         this.isVisible = true;
@@ -43,7 +58,6 @@ class Layer {
         this.menuEntry = menuEntry;
 
         let id = unusedIDs.pop();
-        console.log("id creato: " + id);
 
         if (id == null) {
             id = currentID;
@@ -299,6 +313,7 @@ class Layer {
     }
 }
 
+// REFACTOR: this should probably be a method of the LayerMenu class as it involves more than 1 layer
 function flatten(onlyVisible) {
     if (!onlyVisible) {
         // Selecting the first layer
@@ -353,6 +368,7 @@ function flatten(onlyVisible) {
     }
 }
 
+// REFACTOR: this should probably be a method of the LayerMenu class as it involves more than 1 layer
 function merge(saveHistory = true) {
     // Saving the layer that should be merged
     let toMerge = currentLayer;
@@ -383,6 +399,7 @@ function merge(saveHistory = true) {
     }
 }
 
+// REFACTOR: this should probably be a method of the LayerMenu class as it involves more than 1 layer
 function deleteLayer(saveHistory = true) {
     // Cannot delete all the layers
     if (layers.length != 4) {
@@ -417,7 +434,18 @@ function deleteLayer(saveHistory = true) {
     currentLayer.closeOptionsMenu();
 }
 
+// REFACTOR: this should probably be a method of the LayerMenu class as it involves more than 1 layer
 function duplicateLayer(event, saveHistory = true) {
+    function getMenuEntryIndex(list, entry) {
+        for (let i=0; i<list.length; i++) {
+            if (list[i] === entry) {
+                return i;
+            }
+        }
+    
+        return -1;
+    }
+
     let layerIndex = layers.indexOf(currentLayer);
     let toDuplicate = currentLayer;
     let menuEntries = layerList.children;
@@ -466,6 +494,7 @@ function duplicateLayer(event, saveHistory = true) {
     }
 }
 
+// REFACTOR: why isn't this static?
 function renameLayer(event) {
     let p = currentLayer.menuEntry.getElementsByTagName("p")[0];
 
@@ -480,16 +509,7 @@ function renameLayer(event) {
     isRenamingLayer = true;
 }
 
-function getMenuEntryIndex(list, entry) {
-    for (let i=0; i<list.length; i++) {
-        if (list[i] === entry) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
+// REFACTOR: put in LayerMenu class as it involves more than 1 layer
 // Finds a layer given its name
 function getLayerByName(name) {
     for (let i=0; i<layers.length; i++) {
@@ -503,6 +523,7 @@ function getLayerByName(name) {
     return null;
 }
 
+// REFACTOR: put in LayerMenu class as it involves more than 1 layer
 // Finds a layer given its id
 function getLayerByID(id) {
     for (let i=0; i<layers.length; i++) {
@@ -516,6 +537,7 @@ function getLayerByID(id) {
     return null;
 }
 
+// REFACTOR: put in LayerMenu class as it involves more than 1 layer
 function addLayer(id, saveHistory = true) {
     // layers.length - 3
     let index = layers.length - 3;
@@ -559,6 +581,7 @@ function addLayer(id, saveHistory = true) {
     return newLayer;
 }
 
+// REFACTOR: LayerMenu
 /** Saves the layer that is being moved when the dragging starts
  * 
  * @param {*} event 
@@ -567,6 +590,7 @@ function layerDragStart(event) {
     dragStartLayer = getLayerByID(layerList.children[event.oldIndex].id);
 }
 
+// REFACTOR: LayerMenu
 /** Sets the z indexes of the layers when the user drops the layer in the menu
  * 
  * @param {*} event 
@@ -595,6 +619,7 @@ function layerDragDrop(event) {
 }
 
 
+// REFACTOR: LayerMenu
 /** Merges topLayer onto belowLayer
  * 
  * @param {*} belowLayer The layer on the bottom of the layer stack
@@ -630,9 +655,8 @@ function mergeLayers(belowLayer, topLayer) {
     belowLayer.putImageData(toMergeImageData, 0, 0);
 }
 
-
+// REFACTOR: LayerMenu
 layerList = document.getElementById("layers-menu");
-
 // Making the layers list sortable
 new Sortable(document.getElementById("layers-menu"), {
     animation: 100,

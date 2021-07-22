@@ -1,3 +1,5 @@
+// REFACTOR: method of File class probably
+
 /* This scripts contains all the code used to handle the sprite scaling */
 // Should I keep the sprite ratio?
 let keepRatio = true;
