@@ -1,3 +1,6 @@
+// REFACTOR: let's keep this one global for now, unfortunately it's used by just some tools to keep track of 
+// their state: I'd wait after we refactor the tools themselves before removing this variable, which should
+// ideally be updated in Input.js
 var lastMouseMovePos;
 
 //mousedown - start drawing
@@ -9,7 +12,7 @@ window.addEventListener("mousedown", function (mouseEvent) {
 	//prevent right mouse clicks and such, which will open unwanted menus
 	//mouseEvent.preventDefault();
 
-	lastMouseClickPos = getCursorPosition(mouseEvent);
+	lastMouseClickPos = Input.getCursorPosition(mouseEvent);
 
 	//left or right click ?
 	if (mouseEvent.which == 1) {
@@ -82,7 +85,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	if (!documentCreated || Dialogue.isOpen() || !currentLayer.isVisible || currentLayer.isLocked) return;
 
 	if (currentTool.name == 'eyedropper' && mouseEvent.target.className == 'drawingCanvas') {
-		var cursorLocation = getCursorPosition(mouseEvent);
+		var cursorLocation = Input.getCursorPosition(mouseEvent);
 		var selectedColor = getEyedropperColor(cursorLocation);
 		const rgbColor = {r:selectedColor[0],g:selectedColor[1],b:selectedColor[2]};
 		var newColor = Color.rgbToHex(rgbColor);
@@ -115,7 +118,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	else if (currentTool.name == 'fill' && mouseEvent.target.className == 'drawingCanvas') {
 
 		//get cursor postion
-		var cursorLocation = getCursorPosition(mouseEvent);
+		var cursorLocation = Input.getCursorPosition(mouseEvent);
 
 		//offset to match cursor point
 		cursorLocation[0] += 2;
@@ -140,7 +143,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
             mode = 'out';
         }
 
-        changeZoom(mode, getCursorPosition(mouseEvent));
+        changeZoom(mode, Input.getCursorPosition(mouseEvent));
 
         for (let i=1; i<layers.length; i++) {
             layers[i].copyData(layers[0]);
@@ -161,7 +164,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	currentTool = currentToolTemp;
 
 	currentTool.updateCursor();
-	var cursorLocation = getCursorPosition(mouseEvent);
+	var cursorLocation = Input.getCursorPosition(mouseEvent);
 	currentTool.moveBrushPreview(cursorLocation);
 
 
@@ -197,7 +200,7 @@ window.addEventListener("mousedown", draw, false);
 function draw (mouseEvent) {
 	if (!Dialogue.isOpen())
 	{
-		lastMouseMovePos = getCursorPosition(mouseEvent);
+		lastMouseMovePos = Input.getCursorPosition(mouseEvent);
 
 		var cursorLocation = lastMouseMovePos;
 
@@ -295,7 +298,7 @@ function draw (mouseEvent) {
 				layers[i].copyData(layers[0]);
 			}
 			// Updating cursorLocation with new layer position
-			lastMouseMovePos = getCursorPosition(mouseEvent);
+			lastMouseMovePos = Input.getCursorPosition(mouseEvent);
 			cursorLocation = lastMouseMovePos;
 			// Moving brush preview
 			currentTool.moveBrushPreview(cursorLocation);
@@ -398,7 +401,7 @@ function draw (mouseEvent) {
 
 			// If I'm dragging, I move the preview
 			if (Input.isDragging() && cursorInSelectedArea()) {
-				updateMovePreview(getCursorPosition(mouseEvent));
+				updateMovePreview(Input.getCursorPosition(mouseEvent));
 			}
 		}
 		else if (currentTool.name === "line") {
@@ -433,7 +436,7 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 	}
 
 	// Changing zoom and position of the first layer
-	changeZoom(mode, getCursorPosition(mouseEvent));
+	changeZoom(mode, Input.getCursorPosition(mouseEvent));
 
 	for (let i=1; i<layers.length; i++) {
 		// Copying first layer's data into the other layers

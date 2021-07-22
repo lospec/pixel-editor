@@ -25,7 +25,7 @@ function startRectDrawing(mouseEvent) {
     isDrawingRect = true;
 
     // Saving the start coords of the rect
-    let cursorPos = getCursorPosition(mouseEvent);
+    let cursorPos = Input.getCursorPosition(mouseEvent);
     startRectX = Math.floor(cursorPos[0] / zoom) + 0.5;
     startRectY = Math.floor(cursorPos[1] / zoom) + 0.5;
 
@@ -37,7 +37,7 @@ function startRectDrawing(mouseEvent) {
  * @param {*} mouseEvent The mouseEvent from which we'll get the mouse position
  */
 function updateRectDrawing(mouseEvent) {
-	let pos = getCursorPosition(mouseEvent);
+	let pos = Input.getCursorPosition(mouseEvent);
 
 	// Drawing the rect at the right position
 	drawRectangle(Math.floor(pos[0] / zoom) + 0.5, Math.floor(pos[1] / zoom) + 0.5);
@@ -50,7 +50,7 @@ function updateRectDrawing(mouseEvent) {
  */
 function endRectDrawing(mouseEvent) {
 	// Getting the end position
-	let currentPos = getCursorPosition(mouseEvent);
+	let currentPos = Input.getCursorPosition(mouseEvent);
 	let tmpContext = TMPLayer.context;
 
 	endRectX = Math.floor(currentPos[0] / zoom) + 0.5;

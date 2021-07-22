@@ -28,7 +28,6 @@
 //=include _changeZoom.js
 //=include ColorModule.js
 //=include _drawLine.js
-//=include _getCursorPosition.js
 //=include _fill.js
 //=include _line.js
 //=include _checkerboard.js

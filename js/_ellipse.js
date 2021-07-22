@@ -26,7 +26,7 @@ function startEllipseDrawing(mouseEvent) {
     isDrawingEllipse = true;
 
     // Saving the start coords of the ellipse
-    let cursorPos = getCursorPosition(mouseEvent);
+    let cursorPos = Input.getCursorPosition(mouseEvent);
     startEllipseX = Math.floor(cursorPos[0] / zoom) + 0.5;
     startEllipseY = Math.floor(cursorPos[1] / zoom) + 0.5;
 
@@ -39,7 +39,7 @@ function startEllipseDrawing(mouseEvent) {
  * @param {*} mouseEvent The mouseEvent from which we'll get the mouse position
  */
 function updateEllipseDrawing(mouseEvent) {
-	let pos = getCursorPosition(mouseEvent);
+	let pos = Input.getCursorPosition(mouseEvent);
 
 	// Drawing the ellipse at the right position
 	drawEllipse(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
@@ -53,7 +53,7 @@ function updateEllipseDrawing(mouseEvent) {
  */
 function endEllipseDrawing(mouseEvent) {
 	// Getting the end position
-	let currentPos = getCursorPosition(mouseEvent);
+	let currentPos = Input.getCursorPosition(mouseEvent);
 	let vfxContext = VFXLayer.context;
 
 	endEllipseX = Math.round(currentPos[0] / zoom) + 0.5;

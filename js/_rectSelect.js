@@ -15,7 +15,7 @@ function startRectSelection(mouseEvent) {
     VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
 
     // Saving the start coords of the rect
-    let cursorPos = getCursorPosition(mouseEvent);
+    let cursorPos = Input.getCursorPosition(mouseEvent);
     startX = Math.round(cursorPos[0] / zoom) - 0.5;
     startY = Math.round(cursorPos[1] / zoom) - 0.5;
 
@@ -44,7 +44,7 @@ function startRectSelection(mouseEvent) {
  * @param {*} mouseEvent 
  */
 function updateRectSelection(mouseEvent) {
-	let pos = getCursorPosition(mouseEvent);
+	let pos = Input.getCursorPosition(mouseEvent);
 
 	// Drawing the rect
 	drawRect(Math.round(pos[0] / zoom) + 0.5, Math.round(pos[1] / zoom) + 0.5);
@@ -56,7 +56,7 @@ function updateRectSelection(mouseEvent) {
  */
 function endRectSelection(mouseEvent) {
 	// Getting the end position
-	let currentPos = getCursorPosition(mouseEvent);
+	let currentPos = Input.getCursorPosition(mouseEvent);
 	endX = Math.round(currentPos[0] / zoom) + 0.5;
 	endY = Math.round(currentPos[1] / zoom) + 0.5;
 
@@ -126,7 +126,7 @@ function applyChanges() {
 // Checks whether the pointer is inside the selected area or not
 function cursorInSelectedArea() {
     // Getting the cursor position
-    let cursorPos = getCursorPosition(Input.getCurrMouseEvent());
+    let cursorPos = Input.getCursorPosition(Input.getCurrMouseEvent());
     // Getting the coordinates relatively to the canvas
     let x = cursorPos[0] / zoom;
     let y = cursorPos[1] / zoom;

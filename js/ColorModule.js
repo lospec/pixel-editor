@@ -20,7 +20,6 @@ const ColorModule = (() => {
         animation:100,
         filter: ".noshrink",
         draggable: ".draggable-colour",
-        // REFACTOR: Don't touch dragging, simulate a mouseup event instead
         onEnd: function() {Events.simulateMouseEvent(window, "mouseup");}
     });
 
