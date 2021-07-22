@@ -78,10 +78,10 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 	// If the user finished placing down a line, clear the tmp canvas and copy the data to the current layer
 	if (currentTool.name === "line") {
-		const tmpCanvas = document.getElementById('tmp-canvas');
+		const tmpCanvas = TMPLayer.canvas;
 		currentLayer.context.drawImage(tmpCanvas, 0, 0);
 
-		const tmpContext = tmpCanvas.getContext('2d');
+		const tmpContext = TMPLayer.context;
 		tmpContext.clearRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 	}
 

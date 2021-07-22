@@ -35,7 +35,7 @@ Events.on('click',"add-layer-button", addLayer, false);
 class Layer {
     constructor(width, height, canvas, menuEntry) {
         this.canvasSize = [width, height];
-        this.canvas = canvas;
+        this.canvas = Util.getElement(canvas);
         this.context = this.canvas.getContext('2d');
         this.isSelected = false;
         this.isVisible = true;

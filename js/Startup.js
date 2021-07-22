@@ -80,7 +80,7 @@ const Startup = (() => {
             layerListEntry = layerList.firstElementChild;
 
             // Creating the first layer
-            currentLayer = new Layer(width, height, canvas, layerListEntry);
+            currentLayer = new Layer(width, height, 'pixel-canvas', layerListEntry);
             currentLayer.canvas.style.zIndex = 2;
         }
         else {
@@ -124,10 +124,10 @@ const Startup = (() => {
         checkerBoard = new Layer(width, height, checkerBoardCanvas);
 
         // Creating the vfx layer on top of everything
-        VFXLayer = new Layer(width, height, VFXCanvas);
+        VFXLayer = new Layer(width, height, 'vfx-canvas');
 
         // Tmp layer to draw previews on
-        TMPLayer = new Layer(width, height, TMPCanvas);
+        TMPLayer = new Layer(width, height, 'tmp-canvas');
         
         // Pixel grid
         pixelGrid = new Layer(width, height, pixelGridCanvas);

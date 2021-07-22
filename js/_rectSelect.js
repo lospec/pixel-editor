@@ -12,7 +12,7 @@ function startRectSelection(mouseEvent) {
     // Saving the canvas
     new HistoryState().EditCanvas();
     // Putting the vfx layer on top of everything
-    VFXCanvas.style.zIndex = MAX_Z_INDEX;
+    VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
 
     // Saving the start coords of the rect
     let cursorPos = getCursorPosition(mouseEvent);
@@ -104,10 +104,10 @@ function cutSelection(mousePosition) {
  */
 function drawRect(x, y) {
     // Getting the vfx context
-    let vfxContext = VFXCanvas.getContext('2d');
+    let vfxContext = VFXLayer.context;
 
     // Clearing the vfx canvas
-    vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
+    vfxContext.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
     vfxContext.lineWidth = 1;
     vfxContext.strokeStyle = 'black';
     vfxContext.setLineDash([4]);
@@ -120,7 +120,7 @@ function drawRect(x, y) {
 }
 
 function applyChanges() {
-    VFXCanvas.style.zIndex = MIN_Z_INDEX;
+    VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
 }
 
 // Checks whether the pointer is inside the selected area or not
@@ -157,10 +157,10 @@ function cursorInSelectedArea() {
  */
 function moveSelection(x, y, width, height) {
     // Getting the vfx context
-    let vfxContext = VFXCanvas.getContext('2d');
+    let vfxContext = VFXLayer.context;
 
     // Clearing the vfx canvas
-    vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
+    vfxContext.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
     vfxContext.lineWidth = 1;
     vfxContext.setLineDash([4]);
 

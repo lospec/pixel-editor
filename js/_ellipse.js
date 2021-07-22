@@ -21,7 +21,7 @@ let endEllipseY;
  */
 function startEllipseDrawing(mouseEvent) {
 	// Putting the vfx layer on top of everything
-    VFXCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;;
+    VFXLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;;
     // Updating flag
     isDrawingEllipse = true;
 
@@ -54,7 +54,7 @@ function updateEllipseDrawing(mouseEvent) {
 function endEllipseDrawing(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
-	let vfxContext = VFXCanvas.getContext("2d");
+	let vfxContext = VFXLayer.context;
 
 	endEllipseX = Math.round(currentPos[0] / zoom) + 0.5;
 	endEllipseY = Math.round(currentPos[1] / zoom) + 0.5;
@@ -95,7 +95,7 @@ function endEllipseDrawing(mouseEvent) {
 	}
 
 	// Clearing the vfx canvas
-	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
+	vfxContext.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
 }
 
 // TODO: [ELLIPSE] Make it draw ellipse instead of copy-pasted rectangle
@@ -107,10 +107,10 @@ function endEllipseDrawing(mouseEvent) {
  */
 function drawEllipse(x, y) {
 	// Getting the vfx context
-	let vfxContext = VFXCanvas.getContext("2d");
+	let vfxContext = VFXLayer.context;
 
 	// Clearing the vfx canvas
-	vfxContext.clearRect(0, 0, VFXCanvas.width, VFXCanvas.height);
+	vfxContext.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
 
 	// Drawing the ellipse
 	vfxContext.lineWidth = tool.ellipse.brushSize;

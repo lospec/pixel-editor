@@ -12,10 +12,6 @@ var eyedropperPreview = document.getElementById("eyedropper-preview");
 // REFACTOR: File class?
 var canvasView = document.getElementById("canvas-view");
 
-// main canvas
-// REFACTOR: carefully check if it's possible to remove this one
-var canvas = document.getElementById('pixel-canvas');
-
 // Layers
 // REFACTOR: File class / IIFE?
 var layers = [];
@@ -25,14 +21,9 @@ var currentLayer;
 // VFX layer used to draw previews of the selection and things like that
 // REFACTOR: File class
 var VFXLayer;
-// VFX canvas
-var VFXCanvas = document.getElementById('vfx-canvas');
-
 // TMP layer
 // REFACTOR: File class
 var TMPLayer;
-// TMP canvas
-var TMPCanvas = document.getElementById('tmp-canvas');
 
 // Pixel grid layer
 // REFACTOR: File class
@@ -43,10 +34,3 @@ var pixelGridCanvas;
 // REFACTOR: I was thinking that the special layers (pixel grid, checkerboard ecc) could be an extension
 // or a variatin of the standard Layer class? I wonder if we can use inheritance or something to
 // recycle stuff
-
-// Index of the first layer the user can use in the layers array
-// REFACTOR: Consts?
-var firstUserLayerIndex = 2;
-// Number of layers that are only used by the editor
-// REFACTOR: Consts?
-var nAppLayers = 3;

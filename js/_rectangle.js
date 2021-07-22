@@ -20,7 +20,7 @@ let endRectY;
  */
 function startRectDrawing(mouseEvent) {
 	// Putting the tmp layer on top of everything
-    TMPCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
+    TMPLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
     // Updating flag
     isDrawingRect = true;
 
@@ -51,7 +51,7 @@ function updateRectDrawing(mouseEvent) {
 function endRectDrawing(mouseEvent) {
 	// Getting the end position
 	let currentPos = getCursorPosition(mouseEvent);
-	let tmpContext = TMPCanvas.getContext("2d");
+	let tmpContext = TMPLayer.context;
 
 	endRectX = Math.floor(currentPos[0] / zoom) + 0.5;
 	endRectY = Math.floor(currentPos[1] / zoom) + 0.5;
@@ -92,7 +92,7 @@ function endRectDrawing(mouseEvent) {
 	}
 
 	// Clearing the tmp canvas
-	tmpContext.clearRect(0, 0, TMPCanvas.width, TMPCanvas.height);
+	tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
 }
 
 /** Draws a rectangle with end coordinates given by x and y on the tmp layer (draws
@@ -102,12 +102,11 @@ function endRectDrawing(mouseEvent) {
  * @param {*} y The current end y of the rectangle
  */
 function drawRectangle(x, y) {
-	console.log("drawing, color: " + TMPCanvas.getContext("2d").fillStyle);
 	// Getting the tmp context
-	let tmpContext = TMPCanvas.getContext("2d");
+	let tmpContext = TMPLayer.context;
 
 	// Clearing the tmp canvas
-	tmpContext.clearRect(0, 0, TMPCanvas.width, TMPCanvas.height);
+	tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
 
 	// Drawing the rect
 	tmpContext.lineWidth = tool.rectangle.brushSize;
@@ -137,8 +136,4 @@ function setRectToolSvg() {
         emptyRectangleSVG.setAttribute('display', 'none');
         fullRectangleSVG.setAttribute('display', 'visible');
     }
-}
-
-function applyChanges() {
-    //VFXCanvas.style.zIndex = MIN_Z_INDEX;
 }
