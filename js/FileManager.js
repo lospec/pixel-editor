@@ -123,6 +123,8 @@ const FileManager = (() => {
             }
             else alert('Only .LPE project files, PNG and GIF files are allowed at this time.');
         }
+
+        browseHolder.value = null;
     }
 
     function openFile() {
@@ -194,9 +196,9 @@ const FileManager = (() => {
     }
 
     function loadPalette() {
-        if (this.files && this.files[0]) {
+        if (browsePaletteHolder.files && browsePaletteHolder.files[0]) {
             //make sure file is allowed filetype
-            var fileContentType = this.files[0].type;
+            var fileContentType = browsePaletteHolder.files[0].type;
             if (fileContentType == 'image/png' || fileContentType == 'image/gif') {
 
                 //load file
@@ -232,14 +234,16 @@ const FileManager = (() => {
                         palettes['Loaded palette'].colors = colorPalette;
                         Util.setText('palette-button', 'Loaded palette');
                         Util.setText('palette-button-splash', 'Loaded palette');
-                        toggle('palette-menu-splash');
+                        Util.toggle('palette-menu-splash');
                     };
                     img.src = e.target.result;
                 };
-                fileReader.readAsDataURL(this.files[0]);
+                fileReader.readAsDataURL(browsePaletteHolder.files[0]);
             }
             else alert('Only PNG and GIF files are supported at this time.');
         }
+
+        browsePaletteHolder.value = null;
     }
 
     return {

@@ -14,8 +14,6 @@ const Startup = (() => {
         else {
             splashPostfix = '';
         }
-
-        console.log("New pixel");
     
         var width = Util.getValue('size-width' + splashPostfix);
         var height = Util.getValue('size-height' + splashPostfix);
@@ -153,12 +151,17 @@ const Startup = (() => {
 
         // If the user selected a palette and isn't opening a file, I load the selected palette
         if (selectedPalette != 'Choose a palette...') {
-            //if this palette isnt the one specified in the url, then reset the url
-            if (!palettes[selectedPalette].specified)
-            history.pushState(null, null, '/pixel-editor');
-            
-            //fill the palette with specified colours
-            ColorModule.createColorPalette(palettes[selectedPalette].colors);
+            if (selectedPalette === 'Loaded palette') {
+                ColorModule.createColorPalette(palettes['Loaded palette'].colors);
+            }
+            else {
+                //if this palette isnt the one specified in the url, then reset the url
+                if (!palettes[selectedPalette].specified)
+                history.pushState(null, null, '/pixel-editor');
+                
+                //fill the palette with specified colours
+                ColorModule.createColorPalette(palettes[selectedPalette].colors);
+            }
         }
         // Otherwise, I just generate 2 semirandom colours
         else {

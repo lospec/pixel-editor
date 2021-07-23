@@ -1,4 +1,5 @@
 // REFACTOR: move everything in EditorState?
+let pixelEditorMode = "Basic";
 
 let modes = {
     'Basic' : {

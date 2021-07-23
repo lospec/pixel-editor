@@ -10,7 +10,6 @@ const ColorModule = (() => {
     const colorsMenu = document.getElementById("colors-menu");
      
     // Binding events to callbacks
-    console.info("Initialized Color Module..");
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
@@ -345,13 +344,11 @@ const ColorModule = (() => {
     /** Creates the colour palette when starting up the editor from _newPixel.js
      * 
      * @param {*} paletteColors The colours of the palette
-     * @param {*} deletePreviousPalette Tells if the app should delete the previous palette or not 
-     *                                  (used when opening a file, for example)
      */
     function createColorPalette(paletteColors) {
         //remove current palette
-        while (colors.length > 0)
-            colors[0].parentElement.remove();
+        while (colorsMenu.childCount > 0)
+            colorsMenu.children[0].parentElement.remove();
 
         var lightestColor = new Color("hex", '#000000');
         var darkestColor = new Color("hex", '#ffffff');

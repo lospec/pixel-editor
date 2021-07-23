@@ -66,8 +66,6 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
     const loadPaletteButtonSplash = document.getElementById('load-palette-button-splash');
 
 	splashPalettes.refresh = function () {
-		splashPalettes.innerHTML = '';
-		palettesMenu.innerHTML = '';
 
 		Object.keys(palettes).forEach((paletteName,) => {
 
@@ -109,7 +107,6 @@ palettes["Gameboy Color"] = {"name":"Nintendo Gameboy (Black Zero)","author":"",
 	}	
 
 	splashPalettes.refresh();
-
 
     const loadPaletteButtonEvent = () => {
         document.getElementById('load-palette-browse-holder').click();
