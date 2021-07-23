@@ -17,7 +17,7 @@
 //=include Layer.js
 //=include Startup.js
 //=include _pixelGrid.js
-//=include _editorMode.js
+//=include EditorState.js
 
 /**dropdown formatting**/
 //=include PresetModule.js

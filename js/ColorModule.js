@@ -228,7 +228,7 @@ const ColorModule = (() => {
             event.target.parentElement.lastChild.classList.add('hidden');
     
             //show jscolor picker, if basic mode is enabled
-            if (pixelEditorMode == 'Basic')
+            if (EditorState.getCurrentMode() == 'Basic')
                 event.target.parentElement.firstChild.jscolor.show();
             else
                 Dialogue.showDialogue("palette-block", false);

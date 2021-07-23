@@ -134,7 +134,7 @@ const FileManager = (() => {
             var img = new Image();
             img.onload = function() {
                 //create a new pixel with the images dimentions
-                switchMode('Advanced');
+                EditorState.switchMode('Advanced');
                 Startup.newPixel(this.width, this.height);
 
                 //draw the image onto the canvas
@@ -174,7 +174,7 @@ const FileManager = (() => {
         dictionary['canvasWidth'] = currentLayer.canvasSize[0];
         dictionary['canvasHeight'] = currentLayer.canvasSize[1];
         // save editor mode
-        dictionary['editorMode'] = pixelEditorMode;
+        dictionary['editorMode'] = EditorState.getCurrentMode();
         // save palette
         for (let i=0; i<ColorModule.getCurrentPalette().length; i++) {
             dictionary["color" + i] = ColorModule.getCurrentPalette()[i];
