@@ -42,7 +42,7 @@ const TopMenuModule = (() => {
                         break;
                     case 'Exit':
                         //if a document exists, make sure they want to delete it
-                        if (documentCreated) {
+                        if (Startup.documentCreated()) {
                             //ask user if they want to leave
                             if (confirm('Exiting will discard your current pixel. Are you sure you want to do that?'))
                                 //skip onbeforeunload prompt

@@ -1,6 +1,6 @@
 const EditorState = (() => {
     let pixelEditorMode = "Basic";
-
+    
     Events.on('click', 'switch-editor-mode-splash', function (e) {toggleMode();});
     Events.on('click', 'switch-mode-button', function (e) {toggleMode();});
 

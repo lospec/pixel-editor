@@ -56,7 +56,6 @@ const Startup = (() => {
 
         // The user is now able to export the Pixel
         document.getElementById('export-button').classList.remove('disabled');
-        documentCreated = true;
 
         // This is not the first Pixel anymore
         firstPixel = false;
@@ -243,14 +242,14 @@ const Startup = (() => {
         newPixel(x, y);
     }
 
-    function createdFirstPixel() {
-        return firstPixel;
+    function documentCreated() {
+        return !firstPixel;
     }
 
     return {
         create,
         newPixel,
         newFromTemplate,
-        createdFirstPixel
+        documentCreated
     }
 })();

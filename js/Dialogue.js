@@ -42,7 +42,7 @@ const Dialogue = (() => {
         document.getElementById(dialogueName).style.display = 'block';
 
         // If I'm opening the palette window, I initialize the colour picker
-        if (dialogueName == 'palette-block' && documentCreated) {
+        if (dialogueName == 'palette-block' && Startup.documentCreated()) {
             cpInit();
             pbInit();
         }

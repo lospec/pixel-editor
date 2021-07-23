@@ -1,8 +1,7 @@
 //init variables
 var canvasSize; // REFACTOR: Canvas class / getCanvasSize method
-var zoom = 7; // REFACTOR: EditorState class/IIFE?
+var zoom = 7; // REFACTOR: EditorState class/IIFE? Leave this one for later
 var lastMouseClickPos = [0,0]; // REFACTOR: Input IIFE via getter? <- probably editor state as it is changed by tools
-var documentCreated = false; // REFACTOR: EditorState
 
 //common elements
 // REFACTOR: put brush and eyedropper preview in the respective tool implementations
@@ -15,7 +14,7 @@ var canvasView = document.getElementById("canvas-view");
 // Layers
 // REFACTOR: File class / IIFE?
 var layers = [];
-// REFACTOR: EditorState / File class?
+// REFACTOR: File class?
 var currentLayer;
 
 // VFX layer used to draw previews of the selection and things like that

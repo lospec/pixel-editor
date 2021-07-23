@@ -36,7 +36,7 @@ const FileManager = (() => {
     }
 
     function exportProject() {
-        if (documentCreated) {
+        if (Startup.documentCreated()) {
             //create name
             var selectedPalette = Util.getText('palette-button');
             if (selectedPalette != 'Choose a palette...'){
@@ -93,7 +93,7 @@ const FileManager = (() => {
 
     function open() {
         //if a document exists
-        if (documentCreated) {
+        if (Startup.documentCreated()) {
             //check if the user wants to overwrite
             if (confirm('Opening a pixel will discard your current one. Are you sure you want to do that?'))
                 //open file selection dialog

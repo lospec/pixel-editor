@@ -61,7 +61,7 @@ const Input = (() => {
         //if no document has been created yet,
         //orthere is a dialog box open
         //ignore hotkeys
-        if (!documentCreated || Dialogue.isOpen()) return;
+        if (!Startup.documentCreated() || Dialogue.isOpen()) return;
 
         //
         if (e.key === "Escape") {
