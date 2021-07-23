@@ -70,7 +70,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	TopMenuModule.closeMenu();
 	
 	if (currentLayer != null && !Util.isChildOfByClass(mouseEvent.target, "layers-menu-entry")) {
-		currentLayer.closeOptionsMenu();	
+		LayerList.closeOptionsMenu();	
 	}
 
 	// If the user finished placing down a line, clear the tmp canvas and copy the data to the current layer

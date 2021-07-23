@@ -7,10 +7,6 @@ let oldLayerName = null;
 // HTML element that contains the layer entries
 let layerList = document.getElementById("layers-menu");
 
-// Layer menu
-// REFACTOR: LayerMenu along with the right click menu
-let layerOptions = document.getElementById("layer-properties-menu");
-
 // Is the user currently renaming a layer?
 // REFACTOR: this one's tricky, might be part of EditorState
 let isRenamingLayer = false;
@@ -33,6 +29,8 @@ class Layer {
     
     static unusedIDs = [];
     static currentID = 1;
+
+    static layerOptions = document.getElementById("layer-properties-menu");
 
     // TODO: this is simply terrible. menuEntry can either be an HTML element, a string or undefined.
     // If it's an HTML element it is added, if it's a string nothing happens, if it's undefined the 
@@ -172,39 +170,6 @@ class Layer {
         
         this.canvas.style.left = otherLayer.canvas.style.left;
         this.canvas.style.top = otherLayer.canvas.style.top;
-    }
-
-    openOptionsMenu(event) {
-        if (event.which == 3) {
-            let selectedId;
-            let target = event.target;
-
-            while (target != null && target.classList != null && !target.classList.contains("layers-menu-entry")) {
-                target = target.parentElement;
-            }
-
-            selectedId = target.id;
-
-            layerOptions.style.visibility = "visible";
-            layerOptions.style.top = "0";
-            layerOptions.style.marginTop = "" + (event.clientY - 25) + "px";
-
-            LayerList.getLayerByID(selectedId).selectLayer();
-        }
-    }
-
-    closeOptionsMenu(event) {
-        layerOptions.style.visibility = "hidden";
-        currentLayer.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
-        isRenamingLayer = false;
-
-        if (this.oldLayerName != null) {
-            let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
-            this.name = name;
-
-            new HistoryState().RenameLayer(this.oldLayerName, name, currentLayer);
-            this.oldLayerName = null;
-        }
     }
 
     selectLayer(layer) {

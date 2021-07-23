@@ -2,6 +2,8 @@ const LayerList = (() => {
 
     let layerListEntry = document.getElementById("layers-menu").firstElementChild;
 
+    Events.on("mousedown", document.getElementById("layers-menu"), openOptionsMenu);
+
     function addLayer(id, saveHistory = true) {
         // layers.length - 3
         let index = layers.length - 3;
@@ -245,7 +247,7 @@ const LayerList = (() => {
         }
     
         // Closing the menu
-        currentLayer.closeOptionsMenu();
+        closeOptionsMenu();
     }
 
     // TODO: Can't select the first layer
@@ -334,6 +336,39 @@ const LayerList = (() => {
         }
     }
 
+    function openOptionsMenu(event) {
+        if (event.which == 3) {
+            let selectedId;
+            let target = event.target;
+
+            while (target != null && target.classList != null && !target.classList.contains("layers-menu-entry")) {
+                target = target.parentElement;
+            }
+
+            selectedId = target.id;
+
+            Layer.layerOptions.style.visibility = "visible";
+            Layer.layerOptions.style.top = "0";
+            Layer.layerOptions.style.marginTop = "" + (event.clientY - 25) + "px";
+
+            getLayerByID(selectedId).selectLayer();
+        }
+    }
+
+    function closeOptionsMenu(event) {
+        Layer.layerOptions.style.visibility = "hidden";
+        currentLayer.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
+        isRenamingLayer = false;
+
+        if (this.oldLayerName != null) {
+            let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
+            this.name = name;
+
+            new HistoryState().RenameLayer(this.oldLayerName, name, currentLayer);
+            this.oldLayerName = null;
+        }
+    }
+
     // Making the layers list sortable
     new Sortable(document.getElementById("layers-menu"), {
         animation: 100,
@@ -352,6 +387,7 @@ const LayerList = (() => {
         duplicateLayer,
         deleteLayer,
         merge,
-        flatten
+        flatten,
+        closeOptionsMenu
     }
 })();
