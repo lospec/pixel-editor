@@ -19,7 +19,7 @@ function switchMode(newMode) {
         // Switch to advanced ez pez lemon squez
         document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
 		// Show the layer menus
-		layerList.style.display = "inline-block";
+		LayerList.getLayerListEntries().style.display = "inline-block";
 		document.getElementById('layer-button').style.display = 'inline-block';
 		// Hide the palette menu
         document.getElementById('colors-menu').style.right = '200px'

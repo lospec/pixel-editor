@@ -5,17 +5,11 @@ let oldLayerName = null;
 
 // REFACTOR: LayerMenu
 // HTML element that contains the layer entries
-let layerList = document.getElementById("layers-menu");
+
 
 // Is the user currently renaming a layer?
 // REFACTOR: this one's tricky, might be part of EditorState
 let isRenamingLayer = false;
-
-// REFACTOR: keep in layer class, it's only used here
-let dragStartLayer;
-
-// Binding the add layer button to the function
-Events.on('click',"add-layer-button", LayerList.addLayer, false);
 
 /** Handler class for a single canvas (a single layer)
  *

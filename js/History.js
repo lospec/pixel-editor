@@ -173,7 +173,7 @@ class HistoryState {
 
         this.undo = function() {
             canvasView.append(aboveLayer.canvas);
-            layerList.insertBefore(aboveLayer.menuEntry, afterAbove);
+            LayerList.getLayerListEntries().insertBefore(aboveLayer.menuEntry, afterAbove);
 
             belowLayer.context.clearRect(0, 0, belowLayer.canvasSize[0], belowLayer.canvasSize[1]);
             belowLayer.context.putImageData(this.belowImageData, 0, 0);
@@ -215,7 +215,7 @@ class HistoryState {
         this.belowLayer = belowLayer;
 
         this.undo = function() {
-            layerList.insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
+            LayerList.getLayerListEntries().insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
             canvasView.append(this.aboveLayer.canvas);
 
             belowLayer.context.clearRect(0, 0, this.belowLayer.canvasSize[0], this.belowLayer.canvasSize[1]);
@@ -268,10 +268,10 @@ class HistoryState {
         this.undo = function() {
             canvasView.append(this.deleted.canvas);
             if (this.before != null) {
-                layerList.insertBefore(this.deleted.menuEntry, this.before);
+                LayerList.getLayerListEntries().insertBefore(this.deleted.menuEntry, this.before);
             }
             else {
-                layerList.prepend(this.deleted.menuEntry);
+                LayerList.getLayerListEntries().prepend(this.deleted.menuEntry);
             }
             layers.splice(this.index, 0, this.deleted);
         };
@@ -304,10 +304,10 @@ class HistoryState {
             toDrop.menuEntry.remove();
 
             if (afterToDrop != null) {
-                layerList.insertBefore(toDrop.menuEntry, afterToDrop)
+                LayerList.getLayerListEntries().insertBefore(toDrop.menuEntry, afterToDrop)
             }
             else {
-                layerList.append(toDrop.menuEntry);
+                LayerList.getLayerListEntries().append(toDrop.menuEntry);
             }
 
             for (let i=0; i<nMoved; i++) {
@@ -340,7 +340,7 @@ class HistoryState {
 
         this.redo = function() {
             canvasView.append(this.added.canvas);
-            layerList.prepend(this.added.menuEntry);
+            LayerList.getLayerListEntries().prepend(this.added.menuEntry);
             layers.splice(this.index, 0, this.added);
         };
     }

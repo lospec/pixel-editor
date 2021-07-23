@@ -1,8 +1,22 @@
 const LayerList = (() => {
 
-    let layerListEntry = document.getElementById("layers-menu").firstElementChild;
+    let layerList = document.getElementById("layers-menu");
+    let layerListEntry = layerList.firstElementChild;
+    let dragStartLayer;
 
-    Events.on("mousedown", document.getElementById("layers-menu"), openOptionsMenu);
+    // Binding the right click menu
+    Events.on("mousedown", layerList, openOptionsMenu);
+    // Binding the add layer button to the right function
+    Events.on('click',"add-layer-button", addLayer, false);
+
+    // Making the layers list sortable
+    new Sortable(layerList, {
+        animation: 100,
+        filter: ".layer-button",
+        draggable: ".layers-menu-entry",
+        onStart: layerDragStart,
+        onEnd: layerDragDrop
+    });
 
     function addLayer(id, saveHistory = true) {
         // layers.length - 3
@@ -369,14 +383,9 @@ const LayerList = (() => {
         }
     }
 
-    // Making the layers list sortable
-    new Sortable(document.getElementById("layers-menu"), {
-        animation: 100,
-        filter: ".layer-button",
-        draggable: ".layers-menu-entry",
-        onStart: layerDragStart,
-        onEnd: layerDragDrop
-    });
+    function getLayerListEntries() {
+        return layerList;
+    }
 
     return {
         addLayer,
@@ -388,6 +397,7 @@ const LayerList = (() => {
         deleteLayer,
         merge,
         flatten,
-        closeOptionsMenu
+        closeOptionsMenu,
+        getLayerListEntries
     }
 })();
