@@ -12,7 +12,7 @@
 
 /**init**/
 //=include _consts.js
-//=include _settings.js
+//=include Settings.js
 //=include LayerList.js
 //=include Layer.js
 //=include Startup.js

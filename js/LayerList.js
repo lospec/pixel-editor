@@ -264,8 +264,6 @@ const LayerList = (() => {
         closeOptionsMenu();
     }
 
-    // TODO: Can't select the first layer
-
     function merge(saveHistory = true) {
         // Saving the layer that should be merged
         let toMerge = currentLayer;
