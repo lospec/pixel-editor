@@ -47,11 +47,13 @@ const Input = (() => {
      */
     function KeyPress(e) {
         var keyboardEvent = window.event? event : e;
+        console.log("pressed key");
 
         //if the user is typing in an input field or renaming a layer, ignore these hotkeys, unless it's an enter key
-        if (document.activeElement.tagName == 'INPUT' || isRenamingLayer) {
+        if (document.activeElement.tagName == 'INPUT' || LayerList.isRenamingLayer) {
             if (e.keyCode == 13) {
-                currentLayer.closeOptionsMenu();
+                console.log("here");
+                LayerList.closeOptionsMenu();
             }
             return;
         }

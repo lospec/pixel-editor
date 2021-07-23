@@ -1,16 +1,5 @@
 // TODO: add undo for layer drag n drop
 
-// REFACTOR: Put it somewhere
-let oldLayerName = null;
-
-// REFACTOR: LayerMenu
-// HTML element that contains the layer entries
-
-
-// Is the user currently renaming a layer?
-// REFACTOR: this one's tricky, might be part of EditorState
-let isRenamingLayer = false;
-
 /** Handler class for a single canvas (a single layer)
  *
  * @param width Canvas width
@@ -40,8 +29,8 @@ class Layer {
         this.isSelected = false;
         this.isVisible = true;
         this.isLocked = false;
-
-        console.log("here dude");
+        
+        this.oldLayerName = null;
 
         if (typeof menuEntry == "string")
             this.menuEntry = document.getElementById("layers-menu").firstElementChild;
@@ -97,6 +86,26 @@ class Layer {
 
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
+    }
+
+    rename() {
+        this.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
+
+        if (this.oldLayerName != null) {
+            let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
+            
+            for (let i=0; i<layers.length; i++) {
+                if (name === layers[i].name) {
+                    name += ' (1)';
+                    i = 0;
+                }
+            }
+            this.name = name;
+            this.menuEntry.getElementsByTagName("p")[0].innerHTML = name;
+
+            new HistoryState().RenameLayer(this.oldLayerName, name, currentLayer);
+            this.oldLayerName = null;
+        }
     }
 
     hover() {

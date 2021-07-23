@@ -2,6 +2,7 @@ const LayerList = (() => {
 
     let layerList = document.getElementById("layers-menu");
     let layerListEntry = layerList.firstElementChild;
+    let renamingLayer = false;
     let dragStartLayer;
 
     // Binding the right click menu
@@ -157,18 +158,17 @@ const LayerList = (() => {
         return null;
     }
 
-    function renameLayer(event) {
+    function startRenamingLayer(event) {
         let p = currentLayer.menuEntry.getElementsByTagName("p")[0];
     
-        oldLayerName = p.innerHTML;
+        currentLayer.oldLayerName = p.innerHTML;
     
         p.setAttribute("contenteditable", true);
         p.classList.add("layer-name-editable");
         p.focus();
-    
         Events.simulateInput(65, true, false, false);
     
-        isRenamingLayer = true;
+        renamingLayer = true;
     }
 
     function duplicateLayer(event, saveHistory = true) {
@@ -371,20 +371,16 @@ const LayerList = (() => {
 
     function closeOptionsMenu(event) {
         Layer.layerOptions.style.visibility = "hidden";
-        currentLayer.menuEntry.getElementsByTagName("p")[0].setAttribute("contenteditable", false);
-        isRenamingLayer = false;
-
-        if (this.oldLayerName != null) {
-            let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
-            this.name = name;
-
-            new HistoryState().RenameLayer(this.oldLayerName, name, currentLayer);
-            this.oldLayerName = null;
-        }
+        currentLayer.rename();
+        renamingLayer = false;
     }
 
     function getLayerListEntries() {
         return layerList;
+    }
+
+    function isRenamingLayer() {
+        return renamingLayer;
     }
 
     return {
@@ -392,12 +388,13 @@ const LayerList = (() => {
         mergeLayers,
         getLayerByID,
         getLayerByName,
-        renameLayer,
+        renameLayer: startRenamingLayer,
         duplicateLayer,
         deleteLayer,
         merge,
         flatten,
         closeOptionsMenu,
-        getLayerListEntries
+        getLayerListEntries,
+        isRenamingLayer
     }
 })();
