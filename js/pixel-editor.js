@@ -39,9 +39,6 @@
 //=include _paletteBlock.js
 //=include SplashPage.js
 
-/**load file**/
-//=include _loadPalette.js
-
 /**buttons**/
 //=include _toolButtons.js
 //=include FileManager.js
