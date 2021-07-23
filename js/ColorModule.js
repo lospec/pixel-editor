@@ -96,7 +96,6 @@ const ColorModule = (() => {
      * @param {*} e The event that triggered the callback
      */
     function clickedColor (e){
-        console.log("here bitch");
         //left clicked color
         if (e.which == 1) {
             // remove current color selection

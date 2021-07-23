@@ -74,13 +74,10 @@ const Startup = (() => {
     }
 
     function initLayers(width, height) {
-         // If this is the first pixel I'm creating since the app has started
-         if (firstPixel) {
-            // I configure the layers elements
-            layerListEntry = layerList.firstElementChild;
-
+        // If this is the first pixel I'm creating since the app has started
+        if (firstPixel) {
             // Creating the first layer
-            currentLayer = new Layer(width, height, 'pixel-canvas', layerListEntry);
+            currentLayer = new Layer(width, height, 'pixel-canvas', "");
             currentLayer.canvas.style.zIndex = 2;
         }
         else {
@@ -134,10 +131,7 @@ const Startup = (() => {
         // Setting the general canvasSize
         canvasSize = currentLayer.canvasSize;
 
-        if (firstPixel) {
-            // Cloning the entry so that when I change something on the first layer, those changes aren't
-            // propagated to the other ones
-            layerListEntry = layerListEntry.cloneNode(true);
+        if (firstPixel) {            
             // Adding the first layer and the checkerboard to the list of layers
             layers.push(checkerBoard);
             layers.push(currentLayer);
@@ -246,9 +240,14 @@ const Startup = (() => {
         newPixel(x, y);
     }
 
+    function createdFirstPixel() {
+        return firstPixel;
+    }
+
     return {
         create,
         newPixel,
-        newFromTemplate
+        newFromTemplate,
+        createdFirstPixel
     }
 })();

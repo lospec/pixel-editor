@@ -5,11 +5,7 @@ let oldLayerName = null;
 
 // REFACTOR: LayerMenu
 // HTML element that contains the layer entries
-let layerList;
-
-// REFACTOR: LayerMenu, probably
-// A single layer entry (used as a prototype to create the new ones)
-let layerListEntry;
+let layerList = document.getElementById("layers-menu");
 
 // Layer menu
 // REFACTOR: LayerMenu along with the right click menu
@@ -38,6 +34,9 @@ class Layer {
     static unusedIDs = [];
     static currentID = 1;
 
+    // TODO: this is simply terrible. menuEntry can either be an HTML element, a string or undefined.
+    // If it's an HTML element it is added, if it's a string nothing happens, if it's undefined the 
+    // first menuEntry is used (the one that appears on load)
     constructor(width, height, canvas, menuEntry) {
         // REFACTOR: this could just be an attribute of a Canvas class
         this.canvasSize = [width, height];
@@ -49,7 +48,13 @@ class Layer {
         this.isSelected = false;
         this.isVisible = true;
         this.isLocked = false;
-        this.menuEntry = menuEntry;
+
+        console.log("here dude");
+
+        if (typeof menuEntry == "string")
+            this.menuEntry = document.getElementById("layers-menu").firstElementChild;
+        else if (menuEntry !== undefined)
+            this.menuEntry = menuEntry;
 
         let id = Layer.unusedIDs.pop();
 
@@ -61,23 +66,23 @@ class Layer {
         this.id = "layer" + id;
 
         // Binding the events
-        if (menuEntry != null) {
-            this.name = menuEntry.getElementsByTagName("p")[0].innerHTML;
-            menuEntry.id = "layer" + id;
-            menuEntry.onmouseover = () => this.hover();
-            menuEntry.onmouseout = () => this.unhover();
-            menuEntry.onclick = () => this.selectLayer();
-            menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
-            menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
+        if (this.menuEntry !== undefined) {
+            this.name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
+            this.menuEntry.id = "layer" + id;
+            this.menuEntry.onmouseover = () => this.hover();
+            this.menuEntry.onmouseout = () => this.unhover();
+            this.menuEntry.onclick = () => this.selectLayer();
+            this.menuEntry.getElementsByTagName("button")[0].onclick = () => this.toggleLock();
+            this.menuEntry.getElementsByTagName("button")[1].onclick = () => this.toggleVisibility();
 
-            menuEntry.addEventListener("mouseup", this.openOptionsMenu, false);
-            menuEntry.addEventListener("dragstart", this.layerDragStart, false);
-            menuEntry.addEventListener("drop", this.layerDragDrop, false);
-            menuEntry.addEventListener("dragover", this.layerDragOver, false);
-            menuEntry.addEventListener("dragleave", this.layerDragLeave, false);
-            menuEntry.addEventListener("dragend", this.layerDragEnd, false);
+            this.menuEntry.addEventListener("mouseup", this.openOptionsMenu, false);
+            this.menuEntry.addEventListener("dragstart", this.layerDragStart, false);
+            this.menuEntry.addEventListener("drop", this.layerDragDrop, false);
+            this.menuEntry.addEventListener("dragover", this.layerDragOver, false);
+            this.menuEntry.addEventListener("dragleave", this.layerDragLeave, false);
+            this.menuEntry.addEventListener("dragend", this.layerDragEnd, false);
 
-            menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
+            this.menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
         }
 
         this.initialize();
@@ -306,6 +311,3 @@ class Layer {
             previewWidth, previewHeight);
     }
 }
-
-// REFACTOR: LayerMenu
-layerList = document.getElementById("layers-menu");

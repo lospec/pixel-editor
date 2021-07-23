@@ -1,5 +1,7 @@
 const LayerList = (() => {
 
+    let layerListEntry = document.getElementById("layers-menu").firstElementChild;
+
     function addLayer(id, saveHistory = true) {
         // layers.length - 3
         let index = layers.length - 3;
@@ -245,6 +247,8 @@ const LayerList = (() => {
         // Closing the menu
         currentLayer.closeOptionsMenu();
     }
+
+    // TODO: Can't select the first layer
 
     function merge(saveHistory = true) {
         // Saving the layer that should be merged
