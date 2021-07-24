@@ -501,7 +501,6 @@ function updateMiniSlider(hex) {
 function updateMiniPickerSpectrum() {
     let ctx = miniPickerCanvas.getContext('2d');
     let hsv = new Color("hex", colourValue.value).hsv;
-    console.log("Spectrum hex: " + new Color("hex", colourValue.value).hex);
     let white = new Color("hsv", hsv.h, 0, parseInt(miniPickerSlider.value)).rgb;
 
     ctx.clearRect(0, 0, miniPickerCanvas.width, miniPickerCanvas.height);

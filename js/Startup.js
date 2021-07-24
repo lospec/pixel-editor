@@ -1,6 +1,7 @@
 const Startup = (() => {
 
     let firstPixel = true;
+    let editorMode = "Basic";
     let splashPostfix = '';
 
     Events.on('click', 'create-button', create, false);
@@ -8,23 +9,16 @@ const Startup = (() => {
 
     function create(isSplash) {
         // If I'm creating from the splash menu, I append '-splash' so I get the corresponding values
-        if (isSplash) {
+        if (isSplash)
             splashPostfix = '-splash';
-        }
-        else {
+        else
             splashPostfix = '';
-        }
     
         var width = Util.getValue('size-width' + splashPostfix);
         var height = Util.getValue('size-height' + splashPostfix);
         var selectedPalette = Util.getText('palette-button' + splashPostfix);
     
         newPixel(width, height);
-        
-        // If I'm not creating from the splash page, then this is not the first project I've created
-        if (!isSplash)
-            document.getElementById('new-pixel-warning').style.display = 'block';
-    
         resetInput();
     
         //track google event
@@ -38,7 +32,7 @@ const Startup = (() => {
      * @param {*} height Start height of the canvas
      * @param {*} fileContent If fileContent != null, then the newPixel is being called from the open menu
      */
-    function newPixel (width, height, fileContent = null) {
+    function newPixel (width, height, fileContent = null) {       
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
 
@@ -57,9 +51,6 @@ const Startup = (() => {
         // The user is now able to export the Pixel
         document.getElementById('export-button').classList.remove('disabled');
 
-        // This is not the first Pixel anymore
-        firstPixel = false;
-
         // Now, if I opened an LPE file
         if (fileContent != null) {
             loadFromLPE(fileContent);
@@ -68,6 +59,11 @@ const Startup = (() => {
             // Selecting the new one
             layers[1].selectLayer();
         }
+
+        console.log("Starting with mode " + EditorState.getCurrentMode());
+        EditorState.switchMode(EditorState.getCurrentMode());
+        // This is not the first Pixel anymore
+        firstPixel = false;
     }
 
     function initLayers(width, height) {
@@ -246,10 +242,15 @@ const Startup = (() => {
         return !firstPixel;
     }
 
+    function splashEditorMode(mode) {
+        editorMode = mode;
+    }
+
     return {
         create,
         newPixel,
         newFromTemplate,
-        documentCreated
+        documentCreated,
+        splashEditorMode
     }
 })();

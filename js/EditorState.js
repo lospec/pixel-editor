@@ -1,8 +1,8 @@
 const EditorState = (() => {
     let pixelEditorMode = "Basic";
     
-    Events.on('click', 'switch-editor-mode-splash', function (e) {toggleMode();});
-    Events.on('click', 'switch-mode-button', function (e) {toggleMode();});
+    Events.on('click', 'switch-editor-mode-splash', chooseMode);
+    Events.on('click', 'switch-mode-button', toggleMode);
 
     function getCurrentMode() {
         return pixelEditorMode;
@@ -10,17 +10,12 @@ const EditorState = (() => {
 
     function switchMode(newMode) {
         //switch to advanced mode
-        if (newMode == 'Advanced' && pixelEditorMode == 'Basic') {
-            // Switch to advanced ez pez lemon squez
-            document.getElementById('switch-mode-button').innerHTML = 'Switch to basic mode';
+        if (newMode == 'Advanced') {
             // Show the layer menus
             LayerList.getLayerListEntries().style.display = "inline-block";
             document.getElementById('layer-button').style.display = 'inline-block';
             // Hide the palette menu
             document.getElementById('colors-menu').style.right = '200px'
-    
-            //change splash text
-            document.querySelector('#sp-quickstart-container .mode-switcher').classList.add('advanced-mode');
     
             pixelEditorMode = 'Advanced';
     
@@ -30,7 +25,7 @@ const EditorState = (() => {
         //switch to basic mode
         else {
             //if there is a current layer (a document is active)
-            if (currentLayer) {
+            if (Startup.documentCreated()) {
                 if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
                     return;
                 }
@@ -41,9 +36,6 @@ const EditorState = (() => {
                 LayerList.flatten(true);
             }
     
-            //change menu text
-            document.getElementById('switch-mode-button').innerHTML = 'Switch to advanced mode';
-    
             // Hide the layer menus
             LayerList.getLayerListEntries().style.display = 'none';
             document.getElementById('layer-button').style.display = 'none';
@@ -51,13 +43,26 @@ const EditorState = (() => {
             document.getElementById('colors-menu').style.display = 'flex';
             // Move the palette menu
             document.getElementById('colors-menu').style.right = '0px';
-    
-            //change splash text
-            document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove('advanced-mode');
-    
+
             pixelEditorMode = 'Basic';
-            togglePixelGrid('off');
+            togglePixelGrid('on');
         }
+    }
+
+    function chooseMode() {
+        console.log("Here");
+        let prevMode = pixelEditorMode.toLowerCase();
+
+        if (pixelEditorMode === "Basic") {
+            pixelEditorMode = "Advanced";
+        }
+        else {
+            pixelEditorMode = "Basic";
+        }
+
+        //change splash text
+        document.querySelector('#sp-quickstart-container .mode-switcher').classList.remove(prevMode + '-mode');
+        document.querySelector('#sp-quickstart-container .mode-switcher').classList.add(pixelEditorMode.toLowerCase() + '-mode');
     }
     
     function toggleMode() {
