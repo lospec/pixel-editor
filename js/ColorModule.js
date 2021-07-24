@@ -347,8 +347,8 @@ const ColorModule = (() => {
      */
     function createColorPalette(paletteColors) {
         //remove current palette
-        while (colorsMenu.childCount > 0)
-            colorsMenu.children[0].parentElement.remove();
+        while (colorsMenu.childElementCount > 1)
+            colorsMenu.children[0].remove();
 
         var lightestColor = new Color("hex", '#000000');
         var darkestColor = new Color("hex", '#ffffff');
@@ -399,7 +399,7 @@ const ColorModule = (() => {
                     if (!isPixelEmpty(imageData[j])) {
                         let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
 
-                        if (!colors[color]) {
+                        if (!colors[color] && imageData[j + 3] != 0) {
                             colors[color] = new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).rgb;
 
                             //don't allow more than 256 colors to be added
@@ -420,6 +420,8 @@ const ColorModule = (() => {
                 colorPaletteArray.push('#'+Color.rgbToHex(colors[color]));
             }
         }
+
+        console.log("palette");
 
         //create palette from colors array
         createColorPalette(colorPaletteArray);

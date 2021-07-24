@@ -9,7 +9,5 @@ if (
 	(!bowser.mobile && !bowser.tablet)
 )
 	console.log("compatibility check passed");
-
-
 //show warning
 else document.getElementById("compatibility-warning").style.visibility = "visible";

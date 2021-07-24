@@ -1,5 +1,3 @@
-// TODO: the button to load a palette disappeared for some reason, should add it back
-
 const FileManager = (() => {
 
     // Binding the browse holder change event to file loading
@@ -109,9 +107,8 @@ const FileManager = (() => {
         // Getting the extension
         let extension = (fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName).toLowerCase();
 
-        // I didn't write this check and I have no idea what it does
         if (browseHolder.files && browseHolder.files[0]) {
-            // Btw, checking if the extension is supported
+            // Checking if the extension is supported
             if (extension == 'png' || extension == 'gif' || extension == 'lpe') {
                 // If it's a Lospec Pixel Editor tm file, I load the project
                 if (extension == 'lpe') {
@@ -130,12 +127,14 @@ const FileManager = (() => {
     function openFile() {
         //load file
         var fileReader = new FileReader();
+
         fileReader.onload = function(e) {
             var img = new Image();
+
             img.onload = function() {
                 //create a new pixel with the images dimentions
-                EditorState.switchMode('Advanced');
                 Startup.newPixel(this.width, this.height);
+                EditorState.switchMode('Advanced');
 
                 //draw the image onto the canvas
                 currentLayer.context.drawImage(img, 0, 0);
