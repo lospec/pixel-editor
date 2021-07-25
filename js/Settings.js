@@ -57,7 +57,12 @@ const Settings = (() => {
         Dialogue.closeDialogue();
     }
 
-    return {
-
+    function getCurrSettings() {
+        return settings;
     }
+
+    return {
+        getCurrSettings
+    }
+
 })();

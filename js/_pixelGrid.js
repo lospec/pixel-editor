@@ -66,7 +66,7 @@ function fillPixelGrid() {
     pixelGrid.canvas.width = originalSize[0] * Math.round(lineDistance);
     pixelGrid.canvas.height = originalSize[1] * Math.round(lineDistance);
 
-    context.strokeStyle = settings.pixelGridColour;
+    context.strokeStyle = Settings.getCurrSettings().pixelGridColour;
 
     // OPTIMIZABLE, could probably be a bit more elegant
     // Draw horizontal lines

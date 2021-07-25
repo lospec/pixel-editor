@@ -38,8 +38,8 @@ const History = (() => {
         undoStates.push(state);
 
         //limit the number of states to settings.numberOfHistoryStates
-        if (undoStates.length > settings.numberOfHistoryStates) {
-            undoStates = undoStates.splice(-settings.numberOfHistoryStates, settings.numberOfHistoryStates);
+        if (undoStates.length > Settings.getCurrSettings().numberOfHistoryStates) {
+            undoStates = undoStates.splice(-Settings.getCurrSettings().numberOfHistoryStates, Settings.getCurrSettings().numberOfHistoryStates);
         }
 
         //there is now definitely at least 1 undo state, so the button shouldnt be disabled

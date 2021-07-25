@@ -346,6 +346,7 @@ const ColorModule = (() => {
      * @param {*} paletteColors The colours of the palette
      */
     function createColorPalette(paletteColors) {
+        console.log("creating palette");
         //remove current palette
         while (colorsMenu.childElementCount > 1)
             colorsMenu.children[0].remove();
@@ -389,6 +390,9 @@ const ColorModule = (() => {
      */
     function createPaletteFromLayers() {
         let colors = {};
+        let nColors = 0;
+        //create array out of colors object
+        let colorPaletteArray = [];
 
         for (let i=0; i<layers.length; i++) {
             if (layers[i].menuEntry != null) {
@@ -398,13 +402,14 @@ const ColorModule = (() => {
                 for (let j=0; j<dataLength; j += 4) {
                     if (!isPixelEmpty(imageData[j])) {
                         let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
-
-                        if (!colors[color] && imageData[j + 3] != 0) {
+                        
+                        if (!colors[color]) {
+                            colorPaletteArray.push('#' + new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).hex);
                             colors[color] = new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).rgb;
-
+                            nColors++;
                             //don't allow more than 256 colors to be added
-                            if (Object.keys(colors).length >= settings.maxColorsOnImportedImage) {
-                                alert('The image loaded seems to have more than '+settings.maxColorsOnImportedImage+' colors.');
+                            if (nColors >= Settings.getCurrSettings().maxColorsOnImportedImage) {
+                                alert('The image loaded seems to have more than '+Settings.getCurrSettings().maxColorsOnImportedImage+' colors.');
                                 break;
                             }
                         }
@@ -413,18 +418,10 @@ const ColorModule = (() => {
             }
         }
 
-        //create array out of colors object
-        let colorPaletteArray = [];
-        for (let color in colors) {
-            if (colors.hasOwnProperty(color)) {
-                colorPaletteArray.push('#'+Color.rgbToHex(colors[color]));
-            }
-        }
-
-        console.log("palette");
-
         //create palette from colors array
         createColorPalette(colorPaletteArray);
+
+        console.log("Done 2");
     }
 
     function updateCurrentColor(color, refLayer) {

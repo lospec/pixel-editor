@@ -6,16 +6,8 @@
  * @param {*} pixel 
  */
 function isPixelEmpty(pixel) {
-	if (pixel == null || pixel === undefined) {
-		return false;
-	}
-	
 	// If the alpha channel is 0, the current pixel is empty
-    if (pixel[3] == 0) {
-        return true;
-    }
-	
-    return false;
+    return pixel[3] == 0;
 }
 
 // REFACTOR: move to eyedropper onMouseUp event?
