@@ -1,15 +1,15 @@
 // REFACTOR: inherit from Layer, override init method (call super as well)
+// OPTIMIZABLE: only draw the grid for the current viewport. The grid should be refreshed
+//              everytime the user pans the view
 
 // Start colour of the pixel grid (can be changed in the preferences)
 let pixelGridColor = "#000000";
 // Distance between one line and another in HTML pixels
-let lineDistance = 12;
+let lineDistance = 11;
 // The grid is not visible by default
 let pixelGridVisible = false;
 // The grid is enabled, but is disabled in order to save performance with big sprites
 let pixelGridEnabled = true;
-// Used to edit lineDistance depending on the zoom level
-let zoomFactor = 1;
 
 function disablePixelGrid() {
     pixelGridEnabled = false;
@@ -23,7 +23,6 @@ function enablePixelGrid() {
 
 function repaintPixelGrid(factor) {
     lineDistance += factor;
-    console.log("Line distance: " + lineDistance + " zoom: " + zoom);
     fillPixelGrid();
 }
 
@@ -67,11 +66,11 @@ function fillPixelGrid() {
     pixelGrid.canvas.width = originalSize[0] * Math.round(lineDistance);
     pixelGrid.canvas.height = originalSize[1] * Math.round(lineDistance);
 
+    context.strokeStyle = settings.pixelGridColour;
+
     // OPTIMIZABLE, could probably be a bit more elegant
     // Draw horizontal lines
     for (let i=0; i<pixelGrid.canvas.width / Math.round(lineDistance); i++) {
-        context.strokeStyle = settings.pixelGridColour;
-
         context.beginPath();
         context.moveTo(i * Math.round(lineDistance) + 0.5, 0);
         context.lineTo(i * Math.round(lineDistance) + 0.5, originalSize[1] * Math.round(lineDistance));

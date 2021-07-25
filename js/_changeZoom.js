@@ -12,21 +12,36 @@ function changeZoom (direction, cursorLocation) {
 
 	//change zoom level
 	//if you want to zoom out, and the zoom isnt already at the smallest level
-	if (direction == 'out' && zoom > 1) {
+	if (direction == 'out' && zoom > MIN_ZOOM_LEVEL) {
 		zoomed = true;
-		zoom -= Math.ceil(zoom / 10);
+		if (zoom > 2)
+			zoom -= Math.ceil(zoom / 10);
+		else
+			zoom -= Math.ceil(zoom * 2 / 10) / 2;
+
 		newWidth = canvasSize[0] * zoom;
 		newHeight = canvasSize[1] * zoom;
 
 		//adjust canvas position
 		layers[0].setCanvasOffset(
 			layers[0].canvas.offsetLeft + (oldWidth - newWidth) * cursorLocation[0]/oldWidth, 
-			layers[0].canvas.offsetTop + (oldHeight - newHeight) * cursorLocation[1]/oldWidth);
+			layers[0].canvas.offsetTop + (oldHeight - newHeight) * cursorLocation[1]/oldHeight);
 	}
 	//if you want to zoom in
 	else if (direction == 'in' && zoom + Math.ceil(zoom/10) < window.innerHeight/4) {
 		zoomed = true;
-		zoom += Math.ceil(zoom/10);
+		if (zoom > 2)
+			zoom += Math.ceil(zoom/10);
+		else {
+			if (zoom + zoom/10 > 2) {
+				zoom += Math.ceil(zoom/10);
+				zoom = Math.ceil(zoom);
+			}
+			else {
+				zoom += Math.ceil(zoom * 2 / 10) / 2;
+			}
+		}
+			
 		newWidth = canvasSize[0] * zoom;
 		newHeight = canvasSize[1] * zoom;
 
@@ -47,11 +62,11 @@ function changeZoom (direction, cursorLocation) {
 			disablePixelGrid();
 		else if (zoom >= 20 && direction == 'in') {
 			enablePixelGrid();
-			repaintPixelGrid(zoom - prevZoom);
+			repaintPixelGrid((zoom - prevZoom) * 0.6);
 		}
-		else if ((prevZoom >= 20 && direction == 'out')) {
+		else if (prevZoom >= 20 && direction == 'out') {
 			enablePixelGrid();
-			repaintPixelGrid(zoom - prevZoom);
+			repaintPixelGrid((zoom - prevZoom) * 0.6);
 		}
 		else {
 			enablePixelGrid();

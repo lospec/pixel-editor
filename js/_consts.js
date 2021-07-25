@@ -5,3 +5,5 @@ const MAX_Z_INDEX = 5000;
 const firstUserLayerIndex = 2;
 // Number of layers that are only used by the editor
 const nAppLayers = 3;
+
+const MIN_ZOOM_LEVEL = 0.5;
