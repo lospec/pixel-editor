@@ -1,0 +1,19 @@
+#export {
+    .export-configuration {
+        display: flex;
+        flex-direction: column;
+
+        input {
+            flex: 1;
+        }
+    }
+
+    .export-actions {
+        display: flex;
+        justify-content: center;
+
+        button {
+            font-size: 18px;
+        }
+    }
+}

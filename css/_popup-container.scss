@@ -77,6 +77,18 @@
 			text-align: center;
 		}
 	}
+
+	div.pixel-export {
+		input {
+			background: $indent;
+			border: none;
+			border-radius: 4px;
+			color: $indenttext;
+			padding: 10px 20px;
+			margin: 0;
+			text-align: left;
+		}
+	}
 	/*
 	input {
 		background: $indent;

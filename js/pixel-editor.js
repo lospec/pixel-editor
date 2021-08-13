@@ -53,6 +53,7 @@
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include _splashPage.js
+//=include _pixelExport.js
 
 /**load file**/
 //=include _loadImage.js
