@@ -77,6 +77,18 @@
 			text-align: center;
 		}
 	}
+
+	div.pixel-export, div.save-project {
+		input {
+			background: $indent;
+			border: none;
+			border-radius: 4px;
+			color: $indenttext;
+			padding: 10px 20px;
+			margin: 0;
+			text-align: left;
+		}
+	}
 	/*
 	input {
 		background: $indent;
@@ -151,5 +163,14 @@
 				background: $baseselected;
 			}
 		}
+	}
+
+	.popup-actions {
+        display: flex;
+        justify-content: center;
+
+        button {
+            font-size: 18px;
+        }
 	}
 }
