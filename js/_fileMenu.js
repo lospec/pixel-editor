@@ -30,27 +30,7 @@ for (var i = 1; i < mainMenuItems.length; i++) {
                     showDialogue('new-pixel');
                     break;
                 case 'Save project':
-                    //create name
-                    var selectedPalette = getText('palette-button');
-                    if (selectedPalette != 'Choose a palette...'){
-                        var paletteAbbreviation = palettes[selectedPalette].abbreviation;
-                        var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
-                    } else {
-                        var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
-                        selectedPalette = 'none';
-                    }
-
-                    //set download link
-                    var linkHolder = document.getElementById('save-project-link-holder');
-                    // create file content
-                    var content = getProjectData();
-
-                    linkHolder.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
-                    linkHolder.download = fileName;
-                    linkHolder.click();
-
-                    ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
-
+                    openSaveProjectWindow();
                     break;
                 case 'Open':
                     //if a document exists

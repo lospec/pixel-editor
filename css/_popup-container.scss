@@ -78,7 +78,7 @@
 		}
 	}
 
-	div.pixel-export {
+	div.pixel-export, div.save-project {
 		input {
 			background: $indent;
 			border: none;
@@ -163,5 +163,14 @@
 				background: $baseselected;
 			}
 		}
+	}
+
+	.popup-actions {
+        display: flex;
+        justify-content: center;
+
+        button {
+            font-size: 18px;
+        }
 	}
 }

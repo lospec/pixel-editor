@@ -54,6 +54,7 @@
 //=include _paletteBlock.js
 //=include _splashPage.js
 //=include _pixelExport.js
+//=include _saveProject.js
 
 /**load file**/
 //=include _loadImage.js
