@@ -32,13 +32,13 @@ const TopMenuModule = (() => {
                         Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'new-pixel');
                         break;
                     case 'Save project':
-                        Events.on('click', currSubmenuButton, FileManager.saveProject);
+                        Events.on('click', currSubmenuButton, FileManager.openSaveProjectWindow);
                         break;
                     case 'Open':
                         Events.on('click', currSubmenuButton, FileManager.open);
                         break;
                     case 'Export':
-                        Events.on('click', currSubmenuButton, FileManager.exportProject);
+                        Events.on('click', currSubmenuButton, FileManager.openPixelExportWindow);
                         break;
                     case 'Exit':
                         //if a document exists, make sure they want to delete it

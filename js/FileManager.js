@@ -7,19 +7,47 @@ const FileManager = (() => {
     Events.on('change', browseHolder, loadFile);
     Events.on('change', browsePaletteHolder, loadPalette);
 
-    function saveProject() {
+    function openSaveProjectWindow() {
         //create name
-        let fileName;
         let selectedPalette = Util.getText('palette-button');
 
         if (selectedPalette != 'Choose a palette...'){
-            let paletteAbbreviation = palettes[selectedPalette].abbreviation;
-            fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+            var paletteAbbreviation = palettes[selectedPalette].abbreviation;
+            var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1];
         } else {
-            fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.lpe';
+            var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1];
             selectedPalette = 'none';
         }
+    
+        Util.setValue('lpe-file-name', fileName);
+    
+        Events.on("click", "save-project-confirm", saveProject);
+    
+        Dialogue.showDialogue('save-project', false);
+    }
 
+    function openPixelExportWindow() {
+        let selectedPalette = Util.getText('palette-button');
+    
+        if (selectedPalette != 'Choose a palette...'){
+            var paletteAbbreviation = palettes[selectedPalette].name;
+            var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+        } else {
+            var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+            selectedPalette = 'none';
+        }
+    
+        Util.setValue('export-file-name', fileName);
+    
+        Events.on("click", "export-confirm", exportProject);
+    
+        Dialogue.showDialogue('export', false);
+    }
+
+    function saveProject() {
+        // Get name
+        let fileName = Util.getValue("lpe-file-name") + ".lpe";
+        let selectedPalette = Util.getText('palette-button');
         //set download link
         const linkHolder = document.getElementById('save-project-link-holder');
         // create file content
@@ -36,15 +64,7 @@ const FileManager = (() => {
     function exportProject() {
         if (Startup.documentCreated()) {
             //create name
-            var selectedPalette = Util.getText('palette-button');
-            if (selectedPalette != 'Choose a palette...'){
-                var paletteAbbreviation = palettes[selectedPalette].abbreviation;
-                var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
-            } else {
-                var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
-                selectedPalette = 'none';
-            }
-
+            let fileName = Util.getValue("export-file-name");
             //set download link
             var linkHolder = document.getElementById('save-image-link-holder');
             // Creating a tmp canvas to flatten everything
@@ -248,6 +268,8 @@ const FileManager = (() => {
     return {
         saveProject,
         exportProject,
+        openPixelExportWindow,
+        openSaveProjectWindow,
         open
     }
 })();

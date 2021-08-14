@@ -38,8 +38,6 @@
 //=include _colorPicker.js
 //=include _paletteBlock.js
 //=include SplashPage.js
-//=include _pixelExport.js
-//=include _saveProject.js
 
 /**buttons**/
 //=include _toolButtons.js
