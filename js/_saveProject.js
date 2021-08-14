@@ -1,3 +1,6 @@
+/**
+ * Opens the save project window and initializes events for save project customization.
+ */
 function openSaveProjectWindow() {
     //create name
     var selectedPalette = getText('palette-button');
@@ -16,6 +19,9 @@ function openSaveProjectWindow() {
     showDialogue('save-project', false);
 }
 
+/**
+ * Downloads the .lpe file for the current project.
+ */
 function saveProject() {
     var fileName = `${getValue('lpe-file-name')}.lpe`;
 
