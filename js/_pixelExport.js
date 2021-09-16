@@ -6,9 +6,9 @@ function openPixelExportWindow() {
 
     if (selectedPalette != 'Choose a palette...'){
         var paletteAbbreviation = palettes[selectedPalette].name;
-        var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+        var fileName = 'pixel-'+paletteAbbreviation+'-'+layers[0].canvasSize[0]+'x'+layers[0].canvasSize[1]+'.png';
     } else {
-        var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+        var fileName = 'pixel-'+layers[0].canvasSize[0]+'x'+layers[0].canvasSize[1]+'.png';
         selectedPalette = 'none';
     }
 
@@ -33,11 +33,11 @@ function exportPixel() {
         var emptyCanvas = document.createElement("canvas");
         var layersCopy = layers.slice();
 
-        exportCanvas.width = canvasSize[0];
-        exportCanvas.height = canvasSize[1];
+        exportCanvas.width = layers[0].canvasSize[0];
+        exportCanvas.height = layers[0].canvasSize[1];
 
-        emptyCanvas.width = canvasSize[0];
-        emptyCanvas.height = canvasSize[1];
+        emptyCanvas.width = layers[0].canvasSize[0];
+        emptyCanvas.height = layers[0].canvasSize[1];
 
         // Sorting the layers by z index
         layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
