@@ -69,8 +69,8 @@ const LayerList = (() => {
     */
     function mergeLayers(belowLayer, topLayer) {
         // Copying the above content on the layerBelow
-        let belowImageData = belowLayer.getImageData(0, 0, currentLayer.canvas.width, currentLayer.canvas.height);
-        let toMergeImageData = topLayer.getImageData(0, 0, currentLayer.canvas.width, currentLayer.canvas.height);
+        let belowImageData = belowLayer.getImageData(0, 0, belowLayer.canvas.width, belowLayer.canvas.height);
+        let toMergeImageData = topLayer.getImageData(0, 0, topLayer.canvas.width, topLayer.canvas.height);
 
         for (let i=0; i<belowImageData.data.length; i+=4) {
             let currentMovePixel = [

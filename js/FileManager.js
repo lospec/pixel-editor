@@ -72,11 +72,11 @@ const FileManager = (() => {
             var emptyCanvas = document.createElement("canvas");
             var layersCopy = layers.slice();
 
-            exportCanvas.width = canvasSize[0];
-            exportCanvas.height = canvasSize[1];
+            exportCanvas.width = layers[0].canvasSize[0];
+            exportCanvas.height = layers[0].canvasSize[1];
 
-            emptyCanvas.width = canvasSize[0];
-            emptyCanvas.height = canvasSize[1];
+            emptyCanvas.width = layers[0].canvasSize[0];
+            emptyCanvas.height = layers[0].canvasSize[1];
 
             // Sorting the layers by z index
             layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
