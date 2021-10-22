@@ -4,8 +4,7 @@ function clickedColor (e){
     //left clicked color
     if (e.which == 1) {
         // remove current color selection
-        var selectedColor = document.querySelector('#colors-menu li.selected');
-        if (selectedColor) selectedColor.classList.remove('selected');
+        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
 
         //set current color
         for (let i=1; i<layers.length - nAppLayers; i++) {
