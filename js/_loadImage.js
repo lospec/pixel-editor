@@ -22,6 +22,10 @@ document.getElementById('open-image-browse-holder').addEventListener('change', f
                     let dictionary = JSON.parse(e.target.result);
                     let mode = dictionary['editorMode'] == 'Advanced' ? 'Basic' : 'Advanced';
                     newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], mode, dictionary);
+                    
+                    for (let i=0; i<dictionary['color' + i] != null; i++) {
+                        addColor(dictionary['color'+i]);
+                    }
                 }
             }
             else {
