@@ -39,7 +39,7 @@ on('click', 'add-color-button', function(){
     while (colorIsUnique == false);
 
     //remove current color selection
-    document.querySelector('#colors-menu li.selected').classList.remove('selected');
+    document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
 
     //add new color and make it selected
     var addedColor = addColor(newColor);

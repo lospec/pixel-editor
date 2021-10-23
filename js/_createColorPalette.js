@@ -32,8 +32,7 @@ function createColorPalette(paletteColors, deletePreviousPalette = true) {
         if (newColorHex.r + newColorHex.g + newColorHex.b < darkestColorHex.r + darkestColorHex.g + darkestColorHex.b) {
 
             //remove current color selection
-            var selectedColor = document.querySelector('#colors-menu li.selected');
-            if (selectedColor) selectedColor.classList.remove('selected');
+            document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
 
             //set as current color
             newColorElement.classList.add('selected');
