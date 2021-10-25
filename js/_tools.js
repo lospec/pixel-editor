@@ -4,6 +4,51 @@ var tool = {};
 
 //class for tools
 class Tool {
+	name = "AbstractTool";
+	
+	cursorType = {};
+	cursorHTMLElement = undefined;
+	currBrushSize = 1;
+	prevBrushSize = 1;
+
+	startMousePos = {};
+	prevMousePos = {};
+	endMousePos = {};
+
+	onSelect() {
+
+	}
+
+	onHover(cursorPosition) {
+		let toSub = 1;
+        // Prevents the brush to be put in the middle of pixels
+        if (this.currentBrushSize % 2 == 0) {
+            toSub = 0.5;
+        }        
+        brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+        brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+	}
+
+	onDeselect() {
+
+	}
+
+	onStart() {
+
+	}
+
+	onDrag() {
+
+	}
+
+	onEnd() {
+
+	}
+
+	updateCursor2() {
+
+	}
+
 	constructor (name, options) {
 
 		//stores the name in object, only needed for legacy functions from when currentTool was just a string
@@ -103,3 +148,19 @@ class Tool {
 
 
 /*global dragging currentTool, currentToolTemp, selectionCanceled, endSelection*/
+
+/**
+ * Class selectionTool extends Tool {
+ * 		imageDataToMove
+ * 		startDataPos
+ * 		currDataPos
+ * 		finalDataPos
+ * 		canMove
+ * 		
+ * 		movePreview()
+ * 		
+ * 		// start and end selection just overwrite the onStart and onEnd methods
+ * 
+ * }
+ * 
+ */

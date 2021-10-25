@@ -180,6 +180,9 @@ const FileManager = (() => {
         reader.onload = function (e) {
             let dictionary = JSON.parse(e.target.result);
             Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary);
+            for (let i=0; i<dictionary['color' + i] != null; i++) {
+                ColorModule.addColor(dictionary['color'+i]);
+            }
         }
     }
 

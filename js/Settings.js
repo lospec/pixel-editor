@@ -1,5 +1,3 @@
-// REFACTOR: convert to IIFE
-
 const Settings = (() => {
     let settings;
     let settingsFromCookie;

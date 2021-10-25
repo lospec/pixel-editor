@@ -4,6 +4,10 @@ This is a browser based software for creating pixel art
 
 The tool can be viewed online here: https://lospec.com/pixel-editor
 
+## How to contribute
+
+Please do not submit pull requests with new features or core changes. Instead, please file an issue first for discussion.
+
 ## What to Contribute
 
 Any changes that fix bugs or add features are welcome.
@@ -15,10 +19,9 @@ Suggestions / Planned features:
 - Documentation
 
 - Possibility to hide and resize menus (layers, palette)
-- Line tool
 - Tiled mode
 - Load palette from LPE file
-- Symmetry options
+- Symmetry options (currently being worked on)
 
 - Mobile
     - Touch equivalent for mouse clicks

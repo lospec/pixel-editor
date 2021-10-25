@@ -100,8 +100,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 	      //if picked color matches this color
 	      if (newColor == colors[i].jscolor.toString()) {
 	        //remove current color selection
-	        let selectedColor = document.querySelector("#colors-menu li.selected")
-	        if (selectedColor) selectedColor.classList.remove("selected");
+	        document.querySelector("#colors-menu li.selected")?.classList.remove("selected");
 
 	      	//set current color
 

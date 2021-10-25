@@ -23,7 +23,7 @@ class Layer {
         this.canvasSize = [width, height];
         // REFACTOR: the canvas should actually be a Canvas instance
         this.canvas = Util.getElement(canvas);
-        // REFACOTR: the context could be an attribute of the canvas class, but it's a bit easier
+        // REFACTOR: the context could be an attribute of the canvas class, but it's a bit easier
         // to just type layer.context, we should discuss this
         this.context = this.canvas.getContext('2d');
         this.isSelected = false;

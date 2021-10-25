@@ -98,8 +98,7 @@ const ColorModule = (() => {
         //left clicked color
         if (e.which == 1) {
             // remove current color selection
-            var selectedColor = document.querySelector('#colors-menu li.selected');
-            if (selectedColor) selectedColor.classList.remove('selected');
+            document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
     
             //set current color
             updateCurrentColor(e.target.style.backgroundColor);
@@ -125,7 +124,7 @@ const ColorModule = (() => {
         const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
 
         //remove current color selection
-        document.querySelector('#colors-menu li.selected').classList.remove('selected');
+        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
 
         //add new color and make it selected
         let addedColor = addColor(newColor);
@@ -369,8 +368,7 @@ const ColorModule = (() => {
             if (newColRgb.r + newColRgb.g + newColRgb.b < darkestColorRgb.r + darkestColorRgb.g + darkestColorRgb.b) {
 
                 //remove current color selection
-                var selectedColor = document.querySelector('#colors-menu li.selected');
-                if (selectedColor) selectedColor.classList.remove('selected');
+                document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
 
                 //set as current color
                 newColorElement.classList.add('selected');

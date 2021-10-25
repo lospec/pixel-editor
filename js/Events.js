@@ -1,4 +1,6 @@
 class Events {
+    customCallback = {};
+
     /** Used to programmatically create an input event
      * 
      * @param {*} keyCode KeyCode of the key to press
@@ -89,6 +91,13 @@ class Events {
         return element;
     }
     
+    /** Register a callback for a certain window event
+     * 
+     * @param {*} event The event to register to
+     * @param {*} elementId The id of the element that will listen to the event
+     * @param {*} functionCallback The function to callback when the event is shoot 
+     * @param  {...any} args Arguments for the callback
+     */
     static on(event, elementId, functionCallback, ...args) {
         //if element provided is string, get the actual element
         const element = Util.getElement(elementId);
@@ -99,6 +108,14 @@ class Events {
         });
     }
 
+    /** Register a callback for a certain window event that is shot by the children of 
+     *  an element passed as an argument
+     * 
+     * @param {*} event The event to register to
+     * @param {*} elementId The id of the element whose children will listen to the event
+     * @param {*} functionCallback The function to callback when the event is shoot 
+     * @param  {...any} args Arguments for the callback
+     */
     static onChildren(event, parentElement, functionCallback, ...args) {
         parentElement = Util.getElement(parentElement);
         const children = parentElement.children;
@@ -107,5 +124,28 @@ class Events {
         for (var i = 0; i < children.length; i++) {
             on(event, children[i], functionCallback, ...args);
         }
+    }
+
+    /** Registers a callback for a custom (non HTML) event
+     * 
+     * @param {*} event The event to register to
+     * @param {*} functionCallback The function to call
+     */
+    static onCustom(event, functionCallback) {
+        if (customCallback[event] === undefined)
+            customCallback[event] = [];
+        
+        customCallback[event].push(functionCallback);
+    }
+
+    /** Emits a custom (non HTML) event
+     * 
+     * @param {*} event The event to emit
+     * @param  {...any} args The arguments for that event
+     */
+    static emit(event, ...args) {
+        if (customCallback[event] != undefined) 
+            for (let i=0; i<customCallback[event].length; i++)
+                customCallback[event][i](args);
     }
 }
