@@ -1,5 +1,7 @@
 const ToolManager = (() => {
-    brush = new BrushTool("brush", {type: 'html'});
+    brush = new BrushTool("brush", {type: 'html'}, switchTool);
+    eraser = new EraserTool("eraser", {type: 'html'}, switchTool);
+
     currTool = brush;
 
     Events.on("mouseup", window, onMouseUp);
@@ -61,6 +63,14 @@ const ToolManager = (() => {
 
     function currentTool() {
         return currTool;
+    }
+
+    function switchTool(newTool) {
+        console.log("switch");
+
+        currTool.onDeselect();
+        currTool = newTool;
+        currTool.onSelect();
     }
 
     return {

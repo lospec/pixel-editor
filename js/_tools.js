@@ -27,9 +27,14 @@ class Tool {
 	constructor (name, options) {
 		this.name = name;
 		this.cursorType = options;
+		
+		this.mainButton = document.getElementById(name + "-button");
+		this.biggerButton = document.getElementById(name + "-bigger-button");
+		this.smallerButton = document.getElementById(name + "-smaller-button");
 	}
 
 	onSelect() {
+		this.mainButton.parentElement.classList.add("selected");
 	/*
 		//copy options to this object
 		if (options.cursor) {
@@ -45,6 +50,8 @@ class Tool {
 			}
 		}*/
 	}
+
+	updateCursor() {}
 
 	onHover(cursorLocation, cursorTarget) {
 		this.prevMousePos = this.currMousePos;
@@ -79,7 +86,7 @@ class Tool {
 	}
 
 	onDeselect() {
-
+		this.mainButton.parentElement.classList.remove("selected");
 	}
 
 	onStart(mousePos) {
@@ -109,46 +116,6 @@ class Tool {
 
 	get size() {
 		return this.currSize;
-	}
-
-	//switch to this tool (replaced global changeTool())
-	switchTo () {
-		// Ending any selection in progress
-	    /*if (currentTool.name.includes("select") && !this.name.includes("select") && !selectionCanceled) {
-	    	endSelection();
-	    }*/
-
-	    var tools = document.getElementById("tools-menu").children;
-
-		for (var i = 0; i < tools.length; i++) {
-		    tools[i].classList.remove("selected");
-		}
-
-		let buttonNode = document.getElementById(this.name + "-button");
-	    //give the button of the selected tool the .selected class if the tool has a button
-	    if(buttonNode != null && buttonNode.parentNode != null) {
-			document.getElementById(this.name+"-button").parentNode.classList.add("selected");
-		}
-
-		//change cursor
-		this.updateCursor();
-	}
-
-	updateCursor () {
-		//switch to that tools cursor
-		canvasView.style.cursor = this.cursor || 'default';
-
-		//moveSelection
-		/*if (currentTool.name == 'moveselection') {
-			if (cursorInSelectedArea()) {
-				canMoveSelection = true;
-				canvasView.style.cursor = 'move';
-				brushPreview.style.display = 'none';
-			}
-			else {
-				canvasView.style.cursor = 'crosshair';
-			}
-		}*/
 	}
 }
 

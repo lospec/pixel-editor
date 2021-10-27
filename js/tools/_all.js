@@ -1,11 +1,3 @@
-new Tool('eraser', {
-	cursor: 'none',
-	brushPreview: true,
-});
-new Tool('resizeeraser', {
-	cursor: 'default',
-});
-
 new Tool('eyedropper', {
 	imageCursor: 'eyedropper',
 });
@@ -29,13 +21,6 @@ new Tool('pan', {
 	},
 });
 
-new Tool('pencil', {
-	cursor: 'none',
-	brushPreview: true,
-});
-new Tool('resizebrush', {
-	cursor: 'default',
-});
 
 new Tool('rectangle', {
 	cursor: 'none',
@@ -62,8 +47,3 @@ new Tool('moveselection', {
 new Tool('zoom', {
 	imageCursor: 'zoom-in',
 });
-
-//set a default tool
-// REFACTOR: move to FileManager
-var currentTool = tool.pencil;
-var currentToolTemp = tool.pencil;

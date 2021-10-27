@@ -1,22 +1,4 @@
 // REFACTOR: add to single Tool implementations
-
-//eraser
-Events.on('click',"eraser-button", function(){
-    console.log("selecting eraser");
-    tool.eraser.switchTo();
-}, false);
-
-//eraser bigger
-Events.on('click',"eraser-bigger-button", function(){
-    tool.eraser.brushSize++;
-}, false);
-
-//eraser smaller
-Events.on('click',"eraser-smaller-button", function(e){
-    if(tool.eraser.brushSize > 1)
-    	tool.eraser.brushSize--;
-}, false);
-
 // rectangle
 Events.on('click','rectangle-button', function(e){
     // If the user clicks twice on the button, they change the draw mode

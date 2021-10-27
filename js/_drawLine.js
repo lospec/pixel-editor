@@ -14,7 +14,7 @@ function line(x0,y0,x1,y1, brushSize) {
 			currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
 		} else if (ToolManager.currentTool().name == 'eraser') {
 			// In case I'm using the eraser I must clear the rect
-            currentLayer.context.clearRect(x0-Math.floor(tool.eraser.brushSize/2), y0-Math.floor(tool.eraser.brushSize/2), tool.eraser.brushSize, tool.eraser.brushSize);
+            currentLayer.context.clearRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
 		}
 
 		//if we've reached the end goal, exit the loop

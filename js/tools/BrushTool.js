@@ -1,16 +1,14 @@
 class BrushTool extends Tool {
-    constructor(name, options) {
+    constructor(name, options, switchFunction) {
         super(name, options);
 
-        // Selection button, brush size buttons
-        Events.on('click',"pencil-button", this.onSelect);
-        Events.on('click',"pencil-bigger-button", this.increaseSize.bind(this));
-        Events.on('click',"pencil-smaller-button", this.decreaseSize.bind(this));
+        Events.on('click', this.mainButton, switchFunction, this);
+        Events.on('click', this.biggerButton, this.increaseSize.bind(this));
+        Events.on('click', this.smallerButton, this.decreaseSize.bind(this));
     }
 
     onStart(mousePos) {
         super.onStart(mousePos);
-		this.startMousePos = mousePos;
 	}
 
 	onDrag(mousePos, cursorTarget) {
@@ -35,4 +33,12 @@ class BrushTool extends Tool {
         super.onEnd(mousePos);
 		this.endMousePos = mousePos;
 	}
+
+    onSelect() {
+        super.onSelect();
+    }
+
+    onDeselect() {
+        super.onDeselect();
+    }
 }
