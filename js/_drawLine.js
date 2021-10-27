@@ -9,10 +9,10 @@ function line(x0,y0,x1,y1, brushSize) {
 	while (true) {
 	    //set pixel
 		// If the current tool is the brush
-		if (currentTool.name == 'pencil' || currentTool.name == 'rectangle' || currentTool.name == 'ellipse') {
+		if (ToolManager.currentTool().name == 'brush' || ToolManager.currentTool().name == 'rectangle' || ToolManager.currentTool().name == 'ellipse') {
 			// I fill the rect
 			currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
-		} else if (currentTool.name == 'eraser') {
+		} else if (ToolManager.currentTool().name == 'eraser') {
 			// In case I'm using the eraser I must clear the rect
             currentLayer.context.clearRect(x0-Math.floor(tool.eraser.brushSize/2), y0-Math.floor(tool.eraser.brushSize/2), tool.eraser.brushSize, tool.eraser.brushSize);
 		}

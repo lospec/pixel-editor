@@ -246,6 +246,8 @@ const ColorModule = (() => {
 
         //if color is a string, then find the corresponding button
         if (typeof color === 'string') {
+            if (color[0] === '#')
+                color = color.substr(1, color.length - 1);
             //get all colors in palette
             let colors = document.getElementsByClassName('color-button');
     
@@ -255,6 +257,7 @@ const ColorModule = (() => {
     
                 if (color == colors[i].jscolor.toString()) {
                     //set color to the color button
+                    currentPalette.splice(i, 1);
                     color = colors[i];
                     break;
                 }

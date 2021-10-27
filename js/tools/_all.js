@@ -64,5 +64,6 @@ new Tool('zoom', {
 });
 
 //set a default tool
+// REFACTOR: move to FileManager
 var currentTool = tool.pencil;
 var currentToolTemp = tool.pencil;

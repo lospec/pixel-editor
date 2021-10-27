@@ -46,7 +46,7 @@ const Startup = (() => {
         // Closing the "New Pixel dialogue"
         Dialogue.closeDialogue();
         // Updating the cursor of the current tool
-        currentTool.updateCursor();
+        ToolManager.currentTool().updateCursor();
 
         // The user is now able to export the Pixel
         document.getElementById('export-button').classList.remove('disabled');

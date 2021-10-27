@@ -82,7 +82,7 @@ function endRectSelection(mouseEvent) {
 	isRectSelecting = false;
 
 	// Updating the cursor
-	currentTool.updateCursor();
+	ToolManager.currentTool().updateCursor();
 }
 
 /** Cuts the selection from its canvas and puts it in the tmp layer so it can be moved

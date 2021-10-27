@@ -1,19 +1,4 @@
 // REFACTOR: add to single Tool implementations
-//pencil
-Events.on('click',"pencil-button", function(){
-    tool.pencil.switchTo();
-}, false);
-
-//pencil bigger
-Events.on('click',"pencil-bigger-button", function(){
-    tool.pencil.brushSize++;
-}, false);
-
-//pencil smaller
-Events.on('click',"pencil-smaller-button", function(){
-    if(tool.pencil.brushSize > 1)
-    	tool.pencil.brushSize--;
-}, false);
 
 //eraser
 Events.on('click',"eraser-button", function(){

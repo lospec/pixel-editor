@@ -1,6 +1,7 @@
 // REFACTOR: let's keep this one global for now, unfortunately it's used by just some tools to keep track of 
 // their state: I'd wait after we refactor the tools themselves before removing this variable, which should
 // ideally be updated in Input.js what a mess what a mess what a mess what a mess
+/*
 var lastMouseMovePos;
 
 //mousedown - start drawing
@@ -164,7 +165,7 @@ window.addEventListener("mouseup", function (mouseEvent) {
 
 	currentTool = currentToolTemp;
 
-	currentTool.updateCursor();
+	ToolManager.currentTool().updateCursor();
 	var cursorLocation = Input.getCursorPosition(mouseEvent);
 	currentTool.moveBrushPreview(cursorLocation);
 
@@ -215,11 +216,6 @@ function draw (mouseEvent) {
 		eyedropperPreview.style.display = 'none';
 
 		if (currentTool.name == 'pencil') {
-			//hide brush preview outside of canvas / canvas view
-			if (mouseEvent.target.className == 'drawingCanvas'|| mouseEvent.target.className == 'drawingCanvas')
-			brushPreview.style.visibility = 'visible';
-			else
-			brushPreview.style.visibility = 'hidden';
 
 			//draw line to current pixel
 			if (Input.isDragging()) {
@@ -335,7 +331,7 @@ function draw (mouseEvent) {
 
 			//fix offset so the cursor stays centered
 			tool.pencil.moveBrushPreview(lastMouseClickPos);
-			currentTool.updateCursor();
+			ToolManager.currentTool().updateCursor();
 		}
 		else if (currentTool.name == 'resizeeraser' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
@@ -350,7 +346,7 @@ function draw (mouseEvent) {
 			
 			//fix offset so the cursor stays centered
 			tool.eraser.moveBrushPreview(lastMouseClickPos);
-			currentTool.updateCursor();
+			ToolManager.currentTool().updateCursor();
 		}
 		else if (currentTool.name == 'resizerectangle' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
@@ -368,7 +364,7 @@ function draw (mouseEvent) {
 			//fix offset so the cursor stays centered
 			// TODO: [ELLIPSE] Do we need similar logic related to ellipse?
 			tool.rectangle.moveBrushPreview(lastMouseClickPos);
-			currentTool.updateCursor();
+			ToolManager.currentTool().updateCursor();
 		}
 		else if (currentTool.name == 'resizeline' && Input.isDragging()) {
 			//get new brush size based on x distance from original clicking location
@@ -383,7 +379,7 @@ function draw (mouseEvent) {
 
 			//fix offset so the cursor stays centered
 			tool.line.moveBrushPreview(lastMouseClickPos);
-			currentTool.updateCursor();
+			ToolManager.currentTool().updateCursor();
 		}
 		else if (currentTool.name == 'rectselect') {
 			if (Input.isDragging() && !isRectSelecting && mouseEvent.target.className == 'drawingCanvas') {
@@ -399,7 +395,7 @@ function draw (mouseEvent) {
 		}
 		else if (currentTool.name == 'moveselection') {
 			// Updating the cursor (move if inside rect, cross if not)
-			currentTool.updateCursor();
+			ToolManager.currentTool().updateCursor();
 
 			// If I'm dragging, I move the preview
 			if (Input.isDragging() && cursorInSelectedArea()) {
@@ -422,7 +418,7 @@ function draw (mouseEvent) {
 	}
 
 	if (mouseEvent.target.className == 'drawingCanvas')
-		currentTool.updateCursor();
+		ToolManager.currentTool().updateCursor();
 	else
 		canvasView.style.cursor = 'default';
 }
@@ -445,3 +441,4 @@ canvasView.addEventListener("wheel", function(mouseEvent){
 		layers[i].copyData(layers[0]);
 	}
 });
+*/

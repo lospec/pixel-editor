@@ -180,9 +180,14 @@ const FileManager = (() => {
         reader.onload = function (e) {
             let dictionary = JSON.parse(e.target.result);
             Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary);
-            for (let i=0; i<dictionary['color' + i] != null; i++) {
+
+            for (let i=0; dictionary['color' + i] != null; i++) {
                 ColorModule.addColor(dictionary['color'+i]);
             }
+
+            // Removing the default colours
+            ColorModule.deleteColor(ColorModule.getCurrentPalette()[0]);
+            ColorModule.deleteColor(ColorModule.getCurrentPalette()[0]);
         }
     }
 

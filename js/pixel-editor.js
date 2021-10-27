@@ -10,6 +10,10 @@
 //=include Dialogue.js
 //=include History.js
 
+//=include _tools.js
+//=include tools/*.js
+//=include ToolManager.js
+
 /**init**/
 //=include _consts.js
 //=include Settings.js
@@ -24,8 +28,6 @@
 //=include _palettes.js
 
 /**functions**/
-//=include _tools.js
-//=include tools/*.js
 //=include _changeZoom.js
 //=include ColorModule.js
 //=include _drawLine.js
@@ -62,7 +64,7 @@ PresetModule.instrumentPresetMenu();
 window.onload = function () {
     featureToggles.onLoad();
 
-    currentTool.updateCursor();
+    ToolManager.currentTool().updateCursor();
 	
 	//check if there are any url parameters
 	if (window.location.pathname.replace('/pixel-editor/','').length <= 1)  {

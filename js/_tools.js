@@ -6,94 +6,117 @@ var tool = {};
 class Tool {
 	name = "AbstractTool";
 	
+	// Cursor and brush size
 	cursorType = {};
+	cursor = undefined;
 	cursorHTMLElement = undefined;
-	currBrushSize = 1;
-	prevBrushSize = 1;
+	currSize = 1;
+	prevSize = 1;
 
+	// Useful coordinates
 	startMousePos = {};
+	currMousePos = {};
 	prevMousePos = {};
 	endMousePos = {};
 
-	onSelect() {
-
-	}
-
-	onHover(cursorPosition) {
-		let toSub = 1;
-        // Prevents the brush to be put in the middle of pixels
-        if (this.currentBrushSize % 2 == 0) {
-            toSub = 0.5;
-        }        
-        brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-        brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-	}
-
-	onDeselect() {
-
-	}
-
-	onStart() {
-
-	}
-
-	onDrag() {
-
-	}
-
-	onEnd() {
-
-	}
-
-	updateCursor2() {
-
-	}
+	// HTML elements
+	mainButton = undefined;
+	biggerButton = undefined;
+	smallerButton = undefined;
 
 	constructor (name, options) {
-
-		//stores the name in object, only needed for legacy functions from when currentTool was just a string
 		this.name = name;
+		this.cursorType = options;
+	}
 
+	onSelect() {
+	/*
 		//copy options to this object
 		if (options.cursor) {
 			//passed statically as a string
 			if (typeof options.cursor == 'string') this.cursor = options.cursor;
 			//passed a function which should be used as a getter function
 			if (typeof options.cursor == 'function') Object.defineProperty(this, 'cursor', { get: options.cursor});
+
+			if (options.imageCursor) this.cursor = "url(\'/pixel-editor/"+options.imageCursor+".png\'), auto";
+
+			if (options.brushPreview) {
+				this.brushPreview = true;
+			}
+		}*/
+	}
+
+	onHover(cursorLocation, cursorTarget) {
+		this.prevMousePos = this.currMousePos;
+		this.currMousePos = cursorLocation;
+
+		let toSub = 1;
+        // Prevents the brush to be put in the middle of pixels
+        if (this.currSize % 2 == 0) {
+            toSub = 0.5;
+        }        
+
+        brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+        brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+
+		switch (this.cursorType.type) {
+			case 'html':
+				if (cursorTarget == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas')
+					brushPreview.style.visibility = 'visible';
+				else
+					brushPreview.style.visibility = 'hidden';
+
+				brushPreview.style.display = 'block';
+				brushPreview.style.width = this.currSize * zoom + 'px';
+				brushPreview.style.height = this.currSize * zoom + 'px';
+				break;
+			case 'cursor':
+				canvasView.style.cursor = this.cursor || 'default';
+				break;
+			default:
+				break;
 		}
+	}
 
-		if (options.imageCursor) this.cursor = "url(\'/pixel-editor/"+options.imageCursor+".png\'), auto";
+	onDeselect() {
 
-		this.currentBrushSize = 1;
-		this.previousBrushSize = 1;
-		if (options.brushPreview) {
-			this.brushPreview = true;
+	}
+
+	onStart(mousePos) {
+		this.startMousePos = mousePos;
+	}
+
+	onDrag(mousePos) {
+	}
+
+	onEnd(mousePos) {
+		this.endMousePos = mousePos;
+	}
+
+	increaseSize() {
+		if (this.currSize < 128) {
+			this.currSize++;
+			this.updateCursor();
 		}
-
-		//add to tool object so it can be referenced
-		tool[name] = this;
 	}
 
-	get brushSize () {
-		return this.currentBrushSize;
+	decreaseSize() {
+		if (this.currSize > 0) {
+			this.currSize--;
+			this.updateCursor();
+		}
 	}
 
-	set brushSize (value) {
-		this.currentBrushSize = value;
-		this.updateCursor();
+	get size() {
+		return this.currSize;
 	}
-
 
 	//switch to this tool (replaced global changeTool())
 	switchTo () {
 		// Ending any selection in progress
-	    if (currentTool.name.includes("select") && !this.name.includes("select") && !selectionCanceled) {
+	    /*if (currentTool.name.includes("select") && !this.name.includes("select") && !selectionCanceled) {
 	    	endSelection();
-	    }
-
-	    //set tool and temp tje tje tpp <--- he's speaking the language of the gods, don't delete
-	    currentTool = this;
-		currentToolTemp = this;
+	    }*/
 
 	    var tools = document.getElementById("tools-menu").children;
 
@@ -114,16 +137,9 @@ class Tool {
 	updateCursor () {
 		//switch to that tools cursor
 		canvasView.style.cursor = this.cursor || 'default';
-	
-		//if the tool uses a brush preview, make it visible and update the size
-		if (this.brushPreview) {
-			//console.log('brush size',this.currentBrushSize)
-			brushPreview.style.display = 'block';
-			brushPreview.style.width = this.currentBrushSize * zoom + 'px';
-			brushPreview.style.height = this.currentBrushSize * zoom + 'px';
-		}
+
 		//moveSelection
-		if (currentTool.name == 'moveselection') {
+		/*if (currentTool.name == 'moveselection') {
 			if (cursorInSelectedArea()) {
 				canMoveSelection = true;
 				canvasView.style.cursor = 'move';
@@ -132,18 +148,8 @@ class Tool {
 			else {
 				canvasView.style.cursor = 'crosshair';
 			}
-		}
+		}*/
 	}
-
-	moveBrushPreview(cursorLocation) {
-        let toSub = 1;
-        // Prevents the brush to be put in the middle of pixels
-        if (this.currentBrushSize % 2 == 0) {
-            toSub = 0.5;
-        }        
-        brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-        brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currentBrushSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-    }
 }
 
 

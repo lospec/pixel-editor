@@ -62,7 +62,7 @@ const TopMenuModule = (() => {
                         Events.on('click', currSubmenuButton, cutSelectionTool);
                         break;
                     case 'Cancel':
-                        Events.on('click', currSubmenuButton, tool.pencil.switchTo);
+                        //Events.on('click', currSubmenuButton, tool.pencil.switchTo);
                         break;
                         //Help Menu
                     case 'Settings':

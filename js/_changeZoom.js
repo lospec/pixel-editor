@@ -54,7 +54,7 @@ function changeZoom (direction, cursorLocation) {
 	//resize canvas
 	layers[0].resize();
 	// adjust brush size
-	currentTool.updateCursor();
+	ToolManager.currentTool().updateCursor();
 
 	// Adjust pixel grid thickness
 	if (zoomed) {
