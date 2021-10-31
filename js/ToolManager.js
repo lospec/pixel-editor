@@ -3,9 +3,11 @@ const ToolManager = (() => {
     eraserTool = new EraserTool("eraser", {type: 'html'}, switchTool);
     rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     lineTool = new LineTool("line", {type: 'html'}, switchTool);
+    fillTool = new FillTool("fill", {type: 'cursor', pic: 'fill.png'}, switchTool);
 
     currTool = brushTool;
     currTool.onSelect();
+    canvasView.style.cursor = 'default';
 
     Events.on("mouseup", window, onMouseUp);
     Events.on("mousemove", window, onMouseMove);
@@ -20,7 +22,7 @@ const ToolManager = (() => {
         switch(mouseEvent.which) {
             case 1:
                 if (!Input.isDragging()) {
-                    currTool.onStart(mousePos);
+                    currTool.onStart(mousePos, mouseEvent.target);
                 }
                 break;
             case 2:

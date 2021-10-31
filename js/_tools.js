@@ -37,20 +37,18 @@ class Tool {
 	onSelect() {
 		this.mainButton.parentElement.classList.add("selected");
 		this.isSelected = true;
-	/*
-		//copy options to this object
-		if (options.cursor) {
-			//passed statically as a string
-			if (typeof options.cursor == 'string') this.cursor = options.cursor;
-			//passed a function which should be used as a getter function
-			if (typeof options.cursor == 'function') Object.defineProperty(this, 'cursor', { get: options.cursor});
 
-			if (options.imageCursor) this.cursor = "url(\'/pixel-editor/"+options.imageCursor+".png\'), auto";
-
-			if (options.brushPreview) {
-				this.brushPreview = true;
-			}
-		}*/
+		switch (this.cursorType.type) {
+			case 'html':
+				canvasView.style.cursor = 'default';
+				break;
+			case 'cursor':
+				this.cursor = "crosshair";
+				canvasView.style.cursor = this.cursor || 'default';
+				break;
+			default:
+				break;
+		}
 	}
 
 	updateCursor() {}
@@ -68,22 +66,17 @@ class Tool {
         brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
         brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
 
-		switch (this.cursorType.type) {
-			case 'html':
-				if (cursorTarget == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas')
-					brushPreview.style.visibility = 'visible';
-				else
-					brushPreview.style.visibility = 'hidden';
+		if (this.cursorType.type == 'html') {
+			if (cursorTarget == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas') {
+				brushPreview.style.visibility = 'visible';
+			}
+			else {
+				brushPreview.style.visibility = 'hidden';
+			}
 
-				brushPreview.style.display = 'block';
-				brushPreview.style.width = this.currSize * zoom + 'px';
-				brushPreview.style.height = this.currSize * zoom + 'px';
-				break;
-			case 'cursor':
-				canvasView.style.cursor = this.cursor || 'default';
-				break;
-			default:
-				break;
+			brushPreview.style.display = 'block';
+			brushPreview.style.width = this.currSize * zoom + 'px';
+			brushPreview.style.height = this.currSize * zoom + 'px';
 		}
 	}
 

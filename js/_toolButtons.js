@@ -27,11 +27,6 @@ Events.on('click',"ellipse-smaller-button", function(e){
         tool.ellipse.brushSize--;
 }, false);
 
-//fill
-Events.on('click',"fill-button", function(){
-    tool.fill.switchTo();
-}, false);
-
 //pan
 Events.on('click',"pan-button", function(){
     tool.pan.switchTo();

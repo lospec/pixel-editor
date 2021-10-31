@@ -2,10 +2,6 @@ new Tool('eyedropper', {
 	imageCursor: 'eyedropper',
 });
 
-new Tool('fill', {
-	imageCursor: 'fill',
-});
-
 new Tool('resizeline', {
 	cursor: 'default',
 });
