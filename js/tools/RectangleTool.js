@@ -7,7 +7,6 @@ class RectangleTool extends Tool {
     currFillMode = 'empty';
 
     switchFunction = null;
-    isDrawing = false;
 
     constructor(name, options, switchFunction) {
         super(name, options);
@@ -41,8 +40,6 @@ class RectangleTool extends Tool {
 
         // Putting the tmp layer on top of everything
         TMPLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
-        // Updating flag
-        this.isDrawing = true;
 
         this.startMousePos[0] = Math.floor(mousePos[0] / zoom) + 0.5;
         this.startMousePos[1] = Math.floor(mousePos[1] / zoom) + 0.5;
@@ -109,8 +106,6 @@ class RectangleTool extends Tool {
         currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
         tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
-        // I finished drawing
-        this.isDrawing = false;
 	}
 
     onSelect() {

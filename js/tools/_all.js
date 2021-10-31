@@ -6,10 +6,6 @@ new Tool('fill', {
 	imageCursor: 'fill',
 });
 
-new Tool('line', {
-	cursor: 'none',
-	brushPreview: true,
-});
 new Tool('resizeline', {
 	cursor: 'default',
 });

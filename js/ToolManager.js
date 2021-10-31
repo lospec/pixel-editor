@@ -1,9 +1,11 @@
 const ToolManager = (() => {
-    brush = new BrushTool("brush", {type: 'html'}, switchTool);
-    eraser = new EraserTool("eraser", {type: 'html'}, switchTool);
-    rectangle = new RectangleTool("rectangle", {type: 'html'}, switchTool);
+    brushTool = new BrushTool("brush", {type: 'html'}, switchTool);
+    eraserTool = new EraserTool("eraser", {type: 'html'}, switchTool);
+    rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
+    lineTool = new LineTool("line", {type: 'html'}, switchTool);
 
-    currTool = brush;
+    currTool = brushTool;
+    currTool.onSelect();
 
     Events.on("mouseup", window, onMouseUp);
     Events.on("mousemove", window, onMouseMove);

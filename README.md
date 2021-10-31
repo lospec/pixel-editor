@@ -22,15 +22,18 @@ Suggestions / Planned features:
 - Tiled mode
 - Load palette from LPE file
 - Symmetry options (currently being worked on)
+- Make a palette grid instead of having a huge stack on the right when colours are too many
+- Possibly add collaborate function
+
+- Code refactoring
+    - Find inefficient sections (nested loops, useless / inefficient parts)
+    - Create classes ResizableTool and SelectionTool. Make them inherit from Tool, avoid creating brush resizing functions each time for each tool that can be resized
 
 - Mobile
     - Touch equivalent for mouse clicks
     - Hide or scale ui
     - Maybe rearrange UI on portrait
-    - Stack colors when too many
     - Fix popups
-    
-- Possibly add collaborate function
 	
 - Polish:
     - ctrl a to select everything / selection -> all, same for deselection

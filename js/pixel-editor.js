@@ -10,6 +10,7 @@
 //=include Dialogue.js
 //=include History.js
 
+//=include _drawLine.js
 //=include _tools.js
 //=include tools/*.js
 //=include ToolManager.js
@@ -30,9 +31,7 @@
 /**functions**/
 //=include _changeZoom.js
 //=include ColorModule.js
-//=include _drawLine.js
 //=include _fill.js
-//=include _line.js
 //=include _checkerboard.js
 //=include _copyPaste.js
 //=include _resizeCanvas.js
