@@ -1,22 +1,3 @@
-// REFACTOR: add to single Tool implementations
-// rectangle
-Events.on('click','rectangle-button', function(e){
-    // If the user clicks twice on the button, they change the draw mode
-    if (currentTool.name == 'rectangle') {
-        if (rectangleDrawMode == 'empty') {
-            rectangleDrawMode = 'fill';
-            setRectToolSvg();
-        }
-        else {
-            rectangleDrawMode = 'empty';
-            setRectToolSvg();
-        }
-    }
-    else {
-        tool.rectangle.switchTo();
-    }
-}, false);
-
 // ellipse
 Events.on('click','ellipse-button', function(e){
     // If the user clicks twice on the button, they change the draw mode
@@ -33,17 +14,6 @@ Events.on('click','ellipse-button', function(e){
     else {
         tool.ellipse.switchTo();
     }
-}, false);
-
-// rectangle bigger
-Events.on('click',"rectangle-bigger-button", function(){
-    tool.rectangle.brushSize++;
-}, false);
-
-// rectangle smaller
-Events.on('click',"rectangle-smaller-button", function(e){
-    if(tool.rectangle.brushSize > 1)
-    	tool.rectangle.brushSize--;
 }, false);
 
 // ellipse bigger

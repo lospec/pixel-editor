@@ -1,6 +1,7 @@
 const ToolManager = (() => {
     brush = new BrushTool("brush", {type: 'html'}, switchTool);
     eraser = new EraserTool("eraser", {type: 'html'}, switchTool);
+    rectangle = new RectangleTool("rectangle", {type: 'html'}, switchTool);
 
     currTool = brush;
 
@@ -13,7 +14,7 @@ const ToolManager = (() => {
             return;
 
         let mousePos = Input.getCursorPosition(mouseEvent);
-        console.log("here");
+
         switch(mouseEvent.which) {
             case 1:
                 if (!Input.isDragging()) {
@@ -47,14 +48,14 @@ const ToolManager = (() => {
         let mousePos = Input.getCursorPosition(mouseEvent);
 
         switch(mouseEvent.which) {
-            case 0:
+            case 1:
                 if (Input.isDragging()) {
                     currTool.onEnd(mousePos);
                 }
                 break;
-            case 1:
-                break;
             case 2:
+                break;
+            case 3:
                 break;
             default:
                 break;
@@ -66,8 +67,6 @@ const ToolManager = (() => {
     }
 
     function switchTool(newTool) {
-        console.log("switch");
-
         currTool.onDeselect();
         currTool = newTool;
         currTool.onSelect();

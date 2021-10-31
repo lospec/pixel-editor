@@ -47,7 +47,6 @@
 //=include TopMenuModule.js
 //=include _rectSelect.js
 //=include _move.js
-//=include _rectangle.js
 //=include _ellipse.js
 
 /**event listeners**/

@@ -31,7 +31,6 @@ class BrushTool extends Tool {
 
 	onEnd(mousePos) {
         super.onEnd(mousePos);
-		this.endMousePos = mousePos;
 	}
 
     onSelect() {

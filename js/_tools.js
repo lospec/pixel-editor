@@ -5,6 +5,7 @@ var tool = {};
 //class for tools
 class Tool {
 	name = "AbstractTool";
+	isSelected = false;
 	
 	// Cursor and brush size
 	cursorType = {};
@@ -35,6 +36,7 @@ class Tool {
 
 	onSelect() {
 		this.mainButton.parentElement.classList.add("selected");
+		this.isSelected = true;
 	/*
 		//copy options to this object
 		if (options.cursor) {
@@ -87,6 +89,7 @@ class Tool {
 
 	onDeselect() {
 		this.mainButton.parentElement.classList.remove("selected");
+		this.isSelected = false;
 	}
 
 	onStart(mousePos) {

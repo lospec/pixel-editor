@@ -22,18 +22,10 @@ new Tool('pan', {
 });
 
 
-new Tool('rectangle', {
-	cursor: 'none',
-	brushPreview: true,
-});
 new Tool('ellipse', {
 	cursor: 'none',
 	brushPreview: true,
 });
-new Tool('resizerectangle', {
-	cursor: 'default',
-});
-
 new Tool('rectselect', {
 	cursor: 'crosshair',
 	brushPreview: true,
