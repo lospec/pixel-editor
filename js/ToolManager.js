@@ -9,7 +9,7 @@ const ToolManager = (() => {
     panTool = new PanTool("pan", {type: 'custom'}, switchTool);
     zoomTool = new ZoomTool("zoom", {type:'custom'});
 
-    rectSelectTool = new RectangularSelectionTool("rectangularselection", 
+    rectSelectTool = new RectangularSelectionTool("rectselect", 
         {type: 'cursor', style:'crosshair'}, switchTool);
     moveSelectionTool = new MoveSelectionTool("moveselection", 
         {type:'cursor', style:'crosshair'}, switchTool);

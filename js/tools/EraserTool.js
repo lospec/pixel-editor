@@ -1,4 +1,4 @@
-class EraserTool extends Tool {
+class EraserTool extends ResizableTool {
     constructor(name, options, switchFunction) {
         super(name, options);
 

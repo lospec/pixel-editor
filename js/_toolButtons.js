@@ -26,8 +26,3 @@ Events.on('click',"ellipse-smaller-button", function(e){
     if(tool.ellipse.brushSize > 1)
         tool.ellipse.brushSize--;
 }, false);
-
-//rectangular selection button
-Events.on('click', "rectselect-button", function(){
-    tool.rectselect.switchTo();
-}, false);

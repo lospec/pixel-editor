@@ -1,4 +1,4 @@
-class RectangleTool extends Tool {
+class RectangleTool extends ResizableTool {
     // Saving the empty rect svg
     emptyRectangleSVG = document.getElementById("rectangle-empty-button-svg");
     // and the full rect svg so that I can change them when the user changes rect modes

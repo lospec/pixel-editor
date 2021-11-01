@@ -11,8 +11,23 @@
 
 //=include ColorModule.js
 //=include _drawLine.js
+
 //=include _tools.js
-//=include tools/*.js
+
+//=include tools/ResizableTool.js
+//=include tools/SelectionTool.js
+
+//=include tools/BrushTool.js
+//=include tools/EraserTool.js
+//=include tools/LineTool.js
+//=include tools/RectangleTool.js
+//=include tools/FillTool.js
+//=include tools/EyedropperTool.js
+//=include tools/PanTool.js
+//=include tools/ZoomTool.js
+//=include tools/RectangularSelectionTool.js
+//=include tools/MoveSelectionTool.js
+
 //=include ToolManager.js
 
 /**init**/

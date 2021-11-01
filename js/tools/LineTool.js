@@ -1,4 +1,4 @@
-class LineTool extends Tool {
+class LineTool extends ResizableTool {
     constructor(name, options, switchFunction) {
         super(name, options);
 
