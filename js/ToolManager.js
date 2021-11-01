@@ -3,8 +3,9 @@ const ToolManager = (() => {
     eraserTool = new EraserTool("eraser", {type: 'html'}, switchTool);
     rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     lineTool = new LineTool("line", {type: 'html'}, switchTool);
-    fillTool = new FillTool("fill", {type: 'cursor', pic: 'fill.png'}, switchTool);
-    eyedropperTool = new EyedropperTool("eyedropper", {type: 'cursor', pic: 'none'}, switchTool);
+    fillTool = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
+    eyedropperTool = new EyedropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
+    panTool = new PanTool("pan", {type: 'custom'}, switchTool);
 
     currTool = brushTool;
     currTool.onSelect();

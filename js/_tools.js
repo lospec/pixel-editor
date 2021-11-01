@@ -104,7 +104,7 @@ class Tool {
 	}
 
 	decreaseSize() {
-		if (this.currSize > 0) {
+		if (this.currSize > 1) {
 			this.currSize--;
 			this.updateCursor();
 		}

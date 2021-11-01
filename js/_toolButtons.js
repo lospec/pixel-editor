@@ -27,11 +27,6 @@ Events.on('click',"ellipse-smaller-button", function(e){
         tool.ellipse.brushSize--;
 }, false);
 
-//pan
-Events.on('click',"pan-button", function(){
-    tool.pan.switchTo();
-}, false);
-
 //rectangular selection button
 Events.on('click', "rectselect-button", function(){
     tool.rectselect.switchTo();
