@@ -4,8 +4,15 @@ const ToolManager = (() => {
     rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     lineTool = new LineTool("line", {type: 'html'}, switchTool);
     fillTool = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
+    
     eyedropperTool = new EyedropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
     panTool = new PanTool("pan", {type: 'custom'}, switchTool);
+    zoomTool = new ZoomTool("zoom", {type:'custom'});
+
+    rectSelectTool = new RectangularSelectionTool("rectangularselection", 
+        {type: 'cursor', style:'crosshair'}, switchTool);
+    moveSelectionTool = new MoveSelectionTool("moveselection", 
+        {type:'cursor', style:'crosshair'}, switchTool);
 
     currTool = brushTool;
     currTool.onSelect();
@@ -14,6 +21,12 @@ const ToolManager = (() => {
     Events.on("mouseup", window, onMouseUp);
     Events.on("mousemove", window, onMouseMove);
     Events.on("mousedown", window, onMouseDown);
+    Events.on("mousewheel", window, onMouseWheel);
+
+    function onMouseWheel(mouseEvent) {
+        let mousePos = Input.getCursorPosition(mouseEvent);
+        zoomTool.onMouseWheel(mousePos, mouseEvent.deltaY < 0 ? 'in' : 'out');
+    }
 
     function onMouseDown(mouseEvent) {
         if (!Startup.documentCreated())

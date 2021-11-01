@@ -43,7 +43,7 @@ class Tool {
 				canvasView.style.cursor = 'default';
 				break;
 			case 'cursor':
-				this.cursor = "crosshair";
+				this.cursor = this.cursorType.style;
 				canvasView.style.cursor = this.cursor || 'default';
 				break;
 			default:
@@ -52,6 +52,8 @@ class Tool {
 	}
 
 	updateCursor() {}
+
+	onMouseWheel(mousePos, mode) {}
 
 	onHover(cursorLocation, cursorTarget) {
 		this.prevMousePos = this.currMousePos;

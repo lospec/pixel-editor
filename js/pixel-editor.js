@@ -29,7 +29,6 @@
 //=include _palettes.js
 
 /**functions**/
-//=include _changeZoom.js
 //=include _checkerboard.js
 //=include _copyPaste.js
 //=include _resizeCanvas.js

@@ -8,8 +8,11 @@ class EyedropperTool extends Tool {
         Events.on('click', this.mainButton, switchFunction, this);
     }
 
-    onStart(mousePos) {
+    onStart(mousePos, target) {
         super.onStart(mousePos);
+
+        if (target.className != 'drawingCanvas')
+            return;
 
         this.eyedropperPreview.style.display = 'block';
         this.onDrag(mousePos);
