@@ -4,6 +4,7 @@ const ToolManager = (() => {
     rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     lineTool = new LineTool("line", {type: 'html'}, switchTool);
     fillTool = new FillTool("fill", {type: 'cursor', pic: 'fill.png'}, switchTool);
+    eyedropperTool = new EyedropperTool("eyedropper", {type: 'cursor', pic: 'none'}, switchTool);
 
     currTool = brushTool;
     currTool.onSelect();

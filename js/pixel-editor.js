@@ -1,7 +1,6 @@
 /**utilities**/
 //=include lib/cookies.js
 //=include _jscolor.js
-//=include _pixelEditorUtility.js
 //=include _variables.js
 //=include lib/sortable.js
 //=include Util.js
@@ -10,6 +9,7 @@
 //=include Dialogue.js
 //=include History.js
 
+//=include ColorModule.js
 //=include _drawLine.js
 //=include _tools.js
 //=include tools/*.js
@@ -30,8 +30,6 @@
 
 /**functions**/
 //=include _changeZoom.js
-//=include ColorModule.js
-//=include _fill.js
 //=include _checkerboard.js
 //=include _copyPaste.js
 //=include _resizeCanvas.js
@@ -50,7 +48,6 @@
 
 /**event listeners**/
 //=include Input.js
-//=include _mouseEvents.js
 
 /**feature toggles**/
 //=include _featureToggles.js

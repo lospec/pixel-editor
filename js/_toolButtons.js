@@ -32,11 +32,6 @@ Events.on('click',"pan-button", function(){
     tool.pan.switchTo();
 }, false);
 
-//eyedropper
-Events.on('click',"eyedropper-button", function(){
-	tool.eyedropper.switchTo();
-}, false);
-
 //rectangular selection button
 Events.on('click', "rectselect-button", function(){
     tool.rectselect.switchTo();

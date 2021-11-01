@@ -444,6 +444,6 @@ const ColorModule = (() => {
         resetPalette,
         createColorPalette,
         createPaletteFromLayers,
-        updateCurrentColor
+        updateCurrentColor,
     }
 })();

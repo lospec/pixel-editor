@@ -1,7 +1,3 @@
-new Tool('eyedropper', {
-	imageCursor: 'eyedropper',
-});
-
 new Tool('resizeline', {
 	cursor: 'default',
 });

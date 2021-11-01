@@ -1,6 +1,23 @@
 // Acts as a public static class
 class Util {
 
+    /** Tells if a pixel is empty (has alpha = 0)
+     * 
+     * @param {*} pixel 
+     */
+    static isPixelEmpty(pixel) {
+        if (pixel == null || pixel === undefined) {
+            return false;
+        }
+        
+        // If the alpha channel is 0, the current pixel is empty
+        if (pixel[3] == 0) {
+            return true;
+        }
+        
+        return false;
+    }
+
     /** Tells if element is a child of an element with class className
      * 
      * @param {*} element 

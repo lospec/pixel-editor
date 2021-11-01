@@ -5,8 +5,8 @@ var lastMouseClickPos = [0,0]; // REFACTOR: Input IIFE via getter? <- probably e
 
 //common elements
 // REFACTOR: put brush and eyedropper preview in the respective tool implementations
+// REFACTOR: this should be in ResizableTool
 var brushPreview = document.getElementById("brush-preview");
-var eyedropperPreview = document.getElementById("eyedropper-preview");
 
 // REFACTOR: File class?
 var canvasView = document.getElementById("canvas-view");
