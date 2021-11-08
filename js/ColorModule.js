@@ -401,7 +401,7 @@ const ColorModule = (() => {
                 let dataLength = imageData.length;
 
                 for (let j=0; j<dataLength; j += 4) {
-                    if (!isPixelEmpty(imageData[j])) {
+                    if (!Util.isPixelEmpty(imageData[j])) {
                         let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
                         
                         if (!colors[color]) {

@@ -20,7 +20,7 @@ class RectangleTool extends ResizableTool {
     changeFillType() {
         if (this.isSelected)
             if (this.currFillMode == 'empty') {
-                this.currFillMode = 'full';
+                this.currFillMode = 'fill';
                 this.emptyRectangleSVG.setAttribute('display', 'none');
                 this.fullRectangleSVG.setAttribute('display', 'visible');
             }
@@ -36,8 +36,6 @@ class RectangleTool extends ResizableTool {
     onStart(mousePos) {
         super.onStart(mousePos);
 
-        console.log("Rect start");
-
         // Putting the tmp layer on top of everything
         TMPLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
 
@@ -46,8 +44,6 @@ class RectangleTool extends ResizableTool {
 	}
 
 	onDrag(mousePos, cursorTarget) {
-        super.onDrag(mousePos);
-        console.log("dragging");
 
         // Drawing the rect at the right position
 	    this.drawRect(Math.floor(mousePos[0] / zoom) + 0.5, Math.floor(mousePos[1] / zoom) + 0.5);
@@ -123,7 +119,6 @@ class RectangleTool extends ResizableTool {
      * @param {*} y The current end y of the rectangle
      */
     drawRect(x, y) {
-        console.log("here");
         // Getting the tmp context
         let tmpContext = TMPLayer.context;
 

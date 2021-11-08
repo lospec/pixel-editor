@@ -9,11 +9,11 @@ const ToolManager = (() => {
     panTool = new PanTool("pan", {type: 'custom'}, switchTool);
     zoomTool = new ZoomTool("zoom", {type:'custom'});
 
-    rectSelectTool = new RectangularSelectionTool("rectselect", 
-        {type: 'cursor', style:'crosshair'}, switchTool);
     moveSelectionTool = new MoveSelectionTool("moveselection", 
-        {type:'cursor', style:'crosshair'}, switchTool);
-
+        {type:'cursor', style:'crosshair'}, switchTool, brushTool);
+    rectSelectTool = new RectangularSelectionTool("rectselect", 
+        {type: 'cursor', style:'crosshair'}, switchTool, moveSelectionTool);
+    
     currTool = brushTool;
     currTool.onSelect();
     canvasView.style.cursor = 'default';

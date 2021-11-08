@@ -227,7 +227,7 @@ function trimCanvas(event, saveHistory) {
         let pixelPosition;
 
         for (let i=imageData.data.length - 1; i>= 0; i-=4) {
-            if (!isPixelEmpty(
+            if (!Util.isPixelEmpty(
                 [imageData.data[i - 3], imageData.data[i - 2], 
                 -imageData.data[i - 1], imageData.data[i]])) {
                 pixelPosition = getPixelPosition(i);        

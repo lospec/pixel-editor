@@ -83,8 +83,8 @@ const LayerList = (() => {
                 belowImageData.data[i+2], belowImageData.data[i+3]
             ];
 
-            if (isPixelEmpty(currentMovePixel)) {
-                if (!isPixelEmpty(belowImageData)) {
+            if (Util.isPixelEmpty(currentMovePixel)) {
+                if (!Util.isPixelEmpty(belowImageData)) {
                     toMergeImageData.data[i] = currentUnderlyingPixel[0];
                     toMergeImageData.data[i+1] = currentUnderlyingPixel[1];
                     toMergeImageData.data[i+2] = currentUnderlyingPixel[2];

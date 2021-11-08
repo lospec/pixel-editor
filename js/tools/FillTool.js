@@ -53,7 +53,7 @@ class FillTool extends Tool {
         //the color of the cluster that is being filled
         let clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2], tempImage.data[startingPosition+3]];
 
-        //the new color to fill with
+        //the color to fill with
         let fillColor = Color.hexToRgb(currentLayer.context.fillStyle);
         
         //if you try to fill with the same color that's already there, exit the function
@@ -61,7 +61,6 @@ class FillTool extends Tool {
             clusterColor[1] == fillColor.g &&
             clusterColor[2] == fillColor.b &&
             clusterColor[3] != 0) {
-                console.log("Returned");
                 return;
             }
             
@@ -90,6 +89,7 @@ class FillTool extends Tool {
             ++y;
             reachLeft = false;
             reachRight = false;
+            
             while (y++ < canvasSize[1] - 1 && matchStartColor(tempImage, pixelPos, clusterColor)) {
                 colorPixel(tempImage, pixelPos, fillColor);
                 if (x > 0) {

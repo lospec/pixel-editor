@@ -35,7 +35,8 @@ class Tool {
 	}
 
 	onSelect() {
-		this.mainButton.parentElement.classList.add("selected");
+		if (this.mainButton != undefined)
+			this.mainButton.parentElement.classList.add("selected");
 		this.isSelected = true;
 
 		switch (this.cursorType.type) {
@@ -83,7 +84,8 @@ class Tool {
 	}
 
 	onDeselect() {
-		this.mainButton.parentElement.classList.remove("selected");
+		if (this.mainButton != undefined)
+			this.mainButton.parentElement.classList.remove("selected");
 		this.isSelected = false;
 	}
 
