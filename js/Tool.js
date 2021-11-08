@@ -11,8 +11,6 @@ class Tool {
 	cursorType = {};
 	cursor = undefined;
 	cursorHTMLElement = undefined;
-	currSize = 1;
-	prevSize = 1;
 
 	// Useful coordinates
 	startMousePos = {};

@@ -34,19 +34,21 @@ const ToolManager = (() => {
 
         let mousePos = Input.getCursorPosition(mouseEvent);
 
-        switch(mouseEvent.which) {
-            case 1:
-                if (!Input.isDragging()) {
+        if (!Input.isDragging()) {
+            switch(mouseEvent.which) {
+                case 1:
                     currTool.onStart(mousePos, mouseEvent.target);
-                }
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                break;
-        }
+                    break;
+                case 2:
+                    panTool.onStart(mousePos, mouseEvent.target);
+                    break;
+                case 3:
+                    currTool.onRightStart(mousePos, mouseEvent.target);
+                    break;
+                default:
+                    break;
+            }
+        }        
     }
 
     function onMouseMove(mouseEvent) {
@@ -57,7 +59,20 @@ const ToolManager = (() => {
         currTool.onHover(mousePos, mouseEvent.target);
 
         if (Input.isDragging()) {
-            currTool.onDrag(mousePos, mouseEvent.target);
+            switch (mouseEvent.which) {
+                case 1:
+                    currTool.onDrag(mousePos, mouseEvent.target);
+                    break;
+                case 2:
+                    panTool.onDrag(mousePos, mouseEvent.target);
+                    break;
+                case 3:
+                    currTool.onRightDrag(mousePos, mouseEvent.target);
+                    break;
+                default:
+                    console.log("wtf");
+                    break;
+            }
         }
     }
 
@@ -66,18 +81,20 @@ const ToolManager = (() => {
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
 
-        switch(mouseEvent.which) {
-            case 1:
-                if (Input.isDragging()) {
+        if (Input.isDragging()) {
+            switch(mouseEvent.which) {
+                case 1:
                     currTool.onEnd(mousePos);
-                }
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                break;
+                    break;
+                case 2:
+                    panTool.onEnd(mousePos);
+                    break;
+                case 3:
+                    currTool.onRightEnd(mousePos, mouseEvent.target);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

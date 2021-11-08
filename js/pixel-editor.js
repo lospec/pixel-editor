@@ -12,7 +12,7 @@
 //=include ColorModule.js
 //=include _drawLine.js
 
-//=include _tools.js
+//=include Tool.js
 
 //=include tools/ResizableTool.js
 //=include tools/SelectionTool.js
@@ -53,7 +53,6 @@
 //=include SplashPage.js
 
 /**buttons**/
-//=include _toolButtons.js
 //=include FileManager.js
 //=include TopMenuModule.js
 //=include _ellipse.js
