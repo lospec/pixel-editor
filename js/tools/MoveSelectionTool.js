@@ -27,7 +27,7 @@ class MoveSelectionTool extends Tool {
         this.endSelection();
         this.currSelection = this.lastCopiedSelection;
         // Cut the data
-        currentLayer.context.clearRect(this.currSelection.left, this.currSelection.top,
+        currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,
             this.currSelection.width, this.currSelection.height);
     }
 
