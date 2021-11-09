@@ -75,11 +75,9 @@ const Input = (() => {
         //if no document has been created yet or there is a dialog box open ignore hotkeys
         if (!Startup.documentCreated() || Dialogue.isOpen()) return;
 
-        //
         if (e.key === "Escape") {
-            if (!selectionCanceled) {
-                tool.pencil.switchTo();
-            }
+            console.log("esc");
+            Events.emit("esc-pressed");
         }
         else {
             switch (keyboardEvent.keyCode) {
