@@ -15,6 +15,8 @@ class LineTool extends ResizableTool {
 
         this.startMousePos[0] = Math.floor(mousePos[0]) + 0.5;
         this.startMousePos[1] = Math.floor(mousePos[1]) + 0.5;
+
+        new HistoryState().EditCanvas();
 	}
 
 	onDrag(mousePos, cursorTarget) {

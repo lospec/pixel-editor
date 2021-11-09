@@ -50,10 +50,12 @@ const History = (() => {
     }
 
     function undo () {
+        console.log("undoing");
         undoOrRedo('undo');
     }
 
     function redo () {
+        console.log("redoing");
         undoOrRedo('redo');
     }
 

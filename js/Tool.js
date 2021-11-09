@@ -85,6 +85,7 @@ class Tool {
 		if (this.mainButton != undefined)
 			this.mainButton.parentElement.classList.remove("selected");
 		this.isSelected = false;
+		brushPreview.style.visibility = 'hidden';
 	}
 
 	onStart(mousePos) {

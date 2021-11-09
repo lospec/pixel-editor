@@ -28,8 +28,6 @@
 //=include tools/RectangularSelectionTool.js
 //=include tools/MoveSelectionTool.js
 
-//=include ToolManager.js
-
 /**init**/
 //=include _consts.js
 //=include Settings.js
@@ -38,6 +36,7 @@
 //=include Startup.js
 //=include _pixelGrid.js
 //=include EditorState.js
+//=include ToolManager.js
 
 /**dropdown formatting**/
 //=include PresetModule.js

@@ -12,6 +12,8 @@ class FillTool extends Tool {
             return;
         this.fill(mousePos);
         currentLayer.updateLayerPreview();
+        
+        new HistoryState().EditCanvas();
 	}
 
     
@@ -36,9 +38,6 @@ class FillTool extends Tool {
             //console.log(r == color[0] && g == color[1] && b == color[2]);
             return (r == color[0] && g == color[1] && b == color[2] && a == color[3]);
         }
-
-        //save history state
-        new HistoryState().EditCanvas();
 
         //temporary image holds the data while we change it
         let tempImage = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);

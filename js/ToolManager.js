@@ -1,20 +1,22 @@
 const ToolManager = (() => {
-    brushTool = new BrushTool("brush", {type: 'html'}, switchTool);
-    eraserTool = new EraserTool("eraser", {type: 'html'}, switchTool);
-    rectangleTool = new RectangleTool("rectangle", {type: 'html'}, switchTool);
-    lineTool = new LineTool("line", {type: 'html'}, switchTool);
-    fillTool = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
-    
-    eyedropperTool = new EyedropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
-    panTool = new PanTool("pan", {type: 'custom'}, switchTool);
-    zoomTool = new ZoomTool("zoom", {type:'custom'});
+    tools = {};
 
-    moveSelectionTool = new MoveSelectionTool("moveselection", 
-        {type:'cursor', style:'crosshair'}, switchTool, brushTool);
-    rectSelectTool = new RectangularSelectionTool("rectselect", 
-        {type: 'cursor', style:'crosshair'}, switchTool, moveSelectionTool);
+    tools["brush"] = new BrushTool("brush", {type: 'html'}, switchTool);
+    tools["eraser"] = new EraserTool("eraser", {type: 'html'}, switchTool);
+    tools["rectangle"] = new RectangleTool("rectangle", {type: 'html'}, switchTool);
+    tools["line"] = new LineTool("line", {type: 'html'}, switchTool);
+    tools["fill"] = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
     
-    currTool = brushTool;
+    tools["eyedropper"] = new EyedropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
+    tools["pan"] = new PanTool("pan", {type: 'custom'}, switchTool);
+    tools["zoom"] = new ZoomTool("zoom", {type:'custom'});
+
+    tools["moveselection"] = new MoveSelectionTool("moveselection", 
+        {type:'cursor', style:'crosshair'}, switchTool, tools["brush"]);
+    tools["rectselect"] = new RectangularSelectionTool("rectselect", 
+        {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
+    
+    currTool = tools["brush"];
     currTool.onSelect();
     canvasView.style.cursor = 'default';
 
@@ -23,9 +25,15 @@ const ToolManager = (() => {
     Events.on("mousedown", window, onMouseDown);
     Events.on("mousewheel", window, onMouseWheel);
 
+    Events.onCustom("tool-shortcut", onShortcut);
+
+    function onShortcut(tool) {
+        switchTool(tools[tool]);
+    }
+
     function onMouseWheel(mouseEvent) {
         let mousePos = Input.getCursorPosition(mouseEvent);
-        zoomTool.onMouseWheel(mousePos, mouseEvent.deltaY < 0 ? 'in' : 'out');
+        tools["zoom"].onMouseWheel(mousePos, mouseEvent.deltaY < 0 ? 'in' : 'out');
     }
 
     function onMouseDown(mouseEvent) {
@@ -40,7 +48,7 @@ const ToolManager = (() => {
                     currTool.onStart(mousePos, mouseEvent.target);
                     break;
                 case 2:
-                    panTool.onStart(mousePos, mouseEvent.target);
+                    tools["pan"].onStart(mousePos, mouseEvent.target);
                     break;
                 case 3:
                     currTool.onRightStart(mousePos, mouseEvent.target);
@@ -64,7 +72,7 @@ const ToolManager = (() => {
                     currTool.onDrag(mousePos, mouseEvent.target);
                     break;
                 case 2:
-                    panTool.onDrag(mousePos, mouseEvent.target);
+                    tools["pan"].onDrag(mousePos, mouseEvent.target);
                     break;
                 case 3:
                     currTool.onRightDrag(mousePos, mouseEvent.target);
@@ -87,7 +95,7 @@ const ToolManager = (() => {
                     currTool.onEnd(mousePos);
                     break;
                 case 2:
-                    panTool.onEnd(mousePos);
+                    tools["pan"].onEnd(mousePos);
                     break;
                 case 3:
                     currTool.onRightEnd(mousePos, mouseEvent.target);

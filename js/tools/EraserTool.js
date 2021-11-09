@@ -9,6 +9,7 @@ class EraserTool extends ResizableTool {
 
     onStart(mousePos) {
         super.onStart(mousePos);
+        new HistoryState().EditCanvas();
 	}
 
 	onDrag(mousePos, cursorTarget) {

@@ -1,5 +1,5 @@
-class Events {
-    customCallback = {};
+const Events = (() => {
+    let customCallback = {};
 
     /** Used to programmatically create an input event
      * 
@@ -8,7 +8,7 @@ class Events {
      * @param {*} alt Is alt pressed?
      * @param {*} shift Is shift pressed?
      */
-    static simulateInput(keyCode, ctrl, alt, shift) {
+    function simulateInput(keyCode, ctrl, alt, shift) {
         // I just copy pasted this from stack overflow lol please have mercy
         let keyboardEvent = document.createEvent("KeyboardEvent");
         let initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
@@ -34,7 +34,7 @@ class Events {
      * @param {*} eventName The name of the event
      * @returns 
      */
-    static simulateMouseEvent (element, eventName)
+    function simulateMouseEvent (element, eventName)
     {
         function extend(destination, source) {
             for (let property in source)
@@ -98,7 +98,7 @@ class Events {
      * @param {*} functionCallback The function to callback when the event is shoot 
      * @param  {...any} args Arguments for the callback
      */
-    static on(event, elementId, functionCallback, ...args) {
+     function on(event, elementId, functionCallback, ...args) {
         //if element provided is string, get the actual element
         const element = Util.getElement(elementId);
 
@@ -116,7 +116,7 @@ class Events {
      * @param {*} functionCallback The function to callback when the event is shoot 
      * @param  {...any} args Arguments for the callback
      */
-    static onChildren(event, parentElement, functionCallback, ...args) {
+    function onChildren(event, parentElement, functionCallback, ...args) {
         parentElement = Util.getElement(parentElement);
         const children = parentElement.children;
         
@@ -131,9 +131,9 @@ class Events {
      * @param {*} event The event to register to
      * @param {*} functionCallback The function to call
      */
-    static onCustom(event, functionCallback) {
+    function onCustom(event, functionCallback) {
         if (customCallback[event] === undefined)
-            customCallback[event] = [];
+        customCallback[event] = [];
         
         customCallback[event].push(functionCallback);
     }
@@ -143,9 +143,18 @@ class Events {
      * @param {*} event The event to emit
      * @param  {...any} args The arguments for that event
      */
-    static emit(event, ...args) {
+    function emit(event, ...args) {
         if (customCallback[event] != undefined) 
             for (let i=0; i<customCallback[event].length; i++)
                 customCallback[event][i](args);
     }
-}
+
+    return {
+        simulateInput, 
+        simulateMouseEvent,
+        on,
+        onChildren,
+        onCustom,
+        emit
+    }
+})();

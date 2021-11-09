@@ -14,6 +14,8 @@ const TopMenuModule = (() => {
 
             //when you click a main menu items button
             Events.on('click', menuButton, function (e) {
+                // Close the already open menus
+                closeMenu();
                 // Select the item
                 Util.select(e.target.parentElement);
             });
@@ -80,6 +82,8 @@ const TopMenuModule = (() => {
                         Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'changelog');
                         break;
                 }
+
+                Events.on('click', currSubmenuButton, function() {TopMenuModule.closeMenu();});
             }
         }
     }

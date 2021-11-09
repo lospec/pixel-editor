@@ -14,8 +14,6 @@ class RectangularSelectionTool extends SelectionTool {
     onStart(mousePos) {
         super.onStart(mousePos);
 
-        // Saving the canvas
-        new HistoryState().EditCanvas();
         // Putting the vfx layer on top of everything
         VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
 
@@ -51,6 +49,7 @@ class RectangularSelectionTool extends SelectionTool {
 
     onEnd(mousePos) {
         super.onEnd(mousePos);
+        new HistoryState().EditCanvas();
 
         // Getting the end position
         this.endMousePos[0] = Math.round(this.endMousePos[0] / zoom) + 0.5;

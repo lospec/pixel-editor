@@ -1,3 +1,5 @@
+// TODO: FIX SELECTION
+
 class RectangleTool extends ResizableTool {
     // Saving the empty rect svg
     emptyRectangleSVG = document.getElementById("rectangle-empty-button-svg");
@@ -41,6 +43,8 @@ class RectangleTool extends ResizableTool {
 
         this.startMousePos[0] = Math.floor(mousePos[0] / zoom) + 0.5;
         this.startMousePos[1] = Math.floor(mousePos[1] / zoom) + 0.5;
+
+        new HistoryState().EditCanvas();
 	}
 
 	onDrag(mousePos, cursorTarget) {

@@ -1,12 +1,11 @@
 const Input = (() => {
-    let spaceKeyPressed = false;
     let dragging = false;
     let currentMouseEvent = undefined;
 
     // Hotkeys when pressing a key
     Events.on("keydown", document, KeyPress);
     // Update held keys when releasing a key
-    Events.on("keyup", window, function (e) {if (e.keyCode == 32) spaceKeyPressed = false;});
+    Events.on("keyup", window, function (e) {if (e.keyCode == 32) Events.emit("space-released");;});
 
     // Update variables on mouse clicks
     Events.on("mousedown", window, onMouseDown);
@@ -15,11 +14,19 @@ const Input = (() => {
     function onMouseDown(event) {
         currentMouseEvent = event;
         dragging = true;
+
+        if (!Util.isChildOfByClass(event.target, "editor-top-menu")) {
+            TopMenuModule.closeMenu();
+        }
     }
 
     function onMouseUp(event) {
         currentMouseEvent = event;
         dragging = false;
+        
+        if (currentLayer != null && !Util.isChildOfByClass(event.target, "layers-menu-entry")) {
+            LayerList.closeOptionsMenu();	
+        }
     }
 
     function getCursorPosition(e) {
@@ -47,20 +54,16 @@ const Input = (() => {
      */
     function KeyPress(e) {
         var keyboardEvent = window.event? event : e;
-        console.log("pressed key");
 
         //if the user is typing in an input field or renaming a layer, ignore these hotkeys, unless it's an enter key
-        if (document.activeElement.tagName == 'INPUT' || LayerList.isRenamingLayer) {
+        if (document.activeElement.tagName == 'INPUT' || LayerList.isRenamingLayer()) {
             if (e.keyCode == 13) {
-                console.log("here");
                 LayerList.closeOptionsMenu();
             }
             return;
         }
 
-        //if no document has been created yet,
-        //orthere is a dialog box open
-        //ignore hotkeys
+        //if no document has been created yet or there is a dialog box open ignore hotkeys
         if (!Startup.documentCreated() || Dialogue.isOpen()) return;
 
         //
@@ -73,81 +76,68 @@ const Input = (() => {
             switch (keyboardEvent.keyCode) {
                 //pencil tool - 1, b
                 case 49: case 66:
-                    tool.pencil.switchTo();
+                    Events.emit("tool-shortcut", "brush");
                     break;
                 // copy tool c
                 case 67: case 99:
-                    if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
-                        copySelection();
+                    if (keyboardEvent.ctrlKey) {
+                        Events.emit("ctrl+c");
                     }
                     break;
                 //fill tool - 2, f
                 case 50: case 70:
-                    tool.fill.switchTo();
+                    Events.emit("tool-shortcut", "fill");
                     break;
                 //eyedropper - 3, e
                 case 51: case 69:
-                    tool.eyedropper.switchTo();
+                    Events.emit("tool-shortcut", "eyedropper");
                     break;
                 //pan - 4, p,
                 case 52: case 80:
-                    tool.pan.switchTo();
+                    Events.emit("tool-shortcut", "pan");
                     break;
+                // line - l
                 case 76:
-                    tool.line.switchTo();
+                    Events.emit("tool-shortcut", "line");
                     break;
-                //zoom - 5
-                case 53:
-                tool.zoom.switchTo();
-                break;
                 // eraser -6, r
                 case 54: case 82:
-                    tool.eraser.switchTo()
+                    Events.emit("tool-shortcut", "eraser");
                     break;
-                // Rectangular selection
+                // Rectangular selection m
                 case 77: case 109:
-                    tool.rectselect.switchTo()
+                    Events.emit("tool-shortcut", "rectselect");
                     break;
                 // TODO: [ELLIPSE] Decide on a shortcut to use. "s" was chosen without any in-team consultation.
                 // ellipse tool, s
                 case 83:
-                    tool.ellipse.switchTo()
+                    //Events.emit("tool-shortcut", "ellipse");
                     break;
                 // rectangle tool, u
                 case 85:
-                    tool.rectangle.switchTo()
+                    Events.emit("tool-shortcut", "rectangle");
                     break;
                 // Paste tool
                 case 86: case 118:
-                    if (keyboardEvent.ctrlKey && !dragging) {
-                        pasteSelection();
+                    if (keyboardEvent.ctrlKey) {
+                        Events.emit("ctrl+v");
                     }
                     break;
                 case 88: case 120:
-                    if (keyboardEvent.ctrlKey && !dragging && currentTool.name == 'moveselection') {
-                        cutSelectionTool();
-                        tool.pencil.switchTo();
+                    if (keyboardEvent.ctrlKey) {
+                        Events.emit("ctrl+x");
                     }
                     break;
                 //Z
-                case 90:
+                case 90: case 122:
                     //CTRL+ALT+Z redo
                     if (keyboardEvent.altKey && keyboardEvent.ctrlKey) {
                         History.redo();
-                        if (!selectionCanceled) {
-                            tool.pencil.switchTo()
-                        }
                     }
                     //CTRL+Z undo
                     else if (keyboardEvent.ctrlKey) {
                         History.undo();
-                        if (!selectionCanceled) {
-                            tool.pencil.switchTo()
-                        }
                     }
-                    //Z switch to zoom tool
-                    else
-                        tool.zoom.switchTo()
                     break;
                 //redo - ctrl y
                 case 89:
@@ -155,16 +145,12 @@ const Input = (() => {
                         History.redo();
                     break;
                 case 32:
-                    spaceKeyPressed=true;
+                    Events.emit("space-pressed");
                     break;
             }
         }
     }
-
-    function spacePressed() {
-        return spaceKeyPressed;
-    }
-
+    
     function isDragging() {
         return dragging;
     }
@@ -174,7 +160,6 @@ const Input = (() => {
     }
 
     return {
-        spacePressed,
         isDragging,
         getCurrMouseEvent,
         getCursorPosition

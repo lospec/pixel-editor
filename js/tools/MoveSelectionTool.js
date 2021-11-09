@@ -88,13 +88,13 @@ class MoveSelectionTool extends Tool {
         // don't override the coloured pixels in the canvas
         let underlyingImageData = currentLayer.context.getImageData(
             this.currSelection.left, this.currSelection.top, 
-            this.currSelection.width, this.currSelection.height
+            this.currSelection.width+1, this.currSelection.height+1
         );
+        let pasteData = this.currSelection.data.data;
         
         for (let i=0; i<underlyingImageData.data.length; i+=4) {
             let currentMovePixel = [
-                this.currSelection.data.data[i], this.currSelection.data.data[i+1], 
-                this.currSelection.data.data[i+2], this.currSelection.data.data[i+3]
+                pasteData[i], pasteData[i+1], pasteData[i+2], pasteData[i+3]
             ];
 
             let currentUnderlyingPixel = [
@@ -104,26 +104,25 @@ class MoveSelectionTool extends Tool {
 
             // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
             if (Util.isPixelEmpty(currentMovePixel)) {
-                if (!Util.isPixelEmpty(underlyingImageData)) {
-                    this.currSelection.data.data[i] = currentUnderlyingPixel[0];
-                    this.currSelection.data.data[i+1] = currentUnderlyingPixel[1];
-                    this.currSelection.data.data[i+2] = currentUnderlyingPixel[2];
-                    this.currSelection.data.data[i+3] = currentUnderlyingPixel[3];
+                if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
+                    pasteData[i] = currentUnderlyingPixel[0];
+                    pasteData[i+1] = currentUnderlyingPixel[1];
+                    pasteData[i+2] = currentUnderlyingPixel[2];
+                    pasteData[i+3] = currentUnderlyingPixel[3];
                 }
             }
         }
 
-        currentLayer.context.putImageData(
-            this.currSelection.data, 
-            this.currSelection.left, 
-            this.currSelection.top);
+        console.log("Paste: " + pasteData.length + ", underlying: " + underlyingImageData.data.length);
+
+        currentLayer.context.putImageData(new ImageData(pasteData, this.currSelection.width+1),
+            this.currSelection.left, this.currSelection.top
+        );
 
         this.currSelection = undefined;
         currentLayer.updateLayerPreview();
         VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
-
-        // Saving history
-        new HistoryState().EditCanvas();
+        
         // Switch to brush
         this.switchFunc(this.endTool);
     }
