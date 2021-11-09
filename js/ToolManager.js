@@ -1,5 +1,6 @@
 const ToolManager = (() => {
     tools = {};
+    isPanning = false;
 
     tools["brush"] = new BrushTool("brush", {type: 'html'}, switchTool);
     tools["eraser"] = new EraserTool("eraser", {type: 'html'}, switchTool);
@@ -25,6 +26,7 @@ const ToolManager = (() => {
     Events.on("mousedown", window, onMouseDown);
     Events.on("mousewheel", window, onMouseWheel);
 
+    // Bind tool shortcuts
     Events.onCustom("tool-shortcut", onShortcut);
 
     function onShortcut(tool) {
@@ -45,7 +47,15 @@ const ToolManager = (() => {
         if (!Input.isDragging()) {
             switch(mouseEvent.which) {
                 case 1:
-                    currTool.onStart(mousePos, mouseEvent.target);
+                    if (Input.isSpacePressed()) {
+                        tools["pan"].onStart(mousePos, mouseEvent.target);
+                    }
+                    else if (Input.isAltPressed()) {
+                        tools["eyedropper"].onStart(mousePos, mouseEvent.target);
+                    }
+                    else {
+                        currTool.onStart(mousePos, mouseEvent.target);
+                    }
                     break;
                 case 2:
                     tools["pan"].onStart(mousePos, mouseEvent.target);
@@ -69,7 +79,15 @@ const ToolManager = (() => {
         if (Input.isDragging()) {
             switch (mouseEvent.which) {
                 case 1:
-                    currTool.onDrag(mousePos, mouseEvent.target);
+                    if (Input.isSpacePressed()) {
+                        tools["pan"].onDrag(mousePos, mouseEvent.target);
+                    }
+                    else if (Input.isAltPressed()) {
+                        tools["eyedropper"].onDrag(mousePos, mouseEvent.target);
+                    }
+                    else {
+                        currTool.onDrag(mousePos, mouseEvent.target);
+                    }
                     break;
                 case 2:
                     tools["pan"].onDrag(mousePos, mouseEvent.target);
@@ -92,7 +110,15 @@ const ToolManager = (() => {
         if (Input.isDragging()) {
             switch(mouseEvent.which) {
                 case 1:
-                    currTool.onEnd(mousePos);
+                    if (Input.isSpacePressed()) {
+                        tools["pan"].onEnd(mousePos, mouseEvent.target);
+                    }
+                    else if (Input.isAltPressed()) {
+                        tools["eyedropper"].onEnd(mousePos, mouseEvent.target);
+                    }
+                    else {
+                        currTool.onEnd(mousePos);
+                    }
                     break;
                 case 2:
                     tools["pan"].onEnd(mousePos);

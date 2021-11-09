@@ -39,7 +39,7 @@ class Tool {
 
 		switch (this.cursorType.type) {
 			case 'html':
-				canvasView.style.cursor = 'default';
+				canvasView.style.cursor = 'none';
 				break;
 			case 'cursor':
 				this.cursor = this.cursorType.style;
@@ -50,13 +50,19 @@ class Tool {
 		}
 	}
 
-	updateCursor() {}
+	updateCursor() {
+		brushPreview.style.display = 'block';
+		brushPreview.style.width = this.currSize * zoom + 'px';
+		brushPreview.style.height = this.currSize * zoom + 'px';
+	}
 
 	onMouseWheel(mousePos, mode) {}
 
 	onHover(cursorLocation, cursorTarget) {
 		this.prevMousePos = this.currMousePos;
 		this.currMousePos = cursorLocation;
+
+		this.updateCursor();
 
 		let toSub = 1;
         // Prevents the brush to be put in the middle of pixels
@@ -68,16 +74,14 @@ class Tool {
         brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
 
 		if (this.cursorType.type == 'html') {
-			if (cursorTarget == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas') {
+			if (cursorTarget.className == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas') {
 				brushPreview.style.visibility = 'visible';
+				canvasView.style.cursor = 'none';
 			}
 			else {
 				brushPreview.style.visibility = 'hidden';
+				canvasView.style.cursor = 'default';
 			}
-
-			brushPreview.style.display = 'block';
-			brushPreview.style.width = this.currSize * zoom + 'px';
-			brushPreview.style.height = this.currSize * zoom + 'px';
 		}
 	}
 
@@ -85,7 +89,9 @@ class Tool {
 		if (this.mainButton != undefined)
 			this.mainButton.parentElement.classList.remove("selected");
 		this.isSelected = false;
+
 		brushPreview.style.visibility = 'hidden';
+		canvasView.style.cursor = 'default';
 	}
 
 	onStart(mousePos) {

@@ -1,11 +1,18 @@
 const Input = (() => {
     let dragging = false;
     let currentMouseEvent = undefined;
+    let spacePressed = false;
+    let altPressed = false;
+    let ctrlPressed = false;
 
     // Hotkeys when pressing a key
     Events.on("keydown", document, KeyPress);
     // Update held keys when releasing a key
-    Events.on("keyup", window, function (e) {if (e.keyCode == 32) Events.emit("space-released");;});
+    Events.on("keyup", window, function (e) {
+        if (e.keyCode == 32) spacePressed = false;
+        if (!e.altKey) altPressed = false;
+        if (!e.ctrlKey) ctrlPressed = false;
+    });
 
     // Update variables on mouse clicks
     Events.on("mousedown", window, onMouseDown);
@@ -54,6 +61,8 @@ const Input = (() => {
      */
     function KeyPress(e) {
         var keyboardEvent = window.event? event : e;
+        altPressed = e.altKey;
+        ctrlPressed = e.ctrlKey;
 
         //if the user is typing in an input field or renaming a layer, ignore these hotkeys, unless it's an enter key
         if (document.activeElement.tagName == 'INPUT' || LayerList.isRenamingLayer()) {
@@ -145,7 +154,7 @@ const Input = (() => {
                         History.redo();
                     break;
                 case 32:
-                    Events.emit("space-pressed");
+                    spacePressed = true;
                     break;
             }
         }
@@ -159,9 +168,24 @@ const Input = (() => {
         return currentMouseEvent;
     }
 
+    function isAltPressed() {
+        return altPressed;
+    }
+
+    function isCtrlPressed() {
+        return ctrlPressed;
+    }
+
+    function isSpacePressed() {
+        return spacePressed;
+    }
+
     return {
         isDragging,
         getCurrMouseEvent,
-        getCursorPosition
+        getCursorPosition,
+        isAltPressed,
+        isCtrlPressed,
+        isSpacePressed
     }
 })();
