@@ -55,13 +55,13 @@ const TopMenuModule = (() => {
                         break;
                     // REFACTOR: move the binding to the Selection IIFE or something like that once it's done
                     case 'Paste':
-                        Events.on('click', currSubmenuButton, pasteSelection);
+                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+v");});
                         break;
                     case 'Copy':
-                        Events.on('click', currSubmenuButton, copySelection);
+                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+c");});
                         break;
                     case 'Cut':
-                        Events.on('click', currSubmenuButton, cutSelectionTool);
+                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+x");});
                         break;
                     case 'Cancel':
                         //Events.on('click', currSubmenuButton, tool.pencil.switchTo);

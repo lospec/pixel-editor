@@ -44,7 +44,6 @@
 
 /**functions**/
 //=include _checkerboard.js
-//=include _copyPaste.js
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
 //=include _colorPicker.js

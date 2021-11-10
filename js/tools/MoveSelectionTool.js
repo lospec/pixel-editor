@@ -4,6 +4,7 @@ class MoveSelectionTool extends Tool {
     endTool = undefined;
     switchFunc = undefined;
     lastCopiedSelection = undefined;
+    cutting = false;
 
     constructor (name, options, switchFunc, endTool) {
         super(name, options, switchFunc);
@@ -20,9 +21,11 @@ class MoveSelectionTool extends Tool {
 
     copySelection() {
         this.lastCopiedSelection = this.currSelection;
+        this.cutting = false;
     }
 
     cutSelection() {
+        this.cutting = true;
         this.lastCopiedSelection = this.currSelection;
         this.endSelection();
         this.currSelection = this.lastCopiedSelection;
@@ -35,7 +38,11 @@ class MoveSelectionTool extends Tool {
         if (this.lastCopiedSelection === undefined)
             return;
         // Finish the current selection and start a new one with the same data
-        this.endSelection();
+        if (!this.cutting) {
+            this.endSelection();
+        }
+        this.cutting = false;
+
         this.switchFunc(this);
         this.currSelection = this.lastCopiedSelection;
 
@@ -46,10 +53,11 @@ class MoveSelectionTool extends Tool {
         new HistoryState().EditCanvas();
     }
 
-    onStart(mousePos) {
-        super.onStart(mousePos);
+    onStart(mousePos, mouseTarget) {
+        super.onStart(mousePos, mouseTarget);
 
-        if (!this.cursorInSelectedArea(mousePos)) {
+        if (!this.cursorInSelectedArea(mousePos) && 
+            !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
             this.endSelection();
         }
     }
