@@ -39,8 +39,6 @@ const Startup = (() => {
         initLayers(width, height);
         initPalette();
 
-        fillPixelGrid();
-
         // Closing the "New Pixel dialogue"
         Dialogue.closeDialogue();
         // Updating the cursor of the current tool
@@ -110,15 +108,14 @@ const Startup = (() => {
 
         // Adding the checkerboard behind it
         checkerBoard = new Checkerboard(width, height, null);
+        // Pixel grid
+        pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
         // Creating the vfx layer on top of everything
         VFXLayer = new Layer(width, height, 'vfx-canvas');
-
         // Tmp layer to draw previews on
         TMPLayer = new Layer(width, height, 'tmp-canvas');
         
-        // Pixel grid
-        pixelGrid = new Layer(width, height, "pixel-grid");
         // Setting the general canvasSize
         canvasSize = currentLayer.canvasSize;
 

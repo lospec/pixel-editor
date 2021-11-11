@@ -61,17 +61,17 @@ class ZoomTool extends Tool {
         // Adjust pixel grid thickness
         if (zoomed) {
             if (zoom <= 7)
-                disablePixelGrid();
+                pixelGrid.disablePixelGrid();
             else if (zoom >= 20 && mode == 'in') {
-                enablePixelGrid();
-                repaintPixelGrid((zoom - prevZoom) * 0.6);
+                pixelGrid.enablePixelGrid();
+                pixelGrid.repaintPixelGrid((zoom - prevZoom) * 0.6);
             }
             else if (prevZoom >= 20 && mode == 'out') {
-                enablePixelGrid();
-                repaintPixelGrid((zoom - prevZoom) * 0.6);
+                pixelGrid.enablePixelGrid();
+                pixelGrid.repaintPixelGrid((zoom - prevZoom) * 0.6);
             }
             else {
-                enablePixelGrid();
+                pixelGrid.enablePixelGrid();
             }
         }
 

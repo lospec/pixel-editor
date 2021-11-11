@@ -45,7 +45,7 @@ const Settings = (() => {
         settings.numberOfHistoryStates = Util.getValue('setting-numberOfHistoryStates');
         settings.pixelGridColour = Util.getValue('setting-pixelGridColour');
         // Filling pixel grid again if colour changed
-        fillPixelGrid();
+        pixelGrid.fillPixelGrid();
     
         //save settings object to cookie
         var cookieValue = JSON.stringify(settings);

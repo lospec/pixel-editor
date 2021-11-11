@@ -22,6 +22,7 @@ class Tool {
 	mainButton = undefined;
 	biggerButton = undefined;
 	smallerButton = undefined;
+	brushPreview = document.getElementById("brush-preview");
 
 	constructor (name, options) {
 		this.name = name;
@@ -51,9 +52,9 @@ class Tool {
 	}
 
 	updateCursor() {
-		brushPreview.style.display = 'block';
-		brushPreview.style.width = this.currSize * zoom + 'px';
-		brushPreview.style.height = this.currSize * zoom + 'px';
+		this.brushPreview.style.display = 'block';
+		this.brushPreview.style.width = this.currSize * zoom + 'px';
+		this.brushPreview.style.height = this.currSize * zoom + 'px';
 	}
 
 	onMouseWheel(mousePos, mode) {}
@@ -70,16 +71,16 @@ class Tool {
             toSub = 0.5;
         }        
 
-        brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-        brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+        this.brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+        this.brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
 
 		if (this.cursorType.type == 'html') {
 			if (cursorTarget.className == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas') {
-				brushPreview.style.visibility = 'visible';
+				this.brushPreview.style.visibility = 'visible';
 				canvasView.style.cursor = 'none';
 			}
 			else {
-				brushPreview.style.visibility = 'hidden';
+				this.brushPreview.style.visibility = 'hidden';
 				canvasView.style.cursor = 'default';
 			}
 		}
@@ -90,7 +91,7 @@ class Tool {
 			this.mainButton.parentElement.classList.remove("selected");
 		this.isSelected = false;
 
-		brushPreview.style.visibility = 'hidden';
+		this.brushPreview.style.visibility = 'hidden';
 		canvasView.style.cursor = 'default';
 	}
 

@@ -21,7 +21,7 @@ const EditorState = (() => {
             document.getElementById("switch-mode-button").innerHTML = 'Switch to basic mode';
     
             //turn pixel grid off
-            togglePixelGrid('off');
+            pixelGrid.togglePixelGrid('off');
         }
         //switch to basic mode
         else {
@@ -47,7 +47,7 @@ const EditorState = (() => {
 
             pixelEditorMode = 'Basic';
             document.getElementById("switch-mode-button").innerHTML = 'Switch to advanced mode';
-            togglePixelGrid('on');
+            pixelGrid.togglePixelGrid('on');
         }
     }
 
