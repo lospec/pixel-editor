@@ -18,6 +18,7 @@ const EditorState = (() => {
             document.getElementById('colors-menu').style.right = '200px'
     
             pixelEditorMode = 'Advanced';
+            document.getElementById("switch-mode-button").innerHTML = 'Switch to basic mode';
     
             //turn pixel grid off
             togglePixelGrid('off');
@@ -45,6 +46,7 @@ const EditorState = (() => {
             document.getElementById('colors-menu').style.right = '0px';
 
             pixelEditorMode = 'Basic';
+            document.getElementById("switch-mode-button").innerHTML = 'Switch to advanced mode';
             togglePixelGrid('on');
         }
     }

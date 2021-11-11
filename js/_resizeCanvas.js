@@ -140,7 +140,7 @@ function resizeCanvas(event, size, customData, saveHistory = true) {
     }
 
     // Regenerate the checkerboard
-    fillCheckerboard();
+    checkerBoard.fillCheckerboard();
     fillPixelGrid();
     // Put the imageDatas in the right position
     switch (rcPivot)

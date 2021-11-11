@@ -1,7 +1,7 @@
 /**utilities**/
 //=include lib/cookies.js
 //=include _jscolor.js
-//=include _variables.js
+//=include data/variables.js
 //=include lib/sortable.js
 //=include Util.js
 //=include Events.js
@@ -29,10 +29,13 @@
 //=include tools/MoveSelectionTool.js
 
 /**init**/
-//=include _consts.js
+//=include data/consts.js
 //=include Settings.js
 //=include LayerList.js
-//=include Layer.js
+//=include layers/Layer.js
+//=include layers/Checkerboard.js
+//=include layers/PixelGrid.js
+
 //=include Startup.js
 //=include _pixelGrid.js
 //=include EditorState.js
@@ -40,7 +43,7 @@
 
 /**dropdown formatting**/
 //=include PresetModule.js
-//=include _palettes.js
+//=include data/palettes.js
 
 /**functions**/
 //=include _checkerboard.js

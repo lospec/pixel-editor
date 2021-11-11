@@ -39,8 +39,6 @@ const Startup = (() => {
         initLayers(width, height);
         initPalette();
 
-        //fill background of canvas with bg color
-        fillCheckerboard();
         fillPixelGrid();
 
         // Closing the "New Pixel dialogue"
@@ -111,7 +109,7 @@ const Startup = (() => {
         }
 
         // Adding the checkerboard behind it
-        checkerBoard = new Layer(width, height, checkerBoardCanvas);
+        checkerBoard = new Checkerboard(width, height, null);
 
         // Creating the vfx layer on top of everything
         VFXLayer = new Layer(width, height, 'vfx-canvas');

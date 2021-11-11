@@ -31,3 +31,5 @@ var pixelGrid;
 // REFACTOR: I was thinking that the special layers (pixel grid, checkerboard ecc) could be an extension
 // or a variatin of the standard Layer class? I wonder if we can use inheritance or something to
 // recycle stuff
+
+let checkerBoard;
