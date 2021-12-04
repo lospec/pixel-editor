@@ -19,7 +19,7 @@ class BrushTool extends ResizableTool {
             return;
         //draw line to current pixel
         if (cursorTarget.className == 'drawingCanvas' || cursorTarget.className == 'drawingCanvas') {
-            line(Math.floor(this.prevMousePos[0]/zoom),
+            currentLayer.drawLine(Math.floor(this.prevMousePos[0]/zoom),
                 Math.floor(this.prevMousePos[1]/zoom),
                 Math.floor(this.currMousePos[0]/zoom),
                 Math.floor(this.currMousePos[1]/zoom), 

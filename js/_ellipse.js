@@ -84,10 +84,10 @@ function endEllipseDrawing(mouseEvent) {
 	currentLayer.context.lineWidth = tool.ellipse.brushSize;
 
 	// Drawing the ellipse using 4 lines
-	line(startEllipseX, startEllipseY, endEllipseX, startEllipseY, tool.ellipse.brushSize);
-	line(endEllipseX, startEllipseY, endEllipseX, endEllipseY, tool.ellipse.brushSize);
-	line(endEllipseX, endEllipseY, startEllipseX, endEllipseY, tool.ellipse.brushSize);
-	line(startEllipseX, endEllipseY, startEllipseX, startEllipseY, tool.ellipse.brushSize);
+	currentLayer.drawLine(startEllipseX, startEllipseY, endEllipseX, startEllipseY, tool.ellipse.brushSize);
+	currentLayer.drawLine(endEllipseX, startEllipseY, endEllipseX, endEllipseY, tool.ellipse.brushSize);
+	currentLayer.drawLine(endEllipseX, endEllipseY, startEllipseX, endEllipseY, tool.ellipse.brushSize);
+	currentLayer.drawLine(startEllipseX, endEllipseY, startEllipseX, startEllipseY, tool.ellipse.brushSize);
 
 	// If I have to fill it, I do so
 	if (ellipseDrawMode == 'fill') {

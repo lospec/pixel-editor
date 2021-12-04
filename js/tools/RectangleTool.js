@@ -92,10 +92,10 @@ class RectangleTool extends ResizableTool {
         currentLayer.context.lineWidth = this.currSize;
 
         // Drawing the rect using 4 lines
-        line(startRectX, startRectY, endRectX, startRectY, this.currSize);
-        line(endRectX, startRectY, endRectX, endRectY, this.currSize);
-        line(endRectX, endRectY, startRectX, endRectY, this.currSize);
-        line(startRectX, endRectY, startRectX, startRectY, this.currSize);
+        currentLayer.drawLine(startRectX, startRectY, endRectX, startRectY, this.currSize);
+        currentLayer.drawLine(endRectX, startRectY, endRectX, endRectY, this.currSize);
+        currentLayer.drawLine(endRectX, endRectY, startRectX, endRectY, this.currSize);
+        currentLayer.drawLine(startRectX, endRectY, startRectX, startRectY, this.currSize);
 
         // If I have to fill it, I do so
         if (this.currFillMode == 'fill') {

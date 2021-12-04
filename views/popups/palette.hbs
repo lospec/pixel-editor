@@ -6,37 +6,37 @@
 	
 	<div id = "colour-picker">
 		<div id = "cp-modes">
-			<button id="cp-rgb" class="cp-selected-mode" onclick="changePickerMode(this, 'rgb')">RGB</button>
-			<button id="cp-hsv" onclick="changePickerMode(this, 'hsv')">HSV</button>
-			<button id="cp-hsl" onclick="changePickerMode(this, 'hsl')">HSL</button>
+			<button id="cp-rgb" class="cp-selected-mode">RGB</button>
+			<button id="cp-hsv">HSV</button>
+			<button id="cp-hsl">HSL</button>
 			
 			<div id="cp-colour-preview" class="cp-colour-preview"></div>
-			<input id="cp-hex" type="text" value="#123456" onchange="hexUpdated()"/>
+			<input id="cp-hex" type="text" value="#123456"/>
 		</div>
 
 		<div id = "sliders-container">
 			<div class = "cp-slider-entry">
 				<label for = "first-slider">R</label>
-				<input type="range" min="0" max="255" class="colour-picker-slider" id="first-slider" onmousemove="updateSliderValue(1)" onclick="updateSliderValue(1)"/>
-				<input type = "text" value = "128" onchange="inputChanged(this,1)"/>
+				<input type="range" min="0" max="255" class="colour-picker-slider" id="first-slider"/>
+				<input type = "text" value = "128" id="cp-sliderText1"/>
 			</div>
 
 			<div class = "cp-slider-entry">
 				<label for = "second-slider">G</label>
-				<input type="range" min="0" max ="255" class="colour-picker-slider" id="second-slider" onmousemove="updateSliderValue(2)" onclick="updateSliderValue(2)"/>
-				<input type = "text" value = "128" onchange="inputChanged(this,2)"/>
+				<input type="range" min="0" max ="255" class="colour-picker-slider" id="second-slider"/>
+				<input type = "text" value = "128" id="cp-sliderText2"/>
 			</div>
 
 			<div class = "cp-slider-entry">
 				<label for = "third-slider">B</label>
-				<input type="range" min = "0" max = "255" class = "colour-picker-slider" id = "third-slider" onmousemove="updateSliderValue(3)" onclick="updateSliderValue(3)"/>
-				<input type = "text" value = "128" onchange="inputChanged(this,3)"/>
+				<input type="range" min = "0" max = "255" class = "colour-picker-slider" id = "third-slider"/>
+				<input type = "text" value = "128" id="cp-sliderText3"/>
 			</div>
 		</div>
 
 		<div id = "cp-minipicker">
-			<input type = "range" min = "0" max = "100" id = "cp-minipicker-slider" onmousemove="miniSliderInput(event)" onclick="miniSliderInput(event)"/>
-			<div id="cp-canvas-container" onmousemove="movePickerIcon(event)">
+			<input type = "range" min = "0" max = "100" id = "cp-minipicker-slider"/>
+			<div id="cp-canvas-container">
 				<canvas id = "cp-spectrum"></canvas>
 				<div id="cp-active-icon" class="cp-picker-icon"></div>
 			</div>
@@ -48,12 +48,12 @@
 			</div>
 
 			<div id = "cp-colour-picking-modes">
-				<button class="cp-selected-mode" onclick="changePickingMode(event,'mono')">Mono</button>
-				<button onclick="changePickingMode(event,'analog')">Nlgs</button>
-				<button onclick="changePickingMode(event,'cmpt')">Cmpt</button>
-				<button onclick="changePickingMode(event,'tri')">Tri</button>
-				<button onclick="changePickingMode(event,'scmpt')">Scm</button>
-				<button onclick="changePickingMode(event,'tetra')">Tetra</button>
+				<button id="cp-mono" class="cp-selected-mode">Mono</button>
+				<button id="cp-analog">Nlgs</button>
+				<button id="cp-cmpt">Cmpt</button>
+				<button id="cp-tri">Tri</button>
+				<button id="cp-scmpt">Scm</button>
+				<button id="cp-tetra">Tetra</button>
 			</div>
 		</div>
 	</div>
