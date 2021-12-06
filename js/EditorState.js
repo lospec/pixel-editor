@@ -52,7 +52,6 @@ const EditorState = (() => {
     }
 
     function chooseMode() {
-        console.log("Here");
         let prevMode = pixelEditorMode.toLowerCase();
 
         if (pixelEditorMode === "Basic") {

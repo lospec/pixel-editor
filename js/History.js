@@ -104,8 +104,8 @@ class HistoryState {
         this.undo = function() {
             let layerIndex = 0;
 
-            currentAlgo = algo;
-            resizeSprite(null, [1 / this.xRatio, 1 / this.yRatio]);
+            currFile.currentAlgo = algo;
+            currFile.resizeSprite(null, [1 / this.xRatio, 1 / this.yRatio]);
 
             // Also putting the old data
             for (let i=0; i<currFile.layers.length; i++) {
@@ -118,8 +118,8 @@ class HistoryState {
         };
 
         this.redo = function() {
-            currentAlgo = algo;
-            resizeSprite(null, [this.xRatio, this.yRatio]);
+            currFile.currentAlgo = algo;
+            currFile.resizeSprite(null, [this.xRatio, this.yRatio]);
         };
     }
 

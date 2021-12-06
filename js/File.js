@@ -23,6 +23,18 @@ class File {
     rcBorders = {left: 0, right: 0, top: 0, bottom: 0};
 
     // Sprite scaling attributes
+    // Should I keep the sprite ratio?
+    keepRatio = true;
+    // Used to store the current ratio
+    currentRatio = undefined;
+    // The currenty selected resizing algorithm (nearest-neighbor or bilinear-interpolation)
+    currentAlgo = 'nearest-neighbor';
+    // Current resize data
+    data = {width: 0, height: 0, widthPercentage: 100, heightPercentage: 100};
+    // Start resize data
+    startData = {width: 0, height:0, widthPercentage: 100, heightPercentage: 100};
+
+    // Sprite scaling attributes
 
     openResizeCanvasWindow() {
         // Initializes the inputs
@@ -97,7 +109,6 @@ class File {
      * @param {*} saveHistory Should I save the history? You shouldn't if you're undoing
      */
     resizeCanvas(event, size, customData, saveHistory = true) {
-        console.log("resizing");
         let imageDatas = [];
         let leftOffset = 0;
         let topOffset = 0;
@@ -314,6 +325,368 @@ class File {
         this.currentPivotObject = event.target;
         this.currentPivotObject.classList.add("rc-selected-pivot");
     }
+
+    /** Opens the sprite resizing window
+     * 
+     */
+    openResizeSpriteWindow() {
+        // Inits the sprie resize inputs
+        this.initResizeSpriteInputs();
+
+        // Computing the current ratio
+        this.currentRatio = currFile.canvasSize[0] / currFile.canvasSize[1];
+
+        // Initializing the input fields
+        this.data.width = currFile.canvasSize[0];
+        this.data.height = currFile.canvasSize[1];
+
+        this.startData.width = parseInt(this.data.width);
+        this.startData.height = parseInt(this.data.height);
+        this.startData.heightPercentage = 100;
+        this.startData.widthPercentage = 100;
+
+        // Opening the pop up now that it's ready
+        Dialogue.showDialogue('resize-sprite');
+    }
+
+    /** Initalizes the input values and binds the elements to their events
+     * 
+     */
+    initResizeSpriteInputs() {
+        document.getElementById("rs-width").value = currFile.canvasSize[0];
+        document.getElementById("rs-height").value = currFile.canvasSize[1];
+
+        document.getElementById("rs-width-percentage").value = 100;
+        document.getElementById("rs-height-percentage").value = 100;
+
+        document.getElementById("rs-keep-ratio").checked = true;
+
+        Events.on("change", "rs-width", this.changedWidth.bind(this));
+        Events.on("change", "rs-height", this.changedHeight.bind(this));
+        
+        Events.on("change", "rs-width-percentage", this.changedWidthPercentage.bind(this));
+        Events.on("change", "rs-height-percentage", this.changedHeightPercentage.bind(this));
+
+        Events.on("click", "resize-sprite-confirm", this.resizeSprite.bind(this));
+        Events.on("click", "rs-keep-ratio", this.toggleRatio.bind(this));
+        Events.on("change", "resize-algorithm-combobox", this.changedAlgorithm.bind(this));
+    }
+
+    /** Resizes (scales) the sprite
+     * 
+     * @param {*} event 
+     * @param {*} ratio Keeps infos about the x ratio and y ratio
+     */
+    resizeSprite(event, ratio) {
+        // Old data
+        let oldWidth, oldHeight;
+        // New data
+        let newWidth, newHeight;
+        // Current imageDatas
+        let rsImageDatas = [];
+        // Index that will be used a few lines below
+        let layerIndex = 0;
+        // Copy of the imageDatas that will be stored in the history
+        let imageDatasCopy = [];
+
+        oldWidth = currFile.canvasSize[0];
+        oldHeight = currFile.canvasSize[1];
+        this.rcPivot = "middle";
+
+        // Updating values if the user didn't press enter
+        switch (document.activeElement.id) {
+            case "rs-width-percentage":
+                this.changedWidthPercentage();
+                break;
+            case "rs-width":
+                this.changedWidth();
+                break;
+            case "rs-height-percentage":
+                this.changedHeightPercentage();
+                break;
+            case "rs-height":
+                this.changedHeight();
+                break;
+            default:
+                // In this case everything has been updated correctly
+                break;
+        }
+
+        // Computing newWidth and newHeight
+        if (ratio == null) {
+            newWidth = this.data.width;
+            newHeight = this.data.height;
+        }
+        else {
+            newWidth = currFile.canvasSize[0] * ratio[0];
+            newHeight = currFile.canvasSize[1] * ratio[1];
+        }
+        
+        // Get all the image datas
+        for (let i=0; i<currFile.layers.length; i++) {
+            if (currFile.layers[i].hasCanvas()) {
+                rsImageDatas.push(currFile.layers[i].context.getImageData(
+                    0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
+                );
+            }
+        }
+
+        // event is null when the user is undoing
+        if (event != null) {
+            // Copying the image data
+            imageDatasCopy = rsImageDatas.slice();
+            // Saving the history
+            new HistoryState().ResizeSprite(newWidth / oldWidth, newHeight / oldHeight, this.currentAlgo, imageDatasCopy);
+        }
+
+        // Resizing the canvas
+        currFile.resizeCanvas(null, {x: newWidth, y: newHeight});
+
+        // Put the image datas on the new canvases
+        for (let i=0; i<currFile.layers.length; i++) {
+            if (currFile.layers[i].hasCanvas()) {
+                currFile.layers[i].context.putImageData(
+                    this.resizeImageData(rsImageDatas[layerIndex], newWidth, newHeight, this.currentAlgo), 0, 0
+                );
+                currFile.layers[i].updateLayerPreview();
+                layerIndex++;
+            }
+        }
+
+        // Updating start values when I finish scaling the sprite
+        // OPTIMIZABLE? Can't I just assign data to startData? Is js smart enough to understand?
+        if (ratio == null) {
+            this.startData.width = this.data.width;
+            this.startData.height = this.data.height;
+        }
+        else {
+            this.startData.width = currFile.canvasSize[0];
+            this.startData.height = currFile.canvasSize[1];
+        }
+
+        this.startData.widthPercentage = 100;
+        this.startData.heightPercentage = 100;
+
+        Dialogue.closeDialogue();
+    }
+
+    /* Trust me, the math for the functions below works. If you want to optimize them feel free to have a look, though */
+    /** Fired when the input field for width is changed. Updates th othe input fields consequently
+     * 
+     * @param {*} event 
+     */
+    changedWidth(event) {
+        let newHeight, newHeightPerc, newWidthPerc;
+        this.data.width = event.target.value;
+
+        newHeight = this.data.width / this.currentRatio;
+        newHeightPerc = (newHeight * 100) / this.startData.height;
+        newWidthPerc = (this.data.width * 100) / this.startData.width;
+
+        if (this.keepRatio) {
+            document.getElementById("rs-height").value = newHeight;
+            this.data.height = newHeight;
+
+            document.getElementById("rs-height-percentage").value = newHeightPerc;
+            this.data.heightPercentage = newHeightPerc;
+        }
+
+        document.getElementById("rs-width-percentage").value = newWidthPerc;
+    }
+
+    /**Fired when the input field for width is changed. Updates the other input fields consequently
+     * 
+     * @param {*} event 
+     */
+    changedHeight(event) {
+        let newWidth, newWidthPerc, newHeightPerc;
+        this.data.height = event.target.value;
+
+        newWidth = this.data.height * this.currentRatio;
+        newWidthPerc = (newWidth * 100) / this.startData.width;
+        newHeightPerc = (this.data.height * 100) / this.startData.height;
+
+        if (this.keepRatio) {
+            document.getElementById("rs-width").value = newWidth;
+            this.data.width = newWidth;
+
+            document.getElementById("rs-width-percentage").value = newWidthPerc;
+            this.data.widthPercentage = newWidthPerc;
+        }
+
+        document.getElementById("rs-height-percentage").value = newHeightPerc;
+        this.data.heightPercentage = newHeightPerc;
+    }
+
+    /**Fired when the input field for width percentage is changed. Updates the other input fields consequently
+     * 
+     * @param {*} event 
+     */
+    changedWidthPercentage(event) {
+        let oldValue = 100;
+        let ratio;
+        let newWidth, newHeight, newHeightPerc;
+
+        this.data.widthPercentage = event.target.value;
+        ratio = this.data.widthPercentage / oldValue;
+
+        newHeight = this.startData.height * ratio;
+        newHeightPerc = this.data.widthPercentage;
+        newWidth = this.startData.width * ratio;
+
+        if (this.keepRatio) {
+            document.getElementById("rs-height-percentage").value = newHeightPerc;
+            this.data.heightPercentage = newHeightPerc;
+            
+            document.getElementById("rs-height").value = newHeight
+            this.data.height = newHeight;
+        }
+
+        document.getElementById("rs-width").value = newWidth;
+        this.data.width = newWidth;
+    }
+
+    /**Fired when the input field for height percentage is changed. Updates the other input fields consequently
+     * 
+     * @param {*} event 
+     */
+    changedHeightPercentage(event) {
+        let oldValue = this.data.heightPercentage;
+        let ratio;
+        let newHeight, newWidth, newWidthPerc;
+
+        this.data.heightPercentage = event.target.value;
+
+        ratio = this.data.heightPercentage / oldValue;
+
+        newWidth = this.startData.width * ratio;
+        newWidthPerc = this.data.heightPercentage;
+        newHeight = this.startData.height * ratio;
+
+        if (this.keepRatio) {
+            document.getElementById("rs-width-percentage").value = this.data.heightPercentage * currentRatio;
+            this.data.widthPercentage = newWidthPerc;
+
+            document.getElementById("rs-width").value = newWidth;
+            this.data.width = newWidth;
+        }
+
+        document.getElementById("rs-height").value = newHeight;
+        this.data.height = newHeight;
+    }
+
+    /** Toggles the keepRatio value (fired by the checkbox in the pop up window)
+     */
+    toggleRatio() {
+        this.keepRatio = !this.keepRatio;
+    }
+
+    /** Changes the scaling algorithm (fired by the combobox in the pop up window)
+     * 
+     * @param {*} event 
+     */
+    changedAlgorithm(event) {
+        this.currentAlgo = event.target.value;
+    }
+
+    /** Resizes an imageData depending on the algorithm and on the new width and height
+     * 
+     * @param {*} image The imageData to scale
+     * @param {*} width The new width of the imageData
+     * @param {*} height The new height of the imageData
+     * @param {*} algorithm Scaling algorithm chosen by the user in the dialogue
+     */
+    resizeImageData (image, width, height, algorithm) {
+        algorithm = algorithm || 'bilinear-interpolation'
+    
+        let resize;
+        switch (algorithm) {
+            case 'nearest-neighbor': resize = this.nearestNeighbor; break
+            case 'bilinear-interpolation': resize = this.bilinearInterpolation; break
+            default: return image;
+        }
+    
+        const result = new ImageData(width, height)
+    
+        resize(image, result)
+    
+        return result
+    }
+
+
+    /** Nearest neighbor algorithm to scale a sprite
+     * 
+     * @param {*} src The source imageData
+     * @param {*} dst The destination imageData
+     */
+    nearestNeighbor (src, dst) {
+        let pos = 0
+
+        // Just applying the nearest neighbor algorithm
+        for (let y = 0; y < dst.height; y++) {
+            for (let x = 0; x < dst.width; x++) {
+            const srcX = Math.floor(x * src.width / dst.width)
+            const srcY = Math.floor(y * src.height / dst.height)
+
+            let srcPos = ((srcY * src.width) + srcX) * 4
+
+            dst.data[pos++] = src.data[srcPos++] // R
+            dst.data[pos++] = src.data[srcPos++] // G
+            dst.data[pos++] = src.data[srcPos++] // B
+            dst.data[pos++] = src.data[srcPos++] // A
+            }
+        }
+    }
+    
+    /** Bilinear interpolation used to scale a sprite
+     * 
+     * @param {*} src The source imageData
+     * @param {*} dst The destination imageData
+     */
+    bilinearInterpolation (src, dst) {
+        // Applying the bilinear interpolation algorithm
+
+        function interpolate (k, kMin, kMax, vMin, vMax) {
+            return Math.round((k - kMin) * vMax + (kMax - k) * vMin)
+        }
+    
+        function interpolateHorizontal (offset, x, y, xMin, xMax) {
+            const vMin = src.data[((y * src.width + xMin) * 4) + offset]
+            if (xMin === xMax) return vMin
+    
+            const vMax = src.data[((y * src.width + xMax) * 4) + offset]
+            return interpolate(x, xMin, xMax, vMin, vMax)
+        }
+    
+        function interpolateVertical (offset, x, xMin, xMax, y, yMin, yMax) {
+            const vMin = interpolateHorizontal(offset, x, yMin, xMin, xMax)
+            if (yMin === yMax) return vMin
+    
+            const vMax = interpolateHorizontal(offset, x, yMax, xMin, xMax)
+            return interpolate(y, yMin, yMax, vMin, vMax)
+        }
+    
+        let pos = 0
+    
+        for (let y = 0; y < dst.height; y++) {
+            for (let x = 0; x < dst.width; x++) {
+                const srcX = x * src.width / dst.width
+                const srcY = y * src.height / dst.height
+        
+                const xMin = Math.floor(srcX)
+                const yMin = Math.floor(srcY)
+        
+                const xMax = Math.min(Math.ceil(srcX), src.width - 1)
+                const yMax = Math.min(Math.ceil(srcY), src.height - 1)
+        
+                dst.data[pos++] = interpolateVertical(0, srcX, xMin, xMax, srcY, yMin, yMax) // R
+                dst.data[pos++] = interpolateVertical(1, srcX, xMin, xMax, srcY, yMin, yMax) // G
+                dst.data[pos++] = interpolateVertical(2, srcX, xMin, xMax, srcY, yMin, yMax) // B
+                dst.data[pos++] = interpolateVertical(3, srcX, xMin, xMax, srcY, yMin, yMax) // A
+            }
+        }
+    }
+
 }
 
 let currFile = new File();

@@ -20,9 +20,7 @@ const FileManager = (() => {
         }
     
         Util.setValue('lpe-file-name', fileName);
-    
         Events.on("click", "save-project-confirm", saveProject);
-    
         Dialogue.showDialogue('save-project', false);
     }
 
@@ -38,9 +36,7 @@ const FileManager = (() => {
         }
     
         Util.setValue('export-file-name', fileName);
-    
         Events.on("click", "export-confirm", exportProject);
-    
         Dialogue.showDialogue('export', false);
     }
 
@@ -66,11 +62,11 @@ const FileManager = (() => {
             //create name
             let fileName = Util.getValue("export-file-name");
             //set download link
-            var linkHolder = document.getElementById('save-image-link-holder');
+            let linkHolder = document.getElementById('save-image-link-holder');
             // Creating a tmp canvas to flatten everything
-            var exportCanvas = document.createElement("canvas");
-            var emptyCanvas = document.createElement("canvas");
-            var layersCopy = currFile.layers.slice();
+            let exportCanvas = document.createElement("canvas");
+            let emptyCanvas = document.createElement("canvas");
+            let layersCopy = currFile.layers.slice();
 
             exportCanvas.width = currFile.canvasSize[0];
             exportCanvas.height = currFile.canvasSize[1];

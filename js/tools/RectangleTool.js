@@ -90,7 +90,7 @@ class RectangleTool extends ResizableTool {
         currFile.currentLayer.context.lineWidth = this.currSize;
 
         // Drawing the rect using 4 lines
-        currentLayer.drawLine(startRectX, startRectY, endRectX, startRectY, this.currSize);
+        currFile.currentLayer.drawLine(startRectX, startRectY, endRectX, startRectY, this.currSize);
         currFile.currentLayer.drawLine(endRectX, startRectY, endRectX, endRectY, this.currSize);
         currFile.currentLayer.drawLine(endRectX, endRectY, startRectX, endRectY, this.currSize);
         currFile.currentLayer.drawLine(startRectX, endRectY, startRectX, startRectY, this.currSize);

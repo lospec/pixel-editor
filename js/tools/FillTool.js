@@ -40,7 +40,7 @@ class FillTool extends Tool {
         }
 
         //temporary image holds the data while we change it
-        let tempImage = currFile.currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        let tempImage = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         //this is an array that holds all of the pixels at the top of the cluster
         let topmostPixelsArray = [[Math.floor(cursorLocation[0]/currFile.zoom), Math.floor(cursorLocation[1]/currFile.zoom)]];

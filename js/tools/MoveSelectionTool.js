@@ -69,7 +69,7 @@ class MoveSelectionTool extends Tool {
             mousePos[1]/currFile.zoom, this.currSelection.width, this.currSelection.height);
 
         // clear the entire tmp layer
-        TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
         // put the image data on the tmp layer with offset
         currFile.TMPLayer.context.putImageData(
             this.currSelection.data, 
@@ -148,16 +148,10 @@ class MoveSelectionTool extends Tool {
             // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
             if (Util.isPixelEmpty(currentMovePixel)) {
                 if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
-                    console.log("Original data: " + this.currSelection.data.data[i] + "," +
-                    this.currSelection.data.data[i+1], this.currSelection.data.data[i+2]);
-
                     pasteData[i] = currentUnderlyingPixel[0];
                     pasteData[i+1] = currentUnderlyingPixel[1];
                     pasteData[i+2] = currentUnderlyingPixel[2];
                     pasteData[i+3] = currentUnderlyingPixel[3];
-
-                    console.log("After data: " + this.currSelection.data.data[i] + "," +
-                    this.currSelection.data.data[i+1], this.currSelection.data.data[i+2]);
                 }
             }
         }

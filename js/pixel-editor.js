@@ -1,13 +1,16 @@
-/**utilities**/
+/**EXTERNALS AND LIBRARIES**/
 //=include lib/cookies.js
 //=include lib/jscolor.js
-//=include data/variables.js
 //=include lib/sortable.js
+
+/**UTILITY AND INPUT*/
 //=include Util.js
 //=include Events.js
-//=include Color.js
 //=include Dialogue.js
 //=include History.js
+
+//=include Color.js
+
 
 //=include File.js
 //=include ColorModule.js
@@ -45,8 +48,6 @@
 //=include data/palettes.js
 
 /**functions**/
-//=include _resizeCanvas.js
-//=include _resizeSprite.js
 //=include ColorPicker.js
 //=include PaletteBlock.js
 //=include SplashPage.js
