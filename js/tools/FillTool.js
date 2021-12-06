@@ -11,7 +11,7 @@ class FillTool extends Tool {
         if (target.className != 'drawingCanvas')
             return;
         this.fill(mousePos);
-        currentLayer.updateLayerPreview();
+        currFile.currentLayer.updateLayerPreview();
         
         new HistoryState().EditCanvas();
 	}
@@ -40,20 +40,20 @@ class FillTool extends Tool {
         }
 
         //temporary image holds the data while we change it
-        let tempImage = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        let tempImage = currFile.currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
 
         //this is an array that holds all of the pixels at the top of the cluster
-        let topmostPixelsArray = [[Math.floor(cursorLocation[0]/zoom), Math.floor(cursorLocation[1]/zoom)]];
+        let topmostPixelsArray = [[Math.floor(cursorLocation[0]/currFile.zoom), Math.floor(cursorLocation[1]/currFile.zoom)]];
         //console.log('topmostPixelsArray:',topmostPixelsArray)
 
         //the offset of the pixel in the temp image data to start with
-        let startingPosition = (topmostPixelsArray[0][1] * canvasSize[0] + topmostPixelsArray[0][0]) * 4;
+        let startingPosition = (topmostPixelsArray[0][1] * currFile.canvasSize[0] + topmostPixelsArray[0][0]) * 4;
 
         //the color of the cluster that is being filled
         let clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2], tempImage.data[startingPosition+3]];
 
         //the color to fill with
-        let fillColor = Color.hexToRgb(currentLayer.context.fillStyle);
+        let fillColor = Color.hexToRgb(currFile.currentLayer.context.fillStyle);
         
         //if you try to fill with the same color that's already there, exit the function
         if (clusterColor[0] == fillColor.r &&
@@ -78,18 +78,18 @@ class FillTool extends Tool {
             //this variable holds the index of where the starting values for the current pixel are in the data array
             //we multiply the number of rows down (y) times the width of each row, then add x. at the end we multiply by 4 because
             //each pixel has 4 values, rgba
-            let pixelPos = (y * canvasSize[0] + x) * 4;
+            let pixelPos = (y * currFile.canvasSize[0] + x) * 4;
 
             //move up in the image until you reach the top or the pixel you hit was not the right color
             while (y-- >= 0 && matchStartColor(tempImage, pixelPos, clusterColor)) {
-                pixelPos -= canvasSize[0] * 4;
+                pixelPos -= currFile.canvasSize[0] * 4;
             }
-            pixelPos += canvasSize[0] * 4;
+            pixelPos += currFile.canvasSize[0] * 4;
             ++y;
             reachLeft = false;
             reachRight = false;
             
-            while (y++ < canvasSize[1] - 1 && matchStartColor(tempImage, pixelPos, clusterColor)) {
+            while (y++ < currFile.canvasSize[1] - 1 && matchStartColor(tempImage, pixelPos, clusterColor)) {
                 colorPixel(tempImage, pixelPos, fillColor);
                 if (x > 0) {
                     if (matchStartColor(tempImage, pixelPos - 4, clusterColor)) {
@@ -103,7 +103,7 @@ class FillTool extends Tool {
                     }
                 }
 
-                if (x < canvasSize[0] - 1) {
+                if (x < currFile.canvasSize[0] - 1) {
                     if (matchStartColor(tempImage, pixelPos + 4, clusterColor)) {
                         if (!reachRight) {
                             topmostPixelsArray.push([x + 1, y]);
@@ -115,10 +115,10 @@ class FillTool extends Tool {
                     }
                 }
 
-                pixelPos += canvasSize[0] * 4;
+                pixelPos += currFile.canvasSize[0] * 4;
             }
         }
-        currentLayer.context.putImageData(tempImage, 0, 0);
+        currFile.currentLayer.context.putImageData(tempImage, 0, 0);
     }
 
 	onDrag(mousePos, cursorTarget) {

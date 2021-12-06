@@ -9,6 +9,7 @@
 //=include Dialogue.js
 //=include History.js
 
+//=include File.js
 //=include ColorModule.js
 
 //=include Tool.js
@@ -50,10 +51,9 @@
 //=include PaletteBlock.js
 //=include SplashPage.js
 
-/**buttons**/
+/**menus**/
 //=include FileManager.js
 //=include TopMenuModule.js
-//=include _ellipse.js
 
 /**event listeners**/
 //=include Input.js

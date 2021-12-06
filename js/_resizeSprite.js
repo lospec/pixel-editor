@@ -20,13 +20,13 @@ function openResizeSpriteWindow() {
     initResizeSpriteInputs();
 
     // Computing the current ratio
-    currentRatio = layers[0].canvasSize[0] / layers[0].canvasSize[1];
+    currentRatio = currFile.canvasSize[0] / currFile.canvasSize[1];
 
     console.log("Current ratio: " + currentRatio);
 
     // Initializing the input fields
-    data.width = layers[0].canvasSize[0];
-    data.height = layers[1].canvasSize[1];
+    data.width = currFile.canvasSize[0];
+    data.height = currFile.canvasSize[1];
 
     startData.width = parseInt(data.width);
     startData.height = parseInt(data.height);
@@ -41,8 +41,8 @@ function openResizeSpriteWindow() {
  * 
  */
 function initResizeSpriteInputs() {
-    document.getElementById("rs-width").value = layers[0].canvasSize[0];
-    document.getElementById("rs-height").value = layers[0].canvasSize[1];
+    document.getElementById("rs-width").value = currFile.canvasSize[0];
+    document.getElementById("rs-height").value = currFile.canvasSize[1];
 
     document.getElementById("rs-width-percentage").value = 100;
     document.getElementById("rs-height-percentage").value = 100;
@@ -76,8 +76,8 @@ function resizeSprite(event, ratio) {
     // Copy of the imageDatas that will be stored in the history
     let imageDatasCopy = [];
 
-    oldWidth = layers[0].canvasSize[0];
-    oldHeight = layers[1].canvasSize[1];
+    oldWidth = currFile.canvasSize[0];
+    oldHeight = currFile.canvasSize[1];
     rcPivot = "middle";
 
     // Updating values if the user didn't press enter
@@ -105,15 +105,15 @@ function resizeSprite(event, ratio) {
         newHeight = data.height;
     }
     else {
-        newWidth = layers[0].canvasSize[0] * ratio[0];
-        newHeight = layers[1].canvasSize[1] * ratio[1];
+        newWidth = currFile.canvasSize[0] * ratio[0];
+        newHeight = currFile.canvasSize[1] * ratio[1];
     }
     
     // Get all the image datas
-    for (let i=0; i<layers.length; i++) {
-        if (layers[i].menuEntry != null) {
-            rsImageDatas.push(layers[i].context.getImageData(
-                0, 0, layers[0].canvasSize[0], layers[0].canvasSize[1])
+    for (let i=0; i<currFile.layers.length; i++) {
+        if (currFile.layers[i].hasCanvas()) {
+            rsImageDatas.push(currFile.layers[i].context.getImageData(
+                0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
             );
         }
     }
@@ -127,15 +127,15 @@ function resizeSprite(event, ratio) {
     }
 
     // Resizing the canvas
-    resizeCanvas(null, {x: newWidth, y: newHeight});
+    currFile.resizeCanvas(null, {x: newWidth, y: newHeight});
 
     // Put the image datas on the new canvases
-    for (let i=0; i<layers.length; i++) {
-        if (layers[i].menuEntry != null) {
-            layers[i].context.putImageData(
+    for (let i=0; i<currFile.layers.length; i++) {
+        if (currFile.layers[i].hasCanvas()) {
+            currFile.layers[i].context.putImageData(
                 resizeImageData(rsImageDatas[layerIndex], newWidth, newHeight, currentAlgo), 0, 0
             );
-            layers[i].updateLayerPreview();
+            currFile.layers[i].updateLayerPreview();
             layerIndex++;
         }
     }
@@ -147,8 +147,8 @@ function resizeSprite(event, ratio) {
         startData.height = data.height;
     }
     else {
-        startData.width = layers[0].canvasSize[0];
-        startData.height = layers[0].canvasSize[1];
+        startData.width = currFile.canvasSize[0];
+        startData.height = currFile.canvasSize[1];
     }
 
     startData.widthPercentage = 100;

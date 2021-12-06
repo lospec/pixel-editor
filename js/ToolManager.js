@@ -19,7 +19,7 @@ const ToolManager = (() => {
     
     currTool = tools["brush"];
     currTool.onSelect();
-    canvasView.style.cursor = 'default';
+    currFile.canvasView.style.cursor = 'default';
 
     Events.on("mouseup", window, onMouseUp);
     Events.on("mousemove", window, onMouseMove);

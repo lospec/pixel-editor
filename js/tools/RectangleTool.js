@@ -39,10 +39,10 @@ class RectangleTool extends ResizableTool {
         super.onStart(mousePos);
 
         // Putting the tmp layer on top of everything
-        TMPLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
+        currFile.TMPLayer.canvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex, 10) + 1;
 
-        this.startMousePos[0] = Math.floor(mousePos[0] / zoom) + 0.5;
-        this.startMousePos[1] = Math.floor(mousePos[1] / zoom) + 0.5;
+        this.startMousePos[0] = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
+        this.startMousePos[1] = Math.floor(mousePos[1] / currFile.zoom) + 0.5;
 
         new HistoryState().EditCanvas();
 	}
@@ -50,7 +50,7 @@ class RectangleTool extends ResizableTool {
 	onDrag(mousePos, cursorTarget) {
 
         // Drawing the rect at the right position
-	    this.drawRect(Math.floor(mousePos[0] / zoom) + 0.5, Math.floor(mousePos[1] / zoom) + 0.5);
+	    this.drawRect(Math.floor(mousePos[0] / currFile.zoom) + 0.5, Math.floor(mousePos[1] / currFile.zoom) + 0.5);
 	}
 
     /** Finishes drawing the rect, decides the end coordinates and moves the preview rectangle to the
@@ -60,12 +60,10 @@ class RectangleTool extends ResizableTool {
      */
 	onEnd(mousePos) {
         super.onEnd(mousePos);
-        console.log("Rect end");
+        let tmpContext = currFile.TMPLayer.context;
 
-        let tmpContext = TMPLayer.context;
-
-        let endRectX = Math.floor(mousePos[0] / zoom) + 0.5;
-        let endRectY = Math.floor(mousePos[1] / zoom) + 0.5;
+        let endRectX = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
+        let endRectY = Math.floor(mousePos[1] / currFile.zoom) + 0.5;
         let startRectX = this.startMousePos[0];
         let startRectY = this.startMousePos[1];
 
@@ -89,23 +87,23 @@ class RectangleTool extends ResizableTool {
         startRectX -= 0.5;
 
         // Setting the correct linewidth and colour
-        currentLayer.context.lineWidth = this.currSize;
+        currFile.currentLayer.context.lineWidth = this.currSize;
 
         // Drawing the rect using 4 lines
         currentLayer.drawLine(startRectX, startRectY, endRectX, startRectY, this.currSize);
-        currentLayer.drawLine(endRectX, startRectY, endRectX, endRectY, this.currSize);
-        currentLayer.drawLine(endRectX, endRectY, startRectX, endRectY, this.currSize);
-        currentLayer.drawLine(startRectX, endRectY, startRectX, startRectY, this.currSize);
+        currFile.currentLayer.drawLine(endRectX, startRectY, endRectX, endRectY, this.currSize);
+        currFile.currentLayer.drawLine(endRectX, endRectY, startRectX, endRectY, this.currSize);
+        currFile.currentLayer.drawLine(startRectX, endRectY, startRectX, startRectY, this.currSize);
 
         // If I have to fill it, I do so
         if (this.currFillMode == 'fill') {
-            currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
+            currFile.currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
         }
 
         // Update the layer preview
-        currentLayer.updateLayerPreview();
+        currFile.currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
-        tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
+        tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
 	}
 
     onSelect() {
@@ -124,10 +122,10 @@ class RectangleTool extends ResizableTool {
      */
     drawRect(x, y) {
         // Getting the tmp context
-        let tmpContext = TMPLayer.context;
+        let tmpContext = currFile.TMPLayer.context;
 
         // Clearing the tmp canvas
-        tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
+        tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
 
         // Drawing the rect
         tmpContext.lineWidth = this.currSize;

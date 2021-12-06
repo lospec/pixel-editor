@@ -53,7 +53,7 @@ const Startup = (() => {
             // Deleting the default layer
             LayerList.deleteLayer(false);
             // Selecting the new one
-            layers[1].selectLayer();
+            currFile.layers[1].selectLayer();
         }
 
         console.log("Starting with mode " + EditorState.getCurrentMode());
@@ -63,17 +63,20 @@ const Startup = (() => {
     }
 
     function initLayers(width, height) {
+        // Setting the general canvasSize
+        currFile.canvasSize = [width, height];
+
         // If this is the first pixel I'm creating since the app has started
         if (firstPixel) {
             // Creating the first layer
-            currentLayer = new Layer(width, height, 'pixel-canvas', "");
-            currentLayer.canvas.style.zIndex = 2;
+            currFile.currentLayer = new Layer(width, height, 'pixel-canvas', "");
+            currFile.currentLayer.canvas.style.zIndex = 2;
         }
         else {
             // Deleting all the extra layers and canvases, leaving only one
-            let nLayers = layers.length;
-            for (let i=2; i < layers.length - nAppLayers; i++) {
-                let currentEntry = layers[i].menuEntry;
+            let nLayers = currFile.layers.length;
+            for (let i=2; i < currFile.layers.length - nAppLayers; i++) {
+                let currentEntry = currFile.layers[i].menuEntry;
                 let associatedLayer;
 
                 if (currentEntry != null) {
@@ -84,7 +87,7 @@ const Startup = (() => {
                     associatedLayer.canvas.remove();
 
                     // Adding the id to the unused ones
-                    unusedIDs.push(currentEntry.id);
+                    Layer.unusedIDs.push(currentEntry.id);
                     // Removing the entry from the menu
                     currentEntry.remove();
                 }
@@ -92,40 +95,32 @@ const Startup = (() => {
 
             // Removing the old layers from the list
             for (let i=2; i<nLayers - nAppLayers; i++) {
-                layers.splice(2, 1);
+                currFile.layers.splice(2, 1);
             }
 
             // Setting up the current layer
-            layers[1] = new Layer(width, height, layers[1].canvas, layers[1].menuEntry);
-            currentLayer = layers[1];
-            currentLayer.canvas.style.zIndex = 2;
-            
-            // Updating canvas size to the new size
-            for (let i=0; i<nLayers; i++) {
-                layers[i].canvasSize = [width, height];
-            }
+            currFile.layers[1] = new Layer(width, height, currFile.layers[1].canvas, currFile.layers[1].menuEntry);
+            currFile.currentLayer = currFile.layers[1];
+            currFile.currentLayer.canvas.style.zIndex = 2;
         }
 
         // Adding the checkerboard behind it
-        checkerBoard = new Checkerboard(width, height, null);
+        currFile.checkerBoard = new Checkerboard(width, height, null);
         // Pixel grid
-        pixelGrid = new PixelGrid(width, height, "pixel-grid");
+        currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
         // Creating the vfx layer on top of everything
-        VFXLayer = new Layer(width, height, 'vfx-canvas');
+        currFile.VFXLayer = new Layer(width, height, 'vfx-canvas');
         // Tmp layer to draw previews on
-        TMPLayer = new Layer(width, height, 'tmp-canvas');
-        
-        // Setting the general canvasSize
-        canvasSize = currentLayer.canvasSize;
+        currFile.TMPLayer = new Layer(width, height, 'tmp-canvas');
 
         if (firstPixel) {            
             // Adding the first layer and the checkerboard to the list of layers
-            layers.push(checkerBoard);
-            layers.push(currentLayer);
-            layers.push(TMPLayer);
-            layers.push(pixelGrid);
-            layers.push(VFXLayer);
+            currFile.layers.push(currFile.checkerBoard);
+            currFile.layers.push(currFile.currentLayer);
+            currFile.layers.push(currFile.TMPLayer);
+            currFile.layers.push(currFile.pixelGrid);
+            currFile.layers.push(currFile.VFXLayer);
         }
     }
 

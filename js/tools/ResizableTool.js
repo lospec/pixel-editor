@@ -13,7 +13,7 @@ class ResizableTool extends Tool {
 
     onRightDrag(mousePos, mouseEvent) {
         //get new brush size based on x distance from original clicking location
-        let distanceFromClick = mousePos[0]/zoom - this.startResizePos[0]/zoom;
+        let distanceFromClick = mousePos[0]/currFile.zoom - this.startResizePos[0]/currFile.zoom;
 
         let brushSizeChange = Math.round(distanceFromClick/10);
         let newBrushSize = this.currSize + brushSizeChange;

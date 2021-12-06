@@ -108,11 +108,11 @@ class HistoryState {
             resizeSprite(null, [1 / this.xRatio, 1 / this.yRatio]);
 
             // Also putting the old data
-            for (let i=0; i<layers.length; i++) {
-                if (layers[i].menuEntry != null) {
-                    layers[i].context.putImageData(this.oldData[layerIndex], 0, 0);
+            for (let i=0; i<currFile.layers.length; i++) {
+                if (currFile.layers[i].hasCanvas()) {
+                    currFile.layers[i].context.putImageData(this.oldData[layerIndex], 0, 0);
                     layerIndex++;
-                    layers[i].updateLayerPreview();
+                    currFile.layers[i].updateLayerPreview();
                 }
             }
         };
@@ -132,11 +132,11 @@ class HistoryState {
         this.undo = function() {
             let dataIndex = 0;
             // Resizing the canvas
-            resizeCanvas(null, oldSize, null, false);
+            currFile.resizeCanvas(null, oldSize, null, false);
             // Putting the image datas
-            for (let i=0; i<layers.length; i++) {
-                if (layers[i].menuEntry != null) {
-                    layers[i].context.putImageData(this.imageDatas[dataIndex], 0, 0);
+            for (let i=0; i<currFile.layers.length; i++) {
+                if (currFile.layers[i].hasCanvas()) {
+                    currFile.layers[i].context.putImageData(this.imageDatas[dataIndex], 0, 0);
                     dataIndex++;
                 }
             }
@@ -144,10 +144,10 @@ class HistoryState {
 
         this.redo = function() {
             if (!this.trim) {
-                resizeCanvas(null, newSize, null, false);
+                currFile.resizeCanvas(null, newSize, null, false);
             }
             else {
-                trimCanvas(null, false);
+                currFile.trimCanvas(null, false);
             }
         };
     }
@@ -174,14 +174,14 @@ class HistoryState {
         this.belowImageData = belowImageData;
 
         this.undo = function() {
-            canvasView.append(aboveLayer.canvas);
+            currFile.canvasView.append(aboveLayer.canvas);
             LayerList.getLayerListEntries().insertBefore(aboveLayer.menuEntry, afterAbove);
 
-            belowLayer.context.clearRect(0, 0, belowLayer.canvasSize[0], belowLayer.canvasSize[1]);
+            belowLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
             belowLayer.context.putImageData(this.belowImageData, 0, 0);
             belowLayer.updateLayerPreview();
 
-            layers.splice(layerIndex, 0, aboveLayer);
+            currFile.layers.splice(layerIndex, 0, aboveLayer);
         };
 
         this.redo = function() {
@@ -190,7 +190,7 @@ class HistoryState {
             // Deleting the above layer
             aboveLayer.canvas.remove();
             aboveLayer.menuEntry.remove();
-            layers.splice(layers.indexOf(aboveLayer), 1);
+            currFile.layers.splice(currFile.layers.indexOf(aboveLayer), 1);
         };
     }
 
@@ -218,13 +218,13 @@ class HistoryState {
 
         this.undo = function() {
             LayerList.getLayerListEntries().insertBefore(this.aboveLayer.menuEntry, this.belowLayer.menuEntry);
-            canvasView.append(this.aboveLayer.canvas);
+            currFile.canvasView.append(this.aboveLayer.canvas);
 
-            belowLayer.context.clearRect(0, 0, this.belowLayer.canvasSize[0], this.belowLayer.canvasSize[1]);
+            belowLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
             belowLayer.context.putImageData(this.belowData, 0, 0);
             belowLayer.updateLayerPreview();
 
-            layers.splice(this.aboveIndex, 0, this.aboveLayer);
+            currFile.layers.splice(this.aboveIndex, 0, this.aboveLayer);
         };
 
         this.redo = function() {
@@ -268,14 +268,14 @@ class HistoryState {
         this.index = index;
 
         this.undo = function() {
-            canvasView.append(this.deleted.canvas);
+            currFile.canvasView.append(this.deleted.canvas);
             if (this.before != null) {
                 LayerList.getLayerListEntries().insertBefore(this.deleted.menuEntry, this.before);
             }
             else {
                 LayerList.getLayerListEntries().prepend(this.deleted.menuEntry);
             }
-            layers.splice(this.index, 0, this.deleted);
+            currFile.layers.splice(this.index, 0, this.deleted);
         };
 
         this.redo = function() {
@@ -327,21 +327,21 @@ class HistoryState {
         this.index = index;
 
         this.undo = function() {
-            if (layers.length - nAppLayers > this.index + 1) {
-                layers[this.index + 1].selectLayer();
+            if (currFile.layers.length - nAppLayers > this.index + 1) {
+                currFile.layers[this.index + 1].selectLayer();
             }
             else {
-                layers[this.index - 1].selectLayer();
+                currFile.layers[this.index - 1].selectLayer();
             }
 
             this.added.canvas.remove();
             this.added.menuEntry.remove();
 
-            layers.splice(index, 1);
+            currFile.layers.splice(index, 1);
         };
 
         this.redo = function() {
-            canvasView.append(this.added.canvas);
+            currFile.canvasView.append(this.added.canvas);
             LayerList.getLayerListEntries().prepend(this.added.menuEntry);
             layers.splice(this.index, 0, this.added);
         };
@@ -349,12 +349,12 @@ class HistoryState {
 
     //prototype for undoing canvas changes
     EditCanvas() {
-        this.canvasState = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-        this.layerID = currentLayer.id;
+        this.canvasState = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        this.layerID = currFile.currentLayer.id;
 
         this.undo = function () {
             var stateLayer = LayerList.getLayerByID(this.layerID);
-            var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+            var currentCanvas = stateLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
             stateLayer.context.putImageData(this.canvasState, 0, 0);
 
             this.canvasState = currentCanvas;
@@ -364,7 +364,7 @@ class HistoryState {
 
         this.redo = function () {
             var stateLayer = LayerList.getLayerByID(this.layerID);
-            var currentCanvas = stateLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+            var currentCanvas = stateLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
             stateLayer.context.putImageData(this.canvasState, 0, 0);
 
@@ -390,11 +390,11 @@ class HistoryState {
     //prototype for undoing deleted colors
     DeleteColor(colorValue) {
         this.colorValue = colorValue;
-        this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        this.canvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         this.undo = function () {
-            var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-            currentLayer.context.putImageData(this.canvas, 0, 0);
+            var currentCanvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+            currFile.currentLayer.context.putImageData(this.canvas, 0, 0);
 
             ColorModule.addColor(this.colorValue);
 
@@ -402,8 +402,8 @@ class HistoryState {
         };
 
         this.redo = function () {
-            var currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-            currentLayer.context.putImageData(this.canvas, 0, 0);
+            var currentCanvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+            currFile.currentLayer.context.putImageData(this.canvas, 0, 0);
 
             ColorModule.deleteColor(this.colorValue);
 
@@ -415,11 +415,11 @@ class HistoryState {
     EditColor(newColorValue, oldColorValue) {
         this.newColorValue = newColorValue;
         this.oldColorValue = oldColorValue;
-        this.canvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        this.canvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         this.undo = function () {
-            let currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-            currentLayer.context.putImageData(this.canvas, 0, 0);
+            let currentCanvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+            currFile.currentLayer.context.putImageData(this.canvas, 0, 0);
 
             //find new color in palette and change it back to old color
             let colors = document.getElementsByClassName('color-button');
@@ -435,8 +435,8 @@ class HistoryState {
         };
 
         this.redo = function () {
-            let currentCanvas = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
-            currentLayer.context.putImageData(this.canvas, 0, 0);
+            let currentCanvas = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+            currFile.currentLayer.context.putImageData(this.canvas, 0, 0);
 
             //find old color in palette and change it back to new color
             let colors = document.getElementsByClassName('color-button');

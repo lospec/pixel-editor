@@ -13,9 +13,9 @@
 	<li>
 		<button>Edit</button>
 		<ul>
-			<li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
-			<li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Scale sprite</button></li>
-			<li><button onclick = "trimCanvas()">Trim canvas</button></li>
+			<li><button id="resize-canvas-button" onclick = "currFile.openResizeCanvasWindow()">Resize canvas</button></li>
+			<li><button id="resize-sprite-button" onclick = "currFile.openResizeSpriteWindow()">Scale sprite</button></li>
+			<li><button onclick = "currFile.trimCanvas()">Trim canvas</button></li>
 			<li><button id="undo-button" class="disabled">Undo</button></li>
 			<li><button id="redo-button" class="disabled">Redo</button></li>
 		</ul>

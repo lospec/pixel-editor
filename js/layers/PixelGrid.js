@@ -63,7 +63,7 @@ class PixelGrid extends Layer {
      * 
      */
     fillPixelGrid() {
-        let originalSize = this.canvasSize;
+        let originalSize = currFile.canvasSize;
 
         // The pixelGridCanvas is lineDistance times bigger so that the lines don't take 1 canvas pixel 
         // (which would cover the whole canvas with the pixelGridColour), but they take 1/lineDistance canvas pixels

@@ -13,9 +13,9 @@ const FileManager = (() => {
 
         if (selectedPalette != 'Choose a palette...'){
             var paletteAbbreviation = palettes[selectedPalette].abbreviation;
-            var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1];
+            var fileName = 'pixel-'+paletteAbbreviation+'-'+currFile.canvasSize[0]+'x'+currFile.canvasSize[1];
         } else {
-            var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1];
+            var fileName = 'pixel-'+currFile.canvasSize[0]+'x'+currFile.canvasSize[1];
             selectedPalette = 'none';
         }
     
@@ -33,7 +33,7 @@ const FileManager = (() => {
             var paletteAbbreviation = palettes[selectedPalette].name;
             var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
         } else {
-            var fileName = 'pixel-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+            var fileName = 'pixel-'+currFile.canvasSize[0]+'x'+currFile.canvasSize[1]+'.png';
             selectedPalette = 'none';
         }
     
@@ -58,7 +58,7 @@ const FileManager = (() => {
         linkHolder.click();
 
         if (typeof ga !== 'undefined')
-            ga('send', 'event', 'Pixel Editor Save', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+            ga('send', 'event', 'Pixel Editor Save', selectedPalette, currFile.canvasSize[0]+'/'+currFile.canvasSize[1]); /*global ga*/
     }
 
     function exportProject() {
@@ -70,20 +70,20 @@ const FileManager = (() => {
             // Creating a tmp canvas to flatten everything
             var exportCanvas = document.createElement("canvas");
             var emptyCanvas = document.createElement("canvas");
-            var layersCopy = layers.slice();
+            var layersCopy = currFile.layers.slice();
 
-            exportCanvas.width = layers[0].canvasSize[0];
-            exportCanvas.height = layers[0].canvasSize[1];
+            exportCanvas.width = currFile.canvasSize[0];
+            exportCanvas.height = currFile.canvasSize[1];
 
-            emptyCanvas.width = layers[0].canvasSize[0];
-            emptyCanvas.height = layers[0].canvasSize[1];
+            emptyCanvas.width = currFile.canvasSize[0];
+            emptyCanvas.height = currFile.canvasSize[1];
 
             // Sorting the layers by z index
             layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
 
             // Merging every layer on the export canvas
             for (let i=0; i<layersCopy.length; i++) {
-                if (layersCopy[i].menuEntry != null && layersCopy[i].isVisible) {
+                if (layersCopy[i].hasCanvas() && layersCopy[i].isVisible) {
                     LayerList.mergeLayers(exportCanvas.getContext('2d'), layersCopy[i].context);
                 }
                 // I'm not going to find out why the layer ordering screws up if you don't copy
@@ -105,7 +105,7 @@ const FileManager = (() => {
 
             //track google event
             if (typeof ga !== 'undefined')
-                ga('send', 'event', 'Pixel Editor Export', selectedPalette, canvasSize[0]+'/'+canvasSize[1]); /*global ga*/
+                ga('send', 'event', 'Pixel Editor Export', selectedPalette, currFile.canvasSize[0]+'/'+currFile.canvasSize[1]); /*global ga*/
         }
     }
 
@@ -157,7 +157,7 @@ const FileManager = (() => {
                 EditorState.switchMode('Advanced');
 
                 //draw the image onto the canvas
-                currentLayer.context.drawImage(img, 0, 0);
+                currFile.currentLayer.context.drawImage(img, 0, 0);
                 ColorModule.createPaletteFromLayers();
 
                 //track google event
@@ -195,11 +195,11 @@ const FileManager = (() => {
         // use a dictionary
         let dictionary = {};
         // sorting layers by increasing z-index
-        let layersCopy = layers.slice();
+        let layersCopy = currFile.layers.slice();
         layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
         // save canvas size
-        dictionary['canvasWidth'] = currentLayer.canvasSize[0];
-        dictionary['canvasHeight'] = currentLayer.canvasSize[1];
+        dictionary['canvasWidth'] = currFile.canvasSize[0];
+        dictionary['canvasHeight'] = currFile.canvasSize[1];
         // save editor mode
         dictionary['editorMode'] = EditorState.getCurrentMode();
         // save palette

@@ -19,10 +19,10 @@ class Layer {
     // If it's an HTML element it is added, if it's a string nothing happens, if it's undefined the 
     // first menuEntry is used (the one that appears on load)
     constructor(width, height, canvas, menuEntry) {
-        // REFACTOR: this could just be an attribute of a Canvas class
-        this.canvasSize = [width, height];
         // REFACTOR: the canvas should actually be a Canvas instance
         this.canvas = Util.getElement(canvas);
+        this.canvas.width = width;
+        this.canvas.height = height;
         // REFACTOR: the context could be an attribute of the canvas class, but it's a bit easier
         // to just type layer.context, we should discuss this
         this.context = this.canvas.getContext('2d');
@@ -69,20 +69,22 @@ class Layer {
         this.initialize();
     }
 
+    hasCanvas() {
+        return this.menuEntry != null;
+    }
+
     // Initializes the canvas
     initialize() {
         //resize canvas
-        this.canvas.width = this.canvasSize[0];
-        this.canvas.height = this.canvasSize[1];
-        this.canvas.style.width = (this.canvas.width*zoom)+'px';
-        this.canvas.style.height = (this.canvas.height*zoom)+'px';
+        this.canvas.style.width = (this.canvas.width*currFile.zoom)+'px';
+        this.canvas.style.height = (this.canvas.height*currFile.zoom)+'px';
 
         //show canvas
         this.canvas.style.display = 'block';
 
         //center canvas in window
-        this.canvas.style.left = 64+canvasView.clientWidth/2-(this.canvasSize[0]*zoom/2)+'px';
-        this.canvas.style.top = 48+canvasView.clientHeight/2-(this.canvasSize[1]*zoom/2)+'px';
+        this.canvas.style.left = 64+currFile.canvasView.clientWidth/2-(currFile.canvasSize[0]*currFile.zoom/2)+'px';
+        this.canvas.style.top = 48+currFile.canvasView.clientHeight/2-(currFile.canvasSize[1]*currFile.zoom/2)+'px';
 
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
@@ -94,8 +96,8 @@ class Layer {
         if (this.oldLayerName != null) {
             let name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
             
-            for (let i=0; i<layers.length; i++) {
-                if (name === layers[i].name) {
+            for (let i=0; i<currFile.layers.length; i++) {
+                if (name === currFile.layers[i].name) {
                     name += ' (1)';
                     i = 0;
                 }
@@ -103,25 +105,25 @@ class Layer {
             this.name = name;
             this.menuEntry.getElementsByTagName("p")[0].innerHTML = name;
 
-            new HistoryState().RenameLayer(this.oldLayerName, name, currentLayer);
+            new HistoryState().RenameLayer(this.oldLayerName, name, currFile.currentLayer);
             this.oldLayerName = null;
         }
     }
 
     hover() {
         // Hides all the layers but the current one
-        for (let i=1; i<layers.length - nAppLayers; i++) {
-            if (layers[i] !== this) {
-                layers[i].canvas.style.opacity = 0.3;
+        for (let i=1; i<currFile.layers.length - nAppLayers; i++) {
+            if (currFile.layers[i] !== this) {
+                currFile.layers[i].canvas.style.opacity = 0.3;
             }
         }
     }
 
     unhover() {
         // Shows all the layers again
-        for (let i=1; i<layers.length - nAppLayers; i++) {
-            if (layers[i] !== this) {
-                layers[i].canvas.style.opacity = 1;
+        for (let i=1; i<currFile.layers.length - nAppLayers; i++) {
+            if (currFile.layers[i] !== this) {
+                currFile.layers[i].canvas.style.opacity = 1;
             }
         }
     }
@@ -135,8 +137,8 @@ class Layer {
 
     // Resizes canvas
     resize() {
-        let newWidth = (this.canvas.width * zoom) + 'px';
-        let newHeight = (this.canvas.height *zoom)+ 'px';
+        let newWidth = (this.canvas.width * currFile.zoom) + 'px';
+        let newHeight = (this.canvas.height *currFile.zoom)+ 'px';
 
         this.canvas.style.width = newWidth;
         this.canvas.style.height = newHeight;
@@ -144,7 +146,7 @@ class Layer {
 
     setCanvasOffset (offsetLeft, offsetTop) {
         //horizontal offset
-        var minXOffset = -this.canvasSize[0] * zoom;
+        var minXOffset = -currFile.canvasSize[0] * currFile.zoom;
         var maxXOffset = window.innerWidth - 300;
     
         if 	(offsetLeft < minXOffset)
@@ -155,7 +157,7 @@ class Layer {
             this.canvas.style.left = offsetLeft +'px';
     
         //vertical offset
-        var minYOffset = -this.canvasSize[1] * zoom + 164;
+        var minYOffset = -currFile.canvasSize[1] * currFile.zoom + 164;
         var maxYOffset = window.innerHeight - 100;
     
         if 	(offsetTop < minYOffset)
@@ -178,19 +180,19 @@ class Layer {
     selectLayer(layer) {
         if (layer == null) {
             // Deselecting the old layer
-            currentLayer.deselectLayer();
+            currFile.currentLayer.deselectLayer();
 
             // Selecting the current layer
             this.isSelected = true;
             this.menuEntry.classList.add("selected-layer");
-            currentLayer = LayerList.getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
+            currFile.currentLayer = LayerList.getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
         }
         else {
-            currentLayer.deselectLayer();
+            currFile.currentLayer.deselectLayer();
 
             layer.isSelected = true;
             layer.menuEntry.classList.add("selected-layer");
-            currentLayer = layer;
+            currFile.currentLayer = layer;
         }
     }
 
@@ -256,8 +258,8 @@ class Layer {
     updateLayerPreview() {
         // Getting the canvas
         let destination = this.menuEntry.getElementsByTagName("canvas")[0];
-        let widthRatio = this.canvasSize[0] / this.canvasSize[1];
-        let heightRatio = this.canvasSize[1] / this.canvasSize[0];
+        let widthRatio = currFile.canvasSize[0] / currFile.canvasSize[1];
+        let heightRatio = currFile.canvasSize[1] / currFile.canvasSize[0];
 
         // Computing width and height for the preview image
         let previewWidth = destination.width;
@@ -291,10 +293,10 @@ class Layer {
             // If the current tool is the brush
             if (ToolManager.currentTool().name == 'brush' || ToolManager.currentTool().name == 'rectangle' || ToolManager.currentTool().name == 'ellipse') {
                 // I fill the rect
-                currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+                currFile.currentLayer.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
             } else if (ToolManager.currentTool().name == 'eraser') {
                 // In case I'm using the eraser I must clear the rect
-                currentLayer.context.clearRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
+                currFile.currentLayer.context.clearRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
             }
     
             //if we've reached the end goal, exit the loop

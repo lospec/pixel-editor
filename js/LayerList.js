@@ -21,11 +21,11 @@ const LayerList = (() => {
 
     function addLayer(id, saveHistory = true) {
         // layers.length - 3
-        let index = layers.length - 3;
+        let index = currFile.layers.length - 3;
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");
         // Setting up the new canvas
-        canvasView.append(newCanvas);
+        currFile.canvasView.append(newCanvas);
         Layer.maxZIndex+=2;
         newCanvas.style.zIndex = Layer.maxZIndex;
         newCanvas.classList.add("drawingCanvas");
@@ -42,11 +42,11 @@ const LayerList = (() => {
         Layer.layerCount++;
     
         // Creating a layer object
-        let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
-        newLayer.context.fillStyle = currentLayer.context.fillStyle;
-        newLayer.copyData(currentLayer);
+        let newLayer = new Layer(currFile.canvasSize[0], currFile.canvasSize[1], newCanvas, toAppend);
+        newLayer.context.fillStyle = currFile.currentLayer.context.fillStyle;
+        newLayer.copyData(currFile.currentLayer);
     
-        layers.splice(index, 0, newLayer);
+        currFile.layers.splice(index, 0, newLayer);
         
         // Insert it before the Add layer button
         layerList.insertBefore(toAppend, layerList.childNodes[0]);
@@ -134,10 +134,10 @@ const LayerList = (() => {
 
     // Finds a layer given its id
     function getLayerByID(id) {
-        for (let i=0; i<layers.length; i++) {
-            if (layers[i].menuEntry != null) {
-                if (layers[i].menuEntry.id == id) {
-                    return layers[i];
+        for (let i=0; i<currFile.layers.length; i++) {
+            if (currFile.layers[i].hasCanvas()) {
+                if (currFile.layers[i].menuEntry.id == id) {
+                    return currFile.layers[i];
                 }
             }
         }
@@ -147,10 +147,10 @@ const LayerList = (() => {
 
     // Finds a layer given its name
     function getLayerByName(name) {
-        for (let i=0; i<layers.length; i++) {
-            if (layers[i].menuEntry != null) {
-                if (layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
-                    return layers[i];
+        for (let i=0; i<currFile.layers.length; i++) {
+            if (currFile.layers[i].hasCanvas()) {
+                if (currFile.layers[i].menuEntry.getElementsByTagName("p")[0].innerHTML == name) {
+                    return currFile.layers[i];
                 }
             }
         }
@@ -159,9 +159,9 @@ const LayerList = (() => {
     }
 
     function startRenamingLayer(event) {
-        let p = currentLayer.menuEntry.getElementsByTagName("p")[0];
+        let p = currFile.currentLayer.menuEntry.getElementsByTagName("p")[0];
     
-        currentLayer.oldLayerName = p.innerHTML;
+        currFile.currentLayer.oldLayerName = p.innerHTML;
     
         p.setAttribute("contenteditable", true);
         p.classList.add("layer-name-editable");
@@ -182,8 +182,8 @@ const LayerList = (() => {
             return -1;
         }
     
-        let layerIndex = layers.indexOf(currentLayer);
-        let toDuplicate = currentLayer;
+        let layerIndex = currFile.layers.indexOf(currFile.currentLayer);
+        let toDuplicate = currFile.currentLayer;
         let menuEntries = layerList.children;
     
         // Increasing z-indexes of the layers above
@@ -195,14 +195,14 @@ const LayerList = (() => {
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");
         // Setting up the new canvas
-        canvasView.append(newCanvas);
-        newCanvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex) + 2;
+        currFile.canvasView.append(newCanvas);
+        newCanvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex) + 2;
         newCanvas.classList.add("drawingCanvas");
     
         if (!layerListEntry) return console.warn('skipping adding layer because no document');
     
         // Clone the default layer
-        let toAppend = currentLayer.menuEntry.cloneNode(true);
+        let toAppend = currFile.currentLayer.menuEntry.cloneNode(true);
         // Setting the default name for the layer
         toAppend.getElementsByTagName('p')[0].innerHTML += " copy";
         // Removing the selected class
@@ -211,41 +211,41 @@ const LayerList = (() => {
         Layer.layerCount++;
     
         // Creating a layer object
-        let newLayer = new Layer(currentLayer.canvasSize[0], currentLayer.canvasSize[1], newCanvas, toAppend);
-        newLayer.context.fillStyle = currentLayer.context.fillStyle;
-        newLayer.copyData(currentLayer);
+        let newLayer = new Layer(currFile.canvasSize[0], currFile.canvasSize[1], newCanvas, toAppend);
+        newLayer.context.fillStyle = currFile.currentLayer.context.fillStyle;
+        newLayer.copyData(currFile.currentLayer);
     
-        layers.splice(layerIndex, 0, newLayer);
+        currFile.layers.splice(layerIndex, 0, newLayer);
         
         // Insert it before the Add layer button
-        layerList.insertBefore(toAppend, currentLayer.menuEntry);
+        layerList.insertBefore(toAppend, currFile.currentLayer.menuEntry);
     
         // Copy the layer content
-        newLayer.context.putImageData(currentLayer.context.getImageData(
-            0, 0, currentLayer.canvasSize[0], currentLayer.canvasSize[1]), 0, 0);
+        newLayer.context.putImageData(currFile.currentLayer.context.getImageData(
+            0, 0, currFile.canvasSize[0], currFile.canvasSize[1]), 0, 0);
         newLayer.updateLayerPreview();
         // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
         if (saveHistory) {
-            new HistoryState().DuplicateLayer(newLayer, currentLayer);
+            new HistoryState().DuplicateLayer(newLayer, currFile.currentLayer);
         }
     }
 
     function deleteLayer(saveHistory = true) {
         // Cannot delete all the layers
-        if (layers.length != 4) {
-            let layerIndex = layers.indexOf(currentLayer);
-            let toDelete = layers[layerIndex];
+        if (currFile.layers.length != 4) {
+            let layerIndex = currFile.layers.indexOf(currFile.currentLayer);
+            let toDelete = currFile.layers[layerIndex];
             let previousSibling = toDelete.menuEntry.previousElementSibling;
             // Adding the ids to the unused ones
             Layer.unusedIDs.push(toDelete.id);
     
             // Selecting the next layer
-            if (layerIndex != (layers.length - 4)) {
-                layers[layerIndex + 1].selectLayer();
+            if (layerIndex != (currFile.layers.length - 4)) {
+                currFile.layers[layerIndex + 1].selectLayer();
             }
             // or the previous one if the next one doesn't exist
             else {
-                layers[layerIndex - 1].selectLayer();
+                currFile.layers[layerIndex - 1].selectLayer();
             }
     
             // Deleting canvas and entry
@@ -253,7 +253,7 @@ const LayerList = (() => {
             toDelete.menuEntry.remove();
     
             // Removing the layer from the list
-            layers.splice(layerIndex, 1);
+            currFile.layers.splice(layerIndex, 1);
     
             if (saveHistory) {
                 new HistoryState().DeleteLayer(toDelete, previousSibling, layerIndex);
@@ -266,10 +266,10 @@ const LayerList = (() => {
 
     function merge(saveHistory = true) {
         // Saving the layer that should be merged
-        let toMerge = currentLayer;
-        let toMergeIndex = layers.indexOf(toMerge);
+        let toMerge = currFile.currentLayer;
+        let toMergeIndex = currFile.layers.indexOf(toMerge);
         // Getting layer below
-        let layerBelow = LayerList.getLayerByID(currentLayer.menuEntry.nextElementSibling.id);
+        let layerBelow = LayerList.getLayerByID(currFile.currentLayer.menuEntry.nextElementSibling.id);
     
         // If I have something to merge with
         if (layerBelow != null) {
@@ -278,19 +278,19 @@ const LayerList = (() => {
     
             if (saveHistory) {
                 new HistoryState().MergeLayer(toMergeIndex, toMerge,
-                    layerBelow.context.getImageData(0, 0, layerBelow.canvasSize[0], layerBelow.canvasSize[1]),
+                    layerBelow.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]),
                     layerBelow);
             }
     
-            LayerList.mergeLayers(currentLayer.context, toMerge.context);
+            LayerList.mergeLayers(currFile.currentLayer.context, toMerge.context);
     
             // Deleting the above layer
             toMerge.canvas.remove();
             toMerge.menuEntry.remove();
-            layers.splice(toMergeIndex, 1);
+            currFile.layers.splice(toMergeIndex, 1);
     
             // Updating the layer preview
-            currentLayer.updateLayerPreview();
+            currFile.currentLayer.updateLayerPreview();
         }
     }
 
@@ -312,9 +312,9 @@ const LayerList = (() => {
             let visibleLayers = [];
             let nToFlatten = 0;
     
-            for (let i=0; i<layers.length; i++) {
-                if (layers[i].menuEntry != null && layers[i].isVisible) {
-                    visibleLayers.push(layers[i]);
+            for (let i=0; i<currFile.layers.length; i++) {
+                if (currFile.layers[i].hasCanvas() && currFile.layers[i].isVisible) {
+                    visibleLayers.push(currFile.layers[i]);
                 }
             }
     
@@ -328,7 +328,7 @@ const LayerList = (() => {
                 nToFlatten++;
                 console.log(visibleLayers[i].menuEntry.nextElementSibling);
                 new HistoryState().FlattenTwoVisibles(
-                    visibleLayers[i + 1].context.getImageData(0, 0, visibleLayers[i].canvasSize[0], visibleLayers[i].canvasSize[1]),
+                    visibleLayers[i + 1].context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]),
                     visibleLayers[i].menuEntry.nextElementSibling,
                     layers.indexOf(visibleLayers[i]),
                     visibleLayers[i], visibleLayers[i + 1]
@@ -339,12 +339,12 @@ const LayerList = (() => {
                 // Deleting the above layer
                 visibleLayers[i].canvas.remove();
                 visibleLayers[i].menuEntry.remove();
-                layers.splice(layers.indexOf(visibleLayers[i]), 1);
+                currFile.layers.splice(currFile.layers.indexOf(visibleLayers[i]), 1);
             }
     
             new HistoryState().FlattenVisible(nToFlatten);
             // Updating the layer preview
-            currentLayer.updateLayerPreview();
+            currFile.currentLayer.updateLayerPreview();
         }
     }
 
@@ -369,7 +369,7 @@ const LayerList = (() => {
 
     function closeOptionsMenu(event) {
         Layer.layerOptions.style.visibility = "hidden";
-        currentLayer.rename();
+        currFile.currentLayer.rename();
         renamingLayer = false;
     }
 

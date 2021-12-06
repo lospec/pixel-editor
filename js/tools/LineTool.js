@@ -11,7 +11,7 @@ class LineTool extends ResizableTool {
         super.onStart(mousePos);
 
         // Putting the tmp layer on top of everything
-        TMPLayer.canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
+        currFile.TMPLayer.canvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex, 10) + 1;
 
         this.startMousePos[0] = Math.floor(mousePos[0]) + 0.5;
         this.startMousePos[1] = Math.floor(mousePos[1]) + 0.5;
@@ -34,18 +34,18 @@ class LineTool extends ResizableTool {
 	onEnd(mousePos) {
         super.onEnd(mousePos);
 
-        const tmpContext = TMPLayer.context;
-        const tmpCanvas = TMPLayer.canvas;
+        const tmpContext = currFile.TMPLayer.context;
+        const tmpCanvas = currFile.TMPLayer.canvas;
         // Setting the correct linewidth and colour
-        currentLayer.context.lineWidth = this.currSize;
+        currFile.currentLayer.context.lineWidth = this.currSize;
 
         // Drawing the line
-		currentLayer.context.drawImage(tmpCanvas, 0, 0);
+		currFile.currentLayer.context.drawImage(tmpCanvas, 0, 0);
 
         // Update the layer preview
-        currentLayer.updateLayerPreview();
+        currFile.currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
-        tmpContext.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
+        tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
 	}
 
     onSelect() {
@@ -57,10 +57,10 @@ class LineTool extends ResizableTool {
     }
 
     drawLine(mousePos) {
-        let x0 = Math.floor(this.startMousePos[0]/zoom);
-        let y0 = Math.floor(this.startMousePos[1]/zoom);
-        let x1 = Math.floor(mousePos[0]/zoom);
-        let y1 = Math.floor(mousePos[1]/zoom);
+        let x0 = Math.floor(this.startMousePos[0]/currFile.zoom);
+        let y0 = Math.floor(this.startMousePos[1]/currFile.zoom);
+        let x1 = Math.floor(mousePos[0]/currFile.zoom);
+        let y1 = Math.floor(mousePos[1]/currFile.zoom);
 
         let dx = Math.abs(x1-x0);
         let dy = Math.abs(y1-y0);
@@ -72,7 +72,7 @@ class LineTool extends ResizableTool {
         const context = canvas.getContext('2d');
 
         context.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.style.zIndex = parseInt(currentLayer.canvas.style.zIndex, 10) + 1;
+        canvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex, 10) + 1;
 
         while (true) {
             context.fillRect(x0-Math.floor(this.currSize/2), y0-Math.floor(this.currSize/2), this.currSize, this.currSize);

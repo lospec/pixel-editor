@@ -6,77 +6,77 @@ class ZoomTool extends Tool {
         super.onMouseWheel(mousePos, mode);
 
         // Computing current width and height
-        let oldWidth = canvasSize[0] * zoom;
-        let oldHeight = canvasSize[1] * zoom;
+        let oldWidth = currFile.canvasSize[0] * currFile.zoom;
+        let oldHeight = currFile.canvasSize[1] * currFile.zoom;
         let newWidth, newHeight;
-        let prevZoom = zoom;
+        let prevZoom = currFile.zoom;
         let zoomed = false;
 
         //change zoom level
         //if you want to zoom out, and the zoom isnt already at the smallest level
-        if (mode == 'out' && zoom > MIN_ZOOM_LEVEL) {
+        if (mode == 'out' && currFile.zoom > MIN_ZOOM_LEVEL) {
             zoomed = true;
-            if (zoom > 2)
-                zoom -= Math.ceil(zoom / 10);
+            if (currFile.zoom > 2)
+                currFile.zoom -= Math.ceil(currFile.zoom / 10);
             else
-                zoom -= Math.ceil(zoom * 2 / 10) / 2;
+            currFile.zoom -= Math.ceil(currFile.zoom * 2 / 10) / 2;
 
-            newWidth = canvasSize[0] * zoom;
-            newHeight = canvasSize[1] * zoom;
+            newWidth = currFile.canvasSize[0] * currFile.zoom;
+            newHeight = currFile.canvasSize[1] * currFile.zoom;
 
             //adjust canvas position
-            layers[0].setCanvasOffset(
-                layers[0].canvas.offsetLeft + (oldWidth - newWidth) * mousePos[0]/oldWidth, 
-                layers[0].canvas.offsetTop + (oldHeight - newHeight) * mousePos[1]/oldHeight);
+            currFile.layers[0].setCanvasOffset(
+                currFile.layers[0].canvas.offsetLeft + (oldWidth - newWidth) * mousePos[0]/oldWidth, 
+                currFile.layers[0].canvas.offsetTop + (oldHeight - newHeight) * mousePos[1]/oldHeight);
         }
         //if you want to zoom in
-        else if (mode == 'in' && zoom + Math.ceil(zoom/10) < window.innerHeight/4) {
+        else if (mode == 'in' && currFile.zoom + Math.ceil(currFile.zoom/10) < window.innerHeight/4) {
             zoomed = true;
-            if (zoom > 2)
-                zoom += Math.ceil(zoom/10);
+            if (currFile.zoom > 2)
+                currFile.zoom += Math.ceil(currFile.zoom/10);
             else {
-                if (zoom + zoom/10 > 2) {
-                    zoom += Math.ceil(zoom/10);
-                    zoom = Math.ceil(zoom);
+                if (currFile.zoom + currFile.zoom/10 > 2) {
+                    currFile.zoom += Math.ceil(currFile.zoom/10);
+                    currFile.zoom = Math.ceil(currFile.zoom);
                 }
                 else {
-                    zoom += Math.ceil(zoom * 2 / 10) / 2;
+                    currFile.zoom += Math.ceil(currFile.zoom * 2 / 10) / 2;
                 }
             }
                 
-            newWidth = canvasSize[0] * zoom;
-            newHeight = canvasSize[1] * zoom;
+            newWidth = currFile.canvasSize[0] * currFile.zoom;
+            newHeight = currFile.canvasSize[1] * currFile.zoom;
 
             //adjust canvas position
-            layers[0].setCanvasOffset(
-                layers[0].canvas.offsetLeft - Math.round((newWidth - oldWidth)*mousePos[0]/oldWidth), 
-                layers[0].canvas.offsetTop - Math.round((newHeight - oldHeight)*mousePos[1]/oldHeight));
+            currFile.layers[0].setCanvasOffset(
+                currFile.layers[0].canvas.offsetLeft - Math.round((newWidth - oldWidth)*mousePos[0]/oldWidth), 
+                currFile.layers[0].canvas.offsetTop - Math.round((newHeight - oldHeight)*mousePos[1]/oldHeight));
         }
 
         //resize canvas
-        layers[0].resize();
+        currFile.layers[0].resize();
         // adjust brush size
         ToolManager.currentTool().updateCursor();
 
         // Adjust pixel grid thickness
         if (zoomed) {
-            if (zoom <= 7)
-                pixelGrid.disablePixelGrid();
-            else if (zoom >= 20 && mode == 'in') {
-                pixelGrid.enablePixelGrid();
-                pixelGrid.repaintPixelGrid((zoom - prevZoom) * 0.6);
+            if (currFile.zoom <= 7)
+                currFile.pixelGrid.disablePixelGrid();
+            else if (currFile.zoom >= 20 && mode == 'in') {
+                currFile.pixelGrid.enablePixelGrid();
+                currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
             }
             else if (prevZoom >= 20 && mode == 'out') {
-                pixelGrid.enablePixelGrid();
-                pixelGrid.repaintPixelGrid((zoom - prevZoom) * 0.6);
+                currFile.pixelGrid.enablePixelGrid();
+                currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
             }
             else {
-                pixelGrid.enablePixelGrid();
+                currFile.pixelGrid.enablePixelGrid();
             }
         }
 
-        for (let i=1; i<layers.length; i++) {
-            layers[i].copyData(layers[0]);
+        for (let i=1; i<currFile.layers.length; i++) {
+            currFile.layers[i].copyData(currFile.layers[0]);
         }
     }
 }

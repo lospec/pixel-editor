@@ -27,29 +27,29 @@ class Checkerboard extends Layer {
      * 
      */
     fillCheckerboard() {
-        this.context.clearRect(0, 0, this.canvasSize[0], this.canvasSize[1]);
+        this.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         // Cycling through the canvas (using it as a matrix)
-        for (let i=0; i<this.canvasSize[0] / this.checkerBoardSquareSize; i++) {
+        for (let i=0; i<currFile.canvasSize[0] / this.checkerBoardSquareSize; i++) {
             this.nSquaresFilled = 0;
 
-            for (let j=0; j<this.canvasSize[1] / this.checkerBoardSquareSize; j++) {
+            for (let j=0; j<currFile.canvasSize[1] / this.checkerBoardSquareSize; j++) {
                 let rectX;
                 let rectY;
 
                 // Managing the not perfect squares (the ones at the sides if the canvas' sizes are not powers of checkerBoardSquareSize
-                if (i * this.checkerBoardSquareSize < this.canvasSize[0]) {
+                if (i * this.checkerBoardSquareSize < currFile.canvasSize[0]) {
                     rectX = i * this.checkerBoardSquareSize;
                 }
                 else {
-                    rectX = this.canvasSize[0];
+                    rectX = currFile.canvasSize[0];
                 }
 
-                if (j * this.checkerBoardSquareSize < this.canvasSize[1]) {
+                if (j * this.checkerBoardSquareSize < currFile.canvasSize[1]) {
                     rectY = j * this.checkerBoardSquareSize;
                 }
                 else {
-                    rectY = this.canvasSize[1];
+                    rectY = currFile.canvasSize[1];
                 }
 
                 // Selecting the colour

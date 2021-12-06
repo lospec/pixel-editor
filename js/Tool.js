@@ -40,11 +40,11 @@ class Tool {
 
 		switch (this.cursorType.type) {
 			case 'html':
-				canvasView.style.cursor = 'none';
+				currFile.canvasView.style.cursor = 'none';
 				break;
 			case 'cursor':
 				this.cursor = this.cursorType.style;
-				canvasView.style.cursor = this.cursor || 'default';
+				currFile.canvasView.style.cursor = this.cursor || 'default';
 				break;
 			default:
 				break;
@@ -53,8 +53,8 @@ class Tool {
 
 	updateCursor() {
 		this.brushPreview.style.display = 'block';
-		this.brushPreview.style.width = this.currSize * zoom + 'px';
-		this.brushPreview.style.height = this.currSize * zoom + 'px';
+		this.brushPreview.style.width = this.currSize * currFile.zoom + 'px';
+		this.brushPreview.style.height = this.currSize * currFile.zoom + 'px';
 	}
 
 	onMouseWheel(mousePos, mode) {}
@@ -71,17 +71,17 @@ class Tool {
             toSub = 0.5;
         }        
 
-        this.brushPreview.style.left = (Math.floor(cursorLocation[0] / zoom) * zoom + currentLayer.canvas.offsetLeft - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
-        this.brushPreview.style.top = (Math.floor(cursorLocation[1] / zoom) * zoom + currentLayer.canvas.offsetTop - this.currSize * zoom / 2 - zoom / 2 + toSub * zoom) + 'px';
+        this.brushPreview.style.left = (Math.floor(cursorLocation[0] / currFile.zoom) * currFile.zoom + currFile.currentLayer.canvas.offsetLeft - this.currSize * currFile.zoom / 2 - currFile.zoom / 2 + toSub * currFile.zoom) + 'px';
+        this.brushPreview.style.top = (Math.floor(cursorLocation[1] / currFile.zoom) * currFile.zoom + currFile.currentLayer.canvas.offsetTop - this.currSize * currFile.zoom / 2 - currFile.zoom / 2 + toSub * currFile.zoom) + 'px';
 
 		if (this.cursorType.type == 'html') {
 			if (cursorTarget.className == 'drawingCanvas'|| cursorTarget.className == 'drawingCanvas') {
 				this.brushPreview.style.visibility = 'visible';
-				canvasView.style.cursor = 'none';
+				currFile.canvasView.style.cursor = 'none';
 			}
 			else {
 				this.brushPreview.style.visibility = 'hidden';
-				canvasView.style.cursor = 'default';
+				currFile.canvasView.style.cursor = 'default';
 			}
 		}
 	}
@@ -92,7 +92,7 @@ class Tool {
 		this.isSelected = false;
 
 		this.brushPreview.style.visibility = 'hidden';
-		canvasView.style.cursor = 'default';
+		currFile.canvasView.style.cursor = 'default';
 	}
 
 	onStart(mousePos) {

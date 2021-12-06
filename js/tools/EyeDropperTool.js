@@ -24,8 +24,8 @@ class EyedropperTool extends Tool {
         this.selectedColor = this.pickColor(mousePos);
 
         this.eyedropperPreview.style.borderColor = '#' + Color.rgbToHex(this.selectedColor);
-        this.eyedropperPreview.style.left = mousePos[0] + currentLayer.canvas.offsetLeft - 30 + 'px';
-        this.eyedropperPreview.style.top = mousePos[1] + currentLayer.canvas.offsetTop - 30 + 'px';
+        this.eyedropperPreview.style.left = mousePos[0] + currFile.currentLayer.canvas.offsetLeft - 30 + 'px';
+        this.eyedropperPreview.style.top = mousePos[1] + currFile.currentLayer.canvas.offsetTop - 30 + 'px';
 
         const colorLightness = Math.max(this.selectedColor.r,this.selectedColor.g,this.selectedColor.b);
 
@@ -53,8 +53,8 @@ class EyedropperTool extends Tool {
                 document.querySelector("#colors-menu li.selected")?.classList.remove("selected");
 
                 //set current color
-                for (let i=2; i<layers.length; i++) {
-                    layers[i].context.fillStyle = '#' + colorHex;
+                for (let i=2; i<currFile.layers.length; i++) {
+                    currFile.layers[i].context.fillStyle = '#' + colorHex;
                 }
 
                 //make color selected
@@ -77,13 +77,13 @@ class EyedropperTool extends Tool {
         // Returned colour
         let selectedColor;
 
-        for (let i=1; i<layers.length-3; i++) {
+        for (let i=1; i<currFile.layers.length-3; i++) {
             // Getting the colour of the pixel in the cursorLocation
-            tmpColour = layers[i].context.getImageData(Math.floor(cursorLocation[0]/zoom),Math.floor(cursorLocation[1]/zoom),1,1).data;
+            tmpColour = currFile.layers[i].context.getImageData(Math.floor(cursorLocation[0]/currFile.zoom),Math.floor(cursorLocation[1]/currFile.zoom),1,1).data;
 
             // If it's not empty, I check if it's on the top of the previous colour
-            if (layers[i].canvas.style.zIndex > max || Util.isPixelEmpty(selectedColor) || selectedColor === undefined) {
-                max = layers[i].canvas.style.zIndex;
+            if (currFile.layers[i].canvas.style.zIndex > max || Util.isPixelEmpty(selectedColor) || selectedColor === undefined) {
+                max = currFile.layers[i].canvas.style.zIndex;
 
                 if (!Util.isPixelEmpty(tmpColour)) {
                     selectedColor = tmpColour;

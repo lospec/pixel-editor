@@ -31,7 +31,7 @@ const Input = (() => {
         currentMouseEvent = event;
         dragging = false;
         
-        if (currentLayer != null && !Util.isChildOfByClass(event.target, "layers-menu-entry")) {
+        if (currFile.currentLayer != null && !Util.isChildOfByClass(event.target, "layers-menu-entry")) {
             LayerList.closeOptionsMenu();	
         }
     }
@@ -49,8 +49,8 @@ const Input = (() => {
             y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;			
         }
     
-        x -= currentLayer.canvas.offsetLeft;
-        y -= currentLayer.canvas.offsetTop;
+        x -= currFile.currentLayer.canvas.offsetLeft;
+        y -= currFile.currentLayer.canvas.offsetTop;
     
         return [Math.round(x), Math.round(y)];
     }

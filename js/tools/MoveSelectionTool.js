@@ -30,7 +30,7 @@ class MoveSelectionTool extends Tool {
         this.endSelection();
         this.currSelection = this.lastCopiedSelection;
         // Cut the data
-        currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,
+        currFile.currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,
             this.currSelection.width, this.currSelection.height);
     }
 
@@ -47,7 +47,7 @@ class MoveSelectionTool extends Tool {
         this.currSelection = this.lastCopiedSelection;
 
         // Putting the vfx layer on top of everything
-        VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
+        currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
         this.onDrag(this.currMousePos);
 
         new HistoryState().EditCanvas();
@@ -65,16 +65,16 @@ class MoveSelectionTool extends Tool {
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
-        this.currSelection = this.selectionTool.moveAnts(mousePos[0]/zoom, 
-            mousePos[1]/zoom, this.currSelection.width, this.currSelection.height);
+        this.currSelection = this.selectionTool.moveAnts(mousePos[0]/currFile.zoom, 
+            mousePos[1]/currFile.zoom, this.currSelection.width, this.currSelection.height);
 
         // clear the entire tmp layer
-        TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
+        TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
         // put the image data on the tmp layer with offset
-        TMPLayer.context.putImageData(
+        currFile.TMPLayer.context.putImageData(
             this.currSelection.data, 
-            Math.round(mousePos[0] / zoom) - this.currSelection.width / 2, 
-            Math.round(mousePos[1] / zoom) - this.currSelection.height / 2);
+            Math.round(mousePos[0] / currFile.zoom) - this.currSelection.width / 2, 
+            Math.round(mousePos[1] / currFile.zoom) - this.currSelection.height / 2);
     }
 
     onEnd(mousePos) {
@@ -99,17 +99,17 @@ class MoveSelectionTool extends Tool {
         super.onHover(mousePos);
 
         if (this.cursorInSelectedArea(mousePos)) {
-            canvasView.style.cursor = 'move';
+            currFile.canvasView.style.cursor = 'move';
         }
         else {
-            canvasView.style.cursor = 'default';
+            currFile.canvasView.style.cursor = 'default';
         }
     }
 
     cursorInSelectedArea(cursorPos) {        
         // Getting the coordinates relatively to the canvas
-        let x = cursorPos[0] / zoom;
-        let y = cursorPos[1] / zoom;
+        let x = cursorPos[0] / currFile.zoom;
+        let y = cursorPos[1] / currFile.zoom;
     
         if (this.currSelection.left <= x && x <= this.currSelection.right) {
             if (y <= this.currSelection.bottom && y >= this.currSelection.top) {
@@ -124,12 +124,12 @@ class MoveSelectionTool extends Tool {
         if (this.currSelection == undefined)
             return;
         // Clearing the tmp (move preview) and vfx (ants) layers
-        TMPLayer.context.clearRect(0, 0, TMPLayer.canvas.width, TMPLayer.canvas.height);
-        VFXLayer.context.clearRect(0, 0, VFXLayer.canvas.width, VFXLayer.canvas.height);
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+        currFile.VFXLayer.context.clearRect(0, 0, currFile.VFXLayer.canvas.width, currFile.VFXLayer.canvas.height);
 
         // I have to save the underlying data, so that the transparent pixels in the clipboard 
         // don't override the coloured pixels in the canvas
-        let underlyingImageData = currentLayer.context.getImageData(
+        let underlyingImageData = currFile.currentLayer.context.getImageData(
             this.currSelection.left, this.currSelection.top, 
             this.currSelection.width+1, this.currSelection.height+1
         );
@@ -162,13 +162,13 @@ class MoveSelectionTool extends Tool {
             }
         }
 
-        currentLayer.context.putImageData(new ImageData(pasteData, this.currSelection.width+1),
+        currFile.currentLayer.context.putImageData(new ImageData(pasteData, this.currSelection.width+1),
             this.currSelection.left, this.currSelection.top
         );
 
         this.currSelection = undefined;
-        currentLayer.updateLayerPreview();
-        VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
+        currFile.currentLayer.updateLayerPreview();
+        currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
         
         // Switch to brush
         this.switchFunc(this.endTool);

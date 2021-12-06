@@ -21,7 +21,7 @@ const EditorState = (() => {
             document.getElementById("switch-mode-button").innerHTML = 'Switch to basic mode';
     
             //turn pixel grid off
-            pixelGrid.togglePixelGrid('off');
+            currFile.pixelGrid.togglePixelGrid('off');
         }
         //switch to basic mode
         else {
@@ -32,7 +32,7 @@ const EditorState = (() => {
                 }
     
                 // Selecting the current layer
-                currentLayer.selectLayer();
+                currFile.currentLayer.selectLayer();
                 // Flatten the layers
                 LayerList.flatten(true);
             }
@@ -47,7 +47,7 @@ const EditorState = (() => {
 
             pixelEditorMode = 'Basic';
             document.getElementById("switch-mode-button").innerHTML = 'Switch to advanced mode';
-            pixelGrid.togglePixelGrid('on');
+            currFile.pixelGrid.togglePixelGrid('on');
         }
     }
 

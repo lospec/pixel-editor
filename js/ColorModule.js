@@ -318,7 +318,7 @@ const ColorModule = (() => {
         if (typeof newColor === 'string') newColor = Color.hexToRgb(newColor);
 
         //create temporary image from canvas to search through
-        var tempImage = currentLayer.context.getImageData(0, 0, canvasSize[0], canvasSize[1]);
+        var tempImage = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         //loop through all pixels
         for (var i=0;i<tempImage.data.length;i+=4) {
@@ -332,7 +332,7 @@ const ColorModule = (() => {
         }
 
         //put temp image back onto canvas
-        currentLayer.context.putImageData(tempImage,0,0);
+        currFile.currentLayer.context.putImageData(tempImage,0,0);
     }
 
     function getCurrentPalette() {
@@ -395,9 +395,10 @@ const ColorModule = (() => {
         //create array out of colors object
         let colorPaletteArray = [];
 
-        for (let i=0; i<layers.length; i++) {
-            if (layers[i].menuEntry != null) {
-                let imageData = layers[i].context.getImageData(0, 0, layers[i].canvasSize[0], layers[i].canvasSize[1]).data;
+        for (let i=0; i<currFile.layers.length; i++) {
+            if (currFile.layers[i].hasCanvas()) {
+                let imageData = currFile.layers[i].context.getImageData(
+                    0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
                 let dataLength = imageData.length;
 
                 for (let j=0; j<dataLength; j += 4) {
@@ -429,9 +430,9 @@ const ColorModule = (() => {
         if (refLayer)
             color = refLayer.context.fillStyle;
         
-        for (let i=0; i<layers.length - 1; i++) {
-            layers[i].context.fillStyle = color;
-            layers[i].context.strokeStyle = color;
+        for (let i=0; i<currFile.layers.length - 1; i++) {
+            currFile.layers[i].context.fillStyle = color;
+            currFile.layers[i].context.strokeStyle = color;
         }
     }
 

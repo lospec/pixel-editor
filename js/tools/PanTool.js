@@ -8,29 +8,29 @@ class PanTool extends Tool {
 
     onStart(mousePos) {
         super.onStart(mousePos);
-        canvasView.style.cursor = "url(\'/pixel-editor/pan-held.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan-held.png\'), auto";
 	}
 
 	onDrag(mousePos) {
         super.onDrag(mousePos);
 
         // Setting first layer position
-        layers[0].setCanvasOffset(layers[0].canvas.offsetLeft + (mousePos[0] - this.startMousePos[0]), layers[0].canvas.offsetTop + (mousePos[1] - this.startMousePos[1]));
+        currFile.layers[0].setCanvasOffset(currFile.layers[0].canvas.offsetLeft + (mousePos[0] - this.startMousePos[0]), currFile.layers[0].canvas.offsetTop + (mousePos[1] - this.startMousePos[1]));
         // Copying that position to the other layers
-        for (let i=1; i<layers.length; i++) {
-            layers[i].copyData(layers[0]);
+        for (let i=1; i<currFile.layers.length; i++) {
+            currFile.layers[i].copyData(currFile.layers[0]);
         }
 	}
 
 	onEnd(mousePos) {
         super.onEnd(mousePos);
 
-        canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
 	}
 
     onSelect() {
         super.onSelect();        
-        canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
     }
 
     onDeselect() {
