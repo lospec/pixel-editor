@@ -17,7 +17,6 @@ The next version is mostly focused on adding missing essential features and port
 Suggestions / Planned features:
 
 - Documentation
-
 - Possibility to hide and resize menus (layers, palette)
 - Tiled mode
 - Load palette from LPE file
@@ -26,8 +25,8 @@ Suggestions / Planned features:
 - Possibly add collaborate function
 
 - Code refactoring
-    - Find inefficient sections (nested loops, useless / inefficient parts)
-    - Create classes ResizableTool and SelectionTool. Make them inherit from Tool, avoid creating brush resizing functions each time for each tool that can be resized
+    - Find and fix inefficient sections (nested loops, useless / inefficient parts)
+    - Refactor the ColorPicker IIFE
 
 - Mobile
     - Touch equivalent for mouse clicks
@@ -36,7 +35,7 @@ Suggestions / Planned features:
     - Fix popups
 	
 - Polish:
-    - ctrl a to select everything / selection -> all, same for deselection
+    - CTRL+A to select everything / selection -> all, same for deselection
 	- Warning windows for wrong inputs
 	- Palette option remove unused colors
 	- Move selection with arrows

@@ -773,7 +773,11 @@ const ColorPicker = (() => {
     }
 
     return {
-        init
+        init,
+        getSelectedColours,
+        updatePickerByHex,
+        updateSlidersByHex,
+        updateMiniPickerColour
     }
 })();
 

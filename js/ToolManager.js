@@ -30,16 +30,21 @@ const ToolManager = (() => {
     Events.onCustom("tool-shortcut", onShortcut);
 
     function onShortcut(tool) {
+        if (!Startup.documentCreated || Dialogue.isOpen())
+            return;
         switchTool(tools[tool]);
     }
 
     function onMouseWheel(mouseEvent) {
+        if (!Startup.documentCreated || Dialogue.isOpen())
+            return;
+
         let mousePos = Input.getCursorPosition(mouseEvent);
         tools["zoom"].onMouseWheel(mousePos, mouseEvent.deltaY < 0 ? 'in' : 'out');
     }
 
     function onMouseDown(mouseEvent) {
-        if (!Startup.documentCreated())
+        if (!Startup.documentCreated() || Dialogue.isOpen())
             return;
 
         let mousePos = Input.getCursorPosition(mouseEvent);
@@ -70,7 +75,7 @@ const ToolManager = (() => {
     }
 
     function onMouseMove(mouseEvent) {
-        if (!Startup.documentCreated())
+        if (!Startup.documentCreated() || Dialogue.isOpen())
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
         // Call the hover event

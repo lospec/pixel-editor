@@ -44,7 +44,7 @@ const Dialogue = (() => {
         // If I'm opening the palette window, I initialize the colour picker
         if (dialogueName == 'palette-block' && Startup.documentCreated()) {
             ColorPicker.init();
-            pbInit();
+            PaletteBlock.init();
         }
 
         //track google event

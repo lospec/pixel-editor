@@ -1,6 +1,6 @@
 /**utilities**/
 //=include lib/cookies.js
-//=include _jscolor.js
+//=include lib/jscolor.js
 //=include data/variables.js
 //=include lib/sortable.js
 //=include Util.js
@@ -46,8 +46,8 @@
 /**functions**/
 //=include _resizeCanvas.js
 //=include _resizeSprite.js
-//=include _colorPicker.js
-//=include _paletteBlock.js
+//=include ColorPicker.js
+//=include PaletteBlock.js
 //=include SplashPage.js
 
 /**buttons**/
@@ -59,7 +59,7 @@
 //=include Input.js
 
 /**feature toggles**/
-//=include _featureToggles.js
+//=include FeatureToggles.js
 
 // Controls execution of this preset module
 PresetModule.instrumentPresetMenu();

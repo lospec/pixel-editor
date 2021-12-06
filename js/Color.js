@@ -165,4 +165,16 @@ class Color {
     
         return {h: myH * 360, s: myS * 100, v: myV * 100};
     }
+
+    /** Converts a CSS colour eg rgb(x,y,z) to a hex string
+     * 
+     * @param {*} rgb 
+     */
+    static cssToHex(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
 }

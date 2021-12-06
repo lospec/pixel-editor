@@ -160,7 +160,7 @@ const ColorModule = (() => {
             const col = coloursList.children[i].style.backgroundColor;
             
             if (col.includes("rgb")) {
-                addColor(cssToHex(col));
+                addColor(Color.cssToHex(col));
             }
             else  {
                 addColor(col);
