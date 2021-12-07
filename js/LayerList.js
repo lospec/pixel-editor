@@ -9,6 +9,9 @@ const LayerList = (() => {
     Events.on("mousedown", layerList, openOptionsMenu);
     // Binding the add layer button to the right function
     Events.on('click',"add-layer-button", addLayer, false);
+    // Listening to the switch mode event so I can change the layout
+    Events.onCustom("switchedToAdvanced", showMenu);
+    Events.onCustom("switchedToBasic", hideMenu);
 
     // Making the layers list sortable
     new Sortable(layerList, {
@@ -18,6 +21,25 @@ const LayerList = (() => {
         onStart: layerDragStart,
         onEnd: layerDragDrop
     });
+
+    function showMenu() {
+        layerList.style.display = "inline-block";
+        document.getElementById('layer-button').style.display = 'inline-block';
+    }
+    function hideMenu() {
+        if (EditorState.documentCreated()) {
+            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+                return;
+            }
+            // Selecting the current layer
+            currFile.currentLayer.selectLayer();
+            // Flatten the layers
+            flatten(true);
+        }
+
+        layerList.style.display = "none";
+        document.getElementById('layer-button').style.display = 'none';
+    }
 
     function addLayer(id, saveHistory = true) {
         // layers.length - 3

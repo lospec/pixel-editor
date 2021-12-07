@@ -58,7 +58,7 @@ const FileManager = (() => {
     }
 
     function exportProject() {
-        if (Startup.documentCreated()) {
+        if (EditorState.documentCreated()) {
             //create name
             let fileName = Util.getValue("export-file-name");
             //set download link
@@ -107,7 +107,7 @@ const FileManager = (() => {
 
     function open() {
         //if a document exists
-        if (Startup.documentCreated()) {
+        if (EditorState.documentCreated()) {
             //check if the user wants to overwrite
             if (confirm('Opening a pixel will discard your current one. Are you sure you want to do that?'))
                 //open file selection dialog

@@ -17,6 +17,9 @@ class PixelGrid extends Layer {
     initialize() {
         super.initialize();
         this.fillPixelGrid();
+        Events.onCustom("refreshPixelGrid", this.fillPixelGrid.bind(this));
+        Events.onCustom("switchedToAdvanced", this.disablePixelGrid.bind(this));
+        Events.onCustom("switchedToBasic", this.enablePixelGrid.bind(this));
     }
 
     disablePixelGrid() {

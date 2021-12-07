@@ -1,22 +1,34 @@
-/**EXTERNALS AND LIBRARIES**/
+/** EXTERNALS AND LIBRARIES **/
 //=include lib/cookies.js
 //=include lib/jscolor.js
 //=include lib/sortable.js
 
-/**UTILITY AND INPUT*/
+//=include data/consts.js
+//=include data/palettes.js
+
+/** UTILITY AND INPUT **/
 //=include Util.js
 //=include Events.js
 //=include Dialogue.js
 //=include History.js
+//=include Settings.js
+//=include EditorState.js
 
+/** COLOR-RELATED **/
 //=include Color.js
+//=include ColorPicker.js
+//=include PaletteBlock.js
 
-
+/** BASE CLASSES **/
 //=include File.js
-//=include ColorModule.js
-
 //=include Tool.js
+//=include layers/Layer.js
 
+/** SPECIAL LAYERS **/
+//=include layers/Checkerboard.js
+//=include layers/PixelGrid.js
+
+/** TOOLS **/
 //=include tools/ResizableTool.js
 //=include tools/SelectionTool.js
 
@@ -31,35 +43,22 @@
 //=include tools/RectangularSelectionTool.js
 //=include tools/MoveSelectionTool.js
 
-/**init**/
-//=include data/consts.js
-//=include Settings.js
-//=include LayerList.js
-//=include layers/Layer.js
-//=include layers/Checkerboard.js
-//=include layers/PixelGrid.js
-
-//=include Startup.js
-//=include EditorState.js
-//=include ToolManager.js
-
-/**dropdown formatting**/
-//=include PresetModule.js
-//=include data/palettes.js
-
-/**functions**/
-//=include ColorPicker.js
-//=include PaletteBlock.js
+/** MODULES AND MENUS **/
 //=include SplashPage.js
+//=include PresetModule.js
+//=include ColorModule.js
+//=include ToolManager.js
+//=include LayerList.js
 
-/**menus**/
+/** STARTUP AND FILE MANAGEMENT **/
+//=include Startup.js
 //=include FileManager.js
 //=include TopMenuModule.js
 
-/**event listeners**/
+/** HTML INPUT EVENTS **/
 //=include Input.js
 
-/**feature toggles**/
+/** IHER **/
 //=include FeatureToggles.js
 
 // Controls execution of this preset module
@@ -118,7 +117,7 @@ window.onload = function () {
 
 //prevent user from leaving page with unsaved data
 window.onbeforeunload = function() {
-    if (documentCreated)
+    if (EditorState.documentCreated)
         return 'You will lose your pixel if it\'s not saved!';
 
     else return;

@@ -30,13 +30,13 @@ const ToolManager = (() => {
     Events.onCustom("tool-shortcut", onShortcut);
 
     function onShortcut(tool) {
-        if (!Startup.documentCreated || Dialogue.isOpen())
+        if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
         switchTool(tools[tool]);
     }
 
     function onMouseWheel(mouseEvent) {
-        if (!Startup.documentCreated || Dialogue.isOpen())
+        if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
 
         let mousePos = Input.getCursorPosition(mouseEvent);
@@ -44,7 +44,7 @@ const ToolManager = (() => {
     }
 
     function onMouseDown(mouseEvent) {
-        if (!Startup.documentCreated() || Dialogue.isOpen())
+        if (!EditorState.documentCreated() || Dialogue.isOpen())
             return;
 
         let mousePos = Input.getCursorPosition(mouseEvent);
@@ -75,7 +75,7 @@ const ToolManager = (() => {
     }
 
     function onMouseMove(mouseEvent) {
-        if (!Startup.documentCreated() || Dialogue.isOpen())
+        if (!EditorState.documentCreated() || Dialogue.isOpen())
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
         // Call the hover event
@@ -108,7 +108,7 @@ const ToolManager = (() => {
     }
 
     function onMouseUp(mouseEvent) {
-        if (!Startup.documentCreated())
+        if (!EditorState.documentCreated())
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
 

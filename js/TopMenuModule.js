@@ -44,7 +44,7 @@ const TopMenuModule = (() => {
                         break;
                     case 'Exit':
                         //if a document exists, make sure they want to delete it
-                        if (Startup.documentCreated()) {
+                        if (EditorState.documentCreated()) {
                             //ask user if they want to leave
                             if (confirm('Exiting will discard your current pixel. Are you sure you want to do that?'))
                                 //skip onbeforeunload prompt
@@ -64,12 +64,10 @@ const TopMenuModule = (() => {
                         Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+x");});
                         break;
                     case 'Cancel':
-                        //Events.on('click', currSubmenuButton, tool.pencil.switchTo);
+                        Events.on('click', currSubmenuButton, function(){Events.emit("esc-pressed")});
                         break;
-                        //Help Menu
+                    //Help Menu
                     case 'Settings':
-                        //fill form with current settings values
-                        //Util.setValue('setting-numberOfHistoryStates', settings.numberOfHistoryStates);
                         Events.on('click', currSubmenuButton, Dialogue.showDialogue, 'settings');
                         break;
                     case 'Help':

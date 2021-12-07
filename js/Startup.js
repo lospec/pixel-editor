@@ -1,6 +1,4 @@
 const Startup = (() => {
-
-    let firstPixel = true;
     let splashPostfix = '';
 
     Events.on('click', 'create-button', create, false);
@@ -55,10 +53,9 @@ const Startup = (() => {
             currFile.layers[1].selectLayer();
         }
 
-        console.log("Starting with mode " + EditorState.getCurrentMode());
         EditorState.switchMode(EditorState.getCurrentMode());
         // This is not the first Pixel anymore
-        firstPixel = false;
+        EditorState.created();
     }
 
     function initLayers(width, height) {
@@ -66,7 +63,7 @@ const Startup = (() => {
         currFile.canvasSize = [width, height];
 
         // If this is the first pixel I'm creating since the app has started
-        if (firstPixel) {
+        if (EditorState.firstPixel()) {
             // Creating the first layer
             currFile.currentLayer = new Layer(width, height, 'pixel-canvas', "");
             currFile.currentLayer.canvas.style.zIndex = 2;
@@ -113,7 +110,7 @@ const Startup = (() => {
         // Tmp layer to draw previews on
         currFile.TMPLayer = new Layer(width, height, 'tmp-canvas');
 
-        if (firstPixel) {            
+        if (EditorState.firstPixel()) {            
             // Adding the first layer and the checkerboard to the list of layers
             currFile.layers.push(currFile.checkerBoard);
             currFile.layers.push(currFile.currentLayer);
@@ -227,10 +224,6 @@ const Startup = (() => {
         newPixel(x, y);
     }
 
-    function documentCreated() {
-        return !firstPixel;
-    }
-
     function splashEditorMode(mode) {
         editorMode = mode;
     }
@@ -239,7 +232,6 @@ const Startup = (() => {
         create,
         newPixel,
         newFromTemplate,
-        documentCreated,
         splashEditorMode
     }
 })();

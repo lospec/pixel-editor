@@ -1,12 +1,8 @@
 Input <- Startup, LayerList, TopMenuModule: Could be resolved by using custom events
 
+FileManager <- LayerList, File, Startup, EditorState, ColorModule
+
 Startup <- ColorModule, ToolManager, LayerList, EditorState, Layer(++)
 
-EditorState <- LayerList, File, Startup(documentCreated): maybe documentCreated should stay in EditorState (that would fix the
-				circular dependency with Startup), for the other dependencies it'd probably be nice for them to listen to a custom events
+TopMenuModule -> Startup
 
-Color <- NONE
-
-ColorModule <- File
-
-File <- Startup, but only because Startup sets certain variables in File (pixelGrid, checkerboard and the other global layers)

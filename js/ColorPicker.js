@@ -50,7 +50,6 @@ const ColorPicker = (() => {
     init();
     
     function init() {
-        // TODO: BIND EVENTS
         // Appending the palette styles
         document.getElementsByTagName("head")[0].appendChild(styleElement);
 
@@ -302,7 +301,6 @@ const ColorPicker = (() => {
                 sliders[2].getElementsByTagName("label")[0].innerHTML = 'L';
                 break;
             default:
-                console.log("wtf select a decent picker mode");
                 break;
         }
 
@@ -447,9 +445,7 @@ const ColorPicker = (() => {
         currPickerIconPos[0][1] = miniPickerCanvas.height - yPos;
 
         if (currPickerIconPos[0][1] >= 92)
-        {
             currPickerIconPos[0][1] = 91.999;
-        }
 
         activePickerIcon.style.left = '' + xPos + 'px';
         activePickerIcon.style.top = '' + (miniPickerCanvas.height - yPos) + 'px';
@@ -466,8 +462,6 @@ const ColorPicker = (() => {
         let currColor = new Color("hex", getMiniPickerColour());
         let newHsv = currColor.hsv;
         let newHex;
-
-        console.log("Hex: " + currColor.hex);
 
         // Adding slider value to value
         newHsv = new Color("hsv", newHsv.h, newHsv.s, parseInt(event.target.value));
@@ -575,7 +569,6 @@ const ColorPicker = (() => {
             case 'analog':
                 createIcon();
                 createIcon();
-
                 nHexContainers = 2;
                 break;
             case 'cmpt':
@@ -594,13 +587,11 @@ const ColorPicker = (() => {
                 nHexContainers = 2;
                 break;
             case 'tetra':
-                for (let i=0; i<3; i++) {
+                for (let i=0; i<3; i++)
                     createIcon();
-                }
                 nHexContainers = 3;
                 break;
             default:
-                console.log("How did you select the " + currentPickingMode + ", hackerman?");
                 break;
         }
 
@@ -632,7 +623,6 @@ const ColorPicker = (() => {
         let currentColourHsv = new Color("hex", currentColorHex).hsv;
         let newColourHsv;
         let newColourHexes = ['', '', ''];
-        let tmpRgb;
 
         switch (currentPickingMode)
         {

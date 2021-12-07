@@ -1,14 +1,10 @@
 const PaletteBlock = (() => {
     // HTML elements
     let coloursList = document.getElementById("palette-list");
-    let rampMenu = document.getElementById("pb-ramp-options");
-    let pbRampDialogue = document.getElementById("pb-ramp-dialogue");
 
     // PaletteBlock-specific data
     let currentSquareSize = coloursList.children[0].clientWidth;
     let blockData = {blockWidth: 300, blockHeight: 320, squareSize: 40};
-    let isRampSelecting = false;
-    let ramps = [];
     let currentSelection = {startIndex:0, endIndex:0, startCoords:[], endCoords: [], name: "", colour: "", label: null};
 
     

@@ -124,22 +124,3 @@ class Tool {
 		return this.currSize;
 	}
 }
-
-
-/*global dragging currentTool, currentToolTemp, selectionCanceled, endSelection*/
-
-/**
- * Class selectionTool extends Tool {
- * 		imageDataToMove
- * 		startDataPos
- * 		currDataPos
- * 		finalDataPos
- * 		canMove
- * 		
- * 		movePreview()
- * 		
- * 		// start and end selection just overwrite the onStart and onEnd methods
- * 
- * }
- * 
- */

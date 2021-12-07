@@ -45,10 +45,10 @@ const Settings = (() => {
         settings.numberOfHistoryStates = Util.getValue('setting-numberOfHistoryStates');
         settings.pixelGridColour = Util.getValue('setting-pixelGridColour');
         // Filling pixel grid again if colour changed
-        currFile.pixelGrid.fillPixelGrid();
+        Events.emit("refreshPixelGrid");
     
         //save settings object to cookie
-        var cookieValue = JSON.stringify(settings);
+        let cookieValue = JSON.stringify(settings);
         Cookies.set('pixelEditorSettings', cookieValue, { expires: Infinity });
     
         //close window
