@@ -1,8 +1,0 @@
-Input <- Startup, LayerList, TopMenuModule: Could be resolved by using custom events
-
-FileManager <- LayerList, File, Startup, EditorState, ColorModule
-
-Startup <- ColorModule, ToolManager, LayerList, EditorState, Layer(++)
-
-TopMenuModule -> Startup
-

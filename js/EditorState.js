@@ -10,6 +10,9 @@ const EditorState = (() => {
     }
 
     function switchMode(newMode) {
+        if (!firstFile && newMode == "Basic" && !confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+            return;
+        }
         //switch to advanced mode
         if (newMode == 'Advanced') {
             Events.emit("switchedToAdvanced");

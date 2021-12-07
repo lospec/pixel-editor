@@ -12,14 +12,14 @@ class PixelGrid extends Layer {
     constructor(width, height, canvas, menuEntry) {
         super(width, height, canvas, menuEntry);
         this.initialize();
+        Events.onCustom("refreshPixelGrid", this.fillPixelGrid.bind(this));
+        Events.onCustom("switchedToAdvanced", this.togglePixelGrid.bind(this));
+        Events.onCustom("switchedToBasic", this.togglePixelGrid.bind(this));
     }
 
     initialize() {
         super.initialize();
         this.fillPixelGrid();
-        Events.onCustom("refreshPixelGrid", this.fillPixelGrid.bind(this));
-        Events.onCustom("switchedToAdvanced", this.disablePixelGrid.bind(this));
-        Events.onCustom("switchedToBasic", this.enablePixelGrid.bind(this));
     }
 
     disablePixelGrid() {
@@ -28,7 +28,22 @@ class PixelGrid extends Layer {
     }
 
     enablePixelGrid() {
+        if (!this.pixelGridVisible) 
+            return;
         this.pixelGridEnabled = true;
+        this.canvas.style.display = "inline-block";
+    }
+
+    hidePixelGrid() {
+        let button = document.getElementById("toggle-pixelgrid-button");
+        this.pixelGridVisible = false;
+        button.innerHTML = "Show pixel grid";
+        this.canvas.style.display = "none";
+    }
+    showPixelGrid() {
+        let button = document.getElementById("toggle-pixelgrid-button");
+        this.pixelGridVisible = true;
+        button.innerHTML = "Hide pixel grid";
         this.canvas.style.display = "inline-block";
     }
 
@@ -42,24 +57,16 @@ class PixelGrid extends Layer {
      * 
      */
     togglePixelGrid(newState) {
-        // Getting the button because I have to change its text
-        let button = document.getElementById("toggle-pixelgrid-button");
-
         //Set the state based on the passed newState variable, otherwise just toggle it
-        if (newState == 'on') this.pixelGridVisible = true;
-        else if (newState == 'off') this.pixelGridVisible = false;
-        else this.pixelGridVisible = !this.pixelGridVisible;
-
-        // If it was visible, I hide it
-        if (this.pixelGridVisible) {
-            button.innerHTML = "Hide pixel grid";
-            this.canvas.style.display = "inline-block";
-        }
-        // Otherwise, I show it
-        else {
-            button.innerHTML = "Show pixel grid";
-            this.canvas.style.display = "none";
-        }
+        if (newState == 'on') 
+            this.showPixelGrid();
+        else if (newState == 'off') 
+            this.hidePixelGrid();
+        else 
+            if (this.pixelGridVisible)
+                this.hidePixelGrid();
+            else
+                this.showPixelGrid();
     }
 
     /** Fills the pixelGridCanvas with the pixelgrid

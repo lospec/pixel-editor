@@ -28,9 +28,6 @@ const LayerList = (() => {
     }
     function hideMenu() {
         if (EditorState.documentCreated()) {
-            if (!confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
-                return;
-            }
             // Selecting the current layer
             currFile.currentLayer.selectLayer();
             // Flatten the layers

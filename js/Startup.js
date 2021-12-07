@@ -103,6 +103,7 @@ const Startup = (() => {
         // Adding the checkerboard behind it
         currFile.checkerBoard = new Checkerboard(width, height, null);
         // Pixel grid
+        console.log("CREATED GRID");
         currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
         // Creating the vfx layer on top of everything
