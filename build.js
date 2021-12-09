@@ -3,7 +3,7 @@ const path = require('path');
 const gulp = require('gulp');
 const include = require('gulp-include');
 const handlebars = require('gulp-hb');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const rename = require('gulp-rename');
 
 //const hb_svg = require('handlebars-helper-svg');
@@ -63,6 +63,9 @@ function compile_page(){
 
 
 // empty the build folder, or create it
+try {
 fs.rmdirSync(BUILDDIR, { recursive: true });
 fs.mkdirSync(BUILDDIR);
+} catch (err) {console.log('failed to find build folder, but it\'s probably fine')}
+
 gulp.parallel(copy_images, copy_logs, render_js, render_css, compile_page)();
