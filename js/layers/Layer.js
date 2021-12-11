@@ -50,6 +50,7 @@ class Layer {
         if (this.menuEntry !== undefined) {
             this.name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
             this.menuEntry.id = "layer" + id;
+
             this.menuEntry.onmouseover = () => this.hover();
             this.menuEntry.onmouseout = () => this.unhover();
             this.menuEntry.onclick = () => this.selectLayer();
@@ -63,6 +64,8 @@ class Layer {
             this.menuEntry.addEventListener("dragleave", this.layerDragLeave, false);
             this.menuEntry.addEventListener("dragend", this.layerDragEnd, false);
 
+            Events.onCustom("del", this.tryDelete.bind(this));
+
             this.menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
         }
 
@@ -71,6 +74,12 @@ class Layer {
 
     hasCanvas() {
         return this.menuEntry != null;
+    }
+
+    tryDelete() {
+        if (Input.getLastTarget() != this.menuEntry && Input.getLastTarget().parentElement != this.menuEntry)
+            return;
+        LayerList.deleteLayer();
     }
 
     // Initializes the canvas

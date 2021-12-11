@@ -3,7 +3,7 @@ class PixelGrid extends Layer {
     // Start colour of the pixel grid (can be changed in the preferences)
     pixelGridColor = "#000000";
     // Distance between one line and another in HTML pixels
-    lineDistance = 11;
+    lineDistance = 10;
     // The grid is not visible by default
     pixelGridVisible = false;
     // The grid is enabled, but is disabled in order to save performance with big sprites
@@ -81,6 +81,8 @@ class PixelGrid extends Layer {
         this.canvas.height = originalSize[1] * Math.round(this.lineDistance);
 
         this.context.strokeStyle = Settings.getCurrSettings().pixelGridColour;
+
+        console.log("Line ditance: " + this.lineDistance)
 
         // OPTIMIZABLE, could probably be a bit more elegant
         // Draw horizontal lines

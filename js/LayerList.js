@@ -345,11 +345,11 @@ const LayerList = (() => {
             // Merging all the layer but the last one
             for (let i=0; i<visibleLayers.length - 1; i++) {
                 nToFlatten++;
-                console.log(visibleLayers[i].menuEntry.nextElementSibling);
+                
                 new HistoryState().FlattenTwoVisibles(
                     visibleLayers[i + 1].context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]),
                     visibleLayers[i].menuEntry.nextElementSibling,
-                    layers.indexOf(visibleLayers[i]),
+                    currFile.layers.indexOf(visibleLayers[i]),
                     visibleLayers[i], visibleLayers[i + 1]
                 );
     

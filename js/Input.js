@@ -1,6 +1,7 @@
 const Input = (() => {
     let dragging = false;
     let currentMouseEvent = undefined;
+    let lastMouseTarget = undefined;
     let spacePressed = false;
     let altPressed = false;
     let ctrlPressed = false;
@@ -19,6 +20,7 @@ const Input = (() => {
     Events.on("mouseup", window, onMouseUp);
 
     function onMouseDown(event) {
+        lastMouseTarget = event.target;
         currentMouseEvent = event;
         dragging = true;
 
@@ -154,6 +156,10 @@ const Input = (() => {
                 case 32:
                     spacePressed = true;
                     break;
+                case 46:
+                    console.log("Pressed del");
+                    Events.emit("del");
+                    break;
             }
         }
     }
@@ -178,12 +184,17 @@ const Input = (() => {
         return spacePressed;
     }
 
+    function getLastTarget() {
+        return lastMouseTarget;
+    }
+
     return {
         isDragging,
         getCurrMouseEvent,
         getCursorPosition,
         isAltPressed,
         isCtrlPressed,
-        isSpacePressed
+        isSpacePressed,
+        getLastTarget
     }
 })();

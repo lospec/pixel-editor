@@ -101,7 +101,7 @@ const ColorModule = (() => {
             document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
     
             //set current color
-            updateCurrentColor(e.target.style.backgroundColor);
+            updateCurrentColor(Color.cssToHex(e.target.style.backgroundColor));
     
             //make color selected
             e.target.parentElement.classList.add('selected');
@@ -136,8 +136,6 @@ const ColorModule = (() => {
 
         //show color picker
         addedColor.firstElementChild.jscolor.show();
-        console.log('showing picker');
-
         //hide edit button
         addedColor.lastChild.classList.add('hidden');
     }
@@ -427,6 +425,9 @@ const ColorModule = (() => {
     }
 
     function updateCurrentColor(color, refLayer) {
+        if (color[0] != '#')
+            color = '#' + color;
+
         if (refLayer)
             color = refLayer.context.fillStyle;
         
