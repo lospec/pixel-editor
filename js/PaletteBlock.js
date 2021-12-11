@@ -131,6 +131,9 @@ const PaletteBlock = (() => {
             currentSelection.startCoords = getColourCoordinates(index);
             currentSelection.endCoords = getColourCoordinates(index);
         }
+        else if (mouseEvent.which == 1) {
+            endRampSelection(mouseEvent);
+        }
     }
 
     /** Updates the outline for the current selection.

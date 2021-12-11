@@ -186,23 +186,16 @@ class Layer {
         this.canvas.style.top = otherLayer.canvas.style.top;
     }
 
-    selectLayer(layer) {
-        if (layer == null) {
-            // Deselecting the old layer
-            currFile.currentLayer.deselectLayer();
+    selectLayer(hideOptions = true) {
+        if (hideOptions)
+            LayerList.closeOptionsMenu();
+        // Deselecting the old layer
+        currFile.currentLayer.deselectLayer();
 
-            // Selecting the current layer
-            this.isSelected = true;
-            this.menuEntry.classList.add("selected-layer");
-            currFile.currentLayer = LayerList.getLayerByName(this.menuEntry.getElementsByTagName("p")[0].innerHTML);
-        }
-        else {
-            currFile.currentLayer.deselectLayer();
-
-            layer.isSelected = true;
-            layer.menuEntry.classList.add("selected-layer");
-            currFile.currentLayer = layer;
-        }
+        // Selecting the current layer
+        this.isSelected = true;
+        this.menuEntry.classList.add("selected-layer");
+        currFile.currentLayer = this;
     }
 
     toggleLock() {

@@ -21,7 +21,7 @@ const Settings = (() => {
                 enableDynamicCursorOutline: true, //unused - performance
                 enableBrushPreview: true, //unused - performance
                 enableEyedropperPreview: true, //unused - performance
-                numberOfHistoryStates: 20,
+                numberOfHistoryStates: 256,
                 maxColorsOnImportedImage: 128,
                 pixelGridColour: '#000000'
             };

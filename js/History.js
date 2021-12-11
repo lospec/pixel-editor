@@ -1,15 +1,3 @@
-/** BUG: 
- *  - Create a new pixel
- *  - Open a png file
- *  - Draw with the pencil
- *  - Hit CTRL+Z
- *  - RESULT: undo doesn't work, the app can't find the current layer
- * 
- *  - RELATED: when opening an LPE file, the app draws on a layer that is below the one in which the 
- *             file is loaded. This is because the data is loaded on new layers, but the first one
- *             isn't removed and sometimes it could have the same ID of a recently added layer.
- */
-
 /** How the history works
  * - undoStates stores the states that can be undone
  * - redoStates stores the states that can be redone

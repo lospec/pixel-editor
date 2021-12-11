@@ -382,7 +382,7 @@ const LayerList = (() => {
             Layer.layerOptions.style.top = "0";
             Layer.layerOptions.style.marginTop = "" + (event.clientY - 25) + "px";
 
-            getLayerByID(selectedId).selectLayer();
+            getLayerByID(selectedId).selectLayer(false);
         }
     }
 
