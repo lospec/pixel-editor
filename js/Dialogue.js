@@ -8,6 +8,8 @@ const Dialogue = (() => {
     const popUpContainer = document.getElementById("pop-up-container");
     const cancelButtons = popUpContainer.getElementsByClassName('close-button');
 
+    Events.onCustom("esc-pressed", closeDialogue);
+
     // Add click handlers for all cancel buttons
     for (var i = 0; i < cancelButtons.length; i++) {
         cancelButtons[i].addEventListener('click', function () {
