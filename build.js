@@ -21,6 +21,8 @@ function copy_images(){
     gulp.src('./images/Splash images/*.png').pipe(gulp.dest(BUILDDIR));
     // Logs images
     gulp.src('./images/Logs/*.gif').pipe(gulp.dest(BUILDDIR));
+    // Logs images
+    gulp.src('./images/Logs/*.png').pipe(gulp.dest(BUILDDIR));
 }
 
 function copy_logs() {

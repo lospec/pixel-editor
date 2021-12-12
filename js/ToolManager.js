@@ -24,7 +24,7 @@ const ToolManager = (() => {
     Events.on("mouseup", window, onMouseUp);
     Events.on("mousemove", window, onMouseMove);
     Events.on("mousedown", window, onMouseDown);
-    Events.on("mousewheel", window, onMouseWheel);
+    Events.on("wheel", window, onMouseWheel);
 
     // Bind tool shortcuts
     Events.onCustom("tool-shortcut", onShortcut);
@@ -36,6 +36,7 @@ const ToolManager = (() => {
     }
 
     function onMouseWheel(mouseEvent) {
+        console.log("MOUSE WHEEL");
         if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
 
@@ -82,7 +83,7 @@ const ToolManager = (() => {
         currTool.onHover(mousePos, mouseEvent.target);
 
         if (Input.isDragging()) {
-            switch (mouseEvent.which) {
+            switch (mouseEvent.buttons) {
                 case 1:
                     if (Input.isSpacePressed()) {
                         tools["pan"].onDrag(mousePos, mouseEvent.target);
@@ -94,10 +95,10 @@ const ToolManager = (() => {
                         currTool.onDrag(mousePos, mouseEvent.target);
                     }
                     break;
-                case 2:
+                case 4:
                     tools["pan"].onDrag(mousePos, mouseEvent.target);
                     break;
-                case 3:
+                case 2:
                     currTool.onRightDrag(mousePos, mouseEvent.target);
                     break;
                 default:

@@ -354,7 +354,7 @@ const ColorPicker = (() => {
     function movePickerIcon(event) {
         event.preventDefault();
 
-        if (event.which == 1 || draggingCursor) {
+        if (event.buttons == 1 || draggingCursor) {
             let cursorPos = getCursorPosMinipicker(event);
             let canvasRect = miniPickerCanvas.getBoundingClientRect();
 
@@ -504,6 +504,10 @@ const ColorPicker = (() => {
         let rgb = Color.hexToRgb(hex);
 
         styles[1] = "input[type=range]#cp-minipicker-slider::-webkit-slider-runnable-track { background: rgb(2,0,36);";
+        styles[1] += "background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 0%, " +
+        "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",1) 100%);}";
+
+        styles[1] += "input[type=range]#cp-minipicker-slider::-moz-range-track { background: rgb(2,0,36);";
         styles[1] += "background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 0%, " +
         "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",1) 100%);}";
 

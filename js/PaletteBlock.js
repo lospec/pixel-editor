@@ -141,11 +141,11 @@ const PaletteBlock = (() => {
      * @param {*} mouseEvent 
      */
     function updateRampSelection(mouseEvent) {
-        if (mouseEvent != null && mouseEvent.which == 3) {
+        if (mouseEvent != null && mouseEvent.buttons == 2) {
             currentSelection.endIndex = getElementIndex(mouseEvent.target);
         }
         
-        if (mouseEvent == null || mouseEvent.which == 3) {
+        if (mouseEvent == null || mouseEvent.buttons == 2) {
             let startCoords = getColourCoordinates(currentSelection.startIndex);
             let endCoords = getColourCoordinates(currentSelection.endIndex);
 
