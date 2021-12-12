@@ -59,7 +59,7 @@ const ToolManager = (() => {
                     else if (Input.isAltPressed()) {
                         tools["eyedropper"].onStart(mousePos, mouseEvent.target);
                     }
-                    else {
+                    else if (!currFile.currentLayer.isLocked){
                         currTool.onStart(mousePos, mouseEvent.target);
                     }
                     break;
@@ -91,7 +91,7 @@ const ToolManager = (() => {
                     else if (Input.isAltPressed()) {
                         tools["eyedropper"].onDrag(mousePos, mouseEvent.target);
                     }
-                    else {
+                    else if (!currFile.currentLayer.isLocked){
                         currTool.onDrag(mousePos, mouseEvent.target);
                     }
                     break;
@@ -122,7 +122,7 @@ const ToolManager = (() => {
                     else if (Input.isAltPressed()) {
                         tools["eyedropper"].onEnd(mousePos, mouseEvent.target);
                     }
-                    else {
+                    else if (!currFile.currentLayer.isLocked){
                         currTool.onEnd(mousePos);
                     }
                     break;
