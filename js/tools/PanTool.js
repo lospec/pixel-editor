@@ -6,13 +6,17 @@ class PanTool extends Tool {
         Events.on('click', this.mainButton, switchFunction, this);
     }
 
-    onStart(mousePos) {
+    onStart(mousePos, target) {
         super.onStart(mousePos);
+        if (target.className != 'drawingCanvas')
+            return;
         currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan-held.png\'), auto";
 	}
 
-	onDrag(mousePos) {
+	onDrag(mousePos, target) {
         super.onDrag(mousePos);
+        if (target.className != 'drawingCanvas')
+            return;
 
         // Setting first layer position
         currFile.layers[0].setCanvasOffset(currFile.layers[0].canvas.offsetLeft + (mousePos[0] - this.startMousePos[0]), currFile.layers[0].canvas.offsetTop + (mousePos[1] - this.startMousePos[1]));
@@ -22,8 +26,10 @@ class PanTool extends Tool {
         }
 	}
 
-	onEnd(mousePos) {
+	onEnd(mousePos, target) {
         super.onEnd(mousePos);
+        if (target.className != 'drawingCanvas')
+            return;
 
         currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
 	}
