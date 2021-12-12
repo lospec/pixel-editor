@@ -1,4 +1,4 @@
-class FillTool extends Tool {
+class FillTool extends DrawingTool {
     constructor(name, options, switchFunction) {
         super(name, options);
 

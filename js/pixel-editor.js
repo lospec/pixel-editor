@@ -29,6 +29,7 @@
 //=include layers/PixelGrid.js
 
 /** TOOLS **/
+//=include tools/DrawingTool.js
 //=include tools/ResizableTool.js
 //=include tools/SelectionTool.js
 

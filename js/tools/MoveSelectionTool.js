@@ -1,4 +1,4 @@
-class MoveSelectionTool extends Tool {
+class MoveSelectionTool extends DrawingTool {
     currSelection = undefined;
     selectionTool = undefined;
     endTool = undefined;
@@ -25,6 +25,8 @@ class MoveSelectionTool extends Tool {
     }
 
     cutSelection() {
+        if (currFile.currentLayer.isLocked)
+            return;
         this.cutting = true;
         this.lastCopiedSelection = this.currSelection;
         this.endSelection();
@@ -35,6 +37,8 @@ class MoveSelectionTool extends Tool {
     }
 
     pasteSelection() {
+        if (currFile.currentLayer.isLocked)
+            return;
         if (this.lastCopiedSelection === undefined)
             return;
         // Finish the current selection and start a new one with the same data

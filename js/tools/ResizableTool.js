@@ -1,4 +1,4 @@
-class ResizableTool extends Tool {
+class ResizableTool extends DrawingTool {
     startResizePos = undefined;
     currSize = 1;
 	prevSize = 1;
