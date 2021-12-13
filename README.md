@@ -10,7 +10,8 @@ Please do not submit pull requests with new features or core changes. Instead, p
 
 ## What to Contribute
 
-Any changes that fix bugs or add features are welcome.
+Any changes that fix bugs or add features are welcome. Check out the issues if you don't know where to start: if 
+you're new to the editor, we suggest you check out the Wiki first.
 
 The next version is mostly focused on adding missing essential features and porting to mobile.
 
@@ -23,10 +24,6 @@ Suggestions / Planned features:
 - Symmetry options (currently being worked on)
 - Make a palette grid instead of having a huge stack on the right when colours are too many
 - Possibly add collaborate function
-
-- Code refactoring
-    - Find and fix inefficient sections (nested loops, useless / inefficient parts)
-    - Refactor the ColorPicker IIFE
 
 - Mobile
     - Touch equivalent for mouse clicks
@@ -41,7 +38,7 @@ Suggestions / Planned features:
 	- Move selection with arrows
 	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
 	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
-    - Scale selection
+    - Scale / rotate selection
 
 ## How to Contribute
 
