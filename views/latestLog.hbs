@@ -1,65 +1,39 @@
-Hello there, welcome to the latest version of the Lospec Pixel Editor. As you can see, we changed
-quite a lot of things. Let's go through all them, starting from this page.
+Hi! Welcome to the latest version of the Pixel Editor. It's been quite a while! Most of the changes happened behind 
+the scenes: we worked very hard to refactor the code, make it a bit more modern and scalable so that contributions will,
+ hopefully, be easier to make.</br></br>
+We have some good news for users as well!
 
-<h2>Splash page</h2>
+<h2>Pixel Grid</h2>
 
-The editor now has a splash page! Besides a fancy cover image with beautiful art, on the bottom
-left of the page you'll be able to create a new custom pixel. You can also use the quickstart
-menu to quickly select a preset or load an existing file. It was designed by <a href="https://twitter.com/skeddles">Skeddles</a> himself!
+I've worked a bit on the pixel grid to make it look a bit better and less intrusive when zooming in. You can see the 
+difference in behaviour between the new grid (left) and the old grid (right) in the image below.
+<img src="/pixel-editor/grid.png"/>
+In addition, the pixel grid will now automatically be hidden when the zoom level becomes too low: in that way looking at big 
+sprites becomes a lot less performance-heavy and it doesn't cause lag.
 
-<img src="/pixel-editor/splash.gif"/>
+<h2>Quality of life</h2>
 
-<strong>Pro tip: </strong> once you've created a new project, you can go back to the splash page
-by clicking on <strong>Editor -> Splash page</strong>
-
-<h2>Canvas resizing</h2>
-
-We implemented canvas resizing! If you wanted to draw a t-rex but created a 4x4 canvas, we've got you covered!
-You can now click on <strong>Edit -> Resize canvas</strong> to decrease the size of the project. Same goes if you
-drew an ant on a 1024x1024 canvas, just go to <strong>Edit -> Resize canvas</strong> and decrease
-the dimensions.
-
-<img src="/pixel-editor/resize-canvas.gif"/>
-
-<h2>Sprite scaling</h2>
-
-In addition to the <a href="https://www.lospec.com/pixel-art-scaler">Lospec Pixel Art Scaler</a>,
-you can now take advantage of the editor's built-in scaling function. Just click on <strong>Edit -> Scale sprite</strong>
-to scale up or down your work. With the nearest-neighbour algorithm you'll be able to scale sprites
-in a pixel-perfect manner, while with bilinear interpolation it's possible to add (or remove, if you're scaling
-down a sprite) antialiasing.
-
-<img src="/pixel-editor/scale-sprite.gif"/>
-
-<h2>Line tool</h2>
-
-Our contributor <a href="https://github.com/liamortiz">Liam</a> added a new line tool! Quality of
-life improvement are planned for it, the rectangle and the rectangular selection tools.
-
-<img src="/pixel-editor/line-tool.gif"/>
-
-<h2>Advanced mode: colour picker and palette block</h2>
-
-If you're a proud user of the advanced mode, you'll be able to try out the new colour picker: it
-supports 3 colour models, 6 colour harmonies and multiple ways to input data. Next to it,
-you'll find the new palette block, which lets you arrange your colours however you want, add and 
-remove multiple colours at once. Changes made in the palette block will update the palette list
-you've always been familiar with.
-
-<img src="/pixel-editor/palette-block.gif"/>
-
-<h2>Other changes:</h2>
+I've added some quality of life improvements, sometimes subtle (maybe you won't notice but you'd have definitely noticed
+the absence of them), sometimes a bit more noticeable. For example:
 <ul>
-    <li>You can now move colours in the palette menu</li>
-    <li>Use <strong>View -> Pixel grid</strong> to show the pixel grid</li>
-    <li>Fixed a bunch of bugs, made the brush preview pixel perfect</li>
-    <li>Added <strong>Layer -> Duplicate</strong> to duplicate a layer</li>
-    <li>Quality of life development improvements by <a href="https://github.com/nkoder">Nkoder</a> and <a href="https://github.com/JulianWebb">Pongles</a></a></li>
-    <li>Canvas trimming to get rid of all the extra space you have in your sprite</li>
+    <li>It's now possible to delete a layer by selecting it and hitting "DEL"</li>
+    <li>When adding a colour to the palette, it is automatically selected</li>
+    <li>Thanks to <a href="https://github.com/NSSure">NSSure</a>, you can now select a name for your exported / saved project</li>
+    <li>The brush preview should now be less intrusive while still being visible</li>
 </ul>
 
-<h2>That's all folks!</h2>
-That's all for this update! Hope you have fun with this new release :) </br>
+<h2> Important bug fixes</h2>
+A lot of nasty bugs have been fixed! Please, if you know more we aren't aware of, <a href="https://github.com/lospec/pixel-editor">
+feel free to open an issue or make a pull request.</a>
+<ul>
+    <li>Fixed the bug that caused file corruptions</li>
+    <li>Fixed fill tool not working and creating hundreds of similar colours in certain browsers</li>
+    <li>Fixed the build procedure for Windows</li>
+    <li>Fixed the editor ignoring the scale factor when exporting</li>
+</ul>
+
+<h2>End of log</h2>
+That's all for this update! We have some cool things planned for the near future, so stay tuned :)</br>
 - <a href="https://github.com/unsettledgames">Unsettled</a>
 </br></br>
 P.S.: we're always looking for contributors! Join the <a href="https://discord.com/invite/QjsgTQM">Lospec discord</a> to get in touch!

@@ -4,39 +4,41 @@ This is a browser based software for creating pixel art
 
 The tool can be viewed online here: https://lospec.com/pixel-editor
 
+## How to contribute
+
+Please do not submit pull requests with new features or core changes. Instead, please file an issue first for discussion.
+
 ## What to Contribute
 
-Any changes that fix bugs or add features are welcome.
+Any changes that fix bugs or add features are welcome. Check out the issues if you don't know where to start: if 
+you're new to the editor, we suggest you check out the Wiki first.
 
 The next version is mostly focused on adding missing essential features and porting to mobile.
 
 Suggestions / Planned features:
 
 - Documentation
-
 - Possibility to hide and resize menus (layers, palette)
-- Line tool
 - Tiled mode
 - Load palette from LPE file
-- Symmetry options
+- Symmetry options (currently being worked on)
+- Make a palette grid instead of having a huge stack on the right when colours are too many
+- Possibly add collaborate function
 
 - Mobile
     - Touch equivalent for mouse clicks
     - Hide or scale ui
     - Maybe rearrange UI on portrait
-    - Stack colors when too many
     - Fix popups
-    
-- Possibly add collaborate function
 	
 - Polish:
-    - ctrl a to select everything / selection -> all, same for deselection
+    - CTRL+A to select everything / selection -> all, same for deselection
 	- Warning windows for wrong inputs
 	- Palette option remove unused colors
 	- Move selection with arrows
 	- Update borders by dragging the canvas' edges with the mouse when resizing canvas
 	- Move the canvases so they're centered after resizing the canvas (maybe a .center() method in layer class)
-    - Scale selection
+    - Scale / rotate selection
 
 ## How to Contribute
 

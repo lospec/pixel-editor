@@ -1,89 +1,140 @@
-/**utilities**/
-//=include util/on.js
-//=include util/onChildren.js
-//=include util/onClick.js
-//=include util/onClickChildren.js
-//=include util/select.js
-//=include util/getSetText.js
-//=include util/getSetValue.js
-//=include util/hexToRgb.js
-//=include util/rgbToHex.js
-//=include util/rgbToHsl.js
-//=include util/hslToRgb.js
+/** EXTERNALS AND LIBRARIES **/
 //=include lib/cookies.js
-//=include _pixelEditorUtility.js
+//=include lib/jscolor.js
 //=include lib/sortable.js
-//=include _algorithms.js
+
+//=include data/consts.js
+//=include data/palettes.js
+
+/** UTILITY AND INPUT **/
 //=include Util.js
+//=include Events.js
+//=include Dialogue.js
+//=include History.js
+//=include Settings.js
+//=include EditorState.js
 
-/**init**/
-//=include _consts.js
-//=include _variables.js
-//=include _settings.js
+/** COLOR-RELATED **/
+//=include Color.js
+//=include ColorPicker.js
+//=include PaletteBlock.js
 
-/**dropdown formatting**/
-//=include _editorMode.js
-//=include _presets.js
-//=include _palettes.js
+/** BASE CLASSES **/
+//=include File.js
+//=include Tool.js
+//=include layers/Layer.js
 
-/**functions**/
-//=include _tools.js
-//=include tools/*.js
-//=include _newPixel.js
-//=include _createColorPalette.js
-//=include _changeZoom.js
-//=include _addColor.js
-//=include _colorChanged.js
-//=include _initColor.js
-//=include _dialogue.js
-//!=include _featuresLog.js
-//=include _drawLine.js
-//=include _getCursorPosition.js
-//=include _fill.js
-//=include _line.js
-//=include _history.js
-//=include _deleteColor.js
-//=include _replaceAllOfColor.js
-//=include _checkerboard.js
-//=include _pixelGrid.js
-//=include _layer.js
-//=include _copyPaste.js
-//=include _resizeCanvas.js
-//=include _resizeSprite.js
-//=include _colorPicker.js
-//=include _paletteBlock.js
-//=include _splashPage.js
-//=include _pixelExport.js
-//=include _saveProject.js
+/** SPECIAL LAYERS **/
+//=include layers/Checkerboard.js
+//=include layers/PixelGrid.js
 
-/**load file**/
-//=include _loadImage.js
-//=include _loadPalette.js
+/** TOOLS **/
+//=include tools/DrawingTool.js
+//=include tools/ResizableTool.js
+//=include tools/SelectionTool.js
 
-/**event listeners**/
-//=include _hotkeyListener.js
-//=include _mouseEvents.js
+//=include tools/BrushTool.js
+//=include tools/EraserTool.js
+//=include tools/LineTool.js
+//=include tools/RectangleTool.js
+//=include tools/FillTool.js
+//=include tools/EyedropperTool.js
+//=include tools/PanTool.js
+//=include tools/ZoomTool.js
+//=include tools/RectangularSelectionTool.js
+//=include tools/MoveSelectionTool.js
 
-/**buttons**/
-//=include _toolButtons.js
-//=include _addColorButton.js
-//=include _clickedColor.js
-//=include _fileMenu.js
-//=include _createButton.js
-//=include _rectSelect.js
-//=include _move.js
-//=include _rectangle.js
-//=include _ellipse.js
+/** MODULES AND MENUS **/
+//=include SplashPage.js
+//=include PresetModule.js
+//=include ColorModule.js
+//=include ToolManager.js
+//=include LayerList.js
 
-/**onload**/
-//=include _onLoad.js
-//=include _onbeforeunload.js
+/** STARTUP AND FILE MANAGEMENT **/
+//=include Startup.js
+//=include FileManager.js
+//=include TopMenuModule.js
 
-/**libraries**/
-//=include _jscolor.js
+/** HTML INPUT EVENTS **/
+//=include Input.js
 
-/**feature toggles**/
-//=include _featureToggles.js
+/** IHER **/
+//=include FeatureToggles.js
 
 // Controls execution of this preset module
 PresetModule.instrumentPresetMenu();
+
+//when the page is done loading, you can get ready to start
+window.onload = function () {
+    featureToggles.onLoad();
+
+    ToolManager.currentTool().updateCursor();
+	
+	//check if there are any url parameters
+	if (window.location.pathname.replace('/pixel-editor/','').length <= 1)  {
+		//show splash screen
+		Dialogue.showDialogue('splash', false);
+	}
+	//url parameters were specified
+	else {
+		let args = window.location.pathname.split('/');
+		let paletteSlug = args[2];
+		let dimentions = args[3];
+
+		//fetch palette via lospec palette API
+		fetch('https://lospec.com/palette-list/'+paletteSlug+'.json')
+			.then(response => response.json())
+			.then(data => {
+				//palette loaded successfully
+				palettes[paletteSlug] = data;
+				palettes[paletteSlug].specified = true;
+
+				//refresh list of palettes
+				document.getElementById('palette-menu-splash').refresh();
+
+				//if the dimentions were specified
+				if (dimentions && dimentions.length >= 3 && dimentions.includes('x')) {
+					let width = dimentions.split('x')[0];
+					let height = dimentions.split('x')[1];
+					
+					//create new document
+					Startup.newPixel(width, height);
+				}
+				//dimentions were not specified -- show splash screen with palette preselected
+				else {
+					//show splash
+					Dialogue.showDialogue('new-pixel', false);
+				}
+			})
+			//error fetching url (either palette doesn't exist, or lospec is down)
+			.catch((error) => {
+				console.warn('failed to load palette "'+paletteSlug+'"', error);
+				//proceed to splash screen
+				Dialogue.showDialogue('splash', false);
+			});
+	} 
+};
+
+//prevent user from leaving page with unsaved data
+window.onbeforeunload = function() {
+    if (EditorState.documentCreated)
+        return 'You will lose your pixel if it\'s not saved!';
+
+    else return;
+};
+
+// Compatibility functions
+function closeCompatibilityWarning() {
+	document.getElementById("compatibility-warning").style.visibility =	"hidden";
+}
+
+//check browser/version
+if (
+	(bowser.firefox && bowser.version >= 28) ||
+	(bowser.chrome && bowser.version >= 29) ||
+	(!bowser.mobile && !bowser.tablet)
+)
+	console.log("compatibility check passed");
+//show warning
+else document.getElementById("compatibility-warning").style.visibility = "visible";

@@ -1,4 +1,4 @@
-<ul id="main-menu">
+<ul id="main-menu" class="editor-top-menu">
 	<li class="logo">Lospec Pixel Editor</li>
 	<li>
 		<button>File</button>
@@ -13,9 +13,9 @@
 	<li>
 		<button>Edit</button>
 		<ul>
-			<li><button id="resize-canvas-button" onclick = "openResizeCanvasWindow()">Resize canvas</button></li>
-			<li><button id="resize-sprite-button" onclick = "openResizeSpriteWindow()">Scale sprite</button></li>
-			<li><button onclick = "trimCanvas()">Trim canvas</button></li>
+			<li><button id="resize-canvas-button" onclick = "currFile.openResizeCanvasWindow()">Resize canvas</button></li>
+			<li><button id="resize-sprite-button" onclick = "currFile.openResizeSpriteWindow()">Scale sprite</button></li>
+			<li><button onclick = "currFile.trimCanvas()">Trim canvas</button></li>
 			<li><button id="undo-button" class="disabled">Undo</button></li>
 			<li><button id="redo-button" class="disabled">Redo</button></li>
 		</ul>
@@ -23,19 +23,19 @@
 	<li>
 		<button>View</button>
 		<ul>
-			<li><button id="toggle-pixelgrid-button" onclick="togglePixelGrid()">Show pixel grid</button></li>
+			<li><button id="toggle-pixelgrid-button" onclick="currFile.pixelGrid.togglePixelGrid()">Show pixel grid</button></li>
 		</ul>
 	</li>
 	<li>
 		<button id = "layer-button">Layer</button>
 		<ul>
-			<li><button onclick = "addLayer()">New layer</button></li>
-			<li><button onclick = "duplicateLayer()">Duplicate</button></li>
-			<li><button onclick = "renameLayer()">Rename</button></li>
-			<li><button onclick = "deleteLayer()">Delete</button></li>
-			<li><button onclick = "merge()">Merge below</button></li>
-			<li><button onclick = "flatten(false)">Flatten all</button></li>
-			<li><button onclick = "flatten(true)">Flatten visible</button></li>
+			<li><button onclick = "LayerList.addLayer()">New layer</button></li>
+			<li><button onclick = "LayerList.duplicateLayer()">Duplicate</button></li>
+			<li><button onclick = "LayerList.renameLayer()">Rename</button></li>
+			<li><button onclick = "LayerList.deleteLayer()">Delete</button></li>
+			<li><button onclick = "LayerList.merge()">Merge below</button></li>
+			<li><button onclick = "LayerList.flatten(false)">Flatten all</button></li>
+			<li><button onclick = "LayerList.flatten(true)">Flatten visible</button></li>
 			
 		</ul>
 	</li>
@@ -52,7 +52,7 @@
 		<button>Editor</button>
 		<ul>
 			<li><button id="switch-mode-button">Switch to basic mode</button></li>
-			<li><button onclick="showDialogue('splash', false)">Splash page</button></li>
+			<li><button onclick="Dialogue.showDialogue('splash', false)">Splash page</button></li>
 			<li><button>Settings</button></li>
 		</ul>
 	</li>
