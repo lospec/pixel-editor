@@ -106,6 +106,12 @@ const Startup = (() => {
         console.log("CREATED GRID");
         currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
+        // Horizontal symmetric layer
+        let hSymmetricLayer = new Layer(width, height, SymmetryModule.hSymmetricCanvas);
+        // Vertical symmetric layer
+        let vSymmetricLayer = new Layer(width, height, SymmetryModule.vSymmetricCanvas);
+        SymmetryModule.initSymmetricCanvas();
+
         // Creating the vfx layer on top of everything
         currFile.VFXLayer = new Layer(width, height, 'vfx-canvas');
         // Tmp layer to draw previews on
@@ -118,6 +124,8 @@ const Startup = (() => {
             currFile.layers.push(currFile.TMPLayer);
             currFile.layers.push(currFile.pixelGrid);
             currFile.layers.push(currFile.VFXLayer);
+            currFile.layers.push(hSymmetricLayer);
+            currFile.layers.push(vSymmetricLayer);
         }
     }
 
