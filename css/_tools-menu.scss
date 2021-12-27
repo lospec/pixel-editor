@@ -1,7 +1,7 @@
 
 #tools-menu {
 	left: 0;
-	width: 64px;
+	width: 48px;
 	list-style-type: none;
 	top: 48px;
 	bottom: 0;
@@ -13,13 +13,9 @@
 	z-index: 1120;
 }
 
-
-
 #tools-menu li {
 	position: relative;
 }
-
-
 
 #tools-menu li button:first-child {
 	text-align: center;
@@ -28,7 +24,8 @@
 	width: 100%;
 	padding: 0;
 	cursor: pointer;
-	height: 64px;
+	height: 48px;
+	z-index:0;
 }
 
 #tools-menu li button path {
@@ -48,23 +45,17 @@
 	fill: $baseselectedicon;
 }
 
-#tools-menu li.selected.expanded {
-	padding-bottom: 10px;
-}
-
-
 .tools-menu-sub-button {
 	text-align: center;
 	border: none;
 	background: none;
 	cursor: pointer;
-	width: 50%;
-	height: 22px;
-	display: none;
+	width: 22px !important;
+	height:24px !important;
+	display: inline-block;
 	line-height: 0;
 	overflow: hidden;
-	position: absolute;
-	bottom: 0;
+	position: relative;
 
 	path {
 		fill: $baseselectedicon !important;
@@ -77,37 +68,39 @@
 	}
 }
 
-#tools-menu li button#brush-bigger-button,
-#tools-menu li button#zoom-in-button,
-#tools-menu li button#eraser-bigger-button,
-#tools-menu li button#rectangle-bigger-button,
-#tools-menu li button#ellipse-bigger-button,
-#tools-menu li button#line-bigger-button {
-	left: 0;
+#tools-menu .size-buttons {
+	position:absolute;
+	display: none;
+	height:48px;
+	left:8px;
+	z-index:-1;
+	background-color: $basecolor !important;
 }
 
-#tools-menu li button#brush-smaller-button,
-#tools-menu li button#zoom-out-button,
-#tools-menu li button#eraser-smaller-button,
-#tools-menu li button#rectangle-smaller-button,
-#tools-menu li button#ellipse-smaller-button,
-#tools-menu li button#line-smaller-button {
-	right: 0;
+#tools-menu .size-buttons button {
+	text-align: center;
+	border: none;
+	padding: 0;
+	position: relative;
+	height:24px;
+	background-color: $baseselected !important;
+	cursor: pointer;
+	display:inline-block;
+	line-height: 0;
+	overflow: hidden;
+	width:22px;
 }
 
-#tools-menu li.selected button#brush-bigger-button,
-#tools-menu li.selected button#brush-smaller-button,
-#tools-menu li.selected button#zoom-in-button,
-#tools-menu li.selected button#zoom-out-button,
-#tools-menu li.selected button#eraser-bigger-button,
-#tools-menu li.selected button#eraser-smaller-button,
-#tools-menu li.selected button#rectangle-bigger-button,
-#tools-menu li.selected button#rectangle-smaller-button,
-#tools-menu li.selected button#ellipse-bigger-button,
-#tools-menu li.selected button#ellipse-smaller-button,
-#tools-menu li.selected button#line-bigger-button,
-#tools-menu li.selected button#line-smaller-button {
-	display: block;
+#tools-menu .size-buttons button:hover {
+	background:$baseselected !important;
+}
+
+#tools-menu .size-buttons button:active {
+	background:$basehovericon !important;
+}
+
+#tools-menu li.selected .size-buttons {
+	display:inline-block;
 }
 
 
