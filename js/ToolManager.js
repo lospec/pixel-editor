@@ -16,6 +16,8 @@ const ToolManager = (() => {
         {type:'cursor', style:'crosshair'}, switchTool, tools["brush"]);
     tools["rectselect"] = new RectangularSelectionTool("rectselect", 
         {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
+    tools["lassoselect"] = new LassoSelectionTool("lassoselect", 
+        {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
     
     currTool = tools["brush"];
     currTool.onSelect();

@@ -155,9 +155,7 @@
 	.sp-template {
 		display: flex;
   		align-items: center;
-		height: 5em;
-		min-width: 5em;
-		
+		  
 		text-transform: uppercase;
 		width:16%;
 		border-radius:5%;
@@ -188,12 +186,11 @@
 		}
 	}
 
-	/*
 	.sp-template:before {
 		content:'';
 		float:left;
 		padding-top:100%;
-	}*/
+	}
 
 	#sp-newpixel {
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */

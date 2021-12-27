@@ -42,6 +42,7 @@
 //=include tools/PanTool.js
 //=include tools/ZoomTool.js
 //=include tools/RectangularSelectionTool.js
+//=include tools/LassoSelectionTool.js
 //=include tools/MoveSelectionTool.js
 
 /** MODULES AND MENUS **/

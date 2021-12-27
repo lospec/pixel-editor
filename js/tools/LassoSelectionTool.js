@@ -1,6 +1,6 @@
 class LassoSelectionTool extends SelectionTool {
     constructor (name, options, switchFunc, moveTool) {
-
+        super(name, options, switchFunc, moveTool);
     }
 
     onStart(mousePos) {
