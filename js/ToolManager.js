@@ -38,7 +38,6 @@ const ToolManager = (() => {
     }
 
     function onMouseWheel(mouseEvent) {
-        console.log("MOUSE WHEEL");
         if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
 
@@ -125,11 +124,11 @@ const ToolManager = (() => {
                         tools["eyedropper"].onEnd(mousePos, mouseEvent.target);
                     }
                     else if (!currFile.currentLayer.isLocked || !((Object.getPrototypeOf(currTool) instanceof DrawingTool))) {
-                        currTool.onEnd(mousePos);
+                        currTool.onEnd(mousePos, mouseEvent.target);
                     }
                     break;
                 case 2:
-                    tools["pan"].onEnd(mousePos);
+                    tools["pan"].onEnd(mousePos, mouseEvent.target);
                     break;
                 case 3:
                     currTool.onRightEnd(mousePos, mouseEvent.target);
