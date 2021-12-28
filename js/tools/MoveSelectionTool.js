@@ -59,7 +59,7 @@ class MoveSelectionTool extends DrawingTool {
     onStart(mousePos, mouseTarget) {
         super.onStart(mousePos, mouseTarget);
 
-        if (!this.cursorInSelectedArea(mousePos) && 
+        if (!this.selectionTool.cursorInSelectedArea(mousePos) && 
             !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
             this.endSelection();
         }
@@ -101,27 +101,13 @@ class MoveSelectionTool extends DrawingTool {
     onHover(mousePos) {
         super.onHover(mousePos);
 
-        if (this.cursorInSelectedArea(mousePos)) {
+        if (this.selectionTool.cursorInSelectedArea(mousePos)) {
             currFile.canvasView.style.cursor = 'move';
         }
         else {
             currFile.canvasView.style.cursor = 'default';
         }
     }
-
-    cursorInSelectedArea(cursorPos) {        
-        // Getting the coordinates relatively to the canvas
-        let x = cursorPos[0] / currFile.zoom;
-        let y = cursorPos[1] / currFile.zoom;
-    
-        if (this.currSelection.left <= x && x <= this.currSelection.right) {
-            if (y <= this.currSelection.bottom && y >= this.currSelection.top) {
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }    
 
     endSelection() {
         if (this.currSelection == undefined)

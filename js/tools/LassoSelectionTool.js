@@ -1,9 +1,9 @@
 class LassoSelectionTool extends SelectionTool {
     currentPixels = []
+    currSelection = {}
 
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
-
         Events.on('click', this.mainButton, switchFunc, this);
     }
 
@@ -78,5 +78,9 @@ class LassoSelectionTool extends SelectionTool {
         currFile.VFXLayer.context.fillStyle = 'rgba(0,0,0,0.3)';
         currFile.VFXLayer.context.fill();
         currFile.VFXLayer.context.closePath();
+    }
+
+    getSelection() {
+
     }
 }

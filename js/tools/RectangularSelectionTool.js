@@ -1,13 +1,8 @@
 class RectangularSelectionTool extends SelectionTool {
-    switchFunc = undefined;
-    moveTool = undefined;
     currSelection = {};
 
     constructor (name, options, switchFunc, moveTool) {
-        super(name, options, switchFunc);
-
-        this.switchFunc = switchFunc;
-        this.moveTool = moveTool;
+        super(name, options, switchFunc, moveTool);
         Events.on('click', this.mainButton, switchFunc, this);
     }
 
@@ -209,4 +204,18 @@ class RectangularSelectionTool extends SelectionTool {
 
         return ret;
     }
+
+    cursorInSelectedArea(cursorPos) {        
+        // Getting the coordinates relatively to the canvas
+        let x = cursorPos[0] / currFile.zoom;
+        let y = cursorPos[1] / currFile.zoom;
+    
+        if (this.currSelection.left <= x && x <= this.currSelection.right) {
+            if (y <= this.currSelection.bottom && y >= this.currSelection.top) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }    
 }

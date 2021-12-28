@@ -6,6 +6,7 @@ var tool = {};
 class Tool {
 	name = "AbstractTool";
 	isSelected = false;
+	switchFunction = undefined;
 	
 	// Cursor and brush size
 	cursorType = {};
