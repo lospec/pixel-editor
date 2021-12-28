@@ -29,6 +29,13 @@ class LassoSelectionTool extends SelectionTool {
 
     onEnd(mousePos) {
         super.onEnd(mousePos);
+        new HistoryState().EditCanvas();
+
+        this.currentPixels.push[this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom];
+        this.getSelection();
+
+        // Switch to the move tool so that the user can move the selection
+        this.switchFunc(this.moveTool);
     }
 
     onSelect() {
@@ -46,7 +53,6 @@ class LassoSelectionTool extends SelectionTool {
         let prevPoint = [];
         
         currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
-        //currFile.VFXLayer.context.setLineDash([2, 2]);
         currFile.VFXLayer.context.strokeStyle = 'rgba(0,0,0,1)';
         currFile.VFXLayer.context.fillStyle = 'rgba(0,0,0,1)';
         currFile.VFXLayer.context.lineWidth = 1;

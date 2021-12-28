@@ -97,6 +97,61 @@ class RectangularSelectionTool extends SelectionTool {
         console.log("data set");
     }
 
+    copySelection() {
+        super.copySelection();
+    }
+
+    cutSelection() {
+        super.cutSelection();
+        currFile.currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,
+            this.currSelection.width, this.currSelection.height);
+    }
+
+    pasteSelection() {
+        super.pasteSelection();
+        if (this.currSelection == undefined)
+            return;
+        // Clearing the tmp (move preview) and vfx (ants) layers
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+        currFile.VFXLayer.context.clearRect(0, 0, currFile.VFXLayer.canvas.width, currFile.VFXLayer.canvas.height);
+
+        // I have to save the underlying data, so that the transparent pixels in the clipboard 
+        // don't override the coloured pixels in the canvas
+        let underlyingImageData = currFile.currentLayer.context.getImageData(
+            this.currSelection.left, this.currSelection.top, 
+            this.currSelection.width+1, this.currSelection.height+1
+        );
+        let pasteData = this.currSelection.data.data.slice();
+        
+        for (let i=0; i<underlyingImageData.data.length; i+=4) {
+            let currentMovePixel = [
+                pasteData[i], pasteData[i+1], pasteData[i+2], pasteData[i+3]
+            ];
+
+            let currentUnderlyingPixel = [
+                underlyingImageData.data[i], underlyingImageData.data[i+1], 
+                underlyingImageData.data[i+2], underlyingImageData.data[i+3]
+            ];
+
+            // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
+            if (Util.isPixelEmpty(currentMovePixel)) {
+                if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
+                    pasteData[i] = currentUnderlyingPixel[0];
+                    pasteData[i+1] = currentUnderlyingPixel[1];
+                    pasteData[i+2] = currentUnderlyingPixel[2];
+                    pasteData[i+3] = currentUnderlyingPixel[3];
+                }
+            }
+        }
+
+        currFile.currentLayer.context.putImageData(new ImageData(pasteData, this.currSelection.width+1),
+            this.currSelection.left, this.currSelection.top
+        );
+
+        currFile.currentLayer.updateLayerPreview();
+        currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
+    }
+
     onSelect() {
         super.onSelect();
     }
