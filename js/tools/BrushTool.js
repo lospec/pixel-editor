@@ -22,11 +22,11 @@ class BrushTool extends ResizableTool {
             currFile.currentLayer.drawLine(Math.floor(this.prevMousePos[0]/currFile.zoom),
                 Math.floor(this.prevMousePos[1]/currFile.zoom),
                 Math.floor(this.currMousePos[0]/currFile.zoom),
-                Math.floor(this.currMousePos[1]/currFile.zoom), 
+                Math.floor(this.currMousePos[1]/currFile.zoom),
                 this.currSize
             );
         }
-
+        
         currFile.currentLayer.updateLayerPreview();
 	}
 

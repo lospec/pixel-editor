@@ -89,7 +89,6 @@ class RectangularSelectionTool extends SelectionTool {
         currFile.TMPLayer.context.putImageData(this.currSelection.data, this.startMousePos[0], this.startMousePos[1]);
 
         this.moveTool.setSelectionData(this.currSelection, this);
-        console.log("data set");
     }
 
     copySelection() {
