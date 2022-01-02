@@ -1,16 +1,5 @@
  <!-- CANVASES -->
 <div id="canvas-view">
-	<!-- FILTERS -->
-	<svg width="0" height="0" style="position:absolute;z-index:-1;">
-		<defs>
-			<filter id="remove-alpha" x="0" y="0" width="100%" height="100%">
-			<feComponentTransfer>
-				<feFuncA type="discrete" tableValues="0 1"></feFuncA>
-			</feComponentTransfer>
-			</filter>
-		</defs>
-	</svg>
-
 	<canvas id="vfx-canvas" class = "drawingCanvas"></canvas>
 	<canvas id = "tmp-canvas" class = "drawingCanvas"></canvas>
 	<canvas id="pixel-canvas" class = "drawingCanvas"></canvas>

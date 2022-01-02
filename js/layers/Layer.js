@@ -66,7 +66,7 @@ class Layer {
 
             Events.onCustom("del", this.tryDelete.bind(this));
 
-            this.context.imageSmoothingEnabled = false;
+            this.menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
         }
 
         this.initialize();
