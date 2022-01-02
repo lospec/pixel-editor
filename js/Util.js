@@ -1,6 +1,20 @@
 // Acts as a public static class
 class Util {
 
+    /** Colors a pixel in an image data
+     * 
+     * @param {*} tempImage The imagedata to paint
+     * @param {*} pixelPos Index of the pixel
+     * @param {*} fillColor Color to use to paint
+     */
+    static colorPixel(tempImage, pixelPos, fillColor) {
+        //console.log('colorPixel:',pixelPos);
+        tempImage.data[pixelPos] = fillColor.r;
+        tempImage.data[pixelPos + 1] = fillColor.g;
+        tempImage.data[pixelPos + 2] = fillColor.b;
+        tempImage.data[pixelPos + 3] = 255;
+    }
+
     /** Tells if a pixel is empty (has alpha = 0)
      * 
      * @param {*} pixel 

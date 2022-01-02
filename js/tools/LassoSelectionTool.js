@@ -1,7 +1,7 @@
 class LassoSelectionTool extends SelectionTool {
     currentPixels = [];
     currSelection = {};
-    boundingBox = {minX: 9999999, maxX: -1, minY: 9999999, maxY: -1};
+    boundingBox = {minX: 99999, maxX: -1, minY: 99999, maxY: -1};
 
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
@@ -11,44 +11,58 @@ class LassoSelectionTool extends SelectionTool {
     onStart(mousePos) {
         super.onStart(mousePos);
 
+        let mouseX = Math.floor(mousePos[0] / currFile.zoom);
+        let mouseY = Math.floor(mousePos[1] / currFile.zoom);
+
         // Putting the vfx layer on top of everything
         currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
         // clearSelection();
         this.currentPixels = [];
         this.drawSelection();
-        this.currentPixels.push([mousePos[0] / currFile.zoom, mousePos[1] / currFile.zoom]);
+        this.currentPixels.push([mouseX, mouseY]);
+
+        this.boundingBox = {minX: 99999, maxX: -1, minY: 99999, maxY: -1};
+        this.checkBoundingBox(mouseX, mouseY);
     }
 
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
-        let mouseX = mousePos[0] / currFile.zoom;
-        let mouseY = mousePos[1] / currFile.zoom;
+        let mouseX = Math.floor(mousePos[0] / currFile.zoom);
+        let mouseY = Math.floor(mousePos[1] / currFile.zoom);
 
         if (this.currentPixels[this.currentPixels.length - 1] != mousePos)
-            this.currentPixels.push([mousePos[0] / currFile.zoom, mousePos[1] / currFile.zoom]);
+            this.currentPixels.push([mouseX, mouseY]);
         this.drawSelection();
-
-        if (mouseX > this.boundingBox.maxX)
-            this.boundingBox.maxX = Math.floor(mouseX);
-        if (mouseX < this.boundingBox.minX)
-            this.boundingBox.minX = Math.floor(mouseX);
-        if (mouseY < this.boundingBox.minY)
-            this.boundingBox.minY = Math.floor(mouseY);
-        if (mouseY > this.boundingBox.maxY)
-            this.boundingBox.maxY = Math.floor(mouseY);
+        this.checkBoundingBox(mouseX, mouseY);
     }
 
     onEnd(mousePos) {
         super.onEnd(mousePos);
         new HistoryState().EditCanvas();
 
-        this.currentPixels.push([this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom]);
+        let mouseX = Math.floor(mousePos[0] / currFile.zoom);
+        let mouseY = Math.floor(mousePos[1] / currFile.zoom);
+
+        this.currentPixels.push(this.currentPixels[0]);
+        this.checkBoundingBox(mouseX, mouseY);
         this.getSelection();
 
         // Switch to the move tool so that the user can move the selection
         this.switchFunc(this.moveTool);
         this.moveTool.setSelectionData(null, this);
+    }
+
+    checkBoundingBox(mouseX, mouseY) {
+        if (mouseX > this.boundingBox.maxX)
+            this.boundingBox.maxX = mouseX;
+        else if (mouseX < this.boundingBox.minX)
+            this.boundingBox.minX = mouseX;
+
+        if (mouseY < this.boundingBox.minY)
+            this.boundingBox.minY = mouseY;
+        else if (mouseY > this.boundingBox.maxY)
+            this.boundingBox.maxY = mouseY;
     }
 
     onSelect() {
@@ -63,7 +77,6 @@ class LassoSelectionTool extends SelectionTool {
         if (this.currentPixels.length <= 1)
             return;
         let point = [];
-        let prevPoint = [];
         
         currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
         currFile.VFXLayer.context.strokeStyle = 'rgba(0,0,0,1)';
@@ -77,17 +90,15 @@ class LassoSelectionTool extends SelectionTool {
             if (index == 0)
                 currFile.VFXLayer.context.moveTo(point[0], point[1]);
             else {
-                prevPoint = this.currentPixels[index- 1];
                 currFile.VFXLayer.context.lineTo(point[0], point[1]);
-                currFile.VFXLayer.drawLine(Math.floor(prevPoint[0]), Math.floor(prevPoint[1]), 
-                    Math.floor(point[0]), Math.floor(point[1]), 1);
             }
         }
-        
-        currFile.VFXLayer.drawLine(Math.floor(prevPoint[0]), Math.floor(prevPoint[1]), 
-                    Math.floor(this.startMousePos[0] / currFile.zoom), Math.floor(this.startMousePos[1] / currFile.zoom), 1);
-        currFile.VFXLayer.context.lineTo(this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom);
-        
+
+        currFile.VFXLayer.context.filter = "url(#remove-alpha)"
+        currFile.VFXLayer.context.lineTo(this.currentPixels[0][0], this.currentPixels[0][1]);
+        currFile.VFXLayer.context.stroke();
+
+        currFile.VFXLayer.context.filter = "none";
         currFile.VFXLayer.context.fillStyle = 'rgba(0,0,0,0.3)';
         currFile.VFXLayer.context.fill();
         currFile.VFXLayer.context.closePath();
@@ -103,56 +114,70 @@ class LassoSelectionTool extends SelectionTool {
             return;
         }
 
-        for (let x=this.boundingBox.minX; x<this.boundingBox.maxX; x++) {
-            for (let y=this.boundingBox.minY; y<this.boundingBox.maxY; y++) {
+        currFile.VFXLayer.context.fillStyle = "blue";
+        currFile.VFXLayer.context.fillRect(this.boundingBox.minX, this.boundingBox.minY, 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.minX, this.boundingBox.maxY, 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX, this.boundingBox.maxY, 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX, this.boundingBox.minY, 1, 1);
+
+        let fillPoint = [];
+        let found = false;
+        // Find a point inside the selection
+        while (!found) {
+            let nIntersections = 0;
+            let prevPoint = -1;
+            fillPoint = [Math.round(Math.random() * (this.boundingBox.maxX - this.boundingBox.minX)),
+                         Math.round(Math.random() * (this.boundingBox.maxY - this.boundingBox.minY))];
+            
+            currFile.VFXLayer.context.fillStyle = "green";
+            currFile.VFXLayer.context.fillRect(fillPoint[0], fillPoint[1], 1, 1);
+            // Count the number of intersections with the shape
+            for (let i=0; i<this.currentPixels.length; i++) {
+                if (fillPoint[0] == this.currentPixels[i][0] && this.currentPixels[i][1] != prevPoint)
+                    nIntersections++;
+                prevPoint = this.currentPixels[i][1];
+            }
+
+            if (nIntersections & 1) 
+                found = true;
+        }
+        
+        console.log("Point: ");
+        console.log(fillPoint);
+        
+
+        /*for (let x=this.boundingBox.minX+1; x<this.boundingBox.maxX; x++) {
+            for (let y=this.boundingBox.minY+1; y<this.boundingBox.maxY; y++) {
                 let toCheck = [x, y];
                 let intersectionCount = 0;
 
-                if (!this.currentPixels.includes(toCheck)) {
-                    for (let index = 1; index < this.currentPixels.length; index ++){
-                        let start = this.currentPixels[index - 1];
-                        let end = this.currentPixels[index];
-                        
-                        let ray = {Start: toCheck, End: [9999, 0]}; 
-                        let segment = {Start: start, End: end}; 
-                        let rayDistance = {
-                            x: ray.End[0] - ray.Start[0],
-                            y: ray.End[1] - ray.Start[1]
-                        };
-                        let segDistance = {
-                            x: segment.End[0] - segment.Start[0], 
-                            y: segment.End[1] - segment.Start[1]
-                        };
-                        
-                        let rayLength = Math.sqrt(Math.pow(rayDistance.x, 2) + Math.pow(rayDistance.y, 2));
-                        let segLength = Math.sqrt(Math.pow(segDistance.x, 2) + Math.pow(segDistance.y, 2));
-                        
-                        if ((rayDistance.x / rayLength == segDistance.x / segLength) &&
-                            (rayDistance.y / rayLength == segDistance.y / segLength))
-                            continue;
-                        
-                        let T2 = (rayDistance.x * (segment.Start[1] - ray.Start[1]) + rayDistance.y * (ray.Start[0] - segment.Start[0])) / (segDistance.x * rayDistance.y - segDistance.y * rayDistance.x);
-                        let T1 = (segment.Start[0] + segDistance.x * T2 - ray.Start[0]) / rayDistance.x;
-                        
-                        //Parametric check.
-                        if (T1 < 0) {
-                            continue;
+                if (currFile.VFXLayer.context.getImageData(toCheck[0], toCheck[1], 1, 1).data[3] != 255) {
+                    // Start from the pixel to check
+                    let currPos = [toCheck[0], toCheck[1]];
+                    // Finish when you get the pixel to check
+                    let endPos = [toCheck[0], this.boundingBox.maxX];
+                    let prevColor = 0;
+
+                    // Go down: if you meet a pixel of the border, increase the number of intersections
+                    while (currPos[1] <= endPos[1]) {
+                        let pixel = currFile.VFXLayer.context.getImageData(currPos[0],
+                            currPos[1], 1, 1).data;
+                        if (pixel[3] == 255 && prevColor != 255) {
+                            // Check if there's a closing pixel below
+                            intersectionCount++;
                         }
-                        if (T2 < 0 || T2 > 1) {
-                            continue;
-                        }
-                        if (isNaN(T1)) {
-                            continue;
-                        }
-                        
-                        intersectionCount++; 
+                        currPos[1]++;
+                        prevColor = pixel[3];
                     }
                     
+                    // If the number of intersections is even (0 or 2), then the pixel is outside the
+                    // seleted region
                     if (intersectionCount & 1)
                         selected.push(toCheck);
+                        
                 }
             }
-        }
+        }*/
 
         for (let i=0; i<selected.length; i++) {
             currFile.VFXLayer.context.fillStyle = "red";
