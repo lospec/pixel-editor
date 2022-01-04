@@ -97,59 +97,87 @@ class LassoSelectionTool extends SelectionTool {
 
     }
 
+    isBorderOfBox(pixel) {
+        return  pixel[0] == this.boundingBox.minX || pixel[0] == this.boundingBox.maxX || 
+                pixel[1] == this.boundingBox.minY || pixel[1] == this.boundingBox.maxY;
+    }
+
+    visit(pixel, visited) {
+        let toVisit = [pixel];
+        let selected = [];
+
+        while (toVisit.length > 0) {
+            pixel = toVisit.pop();
+            selected.push(pixel);
+            visited.push(pixel);
+
+            let col = currFile.VFXLayer.context.getImageData(pixel[0], pixel[1], 1, 1).data;
+            if (col[3] == 255)
+                continue;
+
+            let top, bottom, left, right;
+            if (pixel[1] > 0)
+                top = [pixel[0], pixel[1] - 1];
+            else
+                top = undefined;
+
+            if (pixel[0] > 0)
+                left = [pixel[0] - 1, pixel[1]];
+            else
+                left = undefined;
+
+            if (pixel[1] < currFile.canvasSize[1])
+                bottom = [pixel[0], pixel[1] + 1];
+            else
+                bottom = undefined;
+
+            if (pixel[0] < currFile.canvasSize[0])
+                right = [pixel[0] + 1, pixel[1]];
+            else
+                right = undefined;
+
+            if ((right != undefined && this.isBorderOfBox(right)) || (left != undefined && this.isBorderOfBox(left))
+            || (top != undefined && this.isBorderOfBox(top)) || (bottom != undefined && this.isBorderOfBox(bottom)))
+                return [];
+            
+            // The include problem: https://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays
+            if (right != undefined && !visited.includes(right))
+                toVisit.push(right);
+            if (left != undefined && !visited.includes(left))
+                toVisit.push(left);
+            if (top != undefined && !visited.includes(top))
+                toVisit.push(top);
+            if (bottom != undefined && !visited.includes(bottom))
+                toVisit.push(bottom);
+        }
+
+        return selected;
+    }
+
     getSelection() {
         let selected = [];
+        let visited = [];
         if (this.currentPixels.length <= 1){
             return;
         }
 
+        /** I'm once again asking you to make a BFS
+         *  - This time since I'm dumb check all pixels in the bounding box
+         *  - Start a BFS: stop when you reach the border of the bounding box:
+         *      - In that case all the pixels you visited aren't part of the selection
+         *  - Also stop when you touch black:
+         *      - If you haven't found the border of the bounding box, then all the pixels you visited
+         *        are inside the selection
+         */
+
         for (let x=this.boundingBox.minX; x<this.boundingBox.maxX; x++) {
             for (let y=this.boundingBox.minY; y<this.boundingBox.maxY; y++) {
-                let toCheck = [x, y];
-                let intersectionCount = 0;
-
-                if (!this.currentPixels.includes(toCheck)) {
-                    for (let index = 1; index < this.currentPixels.length; index ++){
-                        let start = this.currentPixels[index - 1];
-                        let end = this.currentPixels[index];
-                        
-                        let ray = {Start: toCheck, End: [9999, 0]}; 
-                        let segment = {Start: start, End: end}; 
-                        let rayDistance = {
-                            x: ray.End[0] - ray.Start[0],
-                            y: ray.End[1] - ray.Start[1]
-                        };
-                        let segDistance = {
-                            x: segment.End[0] - segment.Start[0], 
-                            y: segment.End[1] - segment.Start[1]
-                        };
-                        
-                        let rayLength = Math.sqrt(Math.pow(rayDistance.x, 2) + Math.pow(rayDistance.y, 2));
-                        let segLength = Math.sqrt(Math.pow(segDistance.x, 2) + Math.pow(segDistance.y, 2));
-                        
-                        if ((rayDistance.x / rayLength == segDistance.x / segLength) &&
-                            (rayDistance.y / rayLength == segDistance.y / segLength))
-                            continue;
-                        
-                        let T2 = (rayDistance.x * (segment.Start[1] - ray.Start[1]) + rayDistance.y * (ray.Start[0] - segment.Start[0])) / (segDistance.x * rayDistance.y - segDistance.y * rayDistance.x);
-                        let T1 = (segment.Start[0] + segDistance.x * T2 - ray.Start[0]) / rayDistance.x;
-                        
-                        //Parametric check.
-                        if (T1 < 0) {
-                            continue;
-                        }
-                        if (T2 < 0 || T2 > 1) {
-                            continue;
-                        }
-                        if (isNaN(T1)) {
-                            continue;
-                        }
-                        
-                        intersectionCount++; 
-                    }
+                if (!visited.includes([x, y])) {
+                    let insidePixels = this.visit([x,y], visited);
                     
-                    if (intersectionCount & 1)
-                        selected.push(toCheck);
+                    for (let i=0; i<insidePixels; i++) {
+                        selected.push(insidePixels[i]);
+                    }
                 }
             }
         }
