@@ -283,7 +283,7 @@ class Layer {
             previewWidth, previewHeight);
     }
 
-    drawLine(x0,y0,x1,y1, brushSize) {
+    drawLine(x0,y0,x1,y1, brushSize, clear=false) {
         var dx = Math.abs(x1-x0);
         var dy = Math.abs(y1-y0);
         var sx = (x0 < x1 ? 1 : -1);
@@ -294,11 +294,10 @@ class Layer {
             //set pixel
             // If the current tool is the brush
             // REFACTOR: this is terrible
-            if (ToolManager.currentTool().name == 'brush' || ToolManager.currentTool().name == 'rectangle' || ToolManager.currentTool().name == 'ellipse'
-                || ToolManager.currentTool().name == 'lassoselect') {
+            if (!clear) {
                 // I fill the rect
                 this.context.fillRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
-            } else if (ToolManager.currentTool().name == 'eraser') {
+            } else {
                 // In case I'm using the eraser I must clear the rect
                 this.context.clearRect(x0-Math.floor(brushSize/2), y0-Math.floor(brushSize/2), brushSize, brushSize);
             }

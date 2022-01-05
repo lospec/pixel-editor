@@ -76,8 +76,8 @@ class MoveSelectionTool extends DrawingTool {
         // put the image data on the tmp layer with offset
         currFile.TMPLayer.context.putImageData(
             this.currSelection.data, 
-            Math.round(mousePos[0] / currFile.zoom) - this.currSelection.width / 2, 
-            Math.round(mousePos[1] / currFile.zoom) - this.currSelection.height / 2);
+            Math.floor(mousePos[0] / currFile.zoom - this.currSelection.width / 2), 
+            Math.floor(mousePos[1] / currFile.zoom - this.currSelection.height / 2));
     }
 
     onEnd(mousePos) {
