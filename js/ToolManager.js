@@ -36,7 +36,6 @@ const ToolManager = (() => {
     }
 
     function onMouseWheel(mouseEvent) {
-        console.log("MOUSE WHEEL");
         if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
 
