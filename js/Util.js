@@ -86,4 +86,13 @@ class Util {
     static toggle(elementId) {
         Util.getElement(elementId).classList.toggle('selected');
     }
+
+    static getPixelColor(data, x, y, dataWidth) {
+        let pos = (y * dataWidth + x) * 4;
+        return [data[pos], data[pos+1], data[pos+2], data[pos + 3]];
+    }
+
+    static isPixelTransparent(data, x, y, dataWidth) {
+        return this.getPixelColor(data, x, y, dataWidth)[3] == 255;
+    }
 }

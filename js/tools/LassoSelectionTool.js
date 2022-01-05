@@ -103,7 +103,7 @@ class LassoSelectionTool extends SelectionTool {
                 pixel[1] == this.boundingBox.minY || pixel[1] == this.boundingBox.maxY;
     }
 
-    visit(pixel, visited) {
+    visit(pixel, visited, data) {
         let toVisit = [pixel];
         let selected = [];
         let currVisited = {};
@@ -115,7 +115,7 @@ class LassoSelectionTool extends SelectionTool {
             visited[pixel] = true;
             currVisited[pixel] = true;
 
-            let col = currFile.VFXLayer.context.getImageData(pixel[0], pixel[1], 1, 1).data;
+            let col = Util.getPixelColor(data, pixel[0], pixel[1], currFile.canvasSize[0]);
             if (col[3] == 255)
                 continue;
             if (this.isBorderOfBox(pixel))
@@ -159,23 +159,15 @@ class LassoSelectionTool extends SelectionTool {
     getSelection() {
         let selected = [];
         let visited = {};
+        let data = currFile.VFXLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
         if (this.currentPixels.length <= 1){
             return;
         }
 
-        /** I'm once again asking you to make a BFS
-         *  - This time since I'm dumb check all pixels in the bounding box
-         *  - Start a BFS: stop when you reach the border of the bounding box:
-         *      - In that case all the pixels you visited aren't part of the selection
-         *  - Also stop when you touch black:
-         *      - If you haven't found the border of the bounding box, then all the pixels you visited
-         *        are inside the selection
-         */
-
         for (let x=this.boundingBox.minX; x<=this.boundingBox.maxX; x++) {
             for (let y=this.boundingBox.minY; y<=this.boundingBox.maxY; y++) {
-                if (visited[x, y] == undefined) {
-                    let insidePixels = this.visit([x,y], visited);
+                if (visited[[x, y]] == undefined) {
+                    let insidePixels = this.visit([x,y], visited, data);
                     
                     for (let i=0; i<insidePixels.length; i++) {
                         selected.push(insidePixels[i]);
