@@ -14,6 +14,7 @@ class LassoSelectionTool extends SelectionTool {
         // Putting the vfx layer on top of everything
         currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
         // clearSelection();
+        this.boundingBox = {minX: 9999999, maxX: -1, minY: 9999999, maxY: -1};
         this.currentPixels = [];
         this.drawSelection();
         this.currentPixels.push([mousePos[0] / currFile.zoom, mousePos[1] / currFile.zoom]);
@@ -105,15 +106,20 @@ class LassoSelectionTool extends SelectionTool {
     visit(pixel, visited) {
         let toVisit = [pixel];
         let selected = [];
+        let currVisited = {};
 
         while (toVisit.length > 0) {
             pixel = toVisit.pop();
             selected.push(pixel);
-            visited.push(pixel);
+            
+            visited[pixel] = true;
+            currVisited[pixel] = true;
 
             let col = currFile.VFXLayer.context.getImageData(pixel[0], pixel[1], 1, 1).data;
             if (col[3] == 255)
                 continue;
+            if (this.isBorderOfBox(pixel))
+                return [];
 
             let top, bottom, left, right;
             if (pixel[1] > 0)
@@ -135,19 +141,15 @@ class LassoSelectionTool extends SelectionTool {
                 right = [pixel[0] + 1, pixel[1]];
             else
                 right = undefined;
-
-            if ((right != undefined && this.isBorderOfBox(right)) || (left != undefined && this.isBorderOfBox(left))
-            || (top != undefined && this.isBorderOfBox(top)) || (bottom != undefined && this.isBorderOfBox(bottom)))
-                return [];
             
             // The include problem: https://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays
-            if (right != undefined && !visited.includes(right))
+            if (right != undefined && currVisited[right] == undefined)
                 toVisit.push(right);
-            if (left != undefined && !visited.includes(left))
+            if (left != undefined && currVisited[left] == undefined)
                 toVisit.push(left);
-            if (top != undefined && !visited.includes(top))
+            if (top != undefined && currVisited[top] == undefined)
                 toVisit.push(top);
-            if (bottom != undefined && !visited.includes(bottom))
+            if (bottom != undefined && currVisited[bottom] == undefined)
                 toVisit.push(bottom);
         }
 
@@ -156,7 +158,7 @@ class LassoSelectionTool extends SelectionTool {
 
     getSelection() {
         let selected = [];
-        let visited = [];
+        let visited = {};
         if (this.currentPixels.length <= 1){
             return;
         }
@@ -170,12 +172,12 @@ class LassoSelectionTool extends SelectionTool {
          *        are inside the selection
          */
 
-        for (let x=this.boundingBox.minX; x<this.boundingBox.maxX; x++) {
-            for (let y=this.boundingBox.minY; y<this.boundingBox.maxY; y++) {
-                if (!visited.includes([x, y])) {
+        for (let x=this.boundingBox.minX; x<=this.boundingBox.maxX; x++) {
+            for (let y=this.boundingBox.minY; y<=this.boundingBox.maxY; y++) {
+                if (visited[x, y] == undefined) {
                     let insidePixels = this.visit([x,y], visited);
                     
-                    for (let i=0; i<insidePixels; i++) {
+                    for (let i=0; i<insidePixels.length; i++) {
                         selected.push(insidePixels[i]);
                     }
                 }
