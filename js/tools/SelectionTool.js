@@ -13,8 +13,11 @@ class SelectionTool extends Tool {
     boundingBox = {minX: 9999999, maxX: -1, minY: 9999999, maxY: -1};
     currSelection = {};
 
+    outlineData = undefined;
     previewData = undefined;
     selectedPixel = undefined;
+
+    moveOffset = [0, 0];
 
     constructor(name, options, switchFunc, moveTool) {
         super(name, options);
@@ -31,6 +34,7 @@ class SelectionTool extends Tool {
 
         this.boundingBox = {minX: 9999999, maxX: -1, minY: 9999999, maxY: -1};
         this.currSelection = {};
+        this.moveOffset = [0, 0];
 
         this.updateBoundingBox(mouseX, mouseY);
     }
@@ -49,7 +53,8 @@ class SelectionTool extends Tool {
     copySelection(){}
     
     cursorInSelectedArea(mousePos) {
-        let floored = [Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom)];
+        let floored = [Math.floor(mousePos[0] / currFile.zoom) + this.moveOffset[0], 
+                       Math.floor(mousePos[1] / currFile.zoom) + this.moveOffset[1]];
 
         if (this.currSelection[floored] != undefined)
             return true;
@@ -114,15 +119,11 @@ class SelectionTool extends Tool {
         let selected = [];
         let visited = {};
         let data = currFile.VFXLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
-
-        /*
-        currFile.VFXLayer.context.fillStyle = "red";
-        currFile.VFXLayer.context.fillRect(this.boundingBox.minX, this.boundingBox.minY, 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX, this.boundingBox.minY, 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.minX, this.boundingBox.maxY, 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX, this.boundingBox.maxY, 1, 1);
-        */
+        let currLayerData = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
         
+        // BFS: a pixel that causes the algorithm to visit a pixel of the bounding box is outside the
+        // selection. Otherwise, since the algorithm stops visiting when it reaches the outline,
+        // the pixel is inside the selection (and so are all the ones that have been visited)
         for (let x=this.boundingBox.minX-1; x<=this.boundingBox.maxX+1; x++) {
             for (let y=this.boundingBox.minY-1; y<=this.boundingBox.maxY+1; y++) {
                 if (visited[[x, y]] == undefined) {
@@ -136,9 +137,39 @@ class SelectionTool extends Tool {
             }
         }
 
+        // Save the selection outline
+        this.outlineData = currFile.VFXLayer.context.getImageData(this.boundingBox.minX, 
+            this.boundingBox.minY, this.boundingBox.maxX - this.boundingBox.minX, 
+            this.boundingBox.maxY - this.boundingBox.minY);
+        // Create the image data containing the selected pixels
+        this.previewData = new ImageData(currFile.canvasSize[0], currFile.canvasSize[1]);
+
+        // Save the selected pixels so that they can be moved and pasted back in the right place
         for (const key in this.currSelection) {
-            currFile.VFXLayer.context.fillStyle = "blue";
-            currFile.VFXLayer.context.fillRect(parseInt(key.split(",")[0]), parseInt(key.split(",")[1]), 1, 1);
+            let x = parseInt(key.split(",")[0]);
+            let y = parseInt(key.split(",")[1]);
+            let index = (y * currFile.canvasSize[1] + x) * 4;
+
+            for (let i=0; i<4; i++) {
+                // Save the pixel
+                this.previewData.data[index + i] = currLayerData[index + i];
+                // Delete the data below
+                currLayerData[index + i] = 0;
+            }
+        }
+        
+        this.drawSelectedArea();
+
+        return this.previewData;
+    }
+
+    drawSelectedArea() {
+        for (const key in this.currSelection) {
+            let x = parseInt(key.split(",")[0]);
+            let y = parseInt(key.split(",")[1]);
+
+            currFile.TMPLayer.context.fillStyle = "rgba(10, 0, 40, 0.3)";
+            currFile.TMPLayer.context.fillRect(x + this.moveOffset[0], y + this.moveOffset[1], 1, 1);
         }
     }
 

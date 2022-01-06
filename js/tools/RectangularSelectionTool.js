@@ -1,5 +1,4 @@
 class RectangularSelectionTool extends SelectionTool {
-    currSelection = {};
 
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
@@ -46,6 +45,7 @@ class RectangularSelectionTool extends SelectionTool {
 
     onEnd(mousePos) {
         super.onEnd(mousePos);
+        
         new HistoryState().EditCanvas();
 
         // Getting the end position
@@ -69,40 +69,10 @@ class RectangularSelectionTool extends SelectionTool {
         this.boundingBox.minY = this.startMousePos[1] - 1;
         this.boundingBox.maxY = this.endMousePos[1] + 1;
 
+        // Switch to the move tool so that the user can move the selection
+        this.switchFunc(this.moveTool);
         // Obtain the selected pixels
-        this.getSelection();
-        // Switch to the move tool so that the user can move the selection
-        this.switchFunc(this.moveTool);
-        this.moveTool.setSelectionData(null, this);
-        
-        /*
-        // Switch to the move tool so that the user can move the selection
-        this.switchFunc(this.moveTool);
-        // Preparing data for the move tool
-        let dataWidth = this.endMousePos[0] - this.startMousePos[0];
-        let dataHeight = this.endMousePos[1] - this.startMousePos[1];
-
-        this.currSelection = {
-            left: this.startMousePos[0], right: this.endMousePos[0], 
-            top: this.startMousePos[1], bottom: this.endMousePos[1], 
-
-            width: dataWidth,
-            height: dataHeight,
-            
-            data: currFile.currentLayer.context.getImageData(
-                this.startMousePos[0], this.startMousePos[1], 
-                dataWidth + 1, dataHeight + 1)
-        };
-        
-        // Moving the selection to the TMP layer. It will be moved back to the original
-        // layer if the user will cancel or end the selection
-        currFile.currentLayer.context.clearRect(this.startMousePos[0], this.startMousePos[1], 
-            dataWidth + 1, dataHeight + 1);
-        // Moving those pixels from the current layer to the tmp layer
-        currFile.TMPLayer.context.putImageData(this.currSelection.data, this.startMousePos[0], this.startMousePos[1]);
-
-        this.moveTool.setSelectionData(this.currSelection, this);*/
-        
+        this.moveTool.setSelectionData(this.getSelection(), this);
     }
 
     copySelection() {

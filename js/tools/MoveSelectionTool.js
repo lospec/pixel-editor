@@ -68,16 +68,15 @@ class MoveSelectionTool extends DrawingTool {
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
-        this.currSelection = this.selectionTool.moveAnts(mousePos[0]/currFile.zoom, 
-            mousePos[1]/currFile.zoom, this.currSelection.width, this.currSelection.height);
-
+        // TODO: add (or subtract?) vector (boundingBoxCenter - canvasCenter);
+        this.selectionTool.moveOffset = [Math.floor(mousePos[0] / currFile.zoom - currFile.canvasSize[0] / 2), 
+                           Math.floor(mousePos[1] / currFile.zoom - currFile.canvasSize[1] / 2)];
         // clear the entire tmp layer
-        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);        
         // put the image data on the tmp layer with offset
-        currFile.TMPLayer.context.putImageData(
-            this.currSelection.data, 
-            Math.floor(mousePos[0] / currFile.zoom - this.currSelection.width / 2), 
-            Math.floor(mousePos[1] / currFile.zoom - this.currSelection.height / 2));
+        currFile.TMPLayer.context.putImageData(this.currSelection, 
+            this.selectionTool.moveOffset[0], this.selectionTool.moveOffset[1]);
+            this.selectionTool.drawSelectedArea();
     }
 
     onEnd(mousePos) {
