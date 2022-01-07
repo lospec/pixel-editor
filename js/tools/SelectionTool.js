@@ -1,6 +1,5 @@
 /** TODO
  * - Once the selected pixels have been obtained, save the selection outline in an image data
- * - At the same time, create another image data and put the selected pixels in it
  * - The move tool will then move those image datas and they'll be pasted on the right layer
  *   at the end of the selection
  * 
@@ -18,6 +17,7 @@ class SelectionTool extends Tool {
     selectedPixel = undefined;
 
     moveOffset = [0, 0];
+    boundingBoxCenter = [0,0];
 
     constructor(name, options, switchFunc, moveTool) {
         super(name, options);
@@ -28,6 +28,14 @@ class SelectionTool extends Tool {
 
     onStart(mousePos) {
         super.onStart(mousePos);
+
+        // Putting the vfx layer on top of everything
+        currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
+        currFile.VFXLayer.context.fillStyle = "rgba(0,0,0,1)";
+
+        this.startMousePos = [Math.floor(mousePos[0] / currFile.zoom),
+                              Math.floor(mousePos[1] / currFile.zoom)];
+        this.endMousePos = [this.startMousePos[0], this.startMousePos[1]];
 
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
@@ -40,21 +48,69 @@ class SelectionTool extends Tool {
     }
 
     onDrag(mousePos) {
+        super.onDrag(mousePos);
+
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
 
         this.updateBoundingBox(mouseX, mouseY);
     }
 
+    onEnd(mousePos) {
+        super.onEnd(mousePos);
+
+        this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
+            this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];
+    }
+
     cutSelection() {}
 
-    pasteSelection(){}
+    pasteSelection(){
+        if (this.currSelection == undefined)
+            return;
+        
+        // I have to save the underlying data, so that the transparent pixels in the clipboard 
+        // don't override the coloured pixels in the canvas
+        let underlyingImageData = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        let pasteData = currFile.TMPLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+
+        // Clearing the tmp (move preview) and vfx (ants) layers
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        
+        for (let i=0; i<underlyingImageData.data.length; i+=4) {
+            let currentMovePixel = [
+                pasteData.data[i], pasteData.data[i+1], pasteData.data[i+2], pasteData.data[i+3]
+            ];
+
+            let currentUnderlyingPixel = [
+                underlyingImageData.data[i], underlyingImageData.data[i+1], 
+                underlyingImageData.data[i+2], underlyingImageData.data[i+3]
+            ];
+
+            // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
+            if (Util.isPixelEmpty(currentMovePixel)) {
+                if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
+                    pasteData.data[i] = currentUnderlyingPixel[0];
+                    pasteData.data[i+1] = currentUnderlyingPixel[1];
+                    pasteData.data[i+2] = currentUnderlyingPixel[2];
+                    pasteData.data[i+3] = currentUnderlyingPixel[3];
+                }
+            }
+        }
+
+        console.log(currFile.canvasSize[0]);
+        currFile.currentLayer.context.putImageData(pasteData, 0, 0);
+        currFile.currentLayer.updateLayerPreview();
+
+        currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
+    }
 
     copySelection(){}
     
     cursorInSelectedArea(mousePos) {
-        let floored = [Math.floor(mousePos[0] / currFile.zoom) + this.moveOffset[0], 
-                       Math.floor(mousePos[1] / currFile.zoom) + this.moveOffset[1]];
+        let floored = [Math.floor(mousePos[0] / currFile.zoom) - this.moveOffset[0], 
+                       Math.floor(mousePos[1] / currFile.zoom) - this.moveOffset[1]];
 
         if (this.currSelection[floored] != undefined)
             return true;
@@ -158,6 +214,9 @@ class SelectionTool extends Tool {
             }
         }
         
+        currFile.currentLayer.context.putImageData(new ImageData(currLayerData, currFile.canvasSize[0]), 0, 0);
+        currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
+        
         this.drawSelectedArea();
 
         return this.previewData;
@@ -168,9 +227,15 @@ class SelectionTool extends Tool {
             let x = parseInt(key.split(",")[0]);
             let y = parseInt(key.split(",")[1]);
 
-            currFile.TMPLayer.context.fillStyle = "rgba(10, 0, 40, 0.3)";
-            currFile.TMPLayer.context.fillRect(x + this.moveOffset[0], y + this.moveOffset[1], 1, 1);
+            currFile.VFXLayer.context.fillStyle = "rgba(10, 0, 40, 0.3)";
+            currFile.VFXLayer.context.fillRect(x + this.moveOffset[0], y + this.moveOffset[1], 1, 1);
         }
+    }
+
+    drawOutline() {
+        currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        currFile.VFXLayer.context.putImageData(this.outlineData, this.boundingBox.minX + this.moveOffset[0],
+            this.boundingBox.minY + this.moveOffset[1]);
     }
 
     isBorderOfBox(pixel) {

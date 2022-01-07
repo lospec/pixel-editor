@@ -1,3 +1,10 @@
+/** TODO:
+ *  - Clear cut selection
+ *  - Clear copy selection
+ *  - Clear paste selection
+ * 
+ */
+
 class MoveSelectionTool extends DrawingTool {
     currSelection = undefined;
     selectionTool = undefined;
@@ -58,29 +65,35 @@ class MoveSelectionTool extends DrawingTool {
 
     onStart(mousePos, mouseTarget) {
         super.onStart(mousePos, mouseTarget);
-
-        if (!this.selectionTool.cursorInSelectedArea(mousePos) && 
-            !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
-            this.endSelection();
-        }
     }
 
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
         // TODO: add (or subtract?) vector (boundingBoxCenter - canvasCenter);
-        this.selectionTool.moveOffset = [Math.floor(mousePos[0] / currFile.zoom - currFile.canvasSize[0] / 2), 
-                           Math.floor(mousePos[1] / currFile.zoom - currFile.canvasSize[1] / 2)];
+        this.selectionTool.moveOffset = 
+            [Math.floor(mousePos[0] / currFile.zoom - currFile.canvasSize[0] / 2  - (this.selectionTool.boundingBoxCenter[0] - currFile.canvasSize[0]/2)), 
+            Math.floor(mousePos[1] / currFile.zoom - currFile.canvasSize[1] / 2- (this.selectionTool.boundingBoxCenter[1] - currFile.canvasSize[1]/2))];
         // clear the entire tmp layer
         currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);        
         // put the image data on the tmp layer with offset
         currFile.TMPLayer.context.putImageData(this.currSelection, 
             this.selectionTool.moveOffset[0], this.selectionTool.moveOffset[1]);
-            this.selectionTool.drawSelectedArea();
+        
+        // Draw the selection area and outline
+        this.selectionTool.drawOutline();
+        this.selectionTool.drawSelectedArea();
     }
 
-    onEnd(mousePos) {
-        super.onEnd(mousePos);
+    onEnd(mousePos, mouseTarget) {
+        super.onEnd(mousePos, mouseTarget);
+
+        if (!this.selectionTool.cursorInSelectedArea(mousePos) && 
+            !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
+            this.endSelection();
+            // Switch to selection tool
+            this.switchFunc(this.selectionTool);
+        }
     }
 
     onSelect() {
@@ -113,7 +126,5 @@ class MoveSelectionTool extends DrawingTool {
             return;
         this.currSelection = undefined;
         this.selectionTool.pasteSelection();
-        // Switch to brush
-        this.switchFunc(this.endTool);
     }
 }
