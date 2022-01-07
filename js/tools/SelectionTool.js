@@ -63,7 +63,25 @@ class SelectionTool extends Tool {
             this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];
     }
 
-    cutSelection() {}
+    cutSelection() {
+        let currLayerData = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
+        
+        // Save the selected pixels so that they can be moved and pasted back in the right place
+        for (const key in this.currSelection) {
+            let x = parseInt(key.split(",")[0]);
+            let y = parseInt(key.split(",")[1]);
+            let index = (y * currFile.canvasSize[1] + x) * 4;
+
+            for (let i=0; i<4; i++) {
+                // Save the pixel
+                this.previewData.data[index + i] = currLayerData[index + i];
+                // Delete the data below
+                currLayerData[index + i] = 0;
+            }
+        }
+
+        currFile.currentLayer.context.putImageData(new ImageData(currLayerData, currFile.canvasSize[0]), 0, 0);
+    }
 
     pasteSelection(){
         if (this.currSelection == undefined)
@@ -106,7 +124,9 @@ class SelectionTool extends Tool {
         currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
     }
 
-    copySelection(){}
+    copySelection() {
+
+    }
     
     cursorInSelectedArea(mousePos) {
         let floored = [Math.floor(mousePos[0] / currFile.zoom) - this.moveOffset[0], 
@@ -175,7 +195,6 @@ class SelectionTool extends Tool {
         let selected = [];
         let visited = {};
         let data = currFile.VFXLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
-        let currLayerData = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
         
         // BFS: a pixel that causes the algorithm to visit a pixel of the bounding box is outside the
         // selection. Otherwise, since the algorithm stops visiting when it reaches the outline,
@@ -200,23 +219,10 @@ class SelectionTool extends Tool {
         // Create the image data containing the selected pixels
         this.previewData = new ImageData(currFile.canvasSize[0], currFile.canvasSize[1]);
 
-        // Save the selected pixels so that they can be moved and pasted back in the right place
-        for (const key in this.currSelection) {
-            let x = parseInt(key.split(",")[0]);
-            let y = parseInt(key.split(",")[1]);
-            let index = (y * currFile.canvasSize[1] + x) * 4;
-
-            for (let i=0; i<4; i++) {
-                // Save the pixel
-                this.previewData.data[index + i] = currLayerData[index + i];
-                // Delete the data below
-                currLayerData[index + i] = 0;
-            }
-        }
-        
-        currFile.currentLayer.context.putImageData(new ImageData(currLayerData, currFile.canvasSize[0]), 0, 0);
+        // Cut the selection
+        this.cutSelection();        
+        // Put it on the TMP layer
         currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
-        
         this.drawSelectedArea();
 
         return this.previewData;
