@@ -1,4 +1,4 @@
-class EyedropperTool extends Tool {
+class EyeDropperTool extends Tool {
     eyedropperPreview = document.getElementById("eyedropper-preview");
     selectedColor = {r:0, g:0, b:0};
 
