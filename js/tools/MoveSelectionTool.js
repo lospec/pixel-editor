@@ -1,8 +1,5 @@
 /** TODO:
- *  - Clear cut selection
- *  - Clear copy selection
- *  - Clear paste selection
- * 
+ *  - Test with lasso
  */
 
 class MoveSelectionTool extends DrawingTool {
@@ -70,7 +67,6 @@ class MoveSelectionTool extends DrawingTool {
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
-        // TODO: add (or subtract?) vector (boundingBoxCenter - canvasCenter);
         this.selectionTool.moveOffset = 
             [Math.floor(mousePos[0] / currFile.zoom - currFile.canvasSize[0] / 2  - (this.selectionTool.boundingBoxCenter[0] - currFile.canvasSize[0]/2)), 
             Math.floor(mousePos[1] / currFile.zoom - currFile.canvasSize[1] / 2- (this.selectionTool.boundingBoxCenter[1] - currFile.canvasSize[1]/2))];

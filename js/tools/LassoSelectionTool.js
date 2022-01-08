@@ -8,9 +8,6 @@ class LassoSelectionTool extends SelectionTool {
 
     onStart(mousePos) {
         super.onStart(mousePos);
-
-        // Putting the vfx layer on top of everything
-        currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
         // clearSelection();
         
         this.currentPixels = [];
@@ -32,11 +29,14 @@ class LassoSelectionTool extends SelectionTool {
         new HistoryState().EditCanvas();
 
         this.currentPixels.push([this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom]);
-        this.getSelection();
 
-        // Switch to the move tool so that the user can move the selection
+        // Include extreme borders
+        this.boundingBox.maxX++;
+        this.boundingBox.maxY++;
+        
+        // Switch to the move tool so that the user can move the selection        
         this.switchFunc(this.moveTool);
-        this.moveTool.setSelectionData(null, this);
+        this.moveTool.setSelectionData(this.getSelection(), this);
     }
 
     onSelect() {
@@ -54,10 +54,7 @@ class LassoSelectionTool extends SelectionTool {
         let prevPoint = [];
         
         currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
-        currFile.VFXLayer.context.strokeStyle = 'rgba(0,0,0,1)';
         currFile.VFXLayer.context.fillStyle = 'rgba(0,0,0,1)';
-        currFile.VFXLayer.context.lineWidth = 1;
-        currFile.VFXLayer.context.beginPath();
 
         for (var index = 0; index < this.currentPixels.length; index ++) {
             point = this.currentPixels[index];
