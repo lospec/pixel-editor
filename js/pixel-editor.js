@@ -38,7 +38,7 @@
 //=include tools/LineTool.js
 //=include tools/RectangleTool.js
 //=include tools/FillTool.js
-//=include tools/EyedropperTool.js
+//=include tools/EyeDropperTool.js
 //=include tools/PanTool.js
 //=include tools/ZoomTool.js
 //=include tools/RectangularSelectionTool.js

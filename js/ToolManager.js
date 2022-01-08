@@ -8,7 +8,7 @@ const ToolManager = (() => {
     tools["line"] = new LineTool("line", {type: 'html'}, switchTool);
     tools["fill"] = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
     
-    tools["eyedropper"] = new EyedropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
+    tools["eyedropper"] = new EyeDropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
     tools["pan"] = new PanTool("pan", {type: 'custom'}, switchTool);
     tools["zoom"] = new ZoomTool("zoom", {type:'custom'});
 
