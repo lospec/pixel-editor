@@ -18,6 +18,7 @@ class SelectionTool extends Tool {
 
     moveOffset = [0, 0];
     boundingBoxCenter = [0,0];
+    reconstruct = {left:false, right:false, top:false, bottom:false};
 
     constructor(name, options, switchFunc, moveTool) {
         super(name, options);
@@ -41,10 +42,13 @@ class SelectionTool extends Tool {
         let mouseY = mousePos[1] / currFile.zoom;
 
         this.boundingBox = {minX: 9999999, maxX: -1, minY: 9999999, maxY: -1};
+        this.reconstruct = {left:false, right:false, top:false, bottom:false};
+        
         this.currSelection = {};
         this.moveOffset = [0, 0];
 
-        this.updateBoundingBox(mouseX, mouseY);
+        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
     }
 
     onDrag(mousePos) {
@@ -53,11 +57,29 @@ class SelectionTool extends Tool {
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
 
-        this.updateBoundingBox(mouseX, mouseY);
+        if (mouseX > currFile.canvasSize[0])
+            this.reconstruct.right = true;
+        else if (mouseX < 0) 
+            this.reconstruct.left = true;
+
+        if (mouseY > currFile.canvasSize[1])
+            this.reconstruct.bottom = true;
+        else if (mouseY < 0) 
+            this.reconstruct.top = true;
+        
+
+        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
     }
 
     onEnd(mousePos) {
         super.onEnd(mousePos);
+
+        let mouseX = mousePos[0] / currFile.zoom;
+        let mouseY = mousePos[1] / currFile.zoom;
+
+        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
 
         this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
             this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];
@@ -196,6 +218,8 @@ class SelectionTool extends Tool {
         let visited = {};
         let data = currFile.VFXLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
         
+        data = this.reconstructSelection(data);
+
         // BFS: a pixel that causes the algorithm to visit a pixel of the bounding box is outside the
         // selection. Otherwise, since the algorithm stops visiting when it reaches the outline,
         // the pixel is inside the selection (and so are all the ones that have been visited)
@@ -226,6 +250,109 @@ class SelectionTool extends Tool {
         this.drawSelectedArea();
 
         return this.previewData;
+    }
+
+    reconstructSelection(data) {
+        let x, y, index;
+        let fill = false;
+
+        if (this.reconstruct.top) {
+            y = Math.max(this.boundingBox.minY, 0);
+            this.boundingBox.minY = y;
+
+            for (x=this.boundingBox.minX; x<this.boundingBox.maxX; x++) {
+                index = (y * currFile.canvasSize[1] + x) * 4;
+                if (data[index + 3] == 255)
+                    fill = !fill;
+
+                if (fill) {
+                    data[index] = 0;
+                    data[index+1] = 0;
+                    data[index+2] = 0;
+                    data[index+3] = 255;
+
+                    currFile.VFXLayer.context.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+        if (this.reconstruct.left) {
+            x = Math.max(this.boundingBox.minX, 0);
+            this.boundingBox.minX = x;
+
+            let startPixel = data[(this.boundingBox.minY * currFile.canvasSize[1] + x) * 4];
+
+            if ((this.reconstruct.top || this.reconstruct.bottom) && startPixel[3] == 255)
+                fill = !fill;
+
+            for (y=this.boundingBox.minY; y<this.boundingBox.maxY; y++) {
+                index = (y * currFile.canvasSize[1] + x) * 4;
+                if (data[index + 3] == 255)
+                    fill = !fill;
+
+                if (fill) {
+                    data[index] = 0;
+                    data[index+1] = 0;
+                    data[index+2] = 0;
+                    data[index+3] = 255;
+
+                    currFile.VFXLayer.context.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+        if (this.reconstruct.bottom) {
+            y = Math.min(this.boundingBox.maxY, currFile.canvasSize[1]-1);
+            this.boundingBox.maxY = y+1;
+
+            let startPixel = data[(y * currFile.canvasSize[1] + this.boundingBox.minX) * 4];
+
+            if ((this.reconstruct.left || this.reconstruct.right) && startPixel[3] == 255)
+                fill = !fill;
+
+            for (x=this.boundingBox.minX; x<this.boundingBox.maxX; x++) {
+                index = (y * currFile.canvasSize[1] + x) * 4;
+                if (data[index + 3] == 255)
+                    fill = !fill;
+
+                if (fill) {
+                    data[index] = 0;
+                    data[index+1] = 0;
+                    data[index+2] = 0;
+                    data[index+3] = 255;
+
+                    currFile.VFXLayer.context.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+        if (this.reconstruct.right) {
+            x = Math.min(this.boundingBox.maxX, currFile.canvasSize[0]-1);
+            this.boundingBox.maxX = x+1;
+
+            let startPixel = data[(this.boundingBox.minY * currFile.canvasSize[1] + x) * 4];
+
+            if ((this.reconstruct.top || this.reconstruct.bottom) && startPixel[3] == 255)
+                fill = !fill;
+
+            for (y=this.boundingBox.minY; y<this.boundingBox.maxY; y++) {
+                index = (y * currFile.canvasSize[1] + x) * 4;
+                if (data[index + 3] == 255)
+                    fill = !fill;
+
+                if (fill) {
+                    data[index] = 0;
+                    data[index+1] = 0;
+                    data[index+2] = 0;
+                    data[index+3] = 255;
+
+                    currFile.VFXLayer.context.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+
+        return data;
     }
 
     drawSelectedArea() {
