@@ -18,6 +18,8 @@ const ToolManager = (() => {
         {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
     tools["lassoselect"] = new LassoSelectionTool("lassoselect", 
         {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
+    tools["magicwand"] = new MagicWandTool("magicwand", 
+        {type: 'cursor', style:'crosshair'}, switchTool, tools["movetool"]);
     
     currTool = tools["brush"];
     currTool.onSelect();

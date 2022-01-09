@@ -41,9 +41,10 @@
 //=include tools/EyeDropperTool.js
 //=include tools/PanTool.js
 //=include tools/ZoomTool.js
+//=include tools/MoveSelectionTool.js
 //=include tools/RectangularSelectionTool.js
 //=include tools/LassoSelectionTool.js
-//=include tools/MoveSelectionTool.js
+//=include tools/MagicWandTool.js
 
 /** MODULES AND MENUS **/
 //=include SplashPage.js
