@@ -85,7 +85,7 @@ class RectangularSelectionTool extends SelectionTool {
         super.onDeselect();
     }
 
-    drawSelection(x, y) {
+    drawSelection() {
         // Getting the vfx context
         let vfxContext = currFile.VFXLayer.context;
     
@@ -96,37 +96,5 @@ class RectangularSelectionTool extends SelectionTool {
         currFile.VFXLayer.drawLine(this.endMousePos[0], this.startMousePos[1], this.endMousePos[0], this.endMousePos[1], 1);
         currFile.VFXLayer.drawLine(this.endMousePos[0], this.endMousePos[1], this.startMousePos[0], this.endMousePos[1], 1);
         currFile.VFXLayer.drawLine(this.startMousePos[0], this.endMousePos[1], this.startMousePos[0], this.startMousePos[1], 1);
-    }
-
-    /** Moves the rect ants to the specified position 
-     * 
-     * @param {*} x X coordinate of the rect ants
-     * @param {*} y Y coordinat of the rect ants
-     * @param {*} width Width of the selection
-     * @param {*} height Height of the selectione
-     * 
-     * @return The data regarding the current position and size of the selection
-     */
-    moveAnts(x, y, width, height) {
-        // Getting the vfx context
-        let vfxContext = currFile.VFXLayer.context;
-        let ret = this.currSelection;
-
-        // Clearing the vfx canvas
-        vfxContext.clearRect(0, 0, currFile.VFXLayer.canvas.width, currFile.VFXLayer.canvas.height);
-
-        // Fixing the coordinates
-        this.currSelection.left = Math.floor(x - (width / 2));
-        this.currSelection.top = Math.floor(y - (height / 2));
-        this.currSelection.right = this.currSelection.left + Math.floor(width);
-        this.currSelection.bottom = this.currSelection.top + Math.floor(height);
-
-        // Drawing the rect
-        currFile.VFXLayer.drawLine(this.currSelection.left, this.currSelection.top, this.currSelection.right, this.currSelection.top, 1);
-        currFile.VFXLayer.drawLine(this.currSelection.right, this.currSelection.top, this.currSelection.right, this.currSelection.bottom, 1);
-        currFile.VFXLayer.drawLine(this.currSelection.right, this.currSelection.bottom, this.currSelection.left, this.currSelection.bottom, 1);
-        currFile.VFXLayer.drawLine(this.currSelection.left, this.currSelection.bottom, this.currSelection.left, this.currSelection.top, 1);
-
-        return ret;
     }
 }

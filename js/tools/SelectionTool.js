@@ -139,7 +139,6 @@ class SelectionTool extends Tool {
             }
         }
 
-        console.log(currFile.canvasSize[0]);
         currFile.currentLayer.context.putImageData(pasteData, 0, 0);
         currFile.currentLayer.updateLayerPreview();
 
