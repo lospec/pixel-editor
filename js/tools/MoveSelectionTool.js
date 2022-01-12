@@ -44,6 +44,10 @@ class MoveSelectionTool extends DrawingTool {
             return;
         if (this.lastCopiedSelection === undefined)
             return;
+        if (!(this.currMousePos[0]/currFile.zoom >= 0 && this.currMousePos[1]/currFile.zoom >= 0 && 
+            this.currMousePos[0]/currFile.zoom < currFile.canvasSize[0] && this.currMousePos[1]/currFile.zoom < currFile.canvasSize[1]))
+            this.currMousePos = [currFile.canvasSize[0]*currFile.zoom / 2, currFile.canvasSize[1]*currFile.zoom /2];
+        
         // Finish the current selection and start a new one with the same data
         if (!this.cutting) {
             this.endSelection();

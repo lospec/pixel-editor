@@ -67,10 +67,6 @@ class RectangularSelectionTool extends SelectionTool {
         this.moveTool.setSelectionData(this.getSelection(), this);
     }
 
-    copySelection() {
-        super.copySelection();
-    }
-
     cutSelection() {
         super.cutSelection();
         currFile.currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,

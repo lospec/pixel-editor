@@ -1,10 +1,3 @@
-/** TODO
- * - Once the selected pixels have been obtained, save the selection outline in an image data
- * - The move tool will then move those image datas and they'll be pasted on the right layer
- *   at the end of the selection
- * 
- */
-
 class SelectionTool extends Tool {
     switchFunc = undefined;
     moveTool = undefined;
@@ -143,10 +136,6 @@ class SelectionTool extends Tool {
         currFile.currentLayer.updateLayerPreview();
 
         currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;
-    }
-
-    copySelection() {
-
     }
     
     cursorInSelectedArea(mousePos) {
