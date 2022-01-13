@@ -17,6 +17,8 @@ console.log('Building Pixel Editor');
 function copy_images(){
     // Icons
     gulp.src('./images/*.png').pipe(gulp.dest(BUILDDIR));
+	//favicon
+    gulp.src('./images/*.ico').pipe(gulp.dest(BUILDDIR));
     // Splash images
     gulp.src('./images/Splash images/*.png').pipe(gulp.dest(BUILDDIR));
     // Logs images
