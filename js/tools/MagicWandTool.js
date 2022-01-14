@@ -40,6 +40,11 @@ class MagicWandTool extends SelectionTool {
         this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
             this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];
 
+        // Cut the selection
+        this.cutSelection();
+        // Put it on the TMP layer
+        currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
+
         return selectedData;
     }
 
