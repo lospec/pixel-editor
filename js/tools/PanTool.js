@@ -10,7 +10,7 @@ class PanTool extends Tool {
         super.onStart(mousePos);
         if (target.className != 'drawingCanvas')
             return;
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan-held.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan-held.png\'), auto";
 	}
 
 	onDrag(mousePos, target) {
@@ -31,12 +31,12 @@ class PanTool extends Tool {
         if (target.className != 'drawingCanvas')
             return;
 
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan.png\'), auto";
 	}
 
     onSelect() {
         super.onSelect();        
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan.png\'), auto";
     }
 
     onDeselect() {

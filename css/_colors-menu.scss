@@ -112,7 +112,7 @@
 	button {
 		border: none;
 		width: 100%;
-		cursor: url('/pixel-editor/eyedropper.png'), auto;
+		cursor: url('eyedropper.png'), auto;
 	} //white outline
 	&.selected button::before {
 		content: "";
