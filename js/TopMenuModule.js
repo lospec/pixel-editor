@@ -18,6 +18,7 @@ const TopMenuModule = (() => {
                 closeMenu();
                 // Select the item
                 Util.select(e.target.parentElement);
+                e.stopPropagation();
             });
 
             const subMenu = menuItem.children[1];
@@ -53,18 +54,29 @@ const TopMenuModule = (() => {
                                 e.preventDefault();
                         }
                         break;
-                    // REFACTOR: move the binding to the Selection IIFE or something like that once it's done
                     case 'Paste':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+v");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+v");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Copy':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+c");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+c");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Cut':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+x");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+x");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Cancel':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("esc-pressed")});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("esc-pressed");
+                            e.stopPropagation();
+                        });
                         break;
                     //Help Menu
                     case 'Settings':

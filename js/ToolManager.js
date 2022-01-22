@@ -30,6 +30,9 @@ const ToolManager = (() => {
     Events.on("mousedown", window, onMouseDown);
     Events.on("wheel", window, onMouseWheel);
 
+    // Assign a selection tool to the move tool
+    tools["moveselection"].selectionTool = tools["lassoselect"];
+
     // Bind tool shortcuts
     Events.onCustom("tool-shortcut", onShortcut);
 
@@ -145,10 +148,13 @@ const ToolManager = (() => {
         return currTool;
     }
 
-    function switchTool(newTool) {
+    function switchTool(newTool, event) {
         currTool.onDeselect();
         currTool = newTool;
         currTool.onSelect();
+
+        if (event != undefined)
+            event.stopPropagation();
     }
 
     return {

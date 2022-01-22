@@ -6,17 +6,24 @@ class LassoSelectionTool extends SelectionTool {
         Events.on('click', this.mainButton, switchFunc, this);
     }
 
-    onStart(mousePos) {
-        super.onStart(mousePos);
-        // clearSelection();
+    onStart(mousePos, mouseTarget) {
+        super.onStart(mousePos, mouseTarget);
+
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
         
         this.currentPixels = [];
         this.drawSelection();
         this.currentPixels.push([mousePos[0] / currFile.zoom, mousePos[1] / currFile.zoom]);
     }
 
-    onDrag(mousePos) {
-        super.onDrag(mousePos);        
+    onDrag(mousePos, mouseTarget) {
+        super.onDrag(mousePos, mouseTarget);     
+        
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         if (this.currentPixels[this.currentPixels.length - 1] != mousePos)
             this.currentPixels.push([mousePos[0] / currFile.zoom, mousePos[1] / currFile.zoom]);
@@ -24,9 +31,13 @@ class LassoSelectionTool extends SelectionTool {
         this.drawSelection();
     }
 
-    onEnd(mousePos) {
-        super.onEnd(mousePos);
+    onEnd(mousePos, mouseTarget) {
+        super.onEnd(mousePos, mouseTarget);
         new HistoryState().EditCanvas();
+
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         this.currentPixels.push([this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom]);
 

@@ -96,14 +96,14 @@ class Tool {
 		currFile.canvasView.style.cursor = 'default';
 	}
 
-	onStart(mousePos) {
+	onStart(mousePos, mouseTarget) {
 		this.startMousePos = mousePos;
 	}
 
-	onDrag(mousePos) {
+	onDrag(mousePos, mouseTarget) {
 	}
 
-	onEnd(mousePos) {
+	onEnd(mousePos, mouseTarget) {
 		this.endMousePos = mousePos;
 	}
 

@@ -20,8 +20,12 @@ class SelectionTool extends Tool {
         this.switchFunc = switchFunc;
     }
 
-    onStart(mousePos) {
+    onStart(mousePos, mouseTarget) {
         super.onStart(mousePos);
+
+        if (mouseTarget == undefined || Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         // Putting the vfx layer on top of everything
         currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
@@ -47,6 +51,7 @@ class SelectionTool extends Tool {
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
+        console.log("drag");
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
 
@@ -65,8 +70,12 @@ class SelectionTool extends Tool {
             Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
     }
 
-    onEnd(mousePos) {
+    onEnd(mousePos, mouseTarget) {
         super.onEnd(mousePos);
+
+        if (mouseTarget == undefined || Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
@@ -232,10 +241,12 @@ class SelectionTool extends Tool {
         this.previewData = new ImageData(currFile.canvasSize[0], currFile.canvasSize[1]);
 
         // Cut the selection
-        this.cutSelection();        
+        this.cutSelection();
         // Put it on the TMP layer
         currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
+        // Draw the selected area and the bounding box
         this.drawSelectedArea();
+        this.drawBoundingBox();
 
         return this.previewData;
     }
@@ -357,6 +368,18 @@ class SelectionTool extends Tool {
         currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
         currFile.VFXLayer.context.putImageData(this.outlineData, this.boundingBox.minX + this.moveOffset[0],
             this.boundingBox.minY + this.moveOffset[1]);
+    }
+
+    drawBoundingBox() {
+        currFile.VFXLayer.context.fillStyle = "red";
+        currFile.VFXLayer.context.fillRect(this.boundingBox.minX + this.moveOffset[0], 
+            this.boundingBox.minY + this.moveOffset[1], 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.minX+ this.moveOffset[0], 
+            this.boundingBox.maxY + this.moveOffset[1], 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX+ this.moveOffset[0], 
+            this.boundingBox.minY + this.moveOffset[1], 1, 1);
+        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX+ this.moveOffset[0], 
+            this.boundingBox.maxY + this.moveOffset[1], 1, 1);
     }
 
     isBorderOfBox(pixel) {

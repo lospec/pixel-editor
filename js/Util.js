@@ -95,4 +95,8 @@ class Util {
     static isPixelTransparent(data, x, y, dataWidth) {
         return this.getPixelColor(data, x, y, dataWidth)[3] == 255;
     }
+
+    static cursorInCanvas(canvasSize, mousePos) {
+        return mousePos[0] >= 0 && mousePos[1] >= 0 && canvasSize[0] > mousePos[0] && canvasSize[1] > mousePos[1];
+    }
 }

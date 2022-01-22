@@ -5,8 +5,12 @@ class RectangularSelectionTool extends SelectionTool {
         Events.on('click', this.mainButton, switchFunc, this);
     }
 
-    onStart(mousePos) {
-        super.onStart(mousePos);
+    onStart(mousePos, mouseTarget) {
+        super.onStart(mousePos, mouseTarget);
+
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         // Avoiding external selections
         if (this.startMousePos[0] < 0) {
@@ -27,17 +31,25 @@ class RectangularSelectionTool extends SelectionTool {
         this.drawSelection(this.startMousePos[0], this.startMousePos[1]);
     }
 
-    onDrag(mousePos) {
-        super.onDrag(mousePos);
+    onDrag(mousePos, mouseTarget) {
+        super.onDrag(mousePos, mouseTarget);
+
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         // Drawing the rect
         this.endMousePos = [Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom)];
         this.drawSelection(Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom));
     }
 
-    onEnd(mousePos) {
-        super.onEnd(mousePos);
+    onEnd(mousePos, mouseTarget) {
+        super.onEnd(mousePos, mouseTarget);
         
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
+
         new HistoryState().EditCanvas();
 
         // Getting the end position

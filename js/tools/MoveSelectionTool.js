@@ -1,7 +1,3 @@
-/** TODO:
- *  - Test with lasso
- */
-
 class MoveSelectionTool extends DrawingTool {
     currSelection = undefined;
     selectionTool = undefined;
@@ -18,17 +14,20 @@ class MoveSelectionTool extends DrawingTool {
 
         Events.onCustom("esc-pressed", this.endSelection.bind(this));
 
-        Events.onCustom("ctrl+c", this.copySelection.bind(this));
-        Events.onCustom("ctrl+x", this.cutSelection.bind(this));
+        Events.onCustom("ctrl+c", this.copySelection.bind(this), true);
+        Events.onCustom("ctrl+x", this.cutSelection.bind(this), true);
         Events.onCustom("ctrl+v", this.pasteSelection.bind(this));
     }
 
-    copySelection() {
+    copySelection(event) {
         this.lastCopiedSelection = this.currSelection;
         this.cutting = false;
+
+        if (event)
+            this.switchFunc(this.selectionTool);
     }
 
-    cutSelection() {
+    cutSelection(event) {
         if (currFile.currentLayer.isLocked)
             return;
         this.cutting = true;
@@ -37,6 +36,11 @@ class MoveSelectionTool extends DrawingTool {
         this.currSelection = this.lastCopiedSelection;
         // Cut the data
         this.selectionTool.cutSelection();
+
+        if (event)
+            this.switchFunc(this.selectionTool);
+        
+        new HistoryState().EditCanvas();
     }
 
     pasteSelection() {
@@ -56,6 +60,7 @@ class MoveSelectionTool extends DrawingTool {
 
         this.switchFunc(this);
         this.currSelection = this.lastCopiedSelection;
+        this.selectionTool.drawSelectedArea();
 
         // Putting the vfx layer on top of everything
         currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
@@ -83,13 +88,15 @@ class MoveSelectionTool extends DrawingTool {
         // Draw the selection area and outline
         this.selectionTool.drawOutline();
         this.selectionTool.drawSelectedArea();
+        this.selectionTool.drawBoundingBox();
     }
 
     onEnd(mousePos, mouseTarget) {
         super.onEnd(mousePos, mouseTarget);
 
         if (!this.selectionTool.cursorInSelectedArea(mousePos) && 
-            !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
+            !Util.isChildOfByClass(mouseTarget, "editor-top-menu") && 
+            Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
             this.endSelection();
             // Switch to selection tool
             this.switchFunc(this.selectionTool);
@@ -102,6 +109,7 @@ class MoveSelectionTool extends DrawingTool {
 
     onDeselect() {
         super.onDeselect();
+        this.endSelection();
     }
 
     setSelectionData(data, tool) {
@@ -121,10 +129,13 @@ class MoveSelectionTool extends DrawingTool {
         }
     }
 
-    endSelection() {
+    endSelection(event) {
         if (this.currSelection == undefined)
             return;
         this.currSelection = undefined;
         this.selectionTool.pasteSelection();
+
+        if (event)
+            this.switchFunc(this.selectionTool);
     }
 }

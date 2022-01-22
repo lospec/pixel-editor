@@ -5,8 +5,12 @@ class MagicWandTool extends SelectionTool {
         Events.on('click', this.mainButton, switchFunc, this);
     }
 
-    onEnd(mousePos) {
-        super.onStart(mousePos);
+    onEnd(mousePos, mouseTarget) {
+        super.onStart(mousePos, mouseTarget);
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
+            
 
         this.switchFunc(this.moveTool);
         this.moveTool.setSelectionData(this.getSelection(), this);
@@ -44,6 +48,9 @@ class MagicWandTool extends SelectionTool {
         this.cutSelection();
         // Put it on the TMP layer
         currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
+
+        // Draw the bounding box
+        this.drawBoundingBox();
 
         return selectedData;
     }
