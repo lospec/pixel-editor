@@ -37,6 +37,7 @@
 //=include tools/EraserTool.js
 //=include tools/LineTool.js
 //=include tools/RectangleTool.js
+//=include tools/EllipseTool.js
 //=include tools/FillTool.js
 //=include tools/EyeDropperTool.js
 //=include tools/PanTool.js
@@ -69,7 +70,7 @@ PresetModule.instrumentPresetMenu();
 
 //when the page is done loading, you can get ready to start
 window.onload = function () {
-    featureToggles.onLoad();
+    //featureToggles.onLoad();
 
     ToolManager.currentTool().updateCursor();
 	
