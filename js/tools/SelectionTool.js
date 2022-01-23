@@ -120,28 +120,7 @@ class SelectionTool extends Tool {
         currFile.TMPLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
         currFile.VFXLayer.context.clearRect(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
         
-        for (let i=0; i<underlyingImageData.data.length; i+=4) {
-            let currentMovePixel = [
-                pasteData.data[i], pasteData.data[i+1], pasteData.data[i+2], pasteData.data[i+3]
-            ];
-
-            let currentUnderlyingPixel = [
-                underlyingImageData.data[i], underlyingImageData.data[i+1], 
-                underlyingImageData.data[i+2], underlyingImageData.data[i+3]
-            ];
-
-            // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
-            if (Util.isPixelEmpty(currentMovePixel)) {
-                if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
-                    pasteData.data[i] = currentUnderlyingPixel[0];
-                    pasteData.data[i+1] = currentUnderlyingPixel[1];
-                    pasteData.data[i+2] = currentUnderlyingPixel[2];
-                    pasteData.data[i+3] = currentUnderlyingPixel[3];
-                }
-            }
-        }
-
-        currFile.currentLayer.context.putImageData(pasteData, 0, 0);
+        Util.pasteData(underlyingImageData, pasteData, currFile.currentLayer.context);
         currFile.currentLayer.updateLayerPreview();
 
         currFile.VFXLayer.canvas.style.zIndex = MIN_Z_INDEX;

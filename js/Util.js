@@ -1,6 +1,37 @@
 // Acts as a public static class
 class Util {
 
+    /** Pastes the source image data on the destination image data, keeping the pixels where the 
+     *  source image data is transparent
+     * 
+     * @param {*} source 
+     * @param {*} destination 
+     */
+    static pasteData(underlyingImageData, pasteData, finalContext) {
+        for (let i=0; i<underlyingImageData.data.length; i+=4) {
+            let currentMovePixel = [
+                pasteData.data[i], pasteData.data[i+1], pasteData.data[i+2], pasteData.data[i+3]
+            ];
+
+            let currentUnderlyingPixel = [
+                underlyingImageData.data[i], underlyingImageData.data[i+1], 
+                underlyingImageData.data[i+2], underlyingImageData.data[i+3]
+            ];
+
+            // If the pixel of the clipboard is empty, but the one below it isn't, I use the pixel below
+            if (Util.isPixelEmpty(currentMovePixel)) {
+                if (!Util.isPixelEmpty(currentUnderlyingPixel)) {
+                    pasteData.data[i] = currentUnderlyingPixel[0];
+                    pasteData.data[i+1] = currentUnderlyingPixel[1];
+                    pasteData.data[i+2] = currentUnderlyingPixel[2];
+                    pasteData.data[i+3] = currentUnderlyingPixel[3];
+                }
+            }
+        }
+
+        finalContext.putImageData(pasteData, 0, 0);
+    }
+
     /** Tells if a pixel is empty (has alpha = 0)
      * 
      * @param {*} pixel 

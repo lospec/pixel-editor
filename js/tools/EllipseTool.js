@@ -35,8 +35,11 @@ class EllipseTool extends ResizableTool {
             this.switchFunction(this);
     }
 
-    onStart(mousePos) {
+    onStart(mousePos, mouseTarget) {
         super.onStart(mousePos);
+
+        if (mouseTarget.className != "drawingCanvas")
+            return;
 
         // Putting the tmp layer on top of everything
         currFile.TMPLayer.canvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex, 10) + 1;
@@ -60,6 +63,10 @@ class EllipseTool extends ResizableTool {
      */
 	onEnd(mousePos) {
         super.onEnd(mousePos);
+        
+        if (this.startMousePos == undefined)
+            return;
+
         let tmpContext = currFile.TMPLayer.context;
 
         this.endMousePos[0] = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
@@ -67,16 +74,21 @@ class EllipseTool extends ResizableTool {
 
         // If I have to fill it, I do so
         if (this.currFillMode == 'fill') {
-            // Use the fill tool    
+            // Use the fill tool on the tmp canvas
+            FillTool.fill([this.startMousePos[0] * currFile.zoom, this.startMousePos[1] * currFile.zoom], 
+                currFile.TMPLayer.context);
         }
 
-        // Drawing the ellipse
-        this.drawEllipse(this.endMousePos[0], this.endMousePos[1], currFile.currentLayer.context);
+        Util.pasteData(currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]),
+            currFile.TMPLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]),
+            currFile.currentLayer.context);
         
         // Update the layer preview
         currFile.currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
         tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+
+        this.startMousePos = undefined;
 	}
 
     onSelect() {
