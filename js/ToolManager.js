@@ -6,7 +6,7 @@ const ToolManager = (() => {
     tools["eraser"] = new EraserTool("eraser", {type: 'html'}, switchTool);
     tools["rectangle"] = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     tools["line"] = new LineTool("line", {type: 'html'}, switchTool);
-    tools["ellipse"] = new EllipseTool("ellipse", {type: 'html'}, switchTool);
+    tools["ellipse"] = new EllipseTool("ellipse", {type: 'cursor', style: 'crosshair'}, switchTool);
     tools["fill"] = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
     
     tools["eyedropper"] = new EyeDropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);

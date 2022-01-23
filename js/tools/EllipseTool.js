@@ -1,10 +1,12 @@
-class EllipseTool extends DrawingTool {
+class EllipseTool extends ResizableTool {
     // Saving the empty rect svg
     emptyEllipseSVG = document.getElementById("ellipse-empty-button-svg");
     // and the full rect svg so that I can change them when the user changes rect modes
     fullEllipseSVG = document.getElementById("ellipse-full-button-svg");
     // Current fill mode
     currFillMode = 'empty';
+
+    filledPixels = {};
 
     switchFunction = null;
 
@@ -45,10 +47,10 @@ class EllipseTool extends DrawingTool {
         new HistoryState().EditCanvas();
 	}
 
-	onDrag(mousePos, cursorTarget) {
-
+	onDrag(mousePos) {
         // Drawing the rect at the right position
-	    this.drawRect(Math.floor(mousePos[0] / currFile.zoom) + 0.5, Math.floor(mousePos[1] / currFile.zoom) + 0.5);
+	    this.drawEllipse(Math.floor(mousePos[0] / currFile.zoom) + 0.5, Math.floor(mousePos[1] / currFile.zoom) + 0.5, 
+            currFile.TMPLayer.context);
 	}
 
     /** Finishes drawing the rect, decides the end coordinates and moves the preview rectangle to the
@@ -60,44 +62,17 @@ class EllipseTool extends DrawingTool {
         super.onEnd(mousePos);
         let tmpContext = currFile.TMPLayer.context;
 
-        let endRectX = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
-        let endRectY = Math.floor(mousePos[1] / currFile.zoom) + 0.5;
-        let startRectX = this.startMousePos[0];
-        let startRectY = this.startMousePos[1];
-
-        // Inverting end and start (start must always be the top left corner)
-        if (endRectX < startRectX) {
-            let tmp = endRectX;
-            endRectX = startRectX;
-            startRectX = tmp;
-        }
-        // Same for the y
-        if (endRectY < startRectY) {
-            let tmp = endRectY;
-            endRectY = startRectY;
-            startRectY = tmp;
-        }
-
-        // Drawing the rect
-        startRectY -= 0.5;
-        endRectY -= 0.5;
-        endRectX -= 0.5;
-        startRectX -= 0.5;
-
-        // Setting the correct linewidth and colour
-        currFile.currentLayer.context.lineWidth = this.currSize;
-
-        // Drawing the rect using 4 lines
-        currFile.currentLayer.drawLine(startRectX, startRectY, endRectX, startRectY, this.currSize);
-        currFile.currentLayer.drawLine(endRectX, startRectY, endRectX, endRectY, this.currSize);
-        currFile.currentLayer.drawLine(endRectX, endRectY, startRectX, endRectY, this.currSize);
-        currFile.currentLayer.drawLine(startRectX, endRectY, startRectX, startRectY, this.currSize);
+        this.endMousePos[0] = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
+        this.endMousePos[1] = Math.floor(mousePos[1] / currFile.zoom) + 0.5;
 
         // If I have to fill it, I do so
         if (this.currFillMode == 'fill') {
-            currFile.currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
+            // Use the fill tool    
         }
 
+        // Drawing the ellipse
+        this.drawEllipse(this.endMousePos[0], this.endMousePos[1], currFile.currentLayer.context);
+        
         // Update the layer preview
         currFile.currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
@@ -112,32 +87,81 @@ class EllipseTool extends DrawingTool {
         super.onDeselect();
     }
 
-    /** Draws a rectangle with end coordinates given by x and y on the tmp layer (draws
-     *  the preview for the rectangle tool)
+    /** Draws an ellipse with end coordinates given by x and y on the tmp layer (draws
+     *  the preview for the ellipse tool)
      * 
-     * @param {*} x The current end x of the rectangle
-     * @param {*} y The current end y of the rectangle
+     * @param {*} x The current end x of the ellipse
+     * @param {*} y The current end y of the ellipse
      */
-    drawRect(x, y) {
-        // Getting the tmp context
-        let tmpContext = currFile.TMPLayer.context;
-
+    drawEllipse(x, y, context) {
+        // Width and height of the ellipse
+        let width = undefined;
+        let height = undefined;
+        
         // Clearing the tmp canvas
-        tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
+        currFile.TMPLayer.context.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
 
-        // Drawing the rect
-        tmpContext.lineWidth = this.currSize;
+        // Compute width and height
+        width = Math.abs(x - this.startMousePos[0]);
+        height = Math.abs(y - this.startMousePos[1]);
 
-        // Drawing the rect
-        tmpContext.beginPath();
-        if ((this.currSize % 2 ) == 0) {
-            tmpContext.rect(this.startMousePos[0] - 0.5, this.startMousePos[1] - 0.5, x - this.startMousePos[0], y - this.startMousePos[1]);
+        // Drawing the ellipse
+        this.previewEllipse(context, this.startMousePos[0], this.startMousePos[1], width, height);
+    }
+
+    previewEllipse(context, xc, yc, a, b) {
+        let x, y1, y2;
+        let toFill = {};
+        let removed = {};
+
+        x = xc - a;
+
+        while (x < (xc + a)) {
+            
+            let root = Math.sqrt((1 - (((x - xc)*(x - xc)) / (a*a))) * b*b);
+            let flooredX = Math.floor(x);
+            let flooredY1, flooredY2;
+
+            y1 = root + yc;
+            y2 = -root + yc;
+
+            flooredY1 = Math.floor(y1);
+            flooredY2 = Math.floor(y2);
+
+            toFill[[flooredX, flooredY1]] = true;
+            toFill[[flooredX, flooredY2]] = true;
+
+            x += 0.005;
         }
-        else {
-            tmpContext.rect(this.startMousePos[0], this.startMousePos[1], x - this.startMousePos[0], y - this.startMousePos[1]);
-        }
 
-        tmpContext.setLineDash([]);
-        tmpContext.stroke();
+        for (const coord in toFill) {
+            let arrayCoord = JSON.parse("[" + coord + "]");
+
+            if (arrayCoord[0]-xc > 0 || arrayCoord[1]-yc < 0) {
+                continue;
+            }
+
+            if (!(
+            // Top and left
+            (toFill[[arrayCoord[0], arrayCoord[1] - 1]] && toFill[[arrayCoord[0] - 1, arrayCoord[1]]] &&
+            !removed[[arrayCoord[0], arrayCoord[1] - 1]] && !removed[arrayCoord[0] - 1, arrayCoord[1]]) ||
+            // Top and right
+            (toFill[[arrayCoord[0], arrayCoord[1] - 1]] && toFill[[arrayCoord[0] + 1, arrayCoord[1]]] &&
+            !removed[[arrayCoord[0], arrayCoord[1] - 1]] && !removed[arrayCoord[0] + 1, arrayCoord[1]]) ||
+            // Bottom and left
+            (toFill[[arrayCoord[0], arrayCoord[1] + 1]] && toFill[[arrayCoord[0] - 1, arrayCoord[1]]] &&
+            !removed[[arrayCoord[0], arrayCoord[1] + 1]] && !removed[arrayCoord[0] - 1, arrayCoord[1]]) ||
+            // Bottom and right
+            (toFill[[arrayCoord[0], arrayCoord[1] + 1]] && toFill[[arrayCoord[0] + 1, arrayCoord[1]]] &&
+                !removed[[arrayCoord[0], arrayCoord[1] + 1]] && !removed[arrayCoord[0] + 1, arrayCoord[1]])) ||
+            removed[arrayCoord]) {
+                context.fillRect(arrayCoord[0], arrayCoord[1], this.currSize, this.currSize);
+                context.fillRect(xc + Math.abs(xc - arrayCoord[0]), arrayCoord[1], this.currSize, this.currSize);
+                context.fillRect(arrayCoord[0], yc - Math.abs(yc - arrayCoord[1]), this.currSize, this.currSize);
+                context.fillRect(xc + Math.abs(xc - arrayCoord[0]), yc - Math.abs(yc - arrayCoord[1]), this.currSize, this.currSize);
+            }
+
+            removed[arrayCoord] = true;
+        }
     }
 }
