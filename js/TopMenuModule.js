@@ -5,8 +5,9 @@ const TopMenuModule = (() => {
     initMenu();
 
     function initMenu() {
-        //for each button in main menu (starting at 1 to avoid logo)
-        for (let i = 1; i < mainMenuItems.length; i++) {
+        // for each button in main menu (starting at 1 to avoid logo), ending at length-1 to avoid
+        // editor info
+        for (let i = 1; i < mainMenuItems.length-1; i++) {
 
             //get the button that's in the list item
             const menuItem = mainMenuItems[i];

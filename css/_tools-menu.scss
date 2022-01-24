@@ -109,3 +109,28 @@
 #tools-menu li:hover {
 	background: $basehover;
 }
+
+/* Tool tutorial */
+#tool-tutorial {
+	display:inline-block;
+	position:absolute;
+	z-index:4000;
+	margin-left:48px;
+	margin-top:48px;
+	background-color: $basehover;
+	color:$basetext;
+	font-size:14px;
+	width:20%;
+	border-radius:0 5px 5px 5px;
+	
+	img {
+		width:100%;
+	}
+}
+
+#tool-tutorial:after {
+	border-left: 11px solid #222;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	position: relative;
+}

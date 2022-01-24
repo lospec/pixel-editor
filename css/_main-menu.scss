@@ -69,7 +69,7 @@
 
 
 
-/*app title*/
+/* app title */
 
 .logo {
 	color: lighten($basecolor, 20%);
@@ -82,4 +82,47 @@
 
 #main-menu li.open, #main-menu li button:hover {
 	background: $basehover;
+}
+
+/* Editor info */
+li#editor-info {
+	float:right;
+	height:100%;
+	display:flex;
+	align-items: center;
+	background-color: $basecolor;
+	color:$basetext;
+
+	ul {
+		background-color: $basecolor;
+		display:block;
+		position:relative;
+		top:0px;
+		padding-top:0px;
+		box-shadow: none;
+		padding-bottom: 0px;
+
+		li {
+			top:0px;
+			padding-top:0px;
+			display:inline;
+			padding-right:20px;
+		}
+		input {
+			margin-left:10px;
+			background-color:$basehovertext;
+			box-shadow:none;
+			border:none;
+			vertical-align: middle;
+			border-radius:5px;
+		}
+		input[type=text] {
+			width:20px;
+			height:15px;
+		}
+		input[type=checkbox] {
+			width:15px;
+			height:15px;
+		}
+	}
 }

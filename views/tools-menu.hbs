@@ -1,6 +1,6 @@
 <ul id="tools-menu">
 	<li class="selected expanded">
-		<button title="Brush Tool (B)" id="brush-button">{{svg "pencil.svg" width="24" height="24"}}</button>
+		<button id="brush-button">{{svg "pencil.svg" width="24" height="24"}}</button>
 		<ul class="size-buttons">
 			<button title="Increase Brush Size" id="brush-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
 			<button title="Decrease Brush Size" id="brush-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
@@ -8,7 +8,7 @@
 	</li>
 
 	<li class = "expanded">
-		<button title="Eraser tool (R)" id="eraser-button">{{svg "eraser.svg" width="24" height="24"}}</button>
+		<button id="eraser-button">{{svg "eraser.svg" width="24" height="24"}}</button>
 		<ul class="size-buttons">
 			<button title="Increase Eraser Size" id="eraser-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
 			<button title="Decrease Eraser Size" id="eraser-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
@@ -16,7 +16,7 @@
 	</li>
 
 	<li class="expanded">
-		<button title="Rectangle Tool (U)" id="rectangle-button">{{svg "rectangle.svg" width="24" height="24" id = "rectangle-empty-button-svg"}}
+		<button id="rectangle-button">{{svg "rectangle.svg" width="24" height="24" id = "rectangle-empty-button-svg"}}
 		{{svg "fullrect.svg" width="24" height="24" id = "rectangle-full-button-svg" display = "none"}}</button>
 		<ul class="size-buttons">
 			<button title="Increase Rectangle Size" id="rectangle-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
@@ -25,7 +25,7 @@
 	</li>
 
 	<li class="expanded">
-		<button title="Ellipse Tool (S)" id="ellipse-button">
+		<button id="ellipse-button">
 			{{svg "ellipse.svg" width="24" height="24" id = "ellipse-empty-button-svg"}}
 			{{svg "filledellipse.svg" width="24" height="24" id = "ellipse-full-button-svg" display = "none"}}
 		</button>
@@ -36,23 +36,32 @@
 	</li>
 
 	<li class="expanded">
-		<button title="Line Tool (L)" id="line-button">{{svg "line.svg" width="24" height="24"}}</button>
+		<button id="line-button">{{svg "line.svg" width="24" height="24"}}</button>
 		<ul class="size-buttons">
 			<button title="Increase Line Size" id="line-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
 			<button title="Decrease Line Size" id="line-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
 		</ul>
 	</li>
 
-	<li><button title="Fill Tool (F)" id="fill-button">{{svg "fill.svg" width="24" height="24"}}</button></li>
+	<li><button id="fill-button">{{svg "fill.svg" width="24" height="24"}}</button></li>
 
-	<li><button title = "Rectangular Selection Tool (M)" id = "rectselect-button">{{svg "rectselect.svg" width = "24" height = "24"}}</button><li>
+	<li><button id = "rectselect-button">{{svg "rectselect.svg" width = "24" height = "24"}}</button><li>
 
-	<li><button title = "Lasso Selection Tool (Q)" id = "lassoselect-button">{{svg "lasso.svg" width = "26" height = "26"}}</button></li>
+	<li><button id = "lassoselect-button">{{svg "lasso.svg" width = "26" height = "26"}}</button></li>
 
-	<li><button title = "Magic Wand Tool (W)" id = "magicwand-button">{{svg "magicwand.svg" width = "26" height = "26"}}</button></li>
+	<li><button id = "magicwand-button">{{svg "magicwand.svg" width = "26" height = "26"}}</button></li>
 
-	<li><button title="Eyedropper Tool (E)" id="eyedropper-button">{{svg "eyedropper.svg" width="24" height="24"}}</button></li>
+	<li><button id="eyedropper-button">{{svg "eyedropper.svg" width="24" height="24"}}</button></li>
 
-	<li><button title="Pan Tool (P)" id="pan-button">{{svg "pan.svg" width="24" height="24"}}</button></li>
-
+	<li><button id="pan-button">{{svg "pan.svg" width="24" height="24"}}</button></li>
 </ul>
+
+<div id="tool-tutorial">
+	<ul>
+		<li><span class="keyboard-key">B</span> to select the tool</li>
+		<li><span class="keyboard-key">Left drag</span> to use the tool</li>
+		<li><span class="keyboard-key">Right drag</span> to change tool size</li>
+		<li><span class="keyboard-key">+</span> or <span class="keyboard-key">-</span> to change tool size</li>
+	</ul>
+	<img src="brush-tutorial.gif"/>
+</div>"

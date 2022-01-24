@@ -19,7 +19,7 @@ class MagicWandTool extends SelectionTool {
     getSelection() {
         let coords = [Math.floor(this.endMousePos[0]), Math.floor(this.endMousePos[1])];
         let data = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
-        let index = (coords[1] * currFile.canvasSize[1] + coords[0]) * 4;
+        let index = (coords[1] * currFile.canvasSize[0] + coords[0]) * 4;
         let color = [data[index], data[index+1], data[index+2], data[index+3]];
         let selectedData = new ImageData(currFile.canvasSize[0], currFile.canvasSize[1]);
 
@@ -28,7 +28,7 @@ class MagicWandTool extends SelectionTool {
         
         for (const pixel in this.currSelection) {
             let coords = [parseInt(pixel.split(",")[0]), parseInt(pixel.split(",")[1])];
-            let index = (currFile.canvasSize[1] * coords[1] + coords[0]) * 4;
+            let index = (currFile.canvasSize[0] * coords[1] + coords[0]) * 4;
 
             selectedData[index] = color[0];
             selectedData[index+1] = color[1];

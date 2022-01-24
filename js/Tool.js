@@ -24,6 +24,7 @@ class Tool {
 	biggerButton = undefined;
 	smallerButton = undefined;
 	brushPreview = document.getElementById("brush-preview");
+	toolTutorial = document.getElementById("tool-tutorial");
 
 	constructor (name, options) {
 		this.name = name;
@@ -32,6 +33,22 @@ class Tool {
 		this.mainButton = document.getElementById(name + "-button");
 		this.biggerButton = document.getElementById(name + "-bigger-button");
 		this.smallerButton = document.getElementById(name + "-smaller-button");
+	}
+
+	resetTutorial() {
+		this.toolTutorial.innerHTML = "<ul></ul>";
+	}
+	addTutorialKey(key, text) {
+		this.toolTutorial.children[0].append(
+			'<li><span class="keyboard-key">' + key + '</span> ' + text + '</li>');
+	}
+	addTutorialText(key, text) {
+		this.toolTutorial.children[0].append(
+			'<li>' + key + ': ' + text + '</li>');
+	}
+	addTutorialImg(imgPath) {
+		this.toolTutorial.children[0].append(
+			'<img src="' + imgPath + '"/>');
 	}
 
 	onSelect() {
