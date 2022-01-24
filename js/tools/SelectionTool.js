@@ -94,7 +94,7 @@ class SelectionTool extends Tool {
         for (const key in this.currSelection) {
             let x = parseInt(key.split(",")[0]);
             let y = parseInt(key.split(",")[1]);
-            let index = (y * currFile.canvasSize[1] + x) * 4;
+            let index = (y * currFile.canvasSize[0] + x) * 4;
 
             for (let i=0; i<4; i++) {
                 // Save the pixel
