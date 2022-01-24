@@ -7,9 +7,24 @@ class BrushTool extends ResizableTool {
         Events.on('click', this.smallerButton, this.decreaseSize.bind(this));
     }
 
-    onStart(mousePos) {
+    onStart(mousePos, cursorTarget) {
         super.onStart(mousePos);
+        if (cursorTarget === undefined)
+            return;
         new HistoryState().EditCanvas();
+        
+        //draw line to current pixel
+        if (cursorTarget.className == 'drawingCanvas' || cursorTarget.className == 'drawingCanvas') {
+            currFile.currentLayer.drawLine(
+                Math.floor(mousePos[0]/currFile.zoom),
+                Math.floor(mousePos[1]/currFile.zoom),
+                Math.floor(mousePos[0]/currFile.zoom),
+                Math.floor(mousePos[1]/currFile.zoom), 
+                this.currSize
+            );
+        }
+
+        currFile.currentLayer.updateLayerPreview();
 	}
 
 	onDrag(mousePos, cursorTarget) {
