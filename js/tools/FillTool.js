@@ -10,10 +10,9 @@ class FillTool extends DrawingTool {
 
         if (target.className != 'drawingCanvas')
             return;
+        new HistoryState().EditCanvas();
         FillTool.fill(mousePos);
         currFile.currentLayer.updateLayerPreview();
-        
-        new HistoryState().EditCanvas();
 	}
 
     

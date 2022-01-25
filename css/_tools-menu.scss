@@ -10,7 +10,7 @@
 	background-color: $basecolor;
 	box-sizing: border-box;
 	position: fixed;
-	z-index: 1120;
+	z-index: 1108;
 }
 
 #tools-menu li {
@@ -110,11 +110,35 @@
 	background: $basehover;
 }
 
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+	}
+}
+@keyframes fadeOut {
+	to {
+		opacity: 0;
+	}
+}
+
+.fade-in {
+	opacity: 0;
+	animation: fadeIn .1s forwards;
+}
+
+.fade-out {
+	animation: fadeOut .1s forwards;
+}
+
+.is-paused {
+	animation-play-state: paused;
+}
+
 /* Tool tutorial */
 #tool-tutorial {
 	display:inline-block;
 	position:absolute;
-	z-index:4000;
+	z-index:1109;
 	margin-left:48px;
 	margin-top:48px;
 	background-color: $basehover;
@@ -125,6 +149,11 @@
 	
 	img {
 		width:100%;
+	}
+
+	h3 {
+		margin-left:20px;
+		margin-bottom:-5px;
 	}
 }
 

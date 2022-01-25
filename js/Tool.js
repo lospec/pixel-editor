@@ -24,7 +24,11 @@ class Tool {
 	biggerButton = undefined;
 	smallerButton = undefined;
 	brushPreview = document.getElementById("brush-preview");
+
+	// Tool tutorial
 	toolTutorial = document.getElementById("tool-tutorial");
+	tutorialTimer = undefined;
+	tutorialString = "";
 
 	constructor (name, options) {
 		this.name = name;
@@ -33,22 +37,51 @@ class Tool {
 		this.mainButton = document.getElementById(name + "-button");
 		this.biggerButton = document.getElementById(name + "-bigger-button");
 		this.smallerButton = document.getElementById(name + "-smaller-button");
+
+		if (this.mainButton != undefined) {
+			// Timer to show the tutorial
+			Events.on("mouseenter", this.mainButton, function(){
+				this.tutorialTimer = setTimeout(this.showTutorial.bind(this), 750)
+			}.bind(this));
+
+			// Clear the callback if the user cancels the hovering
+			Events.on("mouseleave", this.mainButton, function() {
+				if (this.tutorialTimer != undefined)
+					clearTimeout(this.tutorialTimer);
+				this.tutorialTimer = undefined;
+				this.hideTutorial();
+			}.bind(this))
+
+			this.hideTutorial();
+		}
+	}
+	
+	showTutorial() {
+		this.setTutorial();
+		this.toolTutorial.style.top = this.mainButton.getBoundingClientRect().top - 48 + "px";
+		this.toolTutorial.className = "fade-in";
+	}
+	hideTutorial() {
+		this.toolTutorial.className = "fade-out";
 	}
 
 	resetTutorial() {
-		this.toolTutorial.innerHTML = "<ul></ul>";
+		this.tutorialString = "";
+	}
+	setTutorial() {
+		this.toolTutorial.innerHTML = this.tutorialString;
 	}
 	addTutorialKey(key, text) {
-		this.toolTutorial.children[0].append(
-			'<li><span class="keyboard-key">' + key + '</span> ' + text + '</li>');
+		this.tutorialString += '<li><span class="keyboard-key">' + key + '</span> ' + text + '</li>';
 	}
 	addTutorialText(key, text) {
-		this.toolTutorial.children[0].append(
-			'<li>' + key + ': ' + text + '</li>');
+		this.tutorialString += '<li>' + key + ': ' + text + '</li>';
 	}
 	addTutorialImg(imgPath) {
-		this.toolTutorial.children[0].append(
-			'<img src="' + imgPath + '"/>');
+		this.tutorialString += '</ul><img src="' + imgPath + '"/>';
+	}
+	addTutorialTitle(text) {
+		this.tutorialString += "<h3>" + text + "</h3><ul>";
 	}
 
 	onSelect() {

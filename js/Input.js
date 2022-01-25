@@ -116,14 +116,21 @@ const Input = (() => {
                 case 77: case 109:
                     Events.emit("tool-shortcut", "rectselect");
                     break;
-                // TODO: [ELLIPSE] Decide on a shortcut to use. "s" was chosen without any in-team consultation.
+                // Lasso tool, q
+                case 81: case 113:
+                    Events.emit("tool-shortcut", "lassoselect");
+                    break;
                 // ellipse tool, s
                 case 83:
-                    //Events.emit("tool-shortcut", "ellipse");
+                    Events.emit("tool-shortcut", "ellipse");
                     break;
                 // rectangle tool, u
                 case 85:
                     Events.emit("tool-shortcut", "rectangle");
+                    break;
+                // magic wand tool
+                case 87: case 119:
+                    Events.emit("tool-shortcut", "magicwand");
                     break;
                 // Paste tool
                 case 86: case 118:

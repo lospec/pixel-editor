@@ -5,6 +5,14 @@ class BrushTool extends ResizableTool {
         Events.on('click', this.mainButton, switchFunction, this);
         Events.on('click', this.biggerButton, this.increaseSize.bind(this));
         Events.on('click', this.smallerButton, this.decreaseSize.bind(this));
+
+        this.resetTutorial();
+        this.addTutorialTitle("Pencil tool");
+        this.addTutorialKey("B", " to select the brush");
+        this.addTutorialKey("Left drag", " to draw a stroke");
+        this.addTutorialKey("Right drag", " to resize the brush");
+        this.addTutorialKey("+ or -", " to resize the brush");
+        this.addTutorialImg("brush-tutorial.gif");
     }
 
     onStart(mousePos, cursorTarget) {
