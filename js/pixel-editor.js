@@ -27,7 +27,7 @@
 /** SPECIAL LAYERS **/
 //=include layers/Checkerboard.js
 //=include layers/PixelGrid.js
-//=include layers/SymmetryModule.js
+//=include layers/HSymmetryLayer.js
 
 /** TOOLS **/
 //=include tools/DrawingTool.js

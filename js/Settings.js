@@ -23,7 +23,8 @@ const Settings = (() => {
                 enableEyedropperPreview: true, //unused - performance
                 numberOfHistoryStates: 256,
                 maxColorsOnImportedImage: 128,
-                pixelGridColour: '#000000'
+                pixelGridColour: '#000000',
+                hAxisGridColour: '#FF0000'
             };
         }
         else{
@@ -44,8 +45,11 @@ const Settings = (() => {
         //save new settings to settings object
         settings.numberOfHistoryStates = Util.getValue('setting-numberOfHistoryStates');
         settings.pixelGridColour = Util.getValue('setting-pixelGridColour');
+        settings.hAxisGridColour = Util.getValue('setting-hSymmetryColor');
         // Filling pixel grid again if colour changed
         Events.emit("refreshPixelGrid");
+        // Filling symmetric axes again if colour changed
+        Events.emit("refreshHorizontalAxis");
     
         //save settings object to cookie
         let cookieValue = JSON.stringify(settings);

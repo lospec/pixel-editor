@@ -10,6 +10,7 @@ class File {
     VFXLayer = undefined;
     TMPLayer = undefined;
     pixelGrid = undefined;
+    hSymmetricLayer = undefined;
     checkerBoard = undefined
 
     // Canvas resize attributes
@@ -162,6 +163,7 @@ class File {
         // Regenerate the checkerboard
         currFile.checkerBoard.fillCheckerboard();
         currFile.pixelGrid.fillPixelGrid();
+        currFile.hSymmetricLayer.fillAxis();
         // Put the imageDatas in the right position
         switch (this.rcPivot)
         {
