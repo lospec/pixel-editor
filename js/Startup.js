@@ -108,8 +108,10 @@ const Startup = (() => {
         currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
         // Horizontal symmetric layer
-        console.log("CREATING HSymmetryAxis");
         currFile.hSymmetricLayer = new HSymmetryLayer(width, height, "horizontal-symmetric");
+
+        // Vertical symmetric layer
+        currFile.vSymmetricLayer = new VSymmetryLayer(width, height, "vertical-symmetric");
 
         // Creating the vfx layer on top of everything
         currFile.VFXLayer = new Layer(width, height, 'vfx-canvas');
@@ -123,6 +125,7 @@ const Startup = (() => {
             currFile.layers.push(currFile.TMPLayer);
             currFile.layers.push(currFile.pixelGrid);
             currFile.layers.push(currFile.hSymmetricLayer);
+            currFile.layers.push(currFile.vSymmetricLayer);
             currFile.layers.push(currFile.VFXLayer);
         }
     }

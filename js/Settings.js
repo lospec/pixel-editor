@@ -24,7 +24,8 @@ const Settings = (() => {
                 numberOfHistoryStates: 256,
                 maxColorsOnImportedImage: 128,
                 pixelGridColour: '#000000',
-                hAxisGridColour: '#FF0000'
+                hAxisGridColour: '#FF0000',
+                vAxisGridColour: '#0000FF',
             };
         }
         else{
@@ -46,10 +47,12 @@ const Settings = (() => {
         settings.numberOfHistoryStates = Util.getValue('setting-numberOfHistoryStates');
         settings.pixelGridColour = Util.getValue('setting-pixelGridColour');
         settings.hAxisGridColour = Util.getValue('setting-hSymmetryColor');
+        settings.vAxisGridColour = Util.getValue('setting-vSymmetryColor');
         // Filling pixel grid again if colour changed
         Events.emit("refreshPixelGrid");
         // Filling symmetric axes again if colour changed
         Events.emit("refreshHorizontalAxis");
+        Events.emit("refreshVerticalAxis");
     
         //save settings object to cookie
         let cookieValue = JSON.stringify(settings);
