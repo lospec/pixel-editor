@@ -116,7 +116,7 @@ const ToolManager = (() => {
     }
 
     function onMouseUp(mouseEvent) {
-        if (!EditorState.documentCreated())
+        if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
 
