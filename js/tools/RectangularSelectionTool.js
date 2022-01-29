@@ -3,6 +3,18 @@ class RectangularSelectionTool extends SelectionTool {
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
         Events.on('click', this.mainButton, switchFunc, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Rectangular selection tool");
+        this.addTutorialKey("M", " to select the rectangular selection tool");
+        this.addTutorialKey("Left drag", " to select a rectangular area");
+        this.addTutorialKey("Left drag", " to move a selection");
+        this.addTutorialKey("Esc", " to cancel a selection");
+        this.addTutorialKey("Click", " outside the selection to cancel it");
+        this.addTutorialKey("CTRL+C", " to copy a selection");
+        this.addTutorialKey("CTRL+V", " to paste a selection");
+        this.addTutorialKey("CTRL+X", " to cut a selection");
+        this.addTutorialImg("rectselect-tutorial.gif");
     }
 
     onStart(mousePos, mouseTarget) {

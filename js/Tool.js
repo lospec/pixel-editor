@@ -41,6 +41,7 @@ class Tool {
 		if (this.mainButton != undefined) {
 			// Timer to show the tutorial
 			Events.on("mouseenter", this.mainButton, function(){
+				this.setTutorial();
 				this.tutorialTimer = setTimeout(this.showTutorial.bind(this), 750)
 			}.bind(this));
 
@@ -57,8 +58,19 @@ class Tool {
 	}
 	
 	showTutorial() {
-		this.setTutorial();
-		this.toolTutorial.style.top = this.mainButton.getBoundingClientRect().top - 48 + "px";
+		let tutorialRect = this.toolTutorial.getBoundingClientRect();
+		
+		console.log("Top button: " + (this.mainButton.getBoundingClientRect().top - 48 + (tutorialRect.bottom - tutorialRect.top)));
+		console.log("Tutorial height: " + (tutorialRect.bottom - tutorialRect.top));
+		console.log("Screen height: " + window.innerHeight);
+		
+		if ((this.mainButton.getBoundingClientRect().top - 48 + (tutorialRect.bottom - tutorialRect.top)) > window.innerHeight) {
+			console.log("YO");
+			this.toolTutorial.style.top = window.innerHeight - 48 - (tutorialRect.bottom - tutorialRect.top) + "px";
+		}
+		else {
+			this.toolTutorial.style.top = this.mainButton.getBoundingClientRect().top - 48 + "px";
+		}
 		this.toolTutorial.className = "fade-in";
 	}
 	hideTutorial() {

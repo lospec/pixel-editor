@@ -1,9 +1,24 @@
+/** TODO
+ *  - Move the selection only if the user started dragging inside of it
+ */
 class LassoSelectionTool extends SelectionTool {
     currentPixels = [];
 
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
         Events.on('click', this.mainButton, switchFunc, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Lasso selection tool");
+        this.addTutorialKey("Q", " to select the lasso selection tool");
+        this.addTutorialKey("Left drag", " to select an area");
+        this.addTutorialKey("Left drag", " to move a selection");
+        this.addTutorialKey("Esc", " to cancel a selection")
+        this.addTutorialKey("Click", " outside the selection to cancel it")
+        this.addTutorialKey("CTRL+C", " to copy a selection")
+        this.addTutorialKey("CTRL+V", " to paste a selection")
+        this.addTutorialKey("CTRL+X", " to cut a selection")
+        this.addTutorialImg("lassoselect-tutorial.gif");
     }
 
     onStart(mousePos, mouseTarget) {

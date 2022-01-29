@@ -1,3 +1,6 @@
+/** TODO
+ *  - Increase the sensibility of the tool depending on the width / height ratio to avoid holes
+ */
 class EllipseTool extends ResizableTool {
     // Saving the empty rect svg
     emptyEllipseSVG = document.getElementById("ellipse-empty-button-svg");

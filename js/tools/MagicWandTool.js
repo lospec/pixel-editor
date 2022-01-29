@@ -3,6 +3,17 @@ class MagicWandTool extends SelectionTool {
     constructor (name, options, switchFunc, moveTool) {
         super(name, options, switchFunc, moveTool);
         Events.on('click', this.mainButton, switchFunc, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Magic wand tool");
+        this.addTutorialKey("W", " to select the magic wand tool");
+        this.addTutorialKey("Left click", " to select a contiguous area");
+        this.addTutorialKey("Esc", " to cancel a selection");
+        this.addTutorialKey("Click", " outside the selection to cancel it");
+        this.addTutorialKey("CTRL+C", " to copy a selection");
+        this.addTutorialKey("CTRL+V", " to paste a selection");
+        this.addTutorialKey("CTRL+X", " to cut a selection");
+        this.addTutorialImg("magicwand-tutorial.gif");
     }
 
     onEnd(mousePos, mouseTarget) {

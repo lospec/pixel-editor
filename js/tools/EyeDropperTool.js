@@ -6,6 +6,15 @@ class EyeDropperTool extends Tool {
         super(name, options);
 
         Events.on('click', this.mainButton, switchFunction, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Eyedropper tool");
+        this.addTutorialKey("E", " to select the lasso selection tool");
+        this.addTutorialKey("Left drag", " to preview the picked colour");
+        this.addTutorialKey("Aòt + left drag", " to preview the picked colour");
+        this.addTutorialKey("Left click", " to select a colour");
+        this.addTutorialKey("Alt + click", " to select a colour");
+        this.addTutorialImg("eyedropper-tutorial.gif");
     }
 
     onStart(mousePos, target) {

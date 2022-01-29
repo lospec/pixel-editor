@@ -3,6 +3,12 @@ class FillTool extends DrawingTool {
         super(name, options);
 
         Events.on('click', this.mainButton, switchFunction, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Fill tool");
+        this.addTutorialKey("F", " to select the fill tool");
+        this.addTutorialKey("Left click", " to fill a contiguous area");
+        this.addTutorialImg("fill-tutorial.gif");
     }
 
     onStart(mousePos, target) {
