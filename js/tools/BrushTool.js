@@ -47,7 +47,6 @@ class BrushTool extends ResizableTool {
                     console.log("Drawing under the horizontal axis");
                     mirrorPrevY = Math.floor(midY - Math.abs(midY - prevMousePosY));
                     mirrorCurrentY = Math.floor(midY - Math.abs(midY - currMousePosY));
-
                 }
 
                 this.mirrorDraw(
