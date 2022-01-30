@@ -110,19 +110,24 @@ li#editor-info {
 		}
 		input {
 			margin-left:10px;
-			background-color:$basehovertext;
+			background-color:darken($basecolor, 6%);
 			box-shadow:none;
 			border:none;
 			vertical-align: middle;
 			border-radius:5px;
+			padding: 5px;
+			color:$basetext;
 		}
 		input[type=text] {
-			width:20px;
+			width:25px;
 			height:15px;
 		}
+
 		input[type=checkbox] {
-			width:15px;
-			height:15px;
+			padding:1px;
+			width:20px;
+			height:20px;
+			background-color:darken($basecolor, 5%) !important;
 		}
 	}
 }

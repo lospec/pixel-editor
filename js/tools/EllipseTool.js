@@ -161,7 +161,7 @@ class EllipseTool extends ResizableTool {
         for (const coord in toFill) {
             let arrayCoord = JSON.parse("[" + coord + "]");
 
-            if (arrayCoord[0]-xc > 0 || arrayCoord[1]-yc < 0) {
+            if (arrayCoord[0]-xc < 0 || arrayCoord[1]-yc < 0) {
                 continue;
             }
 
@@ -180,9 +180,9 @@ class EllipseTool extends ResizableTool {
                 !removed[[arrayCoord[0], arrayCoord[1] + 1]] && !removed[arrayCoord[0] + 1, arrayCoord[1]])) ||
             removed[arrayCoord]) {
                 context.fillRect(arrayCoord[0], arrayCoord[1], this.currSize, this.currSize);
-                context.fillRect(xc + Math.abs(xc - arrayCoord[0]), arrayCoord[1], this.currSize, this.currSize);
+                context.fillRect(xc - Math.abs(xc - arrayCoord[0]), arrayCoord[1], this.currSize, this.currSize);
                 context.fillRect(arrayCoord[0], yc - Math.abs(yc - arrayCoord[1]), this.currSize, this.currSize);
-                context.fillRect(xc + Math.abs(xc - arrayCoord[0]), yc - Math.abs(yc - arrayCoord[1]), this.currSize, this.currSize);
+                context.fillRect(xc - Math.abs(xc - arrayCoord[0]), yc - Math.abs(yc - arrayCoord[1]), this.currSize, this.currSize);
             }
 
             removed[arrayCoord] = true;

@@ -138,7 +138,6 @@
 #tool-tutorial {
 	display:inline-block;
 	position:absolute;
-	z-index:1109;
 	margin-left:48px;
 	margin-top:48px;
 	background-color: $basehover;
@@ -146,6 +145,7 @@
 	font-size:14px;
 	width:22%;
 	border-radius:0 5px 5px 5px;
+	z-index:1000;
 	
 	img {
 		width:100%;
