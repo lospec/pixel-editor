@@ -56,7 +56,7 @@ function compile_page(){
 
         .pipe(handlebars({encoding: 'utf8', debug: true, bustCache: true})
             .partials('./views/[!index]*.hbs').partials('./views/popups/*.hbs')
-            //.helpers({ svg: hb_svg })
+            .partials('./views/components/*.hbs')
             .helpers('./helpers/**/*.js')
             .data({
                 projectSlug: 'pixel-editor',

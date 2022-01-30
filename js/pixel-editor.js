@@ -9,6 +9,7 @@
 /** UTILITY AND INPUT **/
 //=include Util.js
 //=include Events.js
+//=include InputComponents.js
 //=include Dialogue.js
 //=include History.js
 //=include Settings.js
@@ -70,9 +71,10 @@ PresetModule.instrumentPresetMenu();
 
 //when the page is done loading, you can get ready to start
 window.onload = function () {
-    //featureToggles.onLoad();
-
+	// First cursor update
     ToolManager.currentTool().updateCursor();
+	// Apply checkboxes
+
 	
 	//check if there are any url parameters
 	if (window.location.pathname.replace('/pixel-editor/','').length <= 1)  {

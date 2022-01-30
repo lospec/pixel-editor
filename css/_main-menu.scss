@@ -108,6 +108,11 @@ li#editor-info {
 			display:inline;
 			padding-right:20px;
 		}
+
+		.checkbox-holder {
+			display: inline;
+		}
+
 		input {
 			margin-left:10px;
 			background-color:darken($basecolor, 6%);
@@ -121,13 +126,6 @@ li#editor-info {
 		input[type=text] {
 			width:25px;
 			height:15px;
-		}
-
-		input[type=checkbox] {
-			padding:1px;
-			width:20px;
-			height:20px;
-			background-color:darken($basecolor, 5%) !important;
 		}
 	}
 }
