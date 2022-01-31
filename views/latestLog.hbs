@@ -1,39 +1,52 @@
-Hi! Welcome to the latest version of the Pixel Editor. It's been quite a while! Most of the changes happened behind 
-the scenes: we worked very hard to refactor the code, make it a bit more modern and scalable so that contributions will,
- hopefully, be easier to make.</br></br>
-We have some good news for users as well!
+Heyo! New pixel editor update, with some very requested changes. After the code refactoring, adding features
+ is way easier: I introduced some more selection tools, the ellipse tool and an info bar in the top menu :)
 
-<h2>Pixel Grid</h2>
+<h2>Lasso tool</h2>
+Finally! With the lasso tool you're not forced to select rectangular areas anymore. Have fun selecting, cutting, 
+copying and pasting any kind of selection with  pixel-perfect precision.
 
-I've worked a bit on the pixel grid to make it look a bit better and less intrusive when zooming in. You can see the 
-difference in behaviour between the new grid (left) and the old grid (right) in the image below.
-<img src="grid.png"/>
-In addition, the pixel grid will now automatically be hidden when the zoom level becomes too low: in that way looking at big 
-sprites becomes a lot less performance-heavy and it doesn't cause lag.
+</br><img src="lassoselect-tutorial.gif"/>
 
-<h2>Quality of life</h2>
+<h2>Magic wand</h2>
+In addition to the lasso tool, we added a new selection tool: the magic wand. You can use it to select 
+contiguous areas of the same colour! If you need to exactly select the pixels of a certain colour, you're
+ probably going to find the magic wand useful.
 
-I've added some quality of life improvements, sometimes subtle (maybe you won't notice but you'd have definitely noticed
-the absence of them), sometimes a bit more noticeable. For example:
+</br><img src="magicwand-tutorial.gif"/>
+
+<h2>Ellipse tool</h2>
+I added a cute friend for the rectangle tool: with the ellipse tool you'll be able to draw circles and 
+ellipses of all sizes. The tool works similarly to the rectangle tool: select it to draw empty ellipses, 
+click on the ellipse button again to draw filled ellipses.
+
+</br><img src="ellipse-tutorial.gif"/>
+
+<h2>Tool tutorials</h2>
+I know what you're thinking, "wow those gifs are so cute, that guy must have put a lot of love in them". 
+Well, I'm glad you like them, and I have good news for you: there are more! Move the cursor on a tool 
+button: after a little a small tutorial explaining how to use the tool will appear. Hope it's useful for 
+everyone who's new to the editor!
+
+</br><img src="tool-tutorials.gif"/>
+
+<h2>Top bar info</h2>
+Depending on the tool you're using, you'll notice that the top right part of the editor will slightly change. 
+When using a resizable tool (eraser, brush, rectangle, ellipse, line), it's now possible to select a precise 
+size by typing it in the input field that appears when you select it. More features that make use of the 
+top bar are planned.
+
+<h2>Bug fixes and minor details</h2>
 <ul>
-    <li>It's now possible to delete a layer by selecting it and hitting "DEL"</li>
-    <li>When adding a colour to the palette, it is automatically selected</li>
-    <li>Thanks to <a href="https://github.com/NSSure">NSSure</a>, you can now select a name for your exported / saved project</li>
-    <li>The brush preview should now be less intrusive while still being visible</li>
-</ul>
-
-<h2> Important bug fixes</h2>
-A lot of nasty bugs have been fixed! Please, if you know more we aren't aware of, <a href="https://github.com/lospec/pixel-editor">
-feel free to open an issue or make a pull request.</a>
-<ul>
-    <li>Fixed the bug that caused file corruptions</li>
-    <li>Fixed fill tool not working and creating hundreds of similar colours in certain browsers</li>
-    <li>Fixed the build procedure for Windows</li>
-    <li>Fixed the editor ignoring the scale factor when exporting</li>
+    <li>Squares in the splash page are now...well...actual squares</li>
+    <li>Using the mouse when a dialogue popup is open will no longer edit the canvas</li>
+    <li>For coders: the selection system has been uniformed</li>
+    <li>Tool buttons have been shrinked to make room for more</li>
 </ul>
 
 <h2>End of log</h2>
-That's all for this update! We have some cool things planned for the near future, so stay tuned :)</br>
+You've reached the end of this log, congrats. Special thanks to Jaman on Discord, who's helping us and 
+who found a quite nasty bug in the selectiont tools. Hope to see you soon in a new log!</br>
 - <a href="https://github.com/unsettledgames">Unsettled</a>
 </br></br>
-P.S.: we're always looking for contributors! Join the <a href="https://discord.com/invite/QjsgTQM">Lospec discord</a> to get in touch!
+P.S.: we're always looking for contributors! Join the <a href="https://discord.com/invite/QjsgTQM">Lospec discord</a> to get in touch 
+or have a look at the <a href="https://github.com/lospec/pixel-edior">editor repository</a>!
