@@ -16,6 +16,19 @@ const InputComponents = (() => {
             event.target.classList.add("checked");
     }
 
+    function createNumber(id, label) {
+        let element = document.createElement("label");
+        let inputEl = document.createElement("input");
+
+        inputEl.id = id;
+        inputEl.type = "number";
+        element.innerHTML = label;
+
+        element.appendChild(inputEl);
+
+        return element;
+    }
+
     function createCheckbox(id, label) {
         let element = document.createElement("div");
         let inner = document.createElement("div");
@@ -54,6 +67,7 @@ const InputComponents = (() => {
 
     return {
         updated,
-        createCheckbox
+        createCheckbox,
+        createNumber
     }
 })();

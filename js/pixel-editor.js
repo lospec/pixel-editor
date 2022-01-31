@@ -15,6 +15,10 @@
 //=include Settings.js
 //=include EditorState.js
 
+/** MENUS **/
+//=include FileManager.js
+//=include TopMenuModule.js
+
 /** COLOR-RELATED **/
 //=include Color.js
 //=include ColorPicker.js
@@ -57,8 +61,6 @@
 
 /** STARTUP AND FILE MANAGEMENT **/
 //=include Startup.js
-//=include FileManager.js
-//=include TopMenuModule.js
 
 /** HTML INPUT EVENTS **/
 //=include Input.js

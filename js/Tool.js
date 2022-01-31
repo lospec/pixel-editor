@@ -21,8 +21,6 @@ class Tool {
 
 	// HTML elements
 	mainButton = undefined;
-	biggerButton = undefined;
-	smallerButton = undefined;
 	brushPreview = document.getElementById("brush-preview");
 
 	// Tool tutorial
@@ -35,8 +33,6 @@ class Tool {
 		this.cursorType = options;
 		
 		this.mainButton = document.getElementById(name + "-button");
-		this.biggerButton = document.getElementById(name + "-bigger-button");
-		this.smallerButton = document.getElementById(name + "-smaller-button");
 
 		if (this.mainButton != undefined) {
 			// Timer to show the tutorial
@@ -60,12 +56,7 @@ class Tool {
 	showTutorial() {
 		let tutorialRect = this.toolTutorial.getBoundingClientRect();
 		
-		console.log("Top button: " + (this.mainButton.getBoundingClientRect().top - 48 + (tutorialRect.bottom - tutorialRect.top)));
-		console.log("Tutorial height: " + (tutorialRect.bottom - tutorialRect.top));
-		console.log("Screen height: " + window.innerHeight);
-		
 		if ((this.mainButton.getBoundingClientRect().top - 48 + (tutorialRect.bottom - tutorialRect.top)) > window.innerHeight) {
-			console.log("YO");
 			this.toolTutorial.style.top = window.innerHeight - 48 - (tutorialRect.bottom - tutorialRect.top) + "px";
 		}
 		else {
@@ -101,6 +92,7 @@ class Tool {
 			this.mainButton.parentElement.classList.add("selected");
 		this.isSelected = true;
 
+		// Update the cursor
 		switch (this.cursorType.type) {
 			case 'html':
 				currFile.canvasView.style.cursor = 'none';
@@ -112,6 +104,9 @@ class Tool {
 			default:
 				break;
 		}
+
+		// Reset the topbar
+		TopMenuModule.resetInfos();
 	}
 
 	updateCursor() {
@@ -167,23 +162,5 @@ class Tool {
 
 	onEnd(mousePos, mouseTarget) {
 		this.endMousePos = mousePos;
-	}
-
-	increaseSize() {
-		if (this.currSize < 128) {
-			this.currSize++;
-			this.updateCursor();
-		}
-	}
-
-	decreaseSize() {
-		if (this.currSize > 1) {
-			this.currSize--;
-			this.updateCursor();
-		}
-	}
-
-	get size() {
-		return this.currSize;
 	}
 }

@@ -2,9 +2,32 @@ class ResizableTool extends DrawingTool {
     startResizePos = undefined;
     currSize = 1;
 	prevSize = 1;
+    toolSizeInput = undefined;
+
+    biggerButton = undefined;
+	smallerButton = undefined;
     
     constructor(name, options, switchFunc) {
         super(name, options, switchFunc);
+
+        this.biggerButton = document.getElementById(name + "-bigger-button");
+		this.smallerButton = document.getElementById(name + "-smaller-button");
+    }
+
+    onSelect(mousePos) {
+        super.onSelect(mousePos);
+
+        if (this.toolSizeInput == undefined) {
+            this.toolSizeInput = InputComponents.createNumber(this.name + "-input", "Tool size");
+            Events.on("change", this.toolSizeInput.getElementsByTagName("input")[0], this.updateSize.bind(this));
+        }
+        TopMenuModule.addInfoElement(this.name + "-input", this.toolSizeInput);
+        TopMenuModule.updateField(this.name + "-input", this.currSize);
+    }
+
+    updateSize(event) {
+        let value = event.target.value;
+        this.currSize = value;
     }
 
     onRightStart(mousePos, mouseEvent) {
@@ -29,4 +52,24 @@ class ResizableTool extends DrawingTool {
     onRightEnd(mousePos, mouseEvent) {
         
     }
+
+    increaseSize() {
+		if (this.currSize < 128) {
+			this.currSize++;
+			this.updateCursor();
+            TopMenuModule.updateField(this.name + "-input", this.currSize);
+		}
+	}
+
+	decreaseSize() {
+		if (this.currSize > 1) {
+			this.currSize--;
+			this.updateCursor();
+            TopMenuModule.updateField(this.name + "-input", this.currSize);
+		}
+	}
+
+	get size() {
+		return this.currSize;
+	}
 }

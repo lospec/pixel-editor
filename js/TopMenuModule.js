@@ -1,6 +1,8 @@
 const TopMenuModule = (() => {
 
     const mainMenuItems = document.getElementById('main-menu').children;
+    let infoList = document.getElementById('editor-info');
+    let infoElements = {};
 
     initMenu();
 
@@ -106,7 +108,27 @@ const TopMenuModule = (() => {
         }
     }
 
+    function resetInfos() {
+        infoList.innerHTML = "<ul></ul>";
+    }
+
+    function updateField(fieldId, value) {
+        document.getElementById(fieldId).value = value;
+    }
+
+    function addInfoElement(fieldId, field) {
+        let liEl = document.createElement("li");
+
+        infoElements[fieldId] = field;
+        liEl.appendChild(field);
+
+        infoList.firstChild.appendChild(liEl);
+    }
+
     return {
-        closeMenu
+        closeMenu,
+        updateField,
+        addInfoElement,
+        resetInfos
     }
 })();

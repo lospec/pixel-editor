@@ -123,9 +123,16 @@ li#editor-info {
 			padding: 5px;
 			color:$basetext;
 		}
-		input[type=text] {
+		input[type=number] {
+			appearance:none;
+			-moz-appearance: text;
 			width:25px;
 			height:15px;
+		}
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
 		}
 	}
 }
