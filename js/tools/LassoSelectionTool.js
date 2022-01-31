@@ -1,6 +1,3 @@
-/** TODO
- *  - Move the selection only if the user started dragging inside of it
- */
 class LassoSelectionTool extends SelectionTool {
     currentPixels = [];
 

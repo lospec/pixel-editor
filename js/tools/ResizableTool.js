@@ -47,6 +47,7 @@ class ResizableTool extends DrawingTool {
         //fix offset so the cursor stays centered
         this.updateCursor();
         this.onHover(this.startResizePos, mouseEvent);
+        TopMenuModule.updateField(this.name + "-input", this.currSize);
     }
 
     onRightEnd(mousePos, mouseEvent) {

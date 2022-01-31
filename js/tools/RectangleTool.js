@@ -1,5 +1,3 @@
-// TODO: FIX SELECTION
-
 class RectangleTool extends ResizableTool {
     // Saving the empty rect svg
     emptyRectangleSVG = document.getElementById("rectangle-empty-button-svg");
