@@ -1,7 +1,7 @@
 
 #tools-menu {
 	left: 0;
-	width: 64px;
+	width: 48px;
 	list-style-type: none;
 	top: 48px;
 	bottom: 0;
@@ -10,16 +10,12 @@
 	background-color: $basecolor;
 	box-sizing: border-box;
 	position: fixed;
-	z-index: 1120;
+	z-index: 1108;
 }
-
-
 
 #tools-menu li {
 	position: relative;
 }
-
-
 
 #tools-menu li button:first-child {
 	text-align: center;
@@ -28,15 +24,18 @@
 	width: 100%;
 	padding: 0;
 	cursor: pointer;
-	height: 64px;
+	height: 48px;
+	z-index:0;
 }
 
-#tools-menu li button path {
+#tools-menu li button path, #tools-menu li button ellipse {
 	fill: $baseicon;
+	stroke: $baseicon;
 }
 
-#tools-menu li:hover button:first-child path {
+#tools-menu li:hover button:first-child path, #tools-menu li:hover button:first-child ellipse {
 	fill: $basehovericon;
+	stroke: $basehovericon;
 }
 
 
@@ -44,27 +43,21 @@
 	background: $baseselected !important;
 }
 
-#tools-menu li.selected button:first-child path {
+#tools-menu li.selected button:first-child path, #tools-menu li.selected button:first-child ellipse {
 	fill: $baseselectedicon;
 }
-
-#tools-menu li.selected.expanded {
-	padding-bottom: 10px;
-}
-
 
 .tools-menu-sub-button {
 	text-align: center;
 	border: none;
 	background: none;
 	cursor: pointer;
-	width: 50%;
-	height: 22px;
-	display: none;
+	width: 22px !important;
+	height:24px !important;
+	display: inline-block;
 	line-height: 0;
 	overflow: hidden;
-	position: absolute;
-	bottom: 0;
+	position: relative;
 
 	path {
 		fill: $baseselectedicon !important;
@@ -77,40 +70,96 @@
 	}
 }
 
-#tools-menu li button#brush-bigger-button,
-#tools-menu li button#zoom-in-button,
-#tools-menu li button#eraser-bigger-button,
-#tools-menu li button#rectangle-bigger-button,
-#tools-menu li button#ellipse-bigger-button,
-#tools-menu li button#line-bigger-button {
-	left: 0;
+#tools-menu .size-buttons {
+	position:absolute;
+	display: none;
+	height:48px;
+	left:8px;
+	z-index:-1;
+	background-color: $basecolor !important;
 }
 
-#tools-menu li button#brush-smaller-button,
-#tools-menu li button#zoom-out-button,
-#tools-menu li button#eraser-smaller-button,
-#tools-menu li button#rectangle-smaller-button,
-#tools-menu li button#ellipse-smaller-button,
-#tools-menu li button#line-smaller-button {
-	right: 0;
+#tools-menu .size-buttons button {
+	text-align: center;
+	border: none;
+	padding: 0;
+	position: relative;
+	height:24px;
+	background-color: $baseselected !important;
+	cursor: pointer;
+	display:inline-block;
+	line-height: 0;
+	overflow: hidden;
+	width:22px;
 }
 
-#tools-menu li.selected button#brush-bigger-button,
-#tools-menu li.selected button#brush-smaller-button,
-#tools-menu li.selected button#zoom-in-button,
-#tools-menu li.selected button#zoom-out-button,
-#tools-menu li.selected button#eraser-bigger-button,
-#tools-menu li.selected button#eraser-smaller-button,
-#tools-menu li.selected button#rectangle-bigger-button,
-#tools-menu li.selected button#rectangle-smaller-button,
-#tools-menu li.selected button#ellipse-bigger-button,
-#tools-menu li.selected button#ellipse-smaller-button,
-#tools-menu li.selected button#line-bigger-button,
-#tools-menu li.selected button#line-smaller-button {
-	display: block;
+#tools-menu .size-buttons button:hover {
+	background:$baseselected !important;
+}
+
+#tools-menu .size-buttons button:active {
+	background:$basehovericon !important;
+}
+
+#tools-menu li.selected .size-buttons {
+	display:inline-block;
 }
 
 
 #tools-menu li:hover {
 	background: $basehover;
+}
+
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+	}
+}
+@keyframes fadeOut {
+	to {
+		opacity: 0;
+	}
+}
+
+.fade-in {
+	opacity: 0;
+	animation: fadeIn .1s forwards;
+}
+
+.fade-out {
+	animation: fadeOut .1s forwards;
+}
+
+.is-paused {
+	animation-play-state: paused;
+}
+
+/* Tool tutorial */
+#tool-tutorial {
+	display:inline-block;
+	position:absolute;
+	margin-left:48px;
+	margin-top:48px;
+	background-color: $basehover;
+	color:$basetext;
+	font-size:14px;
+	width:22%;
+	border-radius:0 5px 5px 5px;
+	z-index:1000;
+	
+	img {
+		width:100%;
+	}
+
+	h3 {
+		margin-left:20px;
+		margin-bottom:-5px;
+	}
+}
+
+#tool-tutorial:after {
+	border-left: 11px solid #222;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	position: relative;
 }

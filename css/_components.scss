@@ -1,0 +1,56 @@
+.checkbox-holder {
+    position:relative;
+    width:15px;
+    height:15px;
+    display:block;
+
+    .checkbox {
+        display: inline-block;
+        cursor: pointer;
+        padding-right: 1em;
+
+        .box {
+            color: $basetext;
+            background: darken($basecolor, 5%);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            margin-right: 0.5rem;
+            display: inline-block;
+            vertical-align: middle;
+            border: solid 2px $basecolor;
+            pointer-events: none;
+
+            svg {
+                visibility: hidden;
+                width: 1em;
+                height: 1em;
+                display: block;
+                path {
+                    fill: $basetext;
+                }
+            }
+
+        }
+
+        //checked
+        &.checked .box svg {
+            visibility: visible;
+        }
+
+        label {
+            display: inline-block;
+            pointer-events: none;
+        } //hover label or box
+
+        &:hover:not(.disabled){
+             border-color: $basecolor;
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+            .box svg path {fill: $basetext;}
+        }
+    }
+}

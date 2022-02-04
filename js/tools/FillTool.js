@@ -3,6 +3,12 @@ class FillTool extends DrawingTool {
         super(name, options);
 
         Events.on('click', this.mainButton, switchFunction, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Fill tool");
+        this.addTutorialKey("F", " to select the fill tool");
+        this.addTutorialKey("Left click", " to fill a contiguous area");
+        this.addTutorialImg("fill-tutorial.gif");
     }
 
     onStart(mousePos, target) {
@@ -10,14 +16,13 @@ class FillTool extends DrawingTool {
 
         if (target.className != 'drawingCanvas')
             return;
-        this.fill(mousePos);
-        currFile.currentLayer.updateLayerPreview();
-        
         new HistoryState().EditCanvas();
+        FillTool.fill(mousePos);
+        currFile.currentLayer.updateLayerPreview();
 	}
 
     
-    fill(cursorLocation) {
+    static fill(cursorLocation, context) {
         //changes a pixels color
         function colorPixel(tempImage, pixelPos, fillColor) {
             //console.log('colorPixel:',pixelPos);
@@ -39,8 +44,11 @@ class FillTool extends DrawingTool {
             return (r == color[0] && g == color[1] && b == color[2] && a == color[3]);
         }
 
+        if (context == undefined)
+            context = currFile.currentLayer.context;
+
         //temporary image holds the data while we change it
-        let tempImage = currFile.currentLayer.context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
+        let tempImage = context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
 
         //this is an array that holds all of the pixels at the top of the cluster
         let topmostPixelsArray = [[Math.floor(cursorLocation[0]/currFile.zoom), Math.floor(cursorLocation[1]/currFile.zoom)]];
@@ -53,7 +61,7 @@ class FillTool extends DrawingTool {
         let clusterColor = [tempImage.data[startingPosition],tempImage.data[startingPosition+1],tempImage.data[startingPosition+2], tempImage.data[startingPosition+3]];
 
         //the color to fill with
-        let fillColor = Color.hexToRgb(currFile.currentLayer.context.fillStyle);
+        let fillColor = Color.hexToRgb(context.fillStyle);
         
         //if you try to fill with the same color that's already there, exit the function
         if (clusterColor[0] == fillColor.r &&
@@ -118,7 +126,7 @@ class FillTool extends DrawingTool {
                 pixelPos += currFile.canvasSize[0] * 4;
             }
         }
-        currFile.currentLayer.context.putImageData(tempImage, 0, 0);
+        context.putImageData(tempImage, 0, 0);
     }
 
 	onDrag(mousePos, cursorTarget) {

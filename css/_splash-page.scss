@@ -3,6 +3,8 @@
 #splash {
 	width:100% !important;
 	height:100%!important;
+	position:fixed;
+	margin-top:-20px;
 
 	background-color: #232125 !important;
 	opacity: 1 !important;
@@ -155,11 +157,9 @@
 	.sp-template {
 		display: flex;
   		align-items: center;
-		height: 5em;
-		min-width: 5em;
-		
+
 		text-transform: uppercase;
-		width:16%;
+		width:5.5em;
 		border-radius:5%;
 		margin-right:4%;
 		margin-top:4%;
@@ -188,12 +188,11 @@
 		}
 	}
 
-	/*
 	.sp-template:before {
 		content:'';
 		float:left;
 		padding-top:100%;
-	}*/
+	}
 
 	#sp-newpixel {
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */

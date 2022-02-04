@@ -69,7 +69,7 @@
 
 
 
-/*app title*/
+/* app title */
 
 .logo {
 	color: lighten($basecolor, 20%);
@@ -82,4 +82,58 @@
 
 #main-menu li.open, #main-menu li button:hover {
 	background: $basehover;
+}
+
+/* Editor info */
+li#editor-info {
+	float:right;
+	height:100%;
+	display:flex;
+	align-items: center;
+	background-color: $basecolor;
+	color:$basetext;
+
+	ul {
+		background-color: $basecolor;
+		display:block;
+		position:relative;
+		top:0px;
+		padding-top:0px;
+		box-shadow: none;
+		padding-bottom: 0px;
+
+		li {
+			top:0px;
+			padding-top:0px;
+			display:inline;
+			padding-right:20px;
+		}
+
+		.checkbox-holder {
+			display: inline;
+		}
+
+		input {
+			margin-left:10px;
+			background-color:darken($basecolor, 6%);
+			box-shadow:none;
+			border:none;
+			vertical-align: middle;
+			border-radius:5px;
+			padding: 5px;
+			color:$basetext;
+		}
+		input[type=number] {
+			appearance:none;
+			-moz-appearance:textfield;
+			-webkit-appearance:text;
+			width:25px;
+			height:15px;
+		}
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+	}
 }

@@ -1,4 +1,4 @@
-const featureToggles = (function featureTogglesModule() {
+/*const featureToggles = (function featureTogglesModule() {
 
     const ellipseToolLocalStorageKey = 'feature_ellipseTool';
 
@@ -30,4 +30,4 @@ const featureToggles = (function featureTogglesModule() {
     }
 
 })();
-
+*/

@@ -5,6 +5,14 @@ class EraserTool extends ResizableTool {
         Events.on('click', this.mainButton, switchFunction, this);
         Events.on('click', this.biggerButton, this.increaseSize.bind(this));
         Events.on('click', this.smallerButton, this.decreaseSize.bind(this));
+
+        this.resetTutorial();
+        this.addTutorialTitle("Eraser tool");
+        this.addTutorialKey("E", " to select the eraser");
+        this.addTutorialKey("Left drag", " to erase an area");
+        this.addTutorialKey("Right drag", " to resize the eraser");
+        this.addTutorialKey("+ or -", " to resize the eraser");
+        this.addTutorialImg("eraser-tutorial.gif");
     }
 
     onStart(mousePos) {
@@ -23,7 +31,7 @@ class EraserTool extends ResizableTool {
                 Math.floor(this.prevMousePos[1]/currFile.zoom),
                 Math.floor(this.currMousePos[0]/currFile.zoom),
                 Math.floor(this.currMousePos[1]/currFile.zoom), 
-                this.currSize
+                this.currSize, true
             );
         }
 

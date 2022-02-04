@@ -9,10 +9,15 @@
 /** UTILITY AND INPUT **/
 //=include Util.js
 //=include Events.js
+//=include InputComponents.js
 //=include Dialogue.js
 //=include History.js
 //=include Settings.js
 //=include EditorState.js
+
+/** MENUS **/
+//=include FileManager.js
+//=include TopMenuModule.js
 
 /** COLOR-RELATED **/
 //=include Color.js
@@ -37,12 +42,15 @@
 //=include tools/EraserTool.js
 //=include tools/LineTool.js
 //=include tools/RectangleTool.js
+//=include tools/EllipseTool.js
 //=include tools/FillTool.js
 //=include tools/EyeDropperTool.js
 //=include tools/PanTool.js
 //=include tools/ZoomTool.js
-//=include tools/RectangularSelectionTool.js
 //=include tools/MoveSelectionTool.js
+//=include tools/RectangularSelectionTool.js
+//=include tools/LassoSelectionTool.js
+//=include tools/MagicWandTool.js
 
 /** MODULES AND MENUS **/
 //=include SplashPage.js
@@ -53,8 +61,6 @@
 
 /** STARTUP AND FILE MANAGEMENT **/
 //=include Startup.js
-//=include FileManager.js
-//=include TopMenuModule.js
 
 /** HTML INPUT EVENTS **/
 //=include Input.js
@@ -67,9 +73,10 @@ PresetModule.instrumentPresetMenu();
 
 //when the page is done loading, you can get ready to start
 window.onload = function () {
-    featureToggles.onLoad();
-
+	// First cursor update
     ToolManager.currentTool().updateCursor();
+	// Apply checkboxes
+
 	
 	//check if there are any url parameters
 	if (window.location.pathname.replace('/pixel-editor/','').length <= 1)  {

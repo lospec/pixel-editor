@@ -6,6 +6,7 @@ var tool = {};
 class Tool {
 	name = "AbstractTool";
 	isSelected = false;
+	switchFunction = undefined;
 	
 	// Cursor and brush size
 	cursorType = {};
@@ -20,17 +21,70 @@ class Tool {
 
 	// HTML elements
 	mainButton = undefined;
-	biggerButton = undefined;
-	smallerButton = undefined;
 	brushPreview = document.getElementById("brush-preview");
+
+	// Tool tutorial
+	toolTutorial = document.getElementById("tool-tutorial");
+	tutorialTimer = undefined;
+	tutorialString = "";
 
 	constructor (name, options) {
 		this.name = name;
 		this.cursorType = options;
 		
 		this.mainButton = document.getElementById(name + "-button");
-		this.biggerButton = document.getElementById(name + "-bigger-button");
-		this.smallerButton = document.getElementById(name + "-smaller-button");
+
+		if (this.mainButton != undefined) {
+			// Timer to show the tutorial
+			Events.on("mouseenter", this.mainButton, function(){
+				this.setTutorial();
+				this.tutorialTimer = setTimeout(this.showTutorial.bind(this), 750)
+			}.bind(this));
+
+			// Clear the callback if the user cancels the hovering
+			Events.on("mouseleave", this.mainButton, function() {
+				if (this.tutorialTimer != undefined)
+					clearTimeout(this.tutorialTimer);
+				this.tutorialTimer = undefined;
+				this.hideTutorial();
+			}.bind(this))
+
+			this.hideTutorial();
+		}
+	}
+	
+	showTutorial() {
+		let tutorialRect = this.toolTutorial.getBoundingClientRect();
+		
+		if ((this.mainButton.getBoundingClientRect().top - 48 + (tutorialRect.bottom - tutorialRect.top)) > window.innerHeight) {
+			this.toolTutorial.style.top = window.innerHeight - 48 - (tutorialRect.bottom - tutorialRect.top) + "px";
+		}
+		else {
+			this.toolTutorial.style.top = this.mainButton.getBoundingClientRect().top - 48 + "px";
+		}
+		this.toolTutorial.className = "fade-in";
+	}
+	hideTutorial() {
+		this.toolTutorial.className = "fade-out";
+	}
+
+	resetTutorial() {
+		this.tutorialString = "";
+	}
+	setTutorial() {
+		this.toolTutorial.innerHTML = this.tutorialString;
+	}
+	addTutorialKey(key, text) {
+		this.tutorialString += '<li><span class="keyboard-key">' + key + '</span> ' + text + '</li>';
+	}
+	addTutorialText(key, text) {
+		this.tutorialString += '<li>' + key + ': ' + text + '</li>';
+	}
+	addTutorialImg(imgPath) {
+		this.tutorialString += '</ul><img src="' + imgPath + '"/>';
+	}
+	addTutorialTitle(text) {
+		this.tutorialString += "<h3>" + text + "</h3><ul>";
 	}
 
 	onSelect() {
@@ -38,6 +92,7 @@ class Tool {
 			this.mainButton.parentElement.classList.add("selected");
 		this.isSelected = true;
 
+		// Update the cursor
 		switch (this.cursorType.type) {
 			case 'html':
 				currFile.canvasView.style.cursor = 'none';
@@ -49,6 +104,9 @@ class Tool {
 			default:
 				break;
 		}
+
+		// Reset the topbar
+		TopMenuModule.resetInfos();
 	}
 
 	updateCursor() {
@@ -95,32 +153,14 @@ class Tool {
 		currFile.canvasView.style.cursor = 'default';
 	}
 
-	onStart(mousePos) {
+	onStart(mousePos, mouseTarget) {
 		this.startMousePos = mousePos;
 	}
 
-	onDrag(mousePos) {
+	onDrag(mousePos, mouseTarget) {
 	}
 
-	onEnd(mousePos) {
+	onEnd(mousePos, mouseTarget) {
 		this.endMousePos = mousePos;
-	}
-
-	increaseSize() {
-		if (this.currSize < 128) {
-			this.currSize++;
-			this.updateCursor();
-		}
-	}
-
-	decreaseSize() {
-		if (this.currSize > 1) {
-			this.currSize--;
-			this.updateCursor();
-		}
-	}
-
-	get size() {
-		return this.currSize;
 	}
 }

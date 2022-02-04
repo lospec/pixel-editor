@@ -6,6 +6,7 @@ const ToolManager = (() => {
     tools["eraser"] = new EraserTool("eraser", {type: 'html'}, switchTool);
     tools["rectangle"] = new RectangleTool("rectangle", {type: 'html'}, switchTool);
     tools["line"] = new LineTool("line", {type: 'html'}, switchTool);
+    tools["ellipse"] = new EllipseTool("ellipse", {type: 'cursor', style: 'crosshair'}, switchTool);
     tools["fill"] = new FillTool("fill", {type: 'cursor', style: 'crosshair'}, switchTool);
     
     tools["eyedropper"] = new EyeDropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
@@ -16,6 +17,10 @@ const ToolManager = (() => {
         {type:'cursor', style:'crosshair'}, switchTool, tools["brush"]);
     tools["rectselect"] = new RectangularSelectionTool("rectselect", 
         {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
+    tools["lassoselect"] = new LassoSelectionTool("lassoselect", 
+        {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
+    tools["magicwand"] = new MagicWandTool("magicwand", 
+        {type: 'cursor', style:'crosshair'}, switchTool, tools["moveselection"]);
     
     currTool = tools["brush"];
     currTool.onSelect();
@@ -25,6 +30,9 @@ const ToolManager = (() => {
     Events.on("mousemove", window, onMouseMove);
     Events.on("mousedown", window, onMouseDown);
     Events.on("wheel", window, onMouseWheel);
+
+    // Assign a selection tool to the move tool
+    tools["moveselection"].selectionTool = tools["lassoselect"];
 
     // Bind tool shortcuts
     Events.onCustom("tool-shortcut", onShortcut);
@@ -108,7 +116,7 @@ const ToolManager = (() => {
     }
 
     function onMouseUp(mouseEvent) {
-        if (!EditorState.documentCreated())
+        if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
         let mousePos = Input.getCursorPosition(mouseEvent);
 
@@ -122,11 +130,11 @@ const ToolManager = (() => {
                         tools["eyedropper"].onEnd(mousePos, mouseEvent.target);
                     }
                     else if (!currFile.currentLayer.isLocked || !((Object.getPrototypeOf(currTool) instanceof DrawingTool))) {
-                        currTool.onEnd(mousePos);
+                        currTool.onEnd(mousePos, mouseEvent.target);
                     }
                     break;
                 case 2:
-                    tools["pan"].onEnd(mousePos);
+                    tools["pan"].onEnd(mousePos, mouseEvent.target);
                     break;
                 case 3:
                     currTool.onRightEnd(mousePos, mouseEvent.target);
@@ -141,10 +149,13 @@ const ToolManager = (() => {
         return currTool;
     }
 
-    function switchTool(newTool) {
+    function switchTool(newTool, event) {
         currTool.onDeselect();
         currTool = newTool;
         currTool.onSelect();
+
+        if (event != undefined)
+            event.stopPropagation();
     }
 
     return {
