@@ -51,7 +51,6 @@ class SelectionTool extends Tool {
     onDrag(mousePos) {
         super.onDrag(mousePos);
 
-        console.log("drag");
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
 
@@ -66,22 +65,25 @@ class SelectionTool extends Tool {
             this.reconstruct.top = true;
         
 
-        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
-            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+        if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
+            this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+        }
     }
 
     onEnd(mousePos, mouseTarget) {
         super.onEnd(mousePos);
 
-        if (mouseTarget == undefined || Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
-            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+        if (mouseTarget == undefined || Util.isChildOfByClass(mouseTarget, "editor-top-menu"))
             return;
 
         let mouseX = mousePos[0] / currFile.zoom;
         let mouseY = mousePos[1] / currFile.zoom;
 
-        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
-            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+        if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
+            this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+        }
 
         this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
             this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];

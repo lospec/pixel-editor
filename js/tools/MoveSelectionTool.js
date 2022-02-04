@@ -75,9 +75,6 @@ class MoveSelectionTool extends DrawingTool {
 
     onDrag(mousePos) {
         super.onDrag(mousePos);
-        
-        if (!this.selectionTool.cursorInSelectedArea(mousePos))
-            return;
 
         this.selectionTool.moveOffset = 
             [Math.floor(mousePos[0] / currFile.zoom - currFile.canvasSize[0] / 2  - (this.selectionTool.boundingBoxCenter[0] - currFile.canvasSize[0]/2)), 
@@ -98,8 +95,7 @@ class MoveSelectionTool extends DrawingTool {
         super.onEnd(mousePos, mouseTarget);
 
         if (!this.selectionTool.cursorInSelectedArea(mousePos) && 
-            !Util.isChildOfByClass(mouseTarget, "editor-top-menu") && 
-            Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
+            !Util.isChildOfByClass(mouseTarget, "editor-top-menu")) {
             this.endSelection();
             // Switch to selection tool
             this.switchFunc(this.selectionTool);

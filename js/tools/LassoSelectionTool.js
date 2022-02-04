@@ -33,8 +33,7 @@ class LassoSelectionTool extends SelectionTool {
     onDrag(mousePos, mouseTarget) {
         super.onDrag(mousePos, mouseTarget);     
         
-        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
-            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+        if (!Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
             return;
 
         if (this.currentPixels[this.currentPixels.length - 1] != mousePos)
@@ -47,8 +46,7 @@ class LassoSelectionTool extends SelectionTool {
         super.onEnd(mousePos, mouseTarget);
         new HistoryState().EditCanvas();
 
-        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
-            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu"))
             return;
 
         this.currentPixels.push([this.startMousePos[0] / currFile.zoom, this.startMousePos[1] / currFile.zoom]);

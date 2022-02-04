@@ -58,8 +58,7 @@ class RectangularSelectionTool extends SelectionTool {
     onEnd(mousePos, mouseTarget) {
         super.onEnd(mousePos, mouseTarget);
         
-        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
-            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu"))
             return;
 
         new HistoryState().EditCanvas();
@@ -80,10 +79,12 @@ class RectangularSelectionTool extends SelectionTool {
             this.startMousePos[1] = tmp;
         }
 
-        this.boundingBox.minX = this.startMousePos[0] - 1;
-        this.boundingBox.maxX = this.endMousePos[0] + 1;
-        this.boundingBox.minY = this.startMousePos[1] - 1;
-        this.boundingBox.maxY = this.endMousePos[1] + 1;
+        if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
+            this.boundingBox.minX = this.startMousePos[0] - 1;
+            this.boundingBox.maxX = this.endMousePos[0] + 1;
+            this.boundingBox.minY = this.startMousePos[1] - 1;
+            this.boundingBox.maxY = this.endMousePos[1] + 1;
+        }
 
         // Switch to the move tool so that the user can move the selection
         this.switchFunc(this.moveTool);

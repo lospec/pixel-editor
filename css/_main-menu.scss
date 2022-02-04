@@ -125,7 +125,8 @@ li#editor-info {
 		}
 		input[type=number] {
 			appearance:none;
-			-moz-appearance: text;
+			-moz-appearance:textfield;
+			-webkit-appearance:text;
 			width:25px;
 			height:15px;
 		}
