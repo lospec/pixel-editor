@@ -30,10 +30,21 @@ class VSymmetryLayer extends Layer {
         toggleButton.innerHTML = "Hide Vertical Axis";
         this.isEnabled = true;
         this.canvas.style.display = "inline-block";
+        this.initPaint();
+    }
+
+    initPaint() {
+        this.lineDistance = 5;
+        this.fillAxis();
     }
 
     repaint(factor) {
         this.lineDistance += factor;
+        this.fillAxis();
+    }
+
+    normalPaint() {
+        this.lineDistance = 10;
         this.fillAxis();
     }
 

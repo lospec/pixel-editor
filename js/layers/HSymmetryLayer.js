@@ -28,12 +28,23 @@ class HSymmetryLayer extends Layer {
         // get toggle h axis button
         let toggleButton = document.getElementById("toggle-h-symmetry-button");
         toggleButton.innerHTML = "Hide Horizontal Symmetry";
+
         this.isEnabled = true;
         this.canvas.style.display = "inline-block";
     }
 
+    initPaint() {
+        this.lineDistance = 5;
+        this.fillAxis();
+    }
+
     repaint(factor) {
         this.lineDistance += factor;
+        this.fillAxis();
+    }
+
+    normalPaint() {
+        this.lineDistance = 10;
         this.fillAxis();
     }
 

@@ -60,18 +60,28 @@ class ZoomTool extends Tool {
 
         // Adjust pixel grid thickness
         if (zoomed) {
-            if (currFile.zoom <= 7)
+
+            if (currFile.zoom <= 7) {
                 currFile.pixelGrid.disablePixelGrid();
+                currFile.hSymmetricLayer.repaint((currFile.zoom - prevZoom) * 1.8);
+                currFile.vSymmetricLayer.repaint((currFile.zoom - prevZoom) * 1.8);
+            }
             else if (currFile.zoom >= 20 && mode == 'in') {
                 currFile.pixelGrid.enablePixelGrid();
                 currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
+                currFile.hSymmetricLayer.normalPaint();
+                currFile.vSymmetricLayer.normalPaint();
             }
             else if (prevZoom >= 20 && mode == 'out') {
                 currFile.pixelGrid.enablePixelGrid();
                 currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
+                currFile.hSymmetricLayer.normalPaint();
+                currFile.vSymmetricLayer.normalPaint();
             }
             else {
                 currFile.pixelGrid.enablePixelGrid();
+                currFile.hSymmetricLayer.normalPaint();
+                currFile.vSymmetricLayer.normalPaint();
             }
         }
 

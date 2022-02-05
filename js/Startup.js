@@ -123,9 +123,9 @@ const Startup = (() => {
             currFile.layers.push(currFile.checkerBoard);
             currFile.layers.push(currFile.currentLayer);
             currFile.layers.push(currFile.TMPLayer);
-            currFile.layers.push(currFile.pixelGrid);
             currFile.layers.push(currFile.hSymmetricLayer);
             currFile.layers.push(currFile.vSymmetricLayer);
+            currFile.layers.push(currFile.pixelGrid);
             currFile.layers.push(currFile.VFXLayer);
         }
     }
