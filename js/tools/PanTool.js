@@ -4,13 +4,20 @@ class PanTool extends Tool {
         super(name, options);
 
         Events.on('click', this.mainButton, switchFunction, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Pan tool");
+        this.addTutorialKey("P", " to select the lasso selection tool");
+        this.addTutorialKey("Left drag", " to move the viewport");
+        this.addTutorialKey("Space + drag", " to move the viewport");
+        this.addTutorialImg("pan-tutorial.gif");
     }
 
     onStart(mousePos, target) {
         super.onStart(mousePos);
         if (target.className != 'drawingCanvas')
             return;
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan-held.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan-held.png\'), auto";
 	}
 
 	onDrag(mousePos, target) {
@@ -31,12 +38,12 @@ class PanTool extends Tool {
         if (target.className != 'drawingCanvas')
             return;
 
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan.png\'), auto";
 	}
 
     onSelect() {
         super.onSelect();        
-        currFile.canvasView.style.cursor = "url(\'/pixel-editor/pan.png\'), auto";
+        currFile.canvasView.style.cursor = "url(\'pan.png\'), auto";
     }
 
     onDeselect() {

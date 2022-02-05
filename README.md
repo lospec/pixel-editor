@@ -6,7 +6,8 @@ The tool can be viewed online here: https://lospec.com/pixel-editor
 
 ## How to contribute
 
-Please do not submit pull requests with new features or core changes. Instead, please file an issue first for discussion.
+Before starting to work, please open an issue for discussion so that we can organize the work without creating too many conflicts. If your contribution is going to fix a bug, please
+ make a fork and use the bug-fixes branch. If you want to work on a new feature, please use the new-feature branch instead.
 
 ## What to Contribute
 

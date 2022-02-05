@@ -1,12 +1,15 @@
 const TopMenuModule = (() => {
 
     const mainMenuItems = document.getElementById('main-menu').children;
+    let infoList = document.getElementById('editor-info');
+    let infoElements = {};
 
     initMenu();
 
     function initMenu() {
-        //for each button in main menu (starting at 1 to avoid logo)
-        for (let i = 1; i < mainMenuItems.length; i++) {
+        // for each button in main menu (starting at 1 to avoid logo), ending at length-1 to avoid
+        // editor info
+        for (let i = 1; i < mainMenuItems.length-1; i++) {
 
             //get the button that's in the list item
             const menuItem = mainMenuItems[i];
@@ -18,6 +21,7 @@ const TopMenuModule = (() => {
                 closeMenu();
                 // Select the item
                 Util.select(e.target.parentElement);
+                e.stopPropagation();
             });
 
             const subMenu = menuItem.children[1];
@@ -53,18 +57,29 @@ const TopMenuModule = (() => {
                                 e.preventDefault();
                         }
                         break;
-                    // REFACTOR: move the binding to the Selection IIFE or something like that once it's done
                     case 'Paste':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+v");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+v");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Copy':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+c");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+c");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Cut':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("ctrl+x");});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("ctrl+x");
+                            e.stopPropagation();
+                        });
                         break;
                     case 'Cancel':
-                        Events.on('click', currSubmenuButton, function(){Events.emit("esc-pressed")});
+                        Events.on('click', currSubmenuButton, function(e){
+                            Events.emit("esc-pressed");
+                            e.stopPropagation();
+                        });
                         break;
                     //Help Menu
                     case 'Settings':
@@ -93,7 +108,27 @@ const TopMenuModule = (() => {
         }
     }
 
+    function resetInfos() {
+        infoList.innerHTML = "<ul></ul>";
+    }
+
+    function updateField(fieldId, value) {
+        document.getElementById(fieldId).value = value;
+    }
+
+    function addInfoElement(fieldId, field) {
+        let liEl = document.createElement("li");
+
+        infoElements[fieldId] = field;
+        liEl.appendChild(field);
+
+        infoList.firstChild.appendChild(liEl);
+    }
+
     return {
-        closeMenu
+        closeMenu,
+        updateField,
+        addInfoElement,
+        resetInfos
     }
 })();

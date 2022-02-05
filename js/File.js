@@ -3,6 +3,7 @@ class File {
     canvasSize = [];
     zoom = 7;
     canvasView = document.getElementById("canvas-view");
+    inited = false;
 
     // Layers
     layers = [];
@@ -36,11 +37,13 @@ class File {
     // Start resize data
     startData = {width: 0, height:0, widthPercentage: 100, heightPercentage: 100};
 
-    // Sprite scaling attributes
 
     openResizeCanvasWindow() {
+        if (!this.inited) {
+            this.initResizeCanvasInputs();
+            this.inited = true;
+        }
         // Initializes the inputs
-        this.initResizeCanvasInputs();
         Dialogue.showDialogue('resize-canvas');
     }
 
@@ -152,6 +155,9 @@ class File {
                 this.rcBorders.left + this.rcBorders.right;
         currFile.canvasSize[1] = parseInt(currFile.canvasSize[1]) + 
             this.rcBorders.top + this.rcBorders.bottom;
+
+        console.trace();
+        console.log(currFile.canvasSize);
 
         // Resize the canvases
         for (let i=0; i<currFile.layers.length; i++) {

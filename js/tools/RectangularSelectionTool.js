@@ -1,25 +1,28 @@
 class RectangularSelectionTool extends SelectionTool {
-    switchFunc = undefined;
-    moveTool = undefined;
-    currSelection = {};
 
     constructor (name, options, switchFunc, moveTool) {
-        super(name, options, switchFunc);
-
-        this.switchFunc = switchFunc;
-        this.moveTool = moveTool;
+        super(name, options, switchFunc, moveTool);
         Events.on('click', this.mainButton, switchFunc, this);
+
+        this.resetTutorial();
+        this.addTutorialTitle("Rectangular selection tool");
+        this.addTutorialKey("M", " to select the rectangular selection tool");
+        this.addTutorialKey("Left drag", " to select a rectangular area");
+        this.addTutorialKey("Left drag", " to move a selection");
+        this.addTutorialKey("Esc", " to cancel a selection");
+        this.addTutorialKey("Click", " outside the selection to cancel it");
+        this.addTutorialKey("CTRL+C", " to copy a selection");
+        this.addTutorialKey("CTRL+V", " to paste a selection");
+        this.addTutorialKey("CTRL+X", " to cut a selection");
+        this.addTutorialImg("rectselect-tutorial.gif");
     }
 
-    onStart(mousePos) {
-        super.onStart(mousePos);
+    onStart(mousePos, mouseTarget) {
+        super.onStart(mousePos, mouseTarget);
 
-        // Putting the vfx layer on top of everything
-        currFile.VFXLayer.canvas.style.zIndex = MAX_Z_INDEX;
-
-        // Saving the start coords of the rect
-        this.startMousePos[0] = Math.round(this.startMousePos[0] / currFile.zoom) - 0.5;
-        this.startMousePos[1] = Math.round(this.startMousePos[1] / currFile.zoom) - 0.5;
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         // Avoiding external selections
         if (this.startMousePos[0] < 0) {
@@ -40,20 +43,28 @@ class RectangularSelectionTool extends SelectionTool {
         this.drawSelection(this.startMousePos[0], this.startMousePos[1]);
     }
 
-    onDrag(mousePos) {
-        super.onDrag(mousePos);
+    onDrag(mousePos, mouseTarget) {
+        super.onDrag(mousePos, mouseTarget);
+
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu") || 
+            !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
+            return;
 
         // Drawing the rect
-        this.drawSelection(Math.round(mousePos[0] / currFile.zoom) + 0.5, Math.round(mousePos[1] / currFile.zoom) + 0.5);
+        this.endMousePos = [Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom)];
+        this.drawSelection(Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom));
     }
 
-    onEnd(mousePos) {
-        super.onEnd(mousePos);
+    onEnd(mousePos, mouseTarget) {
+        super.onEnd(mousePos, mouseTarget);
+        
+        if (Util.isChildOfByClass(mouseTarget, "editor-top-menu"))
+            return;
+
         new HistoryState().EditCanvas();
 
         // Getting the end position
-        this.endMousePos[0] = Math.round(this.endMousePos[0] / currFile.zoom) + 0.5;
-        this.endMousePos[1] = Math.round(this.endMousePos[1] / currFile.zoom) + 0.5;
+        this.endMousePos = [Math.floor(mousePos[0] / currFile.zoom), Math.floor(mousePos[1] / currFile.zoom)];
 
         // Inverting end and start (start must always be the top left corner)
         if (this.endMousePos[0] < this.startMousePos[0]) {
@@ -68,33 +79,23 @@ class RectangularSelectionTool extends SelectionTool {
             this.startMousePos[1] = tmp;
         }
 
+        if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
+            this.boundingBox.minX = this.startMousePos[0] - 1;
+            this.boundingBox.maxX = this.endMousePos[0] + 1;
+            this.boundingBox.minY = this.startMousePos[1] - 1;
+            this.boundingBox.maxY = this.endMousePos[1] + 1;
+        }
+
         // Switch to the move tool so that the user can move the selection
         this.switchFunc(this.moveTool);
-        // Preparing data for the move tool
-        let dataWidth = this.endMousePos[0] - this.startMousePos[0];
-        let dataHeight = this.endMousePos[1] - this.startMousePos[1];
+        // Obtain the selected pixels
+        this.moveTool.setSelectionData(this.getSelection(), this);
+    }
 
-        this.currSelection = {
-            left: this.startMousePos[0], right: this.endMousePos[0], 
-            top: this.startMousePos[1], bottom: this.endMousePos[1], 
-
-            width: dataWidth,
-            height: dataHeight,
-            
-            data: currFile.currentLayer.context.getImageData(
-                this.startMousePos[0], this.startMousePos[1], 
-                dataWidth + 1, dataHeight + 1)
-        };
-        
-        // Moving the selection to the TMP layer. It will be moved back to the original
-        // layer if the user will cancel or end the selection
-        currFile.currentLayer.context.clearRect(this.startMousePos[0] - 0.5, this.startMousePos[1] - 0.5, 
-            dataWidth + 1, dataHeight + 1);
-        // Moving those pixels from the current layer to the tmp layer
-        currFile.TMPLayer.context.putImageData(this.currSelection.data, this.startMousePos[0], this.startMousePos[1]);
-
-        this.moveTool.setSelectionData(this.currSelection, this);
-        console.log("data set");
+    cutSelection() {
+        super.cutSelection();
+        currFile.currentLayer.context.clearRect(this.currSelection.left-0.5, this.currSelection.top-0.5,
+            this.currSelection.width, this.currSelection.height);
     }
 
     onSelect() {
@@ -105,53 +106,16 @@ class RectangularSelectionTool extends SelectionTool {
         super.onDeselect();
     }
 
-    drawSelection(x, y) {
+    drawSelection() {
         // Getting the vfx context
         let vfxContext = currFile.VFXLayer.context;
     
         // Clearing the vfx canvas
         vfxContext.clearRect(0, 0, currFile.VFXLayer.canvas.width, currFile.VFXLayer.canvas.height);
-        vfxContext.lineWidth = 1;
-        vfxContext.strokeStyle = 'black';
-        vfxContext.setLineDash([4]);
-    
-        // Drawing the rect
-        vfxContext.beginPath();
-        vfxContext.rect(this.startMousePos[0], this.startMousePos[1], x - this.startMousePos[0], y - this.startMousePos[1]);
-    
-        vfxContext.stroke();
-    }
 
-    /** Moves the rect ants to the specified position 
-     * 
-     * @param {*} x X coordinate of the rect ants
-     * @param {*} y Y coordinat of the rect ants
-     * @param {*} width Width of the selection
-     * @param {*} height Height of the selectione
-     * 
-     * @return The data regarding the current position and size of the selection
-     */
-    moveAnts(x, y, width, height) {
-        // Getting the vfx context
-        let vfxContext = currFile.VFXLayer.context;
-        let ret = this.currSelection;
-
-        // Clearing the vfx canvas
-        vfxContext.clearRect(0, 0, currFile.VFXLayer.canvas.width, currFile.VFXLayer.canvas.height);
-        vfxContext.lineWidth = 1;
-        vfxContext.setLineDash([4]);
-
-        // Fixing the coordinates
-        this.currSelection.left = Math.round(Math.round(x) - 0.5 - Math.round(width / 2)) + 0.5;
-        this.currSelection.top = Math.round(Math.round(y) - 0.5 - Math.round(height / 2)) + 0.5;
-        this.currSelection.right = this.currSelection.left + Math.round(width);
-        this.currSelection.bottom = this.currSelection.top + Math.round(height);
-
-        // Drawing the rect
-        vfxContext.beginPath();
-        vfxContext.rect(this.currSelection.left, this.currSelection.top, width, height);
-        vfxContext.stroke();
-
-        return ret;
+        currFile.VFXLayer.drawLine(this.startMousePos[0], this.startMousePos[1], this.endMousePos[0], this.startMousePos[1], 1);
+        currFile.VFXLayer.drawLine(this.endMousePos[0], this.startMousePos[1], this.endMousePos[0], this.endMousePos[1], 1);
+        currFile.VFXLayer.drawLine(this.endMousePos[0], this.endMousePos[1], this.startMousePos[0], this.endMousePos[1], 1);
+        currFile.VFXLayer.drawLine(this.startMousePos[0], this.endMousePos[1], this.startMousePos[0], this.startMousePos[1], 1);
     }
 }

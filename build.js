@@ -17,12 +17,16 @@ console.log('Building Pixel Editor');
 function copy_images(){
     // Icons
     gulp.src('./images/*.png').pipe(gulp.dest(BUILDDIR));
+	//favicon
+    gulp.src('./images/*.ico').pipe(gulp.dest(BUILDDIR));
     // Splash images
     gulp.src('./images/Splash images/*.png').pipe(gulp.dest(BUILDDIR));
-    // Logs images
+    // Logs gifs
     gulp.src('./images/Logs/*.gif').pipe(gulp.dest(BUILDDIR));
-    // Logs images
+    // Logs pngs
     gulp.src('./images/Logs/*.png').pipe(gulp.dest(BUILDDIR));
+    // Tool tutorials
+    gulp.src('./images/ToolTutorials/*.gif').pipe(gulp.dest(BUILDDIR));
 }
 
 function copy_logs() {
@@ -52,7 +56,7 @@ function compile_page(){
 
         .pipe(handlebars({encoding: 'utf8', debug: true, bustCache: true})
             .partials('./views/[!index]*.hbs').partials('./views/popups/*.hbs')
-            //.helpers({ svg: hb_svg })
+            .partials('./views/components/*.hbs')
             .helpers('./helpers/**/*.js')
             .data({
                 projectSlug: 'pixel-editor',

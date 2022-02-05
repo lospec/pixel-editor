@@ -1,0 +1,39 @@
+Hi! Welcome to the latest version of the Pixel Editor. It's been quite a while! Most of the changes happened behind 
+the scenes: we worked very hard to refactor the code, make it a bit more modern and scalable so that contributions will,
+ hopefully, be easier to make.</br></br>
+We have some good news for users as well!
+
+<h2>Pixel Grid</h2>
+
+I've worked a bit on the pixel grid to make it look a bit better and less intrusive when zooming in. You can see the 
+difference in behaviour between the new grid (left) and the old grid (right) in the image below.
+<img src="grid.png"/>
+In addition, the pixel grid will now automatically be hidden when the zoom level becomes too low: in that way looking at big 
+sprites becomes a lot less performance-heavy and it doesn't cause lag.
+
+<h2>Quality of life</h2>
+
+I've added some quality of life improvements, sometimes subtle (maybe you won't notice but you'd have definitely noticed
+the absence of them), sometimes a bit more noticeable. For example:
+<ul>
+    <li>It's now possible to delete a layer by selecting it and hitting "DEL"</li>
+    <li>When adding a colour to the palette, it is automatically selected</li>
+    <li>Thanks to <a href="https://github.com/NSSure">NSSure</a>, you can now select a name for your exported / saved project</li>
+    <li>The brush preview should now be less intrusive while still being visible</li>
+</ul>
+
+<h2> Important bug fixes</h2>
+A lot of nasty bugs have been fixed! Please, if you know more we aren't aware of, <a href="https://github.com/lospec/pixel-editor">
+feel free to open an issue or make a pull request.</a>
+<ul>
+    <li>Fixed the bug that caused file corruptions</li>
+    <li>Fixed fill tool not working and creating hundreds of similar colours in certain browsers</li>
+    <li>Fixed the build procedure for Windows</li>
+    <li>Fixed the editor ignoring the scale factor when exporting</li>
+</ul>
+
+<h2>End of log</h2>
+That's all for this update! We have some cool things planned for the near future, so stay tuned :)</br>
+- <a href="https://github.com/unsettledgames">Unsettled</a>
+</br></br>
+P.S.: we're always looking for contributors! Join the <a href="https://discord.com/invite/QjsgTQM">Lospec discord</a> to get in touch!

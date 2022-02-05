@@ -82,8 +82,6 @@ class PixelGrid extends Layer {
 
         this.context.strokeStyle = Settings.getCurrSettings().pixelGridColour;
 
-        console.log("Line ditance: " + this.lineDistance)
-
         // OPTIMIZABLE, could probably be a bit more elegant
         // Draw horizontal lines
         for (let i=0; i<this.canvas.width / Math.round(this.lineDistance); i++) {

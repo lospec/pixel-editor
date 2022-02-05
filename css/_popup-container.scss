@@ -116,7 +116,7 @@
 	}
 
 	.dropdown-button {
-		background: $basehover url('/pixel-editor/dropdown-arrow.png') right center no-repeat;
+		background: $basehover url('dropdown-arrow.png') right center no-repeat;
 		border: none;
 		border-radius: 4px;
 		color: $basehovertext;
@@ -126,7 +126,7 @@
 		width: 200px;
 		text-align: left;
 		&:hover {
-			background: $baseselected url('/pixel-editor/dropdown-arrow-hover.png') right center no-repeat;
+			background: $baseselected url('dropdown-arrow-hover.png') right center no-repeat;
 			color: $baseselectedtext;
 		}
 		&.selected {
