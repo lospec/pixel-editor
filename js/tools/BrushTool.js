@@ -81,7 +81,6 @@ class BrushTool extends ResizableTool {
             }
 
             if (currFile.hSymmetricLayer.isEnabled && currFile.vSymmetricLayer.isEnabled) {
-                // Based on current mouse position we can infer which quadrant is the remaining one
                 this.mirrorDraw(mirrorPrevX, mirrorPrevY, mirrorCurrentX, mirrorCurrentY, true, true);
             }
         }
