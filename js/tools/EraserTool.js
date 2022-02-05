@@ -103,7 +103,7 @@ class EraserTool extends ResizableTool {
                 prevY,
                 currX,
                 currY,
-                this.currSize
+                this.currSize, true
             );
         } else {
             currFile.currentLayer.drawLine(
@@ -111,7 +111,7 @@ class EraserTool extends ResizableTool {
                 prevY - horizontalFactor,
                 currX - verticalFactor,
                 currY - horizontalFactor,
-                this.currSize
+                this.currSize, true
             );
         }
     }
