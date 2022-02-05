@@ -62,10 +62,12 @@ class Tool {
 		else {
 			this.toolTutorial.style.top = this.mainButton.getBoundingClientRect().top - 48 + "px";
 		}
+		this.toolTutorial.style.display = "inline-block";
 		this.toolTutorial.className = "fade-in";
 	}
 	hideTutorial() {
 		this.toolTutorial.className = "fade-out";
+		setTimeout(function(){this.toolTutorial.style.display = "none"}.bind(this), 200);
 	}
 
 	resetTutorial() {
