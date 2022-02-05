@@ -8,9 +8,44 @@ class FillTool extends DrawingTool {
     onStart(mousePos, target) {
         super.onStart(mousePos);
 
+        this.startMousePos[0] = Math.floor(mousePos[0]) + 0.5;
+        this.startMousePos[1] = Math.floor(mousePos[1]) + 0.5;
+
         if (target.className != 'drawingCanvas')
             return;
+
         this.fill(mousePos);
+
+        let midX = (currFile.canvasSize[0] / 2);
+        let midY = (currFile.canvasSize[1] / 2);
+        let x0 = Math.floor(this.startMousePos[0]/currFile.zoom);
+        let y0 = Math.floor(this.startMousePos[1]/currFile.zoom);
+        let mirrorX, mirrorY;
+        if (currFile.hSymmetricLayer.isEnabled) {
+            if (y0 <= midY) {
+                mirrorY = Math.floor(midY + Math.abs(midY - y0));
+            } else {
+                mirrorY = Math.floor(midY - Math.abs(midY - y0));
+            }
+            let symmetryPos = [mousePos[0], mirrorY * currFile.zoom];
+            this.fill(symmetryPos);
+        }
+
+        if (currFile.vSymmetricLayer.isEnabled) {
+            if (x0 <= midX) {
+                mirrorX = Math.floor(midX + Math.abs(midX - x0));
+            } else {
+                mirrorX = Math.floor(midX - Math.abs(midX - x0));
+            }
+            let symmetryPos = [mirrorX * currFile.zoom, mousePos[1]];
+            this.fill(symmetryPos);
+        }
+
+        if (currFile.hSymmetricLayer.isEnabled && currFile.vSymmetricLayer.isEnabled) {
+            let symmetryPos = [mirrorX * currFile.zoom, mirrorY * currFile.zoom];
+            this.fill(symmetryPos);
+        }
+
         currFile.currentLayer.updateLayerPreview();
         
         new HistoryState().EditCanvas();
