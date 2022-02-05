@@ -49,6 +49,10 @@ class RectangleTool extends ResizableTool {
         this.startMousePos[0] = Math.floor(mousePos[0] / currFile.zoom) + 0.5;
         this.startMousePos[1] = Math.floor(mousePos[1] / currFile.zoom) + 0.5;
 
+        this.drawRect(this.startMousePos[0], this.startMousePos[1],
+            this.startMousePos[0], this.startMousePos[1]
+        );
+
         new HistoryState().EditCanvas();
 	}
 
@@ -95,8 +99,6 @@ class RectangleTool extends ResizableTool {
             currFile.currentLayer.context.fillRect(startRectX, startRectY, endRectX - startRectX, endRectY - startRectY);
         }
 
-        this.clearCanvas(tmpContext);
-
         if (currFile.hSymmetricLayer.isEnabled) {
             if (typeof this.horizontalMirrorCoordinates != 'undefined') {
 
@@ -109,8 +111,7 @@ class RectangleTool extends ResizableTool {
                     endMirrorRectX,
                     startMirrorRectX,
                     endMirrorRectY,
-                    startMirrorRectY,
-                    tmpContext
+                    startMirrorRectY
                 );
             }
         }
@@ -127,8 +128,7 @@ class RectangleTool extends ResizableTool {
                     endMirrorRectX,
                     startMirrorRectX,
                     endMirrorRectY,
-                    startMirrorRectY,
-                    tmpContext
+                    startMirrorRectY
                 );
             }
         }
@@ -144,11 +144,12 @@ class RectangleTool extends ResizableTool {
                     endMirrorRectX,
                     startMirrorRectX,
                     endMirrorRectY,
-                    startMirrorRectY,
-                    tmpContext
+                    startMirrorRectY
                 );
             }
         }
+
+        this.clearCanvas(tmpContext);
 
 	}
 
@@ -158,9 +159,8 @@ class RectangleTool extends ResizableTool {
      * @param startMirrorRectX
      * @param endMirrorRectY
      * @param startMirrorRectY
-     * @param tmpContext
      */
-    handleMirrorRectDrawing(endMirrorRectX, startMirrorRectX, endMirrorRectY, startMirrorRectY, tmpContext) {
+    handleMirrorRectDrawing(endMirrorRectX, startMirrorRectX, endMirrorRectY, startMirrorRectY) {
         const mirrorCoordinates = this.adjustCoordinates(
             endMirrorRectX,
             startMirrorRectX,
@@ -187,15 +187,12 @@ class RectangleTool extends ResizableTool {
                 endMirrorRectY - startMirrorRectY
             );
         }
-        this.clearCanvas(tmpContext);
     }
 
     /** Updates the layer preview and clears the tmp canvas
      * @param {*} tmpContext tmp canvas context
      */
     clearCanvas(tmpContext) {
-        // Update the layer preview
-        currFile.currentLayer.updateLayerPreview();
         // Clearing the tmp canvas
         tmpContext.clearRect(0, 0, currFile.TMPLayer.canvas.width, currFile.TMPLayer.canvas.height);
     }
