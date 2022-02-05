@@ -52,7 +52,7 @@ class PixelGrid extends Layer {
         this.fillPixelGrid();
     }
 
-    /** Shows or hides the pixel grid depening on its current visibility
+    /** Shows or hides the pixel grid depending on its current visibility
      *  (triggered by the show pixel grid button in the top menu)
      * 
      */

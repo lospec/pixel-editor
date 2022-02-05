@@ -86,6 +86,7 @@ const Startup = (() => {
                     Layer.unusedIDs.push(currentEntry.id);
                     // Removing the entry from the menu
                     currentEntry.remove();
+
                 }
             }
 
@@ -106,6 +107,12 @@ const Startup = (() => {
         console.log("CREATED GRID");
         currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
+        // Horizontal symmetric layer
+        currFile.hSymmetricLayer = new HSymmetryLayer(width, height, "horizontal-symmetric");
+
+        // Vertical symmetric layer
+        currFile.vSymmetricLayer = new VSymmetryLayer(width, height, "vertical-symmetric");
+
         // Creating the vfx layer on top of everything
         currFile.VFXLayer = new Layer(width, height, 'vfx-canvas');
         // Tmp layer to draw previews on
@@ -116,6 +123,8 @@ const Startup = (() => {
             currFile.layers.push(currFile.checkerBoard);
             currFile.layers.push(currFile.currentLayer);
             currFile.layers.push(currFile.TMPLayer);
+            currFile.layers.push(currFile.hSymmetricLayer);
+            currFile.layers.push(currFile.vSymmetricLayer);
             currFile.layers.push(currFile.pixelGrid);
             currFile.layers.push(currFile.VFXLayer);
         }
