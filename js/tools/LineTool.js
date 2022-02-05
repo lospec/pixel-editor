@@ -77,6 +77,47 @@ class LineTool extends ResizableTool {
         while (true) {
             context.fillRect(x0-Math.floor(this.currSize/2), y0-Math.floor(this.currSize/2), this.currSize, this.currSize);
 
+            // handle symmetry
+            let midY = (currFile.canvasSize[1] / 2);
+            let midX = (currFile.canvasSize[0] / 2);
+            let mirrorX, mirrorY;
+
+            if (currFile.hSymmetricLayer.isEnabled) {
+                if (y0 <= midY) {
+                    mirrorY = Math.floor(midY + Math.abs(midY - y0));
+                } else {
+                    mirrorY = Math.floor(midY - Math.abs(midY - y0));
+                }
+                mirrorY -= (this.currSize % 2 === 0) ? 0 : 1;
+                context.fillRect(
+                    x0 - Math.floor(this.currSize/2),
+                    mirrorY - Math.floor(this.currSize/2),
+                    this.currSize, this.currSize
+                );
+            }
+
+            if (currFile.vSymmetricLayer.isEnabled) {
+                if (x0 <= midX) {
+                    mirrorX = Math.floor(midX + Math.abs(midX - x0));
+                } else {
+                    mirrorX = Math.floor(midX - Math.abs(midX - x0));
+                }
+                mirrorX -= (this.currSize % 2 === 0) ? 0 : 1;
+                context.fillRect(
+                    mirrorX - Math.floor(this.currSize/2),
+                    y0 - Math.floor(this.currSize/2),
+                    this.currSize, this.currSize
+                );
+            }
+
+            if (currFile.hSymmetricLayer.isEnabled && currFile.vSymmetricLayer.isEnabled) {
+                context.fillRect(
+                    mirrorX - Math.floor(this.currSize/2),
+                    mirrorY - Math.floor(this.currSize/2),
+                    this.currSize, this.currSize
+                );
+            }
+
             //if we've reached the end goal, exit the loop
             if ((x0==x1) && (y0==y1)) break;
             var e2 = 2*err;
