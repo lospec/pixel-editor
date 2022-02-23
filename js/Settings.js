@@ -14,7 +14,7 @@ const Settings = (() => {
         settingsFromCookie = Cookies.get('pixelEditorSettings');
 
         if(!settingsFromCookie) {
-            console.log('settings cookie not found');
+            ////console.log('settings cookie not found');
 
             settings = {
                 switchToChangedColor: true,
@@ -27,8 +27,8 @@ const Settings = (() => {
             };
         }
         else{
-            console.log('settings cookie found');
-            console.log(settingsFromCookie);
+            ////console.log('settings cookie found');
+            ////console.log(settingsFromCookie);
 
             settings = JSON.parse(settingsFromCookie);
         }

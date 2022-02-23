@@ -83,7 +83,7 @@ class Util {
             return document.getElementById(elementOrElementId);
         }
         else {
-            console.log("Type not supported: " + typeof(elementOrElementId));
+            ////console.log("Type not supported: " + typeof(elementOrElementId));
         }
     }
 

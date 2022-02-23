@@ -44,8 +44,10 @@ class SelectionTool extends Tool {
         this.currSelection = {};
         this.moveOffset = [0, 0];
 
-        this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
-            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+        this.updateBoundingBox(
+            Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+            Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1)
+        );
     }
 
     onDrag(mousePos) {
@@ -66,8 +68,10 @@ class SelectionTool extends Tool {
         
 
         if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
-            this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
-                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+            this.updateBoundingBox(
+                Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1)
+            );
         }
     }
 
@@ -81,8 +85,10 @@ class SelectionTool extends Tool {
         let mouseY = mousePos[1] / currFile.zoom;
 
         if (Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom])) {
-            this.updateBoundingBox(Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
-                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1));
+            this.updateBoundingBox(
+                Math.min(Math.max(mouseX, 0), currFile.canvasSize[0]-1), 
+                Math.min(Math.max(mouseY, 0), currFile.canvasSize[1]-1)
+            );
         }
 
         this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
@@ -211,6 +217,7 @@ class SelectionTool extends Tool {
                 }
             }
         }
+        ////console.log('this.currSelection === ',this.currSelection);
 
         // Save the selection outline
         this.outlineData = currFile.VFXLayer.context.getImageData(this.boundingBox.minX, 
@@ -246,16 +253,25 @@ class SelectionTool extends Tool {
             this.boundingBox.minY + this.moveOffset[1]);
     }
 
-    drawBoundingBox() {
+    drawBoundingBox(xo = 0, yo = 0) {
         currFile.VFXLayer.context.fillStyle = "red";
-        currFile.VFXLayer.context.fillRect(this.boundingBox.minX + this.moveOffset[0], 
-            this.boundingBox.minY + this.moveOffset[1], 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.minX+ this.moveOffset[0], 
-            this.boundingBox.maxY + this.moveOffset[1], 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX+ this.moveOffset[0], 
-            this.boundingBox.minY + this.moveOffset[1], 1, 1);
-        currFile.VFXLayer.context.fillRect(this.boundingBox.maxX+ this.moveOffset[0], 
-            this.boundingBox.maxY + this.moveOffset[1], 1, 1);
+
+        currFile.VFXLayer.context.fillRect(
+            this.boundingBox.minX + this.moveOffset[0] - xo, 
+            this.boundingBox.minY + this.moveOffset[1] - yo,
+            1, 1);
+        currFile.VFXLayer.context.fillRect(
+            this.boundingBox.minX + this.moveOffset[0] - xo, 
+            this.boundingBox.maxY + this.moveOffset[1] + yo,
+            1, 1);
+        currFile.VFXLayer.context.fillRect(
+            this.boundingBox.maxX + this.moveOffset[0] + xo, 
+            this.boundingBox.minY + this.moveOffset[1] - yo,
+            1, 1);
+        currFile.VFXLayer.context.fillRect(
+            this.boundingBox.maxX + this.moveOffset[0] + xo, 
+            this.boundingBox.maxY + this.moveOffset[1] + yo,
+            1, 1);
     }
 
     isBorderOfBox(pixel) {

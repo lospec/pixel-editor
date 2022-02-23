@@ -38,12 +38,12 @@ const History = (() => {
     }
 
     function undo () {
-        console.log("undoing");
+        ////console.log("undoing");
         undoOrRedo('undo');
     }
 
     function redo () {
-        console.log("redoing");
+        ////console.log("redoing");
         undoOrRedo('redo');
     }
 
@@ -186,13 +186,13 @@ class HistoryState {
         this.nFlattened = nFlattened;
 
         this.undo = function() {
-            for (let i=0; i<this.nFlattened - nAppLayers; i++) {
+            for (let i=0; i<this.nFlattened; i++) {
                 undo();
             }
         };
 
         this.redo = function() {
-            for (let i=0; i<this.nFlattened - nAppLayers; i++) {
+            for (let i=0; i<this.nFlattened; i++) {
                 redo();
             }
         };
@@ -241,7 +241,9 @@ class HistoryState {
 
         this.undo = function() {
             addedLayer.selectLayer();
-            LayerList.deleteLayer(false);
+            if (currFile.layers.length != 4) {//TODO: repent and rebirth lol
+                LayerList.deleteLayer(false);
+            }
         };
 
         this.redo = function() {
@@ -268,7 +270,9 @@ class HistoryState {
 
         this.redo = function() {
             this.deleted.selectLayer();
-            LayerList.deleteLayer(false);
+            if (currFile.layers.length != 4) {//TODO: repent and rebirth lol
+                LayerList.deleteLayer(false);
+            }
         };
     }
 
@@ -315,7 +319,7 @@ class HistoryState {
         this.index = index;
 
         this.undo = function() {
-            if (currFile.layers.length - nAppLayers > this.index + 1) {
+            if (currFile.layers.length > this.index + 1) {
                 currFile.layers[this.index + 1].selectLayer();
             }
             else {
@@ -412,7 +416,7 @@ class HistoryState {
             //find new color in palette and change it back to old color
             let colors = document.getElementsByClassName('color-button');
             for (let i = 0; i < colors.length; i++) {
-                //console.log(newColorValue, '==', colors[i].jscolor.toString());
+                //////console.log(newColorValue, '==', colors[i].jscolor.toString());
                 if (newColorValue == colors[i].jscolor.toString()) {
                     colors[i].jscolor.fromString(oldColorValue);
                     break;
@@ -429,7 +433,7 @@ class HistoryState {
             //find old color in palette and change it back to new color
             let colors = document.getElementsByClassName('color-button');
             for (let i = 0; i < colors.length; i++) {
-                //console.log(oldColorValue, '==', colors[i].jscolor.toString());
+                //////console.log(oldColorValue, '==', colors[i].jscolor.toString());
                 if (oldColorValue == colors[i].jscolor.toString()) {
                     colors[i].jscolor.fromString(newColorValue);
                     break;

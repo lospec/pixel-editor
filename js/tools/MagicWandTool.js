@@ -13,7 +13,7 @@ class MagicWandTool extends SelectionTool {
         this.addTutorialKey("CTRL+C", " to copy a selection");
         this.addTutorialKey("CTRL+V", " to paste a selection");
         this.addTutorialKey("CTRL+X", " to cut a selection");
-        this.addTutorialImg("magicwand-tutorial.gif");
+        this.addTutorialImg("/images/ToolTutorials/magicwand-tutorial.gif");
     }
 
     onEnd(mousePos, mouseTarget) {
@@ -22,7 +22,7 @@ class MagicWandTool extends SelectionTool {
             !Util.cursorInCanvas(currFile.canvasSize, [mousePos[0]/currFile.zoom, mousePos[1]/currFile.zoom]))
             return;
             
-
+        ////console.log('this.moveTool === ',this.moveTool);
         this.switchFunc(this.moveTool);
         this.moveTool.setSelectionData(this.getSelection(), this);
     }
@@ -52,8 +52,10 @@ class MagicWandTool extends SelectionTool {
         this.outlineData = new ImageData(currFile.canvasSize[0], currFile.canvasSize[1]);
         this.previewData = selectedData;
         this.drawSelectedArea();
-        this.boundingBoxCenter = [this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
-            this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2];
+        this.boundingBoxCenter = [
+            this.boundingBox.minX + (this.boundingBox.maxX - this.boundingBox.minX) / 2,
+            this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) / 2
+        ];
 
         // Cut the selection
         this.cutSelection();
@@ -61,7 +63,7 @@ class MagicWandTool extends SelectionTool {
         currFile.TMPLayer.context.putImageData(this.previewData, 0, 0);
 
         // Draw the bounding box
-        this.drawBoundingBox();
+        this.drawBoundingBox(1, 1);
 
         return selectedData;
     }

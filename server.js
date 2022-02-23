@@ -33,13 +33,25 @@ app.use('/', express.static(FULLBUILDPATH, {
     }
 }));
 
-
-
 //ROUTE - match / or any route with just numbers letters and dashes, and return index.htm (all other routes should have been handled already)
 app.get('/', (req, res, next) => {
-	console.log('root')
+	//console.log('root')
     res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
-		console.log('sent file');
+		//console.log('sent file');
+        return next();
+    });
+});
+app.get('/pixel-editor', (req, res, next) => {
+	//console.log('root')
+    res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
+		//console.log('sent file');
+        return next();
+    });
+});
+app.get('/pixel-editor/?:palette/?:resolution/?:patternWidth/?:patternBinStr', (req, res, next) => {
+	//console.log('root')
+    res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
+		//console.log('sent file');
         return next();
     });
 });

@@ -2,11 +2,12 @@ class File {
     // Canvas, canvas state
     canvasSize = [];
     zoom = 7;
-    canvasView = document.getElementById("canvas-view");
+    canvasView = document.getElementById("canvas-view") ?? document.createElement("canvas");
     inited = false;
 
     // Layers
     layers = [];
+    sublayers = [];
     currentLayer = undefined;
     VFXLayer = undefined;
     TMPLayer = undefined;
@@ -129,11 +130,9 @@ class File {
 
         // Save all imageDatas
         for (let i=0; i<currFile.layers.length; i++) {
-            if (currFile.layers[i].hasCanvas()) {
-                imageDatas.push(currFile.layers[i].context.getImageData(
-                    0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
-                );
-            }
+            imageDatas.push(currFile.layers[i].context.getImageData(
+                0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
+            );
         }
 
         // Saving the history only if I'm not already undoing or redoing
@@ -154,15 +153,19 @@ class File {
         currFile.canvasSize[1] = parseInt(currFile.canvasSize[1]) + 
             this.rcBorders.top + this.rcBorders.bottom;
 
-        console.trace();
-        console.log(currFile.canvasSize);
+        ////console.trace();
+        ////console.log(currFile.canvasSize);
 
         // Resize the canvases
         for (let i=0; i<currFile.layers.length; i++) {
             currFile.layers[i].canvas.width = currFile.canvasSize[0];
             currFile.layers[i].canvas.height = currFile.canvasSize[1];
-
             currFile.layers[i].resize();
+        }
+        for (let i=0; i<currFile.sublayers.length; i++) {
+            currFile.sublayers[i].canvas.width = currFile.canvasSize[0];
+            currFile.sublayers[i].canvas.height = currFile.canvasSize[1];
+            currFile.sublayers[i].resize();
         }
 
         // Regenerate the checkerboard
@@ -213,16 +216,14 @@ class File {
         
         // Putting all the data for each layer with the right offsets (decided by the pivot)
         for (let i=0; i<currFile.layers.length; i++) {
-            if (currFile.layers[i].hasCanvas()) {
-                if (customData == undefined) {
-                    currFile.layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
-                }
-                else {
-                    currFile.layers[i].context.putImageData(customData[copiedDataIndex], 0, 0);
-                }
-                currFile.layers[i].updateLayerPreview();
-                copiedDataIndex++;
+            if (customData == undefined) {
+                currFile.layers[i].context.putImageData(imageDatas[copiedDataIndex], leftOffset, topOffset);
             }
+            else {
+                currFile.layers[i].context.putImageData(customData[copiedDataIndex], 0, 0);
+            }
+            currFile.layers[i].updateLayerPreview();
+            copiedDataIndex++;
         }
 
         Dialogue.closeDialogue();
@@ -246,7 +247,7 @@ class File {
         this.rcPivot = "topleft";
 
         // Computing the min and max coordinates in which there's a non empty pixel
-        for (let i=1; i<currFile.layers.length - nAppLayers; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             let imageData = currFile.layers[i].context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]);
             let pixelPosition;
 
@@ -291,12 +292,10 @@ class File {
 
         // Saving the data
         for (let i=0; i<currFile.layers.length; i++) {
-            if (currFile.layers[i].hasCanvas()) {
-                imageDatas.push(currFile.layers[i].context.getImageData(minX - 1, currFile.layers[i].canvasSize[1] - maxY, maxX-minX + 1, maxY-minY + 1));
-            }
+            imageDatas.push(currFile.layers[i].context.getImageData(minX - 1, currFile.layers[i].canvasSize[1] - maxY, maxX-minX + 1, maxY-minY + 1));
         }
 
-        //console.log("sx: " + borders.left + "dx: " + borders.right + "top: " + borders.top + "btm: " + borders.bottom);
+        //////console.log("sx: " + borders.left + "dx: " + borders.right + "top: " + borders.top + "btm: " + borders.bottom);
 
         document.getElementById("rc-border-left").value = this.rcBorders.left;
         document.getElementById("rc-border-right").value = this.rcBorders.right;
@@ -430,11 +429,9 @@ class File {
         
         // Get all the image datas
         for (let i=0; i<currFile.layers.length; i++) {
-            if (currFile.layers[i].hasCanvas()) {
-                rsImageDatas.push(currFile.layers[i].context.getImageData(
-                    0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
-                );
-            }
+            rsImageDatas.push(currFile.layers[i].context.getImageData(
+                0, 0, currFile.canvasSize[0], currFile.canvasSize[1])
+            );
         }
 
         // event is null when the user is undoing
@@ -450,13 +447,11 @@ class File {
 
         // Put the image datas on the new canvases
         for (let i=0; i<currFile.layers.length; i++) {
-            if (currFile.layers[i].hasCanvas()) {
-                currFile.layers[i].context.putImageData(
-                    this.resizeImageData(rsImageDatas[layerIndex], newWidth, newHeight, this.currentAlgo), 0, 0
-                );
-                currFile.layers[i].updateLayerPreview();
-                layerIndex++;
-            }
+            currFile.layers[i].context.putImageData(
+                this.resizeImageData(rsImageDatas[layerIndex], newWidth, newHeight, this.currentAlgo), 0, 0
+            );
+            currFile.layers[i].updateLayerPreview();
+            layerIndex++;
         }
 
         // Updating start values when I finish scaling the sprite

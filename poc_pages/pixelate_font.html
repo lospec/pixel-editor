@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <img src="/images/test_8x8.png" id="test_image" style="display:none;">
+    <script src="/js/canvas_util.js"></script>
+    <script src="/js/color_utils.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.40.2/codemirror.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.40.2/codemirror.css" rel="stylesheet" />
+    <div id="target" style="position:fixed;top:0;left:0;right:50%;bottom:0;">
+        <textarea id="editorTextArea">
+const word = Math.random() > 0.5 ? "Hello" : "Goodbye cruel";
+alert(`${word} world`);
+        </textarea>
+    </div>
+    <div id="preview_div" style="position:fixed;top:0;left:50%;right:0;bottom:90%;">
+
+    </div>
+    <div id="debug_div" style="position:fixed;top:10%;left:50%;right:0;bottom:0;overflow:scroll;">
+
+    </div>
+</head>
+<body>
+</body>
+</html>
+
+<script>
+    const charW = 8;
+    const charH = 8;
+    const charArr = generateCharsFromFont("monospace", charW, charH, 8, 8, preview_div, debug_div);
+    ////console.log('charArr === ',charArr);
+
+    const editorTextArea = document.getElementById('editorTextArea');
+    const cm = new CodeMirror.fromTextArea(editorTextArea, {
+        lineNumbers: true
+    });
+    cm.setSize("100%", "100%");
+    
+    CodeMirror.on(cm, "cursorActivity", function() {
+        const isSomethingSelected = cm.somethingSelected();
+        ////console.log(isSomethingSelected);
+        const cursor = cm.getCursor();
+        ////console.log(cursor);
+        if (isSomethingSelected) {
+            const text = cm.getSelection();
+            const cursor = cm.getCursor();
+            const selectionData = {text,cursor};
+            ////console.log("selectionData:",selectionData);
+        }
+    });
+    let count = 0;
+    cm.setValue(`\
+const CHAR = [
+${charArr.map((n,i)=>`    \`${linebreakify(n,charW)}\`, //${String.fromCharCode(33+i)} `).join("\n")}
+];    
+`);
+    // setInterval(function(){
+    //     count++;
+    //     cm.replaceRange(count%2 ? "Hi" : "Hello",{line:0,ch:36},{line:0,ch:(count%2 ? 41 : 38)})
+    // },1000);
+    function linebreakify(str,cols = 4) {
+        const arr = str.split("");
+        const arr2 = [];
+        for(let i = 0; i < arr.length;i++){
+            if((i%cols)===0)arr2.push("");
+            arr2[arr2.length-1] += arr[i];
+        }
+        return "\\\n"+arr2.join("\n");
+    }
+</script>

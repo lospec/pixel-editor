@@ -100,8 +100,9 @@ const Events = (() => {
      */
      function on(event, elementId, functionCallback, ...args) {
         //if element provided is string, get the actual element
+        if(!elementId)return;
         const element = Util.getElement(elementId);
-
+        if(!element)return;
         element.addEventListener(event,
         function (e) {
             functionCallback(...args, e);
