@@ -5,9 +5,9 @@
   "main": "build.js",
   "scripts": {
     "build": "node ./build.js ./build",
-    "serve": "node ./server.js ./build 3000",
+    "serve": "node ./server.js ./build 3002",
     "test": "npm run build && npm run serve",
-    "hot": "concurrently \"nodemon --exec npm test\" \"await tcp localhost:3000 && open-cli http://localhost:3000\"",
+    "hot": "concurrently \"nodemon --exec npm test\" \"await tcp localhost:3002 && open-cli http://localhost:3002\"",
     "hot:reload": "cross-env RELOAD=yes npm run hot"
   },
   "author": "Lospec",
@@ -28,7 +28,7 @@
     "nodemon": "^2.0.7",
     "open": "^8.0.6",
     "open-cli": "^6.0.1",
-    "sass": "^1.17.3"
+    "sass": "^1.49.7"
   },
   "devDependencies": {
     "cross-env": "7.0.3",

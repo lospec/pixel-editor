@@ -109,7 +109,7 @@ const ToolManager = (() => {
                     currTool.onRightDrag(mousePos, mouseEvent.target);
                     break;
                 default:
-                    console.log("wtf");
+                    ////console.log("wtf");
                     break;
             }
         }

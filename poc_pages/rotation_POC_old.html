@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <img src="/images/test_8x8.png" id="test_image" style="display:none;"> -->
+    <img src="/images/sked_tree_32x32.png" id="test_image" style="display:none;">
+    <script src="/js/canvas_util.js"></script>
+    <script src="/js/color_utils.js"></script>
+    <style>
+        #content_wrapper{
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="content_wrapper">
+        <div id="orig_colors_wrapper"></div>
+        <div id="color_compare_wrapper"></div>
+        <div id="preview_wrapper"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    window.ROTATION_CACHE = {};
+    window.SCORE_CACHE = {};
+    window.onload = () => {
+        const p0 = 30;
+        const p1 = 40;
+        const p2 = 50;
+        const p3 = 60;
+        const p4 = 70;
+        const offset = 50;
+        const to = -40;
+        const testArr = [
+            [Math.PI * 0.000, test_image, `calc(${p2}% - ${offset}px)`, `calc(${p4}% - ${offset + to}px)`],
+            [Math.PI * 0.825, test_image, `calc(${p1}% - ${offset}px)`, `calc(${p0}% - ${offset + to}px)`],
+            // [Math.PI * 0.750, test_image, `calc(${p0}% - ${offset}px)`, `calc(${p0}% - ${offset + to}px)`],
+            // [Math.PI * 0.625, test_image, `calc(${p0}% - ${offset}px)`, `calc(${p1}% - ${offset + to}px)`],
+            // [Math.PI * 0.500, test_image, `calc(${p0}% - ${offset}px)`, `calc(${p2}% - ${offset + to}px)`],
+            // [Math.PI * 0.375, test_image, `calc(${p0}% - ${offset}px)`, `calc(${p3}% - ${offset + to}px)`],
+            // [Math.PI * 0.250, test_image, `calc(${p0}% - ${offset}px)`, `calc(${p4}% - ${offset + to}px)`],
+            // [Math.PI * 0.125, test_image, `calc(${p1}% - ${offset}px)`, `calc(${p4}% - ${offset + to}px)`],
+            // [Math.PI *-0.125, test_image, `calc(${p3}% - ${offset}px)`, `calc(${p4}% - ${offset + to}px)`],
+            // [Math.PI *-0.250, test_image, `calc(${p4}% - ${offset}px)`, `calc(${p4}% - ${offset + to}px)`],
+            // [Math.PI *-0.375, test_image, `calc(${p4}% - ${offset}px)`, `calc(${p3}% - ${offset + to}px)`],
+            // [Math.PI *-0.500, test_image, `calc(${p4}% - ${offset}px)`, `calc(${p2}% - ${offset + to}px)`],
+            // [Math.PI *-0.625, test_image, `calc(${p4}% - ${offset}px)`, `calc(${p1}% - ${offset + to}px)`],
+            // [Math.PI *-0.750, test_image, `calc(${p4}% - ${offset}px)`, `calc(${p0}% - ${offset + to}px)`],
+            // [Math.PI *-0.825, test_image, `calc(${p3}% - ${offset}px)`, `calc(${p0}% - ${offset + to}px)`],
+            // [Math.PI *-1.000, test_image, `calc(${p2}% - ${offset}px)`, `calc(${p0}% - ${offset + to}px)`],
+        ];
+        const canvasArr = testArr.map(n=>canvasRotateTest(...n));
+        canvasArr.forEach(canvas=>{
+            preview_wrapper.appendChild(canvas);
+        });
+
+        insertOrigColors();
+    }
+    function insertOrigColors(){
+        Object.keys(window.ORIG_IMAGE_META.colorCounts).forEach(colorStr=>{
+            const div = document.createElement('div');
+            const size = 42;
+            div.innerHTML = `\
+            <div style="float:left;margin:1px;">
+                <div style="float:left;width:${size}px;height:${size}px;background-color:${colorStr}"></div>
+            </div>`;
+            div.onclick = () => {
+                //////console.log('scores === ',scores);
+            }
+            orig_colors_wrapper.appendChild(div);
+        });
+    }
+    function canvasRotateTest(radians = 0, testImage, left, top) {
+        if(radians === 0)window.ORIG_IMAGE_META = imageMeta(testImage);
+        const canvas = document.createElement('canvas');
+        // const w = 1000;
+        // const h = 1000;
+        // const p = 100;
+        const rotationCacheKey = `${testImage.src}_${radians}`;
+        const rotationCacheKey0 = `${testImage.src}_${0}`;
+        //////console.log('rotationCacheKey, rotationCacheKey0 === ',rotationCacheKey, rotationCacheKey0);
+        const p = 1;
+        const x = p;
+        const y = p;
+        const w = (testImage.width + (p*2)) ?? 100;
+        const h = (testImage.height + (p*2)) ?? 100;
+        const sw = testImage.width;
+        const sh = testImage.height;
+        const sw2 = sw/2;
+        const sh2 = sh/2;
+        const sr = [x,y,sw,sh];
+        const center = [sr[0] + sw2, sr[1] + sh2];
+        
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        ctx.save();
+        ctx.translate(center[0],center[1]);
+        ctx.fillStyle = "#fff";
+        ctx.rotate(radians);
+        ctx.translate(-center[0],-center[1]);
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "#000";
+        if(testImage) {
+            ctx.drawImage(testImage, sr[0], sr[1]);
+        } else {
+            ctx.strokeRect(...sr);
+        }
+        canvas.style.imageRendering = "pixelated";
+        canvas.style.transform = `scale(4)`;
+        canvas.style.position = "fixed";
+        
+        canvas.style.top = top;
+        canvas.style.left = left;
+
+        if(radians==0)return canvas;
+        const imageData = ctx.getImageData(0,0,w,h);
+        const colorCounts = countImageDataColors(imageData);
+        const uniqueColors = Object.keys(colorCounts);
+        const uniqueFullColors = Object.keys(colorCounts).filter(n=>n.includes(",255)"));
+        //////console.log('uniqueFullColors === ',uniqueFullColors);
+        
+        const bestMatches = {};
+        uniqueFullColors.forEach(colorStr=>{
+            const rgb = colorToRGB(colorStr);
+            const orig = window.ROTATION_CACHE[rotationCacheKey0] ?? {uniqueFullColors:[...uniqueFullColors]};
+            let minScore = Infinity;
+            let maxScore = -Infinity;
+            let minScoreChampion;
+            let maxScoreChampion;
+            const scores = orig.uniqueFullColors.map(origColor=>{
+                const origRgb = colorToRGB(origColor);
+                const scoreKey = `${rgb.r},${rgb.g},${rgb.b}_${origRgb.r},${origRgb.g},${origRgb.b}`;
+                // //////console.log('rgb, origRgb === ',rgb, origRgb);
+                const score = window.SCORE_CACHE[scoreKey] ?? similarColours(rgb, origRgb);//TODO: find a fire wizard to optimize this
+                window.SCORE_CACHE[scoreKey] = score;
+                const betterMinScore = minScore > score;
+                const betterMaxScore = maxScore < score;
+                if(betterMinScore) {
+                    minScore = score;
+                    minScoreChampion = origRgb;
+                }
+                if(betterMaxScore) {
+                    maxScore = score;
+                    maxScoreChampion = origRgb;
+                }
+                return score;
+            });
+            bestMatches[colorStr] = {
+                min:minScoreChampion,
+                max:maxScoreChampion,
+                scores
+            };
+        });
+        for(let i = 0; i < imageData.data.length;i += 4) {// <-- NOTE the 4 here
+            const r = imageData.data[i];
+            const g = imageData.data[i+1];
+            const b = imageData.data[i+2];
+            const a = imageData.data[i+3];//TODO: perf diffs between overwriting 'a' vs ignoring it
+            const rgbStr = `rgba(${r},${g},${b},${a})`;
+            const meta = bestMatches[rgbStr];
+            if(meta) {
+                // const bestRgb = meta.max;
+                const bestRgb = meta.min;
+                if(a === 255){
+                    imageData.data[i] = bestRgb.r;
+                    imageData.data[i+1] = bestRgb.g;
+                    imageData.data[i+2] = bestRgb.b;
+                } else { // probably not needed since a<255 colors are not currently added to bestMatches
+                    //////console.log('alpha < 255');
+                    imageData.data[i] = 0;
+                    imageData.data[i+1] = 0;
+                    imageData.data[i+2] = 0;
+                    imageData.data[i+3] = 0;
+                }
+            } else if (a < 255) {
+                imageData.data[i] = 0;
+                imageData.data[i+1] = 0;
+                imageData.data[i+2] = 0;
+                imageData.data[i+3] = 0;
+            }
+            // //////console.log('meta === ',meta);
+        }
+        ctx.putImageData(imageData,0,0);
+        //////console.log('bestMatches === ',bestMatches);
+
+        //////console.log('uniqueColors.length === ', uniqueColors.length);
+        //////console.log('uniqueFullColors.length === ', uniqueFullColors.length);
+
+        window.ROTATION_CACHE[(!window.ROTATION_CACHE[rotationCacheKey0]) ? rotationCacheKey0 : rotationCacheKey] = {
+            canvas,
+            ctx,
+            imageData,
+            uniqueColors,
+            uniqueFullColors,
+            bestMatches
+        };
+        const color_compare_row = document.createElement('div');
+        color_compare_row.style.display = "flex";
+        color_compare_row.style.borderBottom = "2px solid black";
+        color_compare_row.style.marginBottom = "2x";
+        color_compare_row.setAttribute("class","color-compare-row");
+        Object.keys(bestMatches).forEach(colorStr=>{
+            const div = document.createElement('div');
+            const {min,max,scores} = bestMatches[colorStr];
+            const minMatchColor = `rgba(${min.r},${min.g},${min.b},255)`;
+            const maxMatchColor = `rgba(${max.r},${max.g},${max.b},255)`;
+            div.innerHTML = `\
+            <div style="display:flex;margin:1px;">
+                <div style="width:10px;height:20px;background-color:${colorStr}"></div>
+                <div style="width:10px;height:20px;background-color:${minMatchColor}"></div>
+            </div>`;
+            div.onclick = () => {
+                ////console.log('scores === ',scores);
+            }
+            color_compare_row.appendChild(div);
+        });
+        color_compare_wrapper.appendChild(color_compare_row);
+        color_compare_wrapper.setAttribute("class","color-compare-wrapper");
+
+        return canvas;
+    }
+
+    function countImageDataColors(imageData) {
+        const w = imageData.width;
+        const h = imageData.height;
+        const colorCounts = {};
+        const startTime = window.performance.now();
+        for (let x = 0; x < w; x++) {
+            for (let y = 0; y < h; y++) {
+                const i = (x + y * w) * 4;
+                const r = imageData.data[i];
+                const g = imageData.data[i + 1];
+                const b = imageData.data[i + 2];
+                const a = imageData.data[i + 3];
+                const key = `rgba(${r},${g},${b},${a})`;
+                if (!colorCounts[key]) colorCounts[key] = 0;
+                colorCounts[key]++;
+            }
+        }
+        const endTime = window.performance.now();
+        ////console.log('Count ImageData Colors duration (ms) === ',endTime - startTime);
+        return colorCounts;
+    }
+    function imageMeta(img) {
+        const canvas = imageToCanvas(img);
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.getImageData(0,0,img.width,img.height);
+        return {
+            img,
+            colorCounts: countImageDataColors(imageData),
+        };
+    }
+    function imageToCanvas(img) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        return canvas;
+    }
+</script>

@@ -1,3 +1,4 @@
+// localStorage.setItem("lpe-cache",`{}`)
 const FileManager = (() => {
 
     // Binding the browse holder change event to file loading
@@ -6,6 +7,7 @@ const FileManager = (() => {
 
     Events.on('change', browseHolder, loadFile);
     Events.on('change', browsePaletteHolder, loadPalette);
+    Events.on("click", "save-project-confirm", saveProject);
 
     function openSaveProjectWindow() {
         //create name
@@ -20,7 +22,6 @@ const FileManager = (() => {
         }
     
         Util.setValue('lpe-file-name', fileName);
-        Events.on("click", "save-project-confirm", saveProject);
         Dialogue.showDialogue('save-project', false);
     }
 
@@ -42,6 +43,7 @@ const FileManager = (() => {
 
     function saveProject() {
         // Get name
+        // debugger;
         let fileName = Util.getValue("lpe-file-name") + ".lpe";
         let selectedPalette = Util.getText('palette-button');
         //set download link
@@ -55,6 +57,9 @@ const FileManager = (() => {
 
         if (typeof ga !== 'undefined')
             ga('send', 'event', 'Pixel Editor Save', selectedPalette, currFile.canvasSize[0]+'/'+currFile.canvasSize[1]); /*global ga*/
+
+        
+        LayerList.closeOptionsMenu(); // is this the right place for this?
     }
 
     function exportProject() {
@@ -117,7 +122,39 @@ const FileManager = (() => {
             //open file selection dialog
             document.getElementById('open-image-browse-holder').click();
     }
-
+    function localStorageCheck() {
+        return !!localStorage.getItem("lpe-cache");
+    }
+    function localStorageSave() {
+        const lpeStr = getProjectData();
+        const lpe = JSON.parse(lpeStr);
+        //console.log('LPE saved === ',lpe);
+        if(lpe.colors.length < 1)lpe.colors.push("#000000");
+        if(!lpe.canvasWidth)lpe.canvasWidth = 16;
+        if(!lpe.canvasHeight)lpe.canvasHeight = 16;
+        localStorage.setItem("lpe-cache", JSON.stringify(lpe));
+    }
+    function localStorageReset() {
+        localStorage.setItem("lpe-cache", JSON.stringify({
+            "canvasWidth":16,
+            "canvasHeight":16,
+            "editorMode":"Advanced",
+            "colors":["#000000","#0b6082","#1d8425","#cc1919"],
+            "selectedLayer":0,
+            "layers":[
+                {"canvas":{},"context":{"mozImageSmoothingEnabled":false},"isSelected":true,"isVisible":true,"isLocked":false,"oldLayerName":null,"menuEntry":{},"id":"layer0","name":"Layer 0","src":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAHZJREFUOE9jZKAQMFKon4EuBvxHcyWKpdhcgK4BpB+nS9ElYJqJ9hqyQpI1ozsNZABRNnMnNIEt+7qgjhGrBpgCWOCBFKJHN0gNTgOQFSPbhi5OlAHYEhpBL+DThO4tgoGGHB7YwgKvAbj8j+xCgi4glNkoNgAA3JApEbHObDkAAAAASUVORK5CYII="},
+                {"canvas":{},"context":{"mozImageSmoothingEnabled":false},"isSelected":false,"isVisible":true,"isLocked":false,"oldLayerName":null,"menuEntry":{},"id":"layer1","name":"Layer 1","src":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAGNJREFUOE9jZKAQMCLrl21R/Q/iP665jSKOzw7qGgCyCeQKsl0AM4AUb2D1KymuoJ0BxHoDZ3QRG6V445uYsCBoACGvEExxhFxBlAH4XEHQAEKpkygDkFMoumuINgCWI9HDBAChJjwRzAXQUwAAAABJRU5ErkJggg=="},
+                {"canvas":{},"context":{"mozImageSmoothingEnabled":false},"isSelected":false,"isVisible":true,"isLocked":false,"oldLayerName":null,"menuEntry":{},"id":"layer2","name":"Layer 2","src":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAGNJREFUOE9jZKAQMJKi/4yk5H+YepPnz8F68RqArAFdI4yP1QBsNuFyKYYBMM0wJxLyIlYDiNWMNQxALhimBuCKUoKBSChKcRpASCPOhESsRoIGEBuVKF4g1XaMhERqMgYZAACIaEgR0hnFxgAAAABJRU5ErkJggg=="}
+            ]
+        }));
+    }
+    function localStorageLoad() {
+        ////console.log("loading from localStorage");
+        ////console.log('JSON.parse(localStorage.getItem("lpe-cache") ?? "{}") === ',JSON.parse(localStorage.getItem("lpe-cache") ?? "{}"));
+        const lpe = JSON.parse(localStorage.getItem("lpe-cache") ?? "{}");
+        //console.log('LPE loaded === ',lpe);
+        return lpe;
+    }
     function loadFile() {
         let fileName = document.getElementById("open-image-browse-holder").value;
         // Getting the extension
@@ -139,7 +176,6 @@ const FileManager = (() => {
 
         browseHolder.value = null;
     }
-
     function openFile() {
         //load file
         var fileReader = new FileReader();
@@ -165,59 +201,88 @@ const FileManager = (() => {
         };
         fileReader.readAsDataURL(browseHolder.files[0]);
     }
-
-    function openProject() {
-        let file = browseHolder.files[0];  
-        let reader = new FileReader();
-
+    function openProject(lpeData) {
+        
         // Getting all the data
-        reader.readAsText(file, "UTF-8");
-        // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
-        reader.onload = function (e) {
-            let dictionary = JSON.parse(e.target.result);
-            Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary);
-
-            for (let i=0; dictionary['color' + i] != null; i++) {
-                ColorModule.addColor(dictionary['color'+i]);
+        if(lpeData){
+            _parseLPE(lpeData);
+        } else {
+            let file = uri ?? browseHolder.files[0];
+            let reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
+            reader.onload = function (e) {
+                let dictionary = JSON.parse(e.target.result);
+                _parseLPE(dictionary);
             }
-
-            // Removing the default colours
-            ColorModule.deleteColor(ColorModule.getCurrentPalette()[0]);
-            ColorModule.deleteColor(ColorModule.getCurrentPalette()[0]);
+        }
+        
+        function _parseLPE(dictionary) {
+            Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary, true);
         }
     }
+    function loadFromLPE(dictionary) {
+        ColorModule.resetPalette();
 
+        //console.log('dictionary === ',dictionary);
+
+        dictionary = FileManager.upgradeLPE(dictionary);
+
+        EditorState.switchMode(dictionary.editorMode ?? 'Advanced');
+
+        // I add every layer the file had in it
+        // dictionary.layers.forEach((layerData,i)=>{
+        //     let layerImage = layerData.src;
+        //     if (layerData != null) {
+        //         // Setting id
+        //         let createdLayer = LayerList.addLayer(layerData.id, false, layerData.name);
+        //         // Setting name
+        //         createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
+
+        //         // Adding the image (I can do that because they're sorted by increasing z-index)
+        //         let img = new Image();
+        //         img.onload = function() {
+        //             createdLayer.context.drawImage(img, 0, 0);
+        //             createdLayer.updateLayerPreview();
+        //         };
+
+        //         img.src = layerImage;
+
+        //         // Setting visibility and lock options
+        //         if (!layerData.isVisible) {
+        //             createdLayer.hide();
+        //         }
+        //         if (layerData.isLocked) {
+        //             createdLayer.lock();
+        //         }
+        //     }
+        // })
+        if(dictionary.colors)ColorModule.createColorPalette(dictionary.colors);
+    }
     function getProjectData() {
         // use a dictionary
         let dictionary = {};
         // sorting layers by increasing z-index
-        let layersCopy = currFile.layers.slice();
-        layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
-        // save canvas size
+        let layersCopy = currFile.layers.filter(n=>!!n.menuEntry).slice();
+        // layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
         dictionary['canvasWidth'] = currFile.canvasSize[0];
         dictionary['canvasHeight'] = currFile.canvasSize[1];
-        // save editor mode
         dictionary['editorMode'] = EditorState.getCurrentMode();
-        // save palette
-        for (let i=0; i<ColorModule.getCurrentPalette().length; i++) {
-            dictionary["color" + i] = ColorModule.getCurrentPalette()[i];
-        }
-
-        // save number of layers
-        dictionary["nLayers"] = layersCopy.length;
-
-        // save layers 
-        for (let i=0; i<layersCopy.length; i++) {
-            // Only saving the layers the user has access to (no vfx, tmp or checkerboard layers)
-            if (layersCopy[i].menuEntry != null) {
-                dictionary["layer" + i] = layersCopy[i];
-                dictionary["layer" + i + "ImageData"] = layersCopy[i].canvas.toDataURL();
-            }
-        }
+        dictionary.colors = [
+            ...ColorModule.getCurrentPalette()
+        ];
+        dictionary.layers = layersCopy
+            .map((n,i)=>{
+                //console.log('n.name === ',n.name);
+                if(n.isSelected)dictionary.selectedLayer = i;
+                return {
+                    ...n,
+                    src: n.canvas.toDataURL(),
+                };
+            });
         
         return JSON.stringify(dictionary);
     }
-
     function loadPalette() {
         if (browsePaletteHolder.files && browsePaletteHolder.files[0]) {
             //make sure file is allowed filetype
@@ -268,9 +333,45 @@ const FileManager = (() => {
 
         browsePaletteHolder.value = null;
     }
+    function upgradeLPE(dictionary) {
+        ////console.log('dictionary === ',dictionary);
+        if(dictionary.color0 && !dictionary.colors) {
+            dictionary.colors = [];
+            let colorIdx = 0;
+            while(dictionary[`color${colorIdx}`]) {
+                dictionary.colors.push(dictionary[`color${colorIdx}`]);
+                delete dictionary[`color${colorIdx}`];
+                colorIdx++;
+            }
+            dictionary.layers = Object.keys(dictionary).reduce((r,k,i)=>{
+                if(k.slice(0,5) === "layer"){
+                    if(dictionary[k].isSelected){
+                        dictionary.selectedLayer = r.length;
+                    }
+                    r.push({
+                        ...dictionary[k],
+                        src: dictionary[`${k}ImageData`]
+                    });
+                    
+                    delete dictionary[k];
+                    delete dictionary[`${k}ImageData`];
+                }
+                return r;
+            },[]);
+        }
+        return dictionary;
+    }
 
     return {
+        loadFromLPE,
+        getProjectData,
+        localStorageReset,
+        localStorageCheck,
+        localStorageSave,
+        localStorageLoad,
+        upgradeLPE,
         saveProject,
+        openProject,
         exportProject,
         openPixelExportWindow,
         openSaveProjectWindow,

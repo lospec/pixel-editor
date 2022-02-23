@@ -75,8 +75,11 @@ class ZoomTool extends Tool {
             }
         }
 
-        for (let i=1; i<currFile.layers.length; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             currFile.layers[i].copyData(currFile.layers[0]);
+        }
+        for (let i=0; i<currFile.sublayers.length; i++) {
+            currFile.sublayers[i].copyData(currFile.layers[0]);
         }
     }
 }

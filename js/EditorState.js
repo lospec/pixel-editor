@@ -9,8 +9,10 @@ const EditorState = (() => {
         return pixelEditorMode;
     }
 
-    function switchMode(newMode) {
-        if (!firstFile && newMode == "Basic" && !confirm('Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?')) {
+    function switchMode(newMode, skipConfirm = false) {
+        ////console.trace();
+        const switchText = 'Switching to basic mode will flatten all the visible layers. Are you sure you want to continue?';
+        if (!firstFile && newMode == "Basic" && !skipConfirm && !confirm(switchText)) {
             return;
         }
         //switch to advanced mode

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="chaotic_good"></canvas>
+    <canvas id="neutral_good"></canvas>
+    <canvas id="lawful_good"></canvas>
+    <canvas id="chaotic_neutral"></canvas>
+    <canvas id="true_neutral"></canvas>
+    <canvas id="lawful_neutral"></canvas>
+    <canvas id="chaotic_evil"></canvas>
+    <canvas id="neutral_evil"></canvas>
+    <canvas id="lawful_evil"></canvas>
+</body>
+</html>
+<script src="/js/canvas_util.js"></script>
+<script src="/js/color_utils.js"></script>
+<script>
+    const canvas = document.createElement('canvas');
+    const w = 256;
+    const h = 256;
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(1,1,w-2,h-2);
+    canvas.style.imageRendering = "pixelated";
+    canvas.style.transform = `scale(4)`;
+    canvas.style.position = "fixed";
+    canvas.style.top = "calc(50% - "+(h/2)+"px)";
+    canvas.style.left = "calc(50% - "+(w/2)+"px)";
+    document.body.appendChild(canvas);
+    
+    ctx.fillStyle = 'black';
+    drawTinyText(ctx, "HELLO", 7, 7, "monospace");
+
+</script>

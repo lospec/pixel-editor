@@ -57,7 +57,7 @@ const ColorModule = (() => {
             if (newColorHex == colors[i].jscolor.toString()) {
                 //if the color isnt the one that has the picker currently open
                 if (!colors[i].parentElement.classList.contains('jscolor-active')) {
-                    //console.log('%cColor is duplicate', colorCheckingStyle);
+                    //////console.log('%cColor is duplicate', colorCheckingStyle);
 
                     //show the duplicate color warning
                     duplicateColorWarning.style.visibility = 'visible';
@@ -251,7 +251,7 @@ const ColorModule = (() => {
     
             //loop through colors
             for (var i = 0; i < colors.length; i++) {
-                //console.log(color,'=',colors[i].jscolor.toString());
+                //////console.log(color,'=',colors[i].jscolor.toString());
     
                 if (color == colors[i].jscolor.toString()) {
                     //set color to the color button
@@ -346,7 +346,7 @@ const ColorModule = (() => {
      * @param {*} paletteColors The colours of the palette
      */
     function createColorPalette(paletteColors) {
-        console.log("creating palette");
+        ////console.log("creating palette");
         //remove current palette
         while (colorsMenu.childElementCount > 1)
             colorsMenu.children[0].remove();
@@ -358,7 +358,7 @@ const ColorModule = (() => {
         for (var i = 0; i < paletteColors.length; i++) {
             var newColor = new Color("hex", paletteColors[i]);
             var newColorElement = ColorModule.addColor(newColor.hex);
-
+            ////console.log('newColor.hex === ',newColor.hex);
             var newColRgb = newColor.rgb;
 
             var lightestColorRgb = lightestColor.rgb;
@@ -382,6 +382,8 @@ const ColorModule = (() => {
 
         //set as current color
         updateCurrentColor(darkestColor.hex);
+
+        ////console.log('getCurrentPalette() === ',getCurrentPalette());
     }
 
     /** Creates the palette with the colours used in all the layers
@@ -421,7 +423,7 @@ const ColorModule = (() => {
         //create palette from colors array
         createColorPalette(colorPaletteArray);
 
-        console.log("Done 2");
+        ////console.log("Done 2");
     }
 
     function updateCurrentColor(color, refLayer) {

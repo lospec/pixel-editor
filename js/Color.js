@@ -30,7 +30,7 @@ class Color {
                 this.hsv = Color.rgbToHsv(this.rgb);
                 break;
             default:
-                console.error("Unsupported color mode " + fmt);
+                //console.error("Unsupported color mode " + fmt);
                 break;
         }
     }

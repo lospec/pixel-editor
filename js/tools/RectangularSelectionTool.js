@@ -14,7 +14,7 @@ class RectangularSelectionTool extends SelectionTool {
         this.addTutorialKey("CTRL+C", " to copy a selection");
         this.addTutorialKey("CTRL+V", " to paste a selection");
         this.addTutorialKey("CTRL+X", " to cut a selection");
-        this.addTutorialImg("rectselect-tutorial.gif");
+        this.addTutorialImg("/images/ToolTutorials/rectselect-tutorial.gif");
     }
 
     onStart(mousePos, mouseTarget) {

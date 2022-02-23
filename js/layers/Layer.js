@@ -18,7 +18,7 @@ class Layer {
     // TODO: this is simply terrible. menuEntry can either be an HTML element, a string or undefined.
     // If it's an HTML element it is added, if it's a string nothing happens, if it's undefined the 
     // first menuEntry is used (the one that appears on load)
-    constructor(width, height, canvas, menuEntry) {
+    constructor(width, height, canvas, menuEntry, id) {
         // REFACTOR: the canvas should actually be a Canvas instance
         this.canvas = Util.getElement(canvas);
         this.canvas.width = width;
@@ -37,18 +37,24 @@ class Layer {
         else if (menuEntry !== undefined)
             this.menuEntry = menuEntry;
 
-        let id = Layer.unusedIDs.pop();
+        let hadId = false;
+        if(typeof id !== "undefined"){
+            hadId = true;
+        } else {
+            id = Layer.unusedIDs.pop();
+        }
 
         if (id == null) {
             id = Layer.currentID;
             Layer.currentID++;
         }
 
-        this.id = "layer" + id;
+        this.id = hadId ? id : "layer" + id;
 
         // Binding the events
         if (this.menuEntry !== undefined) {
             this.name = this.menuEntry.getElementsByTagName("p")[0].innerHTML;
+
             this.menuEntry.id = "layer" + id;
 
             this.menuEntry.onmouseover = () => this.hover();
@@ -69,16 +75,58 @@ class Layer {
             this.menuEntry.getElementsByTagName("canvas")[0].getContext('2d').imageSmoothingEnabled = false;
         }
 
+        if(hadId){
+            this.menuEntry.classList.remove("layers-menu-entry");
+        } else {
+            if(this.menuEntry)this.menuEntry.classList.add("layers-menu-entry");
+        }
+
         this.initialize();
+
     }
 
     hasCanvas() {
         return this.menuEntry != null;
     }
 
-    tryDelete() {
+    delete(layerIndex) {
+        //console.log('layerIndex === ',layerIndex);
+        let toDelete = currFile.layers[layerIndex];
+        let previousSibling;
+        if(toDelete){
+            //console.log('toDelete === ',toDelete);
+            previousSibling = toDelete.menuEntry.previousElementSibling;
+            //console.log('previousSibling === ',previousSibling);
+            // Adding the ids to the unused ones
+            // Deleting canvas and entry
+            toDelete.canvas.remove();
+            toDelete.menuEntry.remove();
+        }
+
+        Layer.unusedIDs.push(this.id);
+
+        if(this.isSelected) {
+            // Selecting the nearest layer
+            const nearestLayer = (currFile.layers[layerIndex + 1] ?? currFile.layers[layerIndex - 1]);
+            if(nearestLayer){
+                nearestLayer.selectLayer();
+                //console.log('changing to nearest layer');
+            }
+        }
+
+
+        // Removing the layer from the list
+        currFile.layers.splice(layerIndex, 1);
+
+        if(toDelete){
+            new HistoryState().DeleteLayer(toDelete, previousSibling, layerIndex);
+        }
+    }
+
+    tryDelete() { //TODO: quote yoda
         if (Input.getLastTarget() != this.menuEntry && Input.getLastTarget().parentElement != this.menuEntry)
             return;
+
         LayerList.deleteLayer();
     }
 
@@ -121,7 +169,7 @@ class Layer {
 
     hover() {
         // Hides all the layers but the current one
-        for (let i=1; i<currFile.layers.length - nAppLayers; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             if (currFile.layers[i] !== this) {
                 currFile.layers[i].canvas.style.opacity = 0.3;
             }
@@ -130,7 +178,7 @@ class Layer {
 
     unhover() {
         // Shows all the layers again
-        for (let i=1; i<currFile.layers.length - nAppLayers; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             if (currFile.layers[i] !== this) {
                 currFile.layers[i].canvas.style.opacity = 1;
             }
@@ -187,6 +235,8 @@ class Layer {
     }
 
     selectLayer(hideOptions = true) {
+        //console.log('called selectLayer');
+        ////console.trace();
         if (hideOptions)
             LayerList.closeOptionsMenu();
         // Deselecting the old layer
@@ -196,6 +246,8 @@ class Layer {
         this.isSelected = true;
         this.menuEntry.classList.add("selected-layer");
         currFile.currentLayer = this;
+
+        FileManager.localStorageSave();
     }
 
     toggleLock() {

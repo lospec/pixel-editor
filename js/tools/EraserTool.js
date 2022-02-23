@@ -12,7 +12,7 @@ class EraserTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to erase an area");
         this.addTutorialKey("Right drag", " to resize the eraser");
         this.addTutorialKey("+ or -", " to resize the eraser");
-        this.addTutorialImg("eraser-tutorial.gif");
+        this.addTutorialImg("/images/ToolTutorials/eraser-tutorial.gif");
     }
 
     onStart(mousePos) {
