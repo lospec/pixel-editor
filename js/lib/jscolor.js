@@ -35,7 +35,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 
         init : function () {
-            //console.log('init()')
+            //////console.log('init()')
             if (jsc.jscolor.lookupClass) {
                 jsc.jscolor.installByClassName(jsc.jscolor.lookupClass);
             }
@@ -533,7 +533,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 
         onDocumentMouseDown : function (e) {
-            //console.log(e)
+            //////console.log(e)
 
             if (!e) { e = window.event; }
             var target = e.target || e.srcElement;
@@ -547,7 +547,7 @@ if (!window.jscolor) { window.jscolor = (function () {
             } else {
                 // Mouse is outside the picker controls -> hide the color picker!
                 if (jsc.picker && jsc.picker.owner) {
-                    //console.log(e.target,'=====================================')
+                    //////console.log(e.target,'=====================================')
                     //if they clicked on the delete button [lospec]
                     if (e.target.className == 'delete-color-button') {
                         new HistoryState().DeleteColor(jsc.picker.owner.toString());
@@ -555,13 +555,13 @@ if (!window.jscolor) { window.jscolor = (function () {
                         ColorModule.deleteColor(jsc.picker.owner.styleElement);
                     }
                     else if (e.target.className == 'jscolor-picker-bottom') {
-                        //console.log('clicked color picker bottom')
+                        //////console.log('clicked color picker bottom')
                     }
                     else if (e.target.parentElement.classList.contains('jscolor-picker-bottom')) {
-                        //console.log('clicked element in color picker bottom')
+                        //////console.log('clicked element in color picker bottom')
                     }
                     else {
-                        //console.log('clicked outside of color picker')
+                        //////console.log('clicked outside of color picker')
                         //unhide hidden edit button [lospec]
                         var hiddenButton = document.querySelector('.color-edit-button.hidden');
                         if (hiddenButton) hiddenButton.classList.remove('hidden');
@@ -1068,7 +1068,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 
             this.hide = function () {
-                ///console.log(this.styleElement)
+                ///////console.log(this.styleElement)
                 if (isPickerOwner()) {
                     //set the color to old color, in case the color is a duplicate that hasn't been resolved yet [lospec]
                     var hexInput = document.getElementById('jscolor-hex-input');
@@ -1164,7 +1164,7 @@ if (!window.jscolor) { window.jscolor = (function () {
                     if (this.hash) { value = '#' + value; }
 
                     if (jsc.isElementType(this.valueElement, 'input')) {
-                        //console.log('SETTING VALUE')
+                        //////console.log('SETTING VALUE')
                         //this sets the value element's value 
                         this.valueElement.value = value;
                     } else {
@@ -1439,7 +1439,7 @@ function detachPicker () {
 
 function drawPicker () {
 
-    //console.log('drawPicker ()')
+    //////console.log('drawPicker ()')
     // At this point, when drawing the picker, we know what the parent elements are
     // and we can do all related DOM operations, such as registering events on them
     // or checking their positioning
@@ -1811,7 +1811,7 @@ function isPickerOwner () {
 
 
 function blurValue () {
-    //console.log('blurValue()')
+    //////console.log('blurValue()')
     THIS.importColor();
 }
 
@@ -1842,7 +1842,7 @@ this.valueElement = jsc.fetchElement(this.valueElement);
 // Find the style element
 this.styleElement = jsc.fetchElement(this.styleElement);
 
-//console.log('VALUE ELEMENT: ', this.valueElement)
+//////console.log('VALUE ELEMENT: ', this.valueElement)
 
 var THIS = this;
 var container =
@@ -1894,7 +1894,7 @@ do {
 
             if (jsc.isElementType(this.valueElement, 'input')) {
                 var updateField = function () {
-                    //console.log('updateField()')
+                    //////console.log('updateField()')
                     THIS.fromString(THIS.valueElement.value, jsc.leaveValue);
                     jsc.dispatchFineChange(THIS);
                 };

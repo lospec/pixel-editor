@@ -1,6 +1,6 @@
 <!-- LAYER MENU -->
-<ul id = "layers-menu">
-	<li class = "layers-menu-entry selected-layer">
+<ul id="layers-menu">
+	<li id="default-layer-list-item" class="layers-menu-entry selected-layer" style="display:none;">
 		<canvas class = "preview-canvas"></canvas>
 		<ul class="layer-buttons">
 			<li class = "layer-button">
@@ -17,17 +17,17 @@
 			</li>
 		</ul>
 
-		<p>Layer 0<div class = "gradient"></div></p>
+		<p>Background<div class = "gradient"></div></p>
 	</li>
 
-	<li>
-		<button id = "add-layer-button">
+	<li id="add-layer-li">
+		<button id="add-layer-button">
 			{{svg "plus.svg" width="20" height="20"}} Add layer
 		</button>
 	</li>
 </ul>
 
-<ul id = "layer-properties-menu">
+<ul id="layer-properties-menu">
 	<li>
 		<button onclick = "LayerList.renameLayer()">Rename</button>
 	</li>

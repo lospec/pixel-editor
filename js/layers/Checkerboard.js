@@ -18,7 +18,7 @@ class Checkerboard extends Layer {
 
     initialize() {
         super.initialize();
-        console.log("Square size: " + this.checkerBoardSquareSize);
+        ////console.log("Square size: " + this.checkerBoardSquareSize);
         this.currentColor = this.firstCheckerBoardColor;
         this.fillCheckerboard();
     }

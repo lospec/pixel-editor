@@ -77,7 +77,6 @@ window.onload = function () {
     ToolManager.currentTool().updateCursor();
 	// Apply checkboxes
 
-
     let args = window.location.pathname.split('/');
     let paletteSlug = args[2];
     let dimensions = args[3];

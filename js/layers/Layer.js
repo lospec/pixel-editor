@@ -235,6 +235,8 @@ class Layer {
     }
 
     selectLayer(hideOptions = true) {
+        //console.log('called selectLayer');
+        ////console.trace();
         if (hideOptions)
             LayerList.closeOptionsMenu();
         // Deselecting the old layer
