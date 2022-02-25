@@ -433,7 +433,7 @@ const ColorModule = (() => {
         if (refLayer)
             color = refLayer.context.fillStyle;
         
-        for (let i=0; i<currFile.layers.length - 1; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             currFile.layers[i].context.fillStyle = color;
             currFile.layers[i].context.strokeStyle = color;
         }
