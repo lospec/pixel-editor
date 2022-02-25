@@ -13,7 +13,7 @@ class MagicWandTool extends SelectionTool {
         this.addTutorialKey("CTRL+C", " to copy a selection");
         this.addTutorialKey("CTRL+V", " to paste a selection");
         this.addTutorialKey("CTRL+X", " to cut a selection");
-        this.addTutorialImg("/images/ToolTutorials/magicwand-tutorial.gif");
+        this.addTutorialImg("/magicwand-tutorial.gif");
     }
 
     onEnd(mousePos, mouseTarget) {

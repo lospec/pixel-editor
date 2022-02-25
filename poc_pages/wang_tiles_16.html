@@ -44,7 +44,11 @@
         00111000
         00000010
         00000000
-        `;
+        `
+            .replaceAll("\n","")
+            .replaceAll(" ","")
+            .replaceAll("\t","")
+            ;
     const ASSET_CACHE = {};
     const TOOL_ARR = [
         // {name:"Pencil",hotkey:"B",art:{img: icons_img1,idx:0}},
@@ -55,27 +59,13 @@
         {name:"Line",hotkey:"S",art:{img: icons_img1,idx:2}},
     ];
     window.onload = () => {
-        insertTools(TOOL_ARR);
         const columns = 8;
         const tilesetsArr = imageChopper(tiles_image,32,32);
         const tilesetsCanvasArrArr = tilesetsArr.map((canvas)=>{
             return imageChopper(canvas,8,8);
         });
         ////console.log('tilesetsCanvasArrArr === ', tilesetsCanvasArrArr);
-        const data = `
-        10000000
-        00100000
-        01110010
-        00100010
-        00000010
-        00111000
-        00000010
-        00000000
-        `
-            .replaceAll("\n","")
-            .replaceAll(" ","")
-            .replaceAll("\t","")
-            ;
+        
         ////console.log('data === ',data);
         let i = 0;
         const width = columns;

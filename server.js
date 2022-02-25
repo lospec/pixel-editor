@@ -9,7 +9,7 @@ const FULLBUILDPATH = path.join(__dirname, BUILDDIR)
 
 //LOGGING
 app.use((req, res, next)=> {
-	//console.log('REQUEST', req.method+' '+req.originalUrl, res.statusCode);
+	//////console.log('REQUEST', req.method+' '+req.originalUrl, res.statusCode);
 	next();
 });
 
@@ -29,29 +29,29 @@ app.use((req, res, next) => {
 app.use('/', express.static(FULLBUILDPATH, {
 	//custom function required for logging static files
 	setHeaders: (res, filePath, fileStats) => {
-        console.info('GET', '/'+path.relative(FULLBUILDPATH, filePath), res.statusCode);
+        //console.info('GET', '/'+path.relative(FULLBUILDPATH, filePath), res.statusCode);
     }
 }));
 
 //ROUTE - match / or any route with just numbers letters and dashes, and return index.htm (all other routes should have been handled already)
 app.get('/', (req, res, next) => {
-	//console.log('root')
+	////console.log('root')
     res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
-		//console.log('sent file');
+		////console.log('sent file');
         return next();
     });
 });
 app.get('/pixel-editor', (req, res, next) => {
-	//console.log('root')
+	////console.log('root')
     res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
-		//console.log('sent file');
+		////console.log('sent file');
         return next();
     });
 });
 app.get('/pixel-editor/?:palette/?:resolution/?:patternWidth/?:patternBinStr', (req, res, next) => {
-	//console.log('root')
+	////console.log('root')
     res.sendFile(path.join(__dirname, BUILDDIR, 'index.htm'), {}, function (err) {
-		//console.log('sent file');
+		////console.log('sent file');
         return next();
     });
 });
@@ -64,13 +64,13 @@ if (process.env.RELOAD === "yes") {
     reload(app).then(() => {
         //start server
         app.server = app.listen(PORT, () => {
-            console.log(`Web server listening on port ${PORT} (with reload module)`);
+            ////console.log(`Web server listening on port ${PORT} (with reload module)`);
 
         })
     });
 } else {
     app.listen(PORT, () => {
-        console.log(`Web server listening on port ${PORT}`);
+        ////console.log(`Web server listening on port ${PORT}`);
     })
 }
 
@@ -82,5 +82,5 @@ app.use(function(req, res, next) {
 
 //LOGGING
 app.use((req, res, next)=> {
-	console.log(req.method+' '+req.originalUrl, res.statusCode);
+	////console.log(req.method+' '+req.originalUrl, res.statusCode);
 });

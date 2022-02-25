@@ -148,6 +148,18 @@ const FileManager = (() => {
             ]
         }));
     }
+    function defaultLPE(w,h,colors) {
+        return {
+            "canvasWidth":w,
+            "canvasHeight":h,
+            "editorMode":"Advanced",
+            colors,
+            "selectedLayer":0,
+            "layers":[
+                {"canvas":{},"context":{"mozImageSmoothingEnabled":false},"isSelected":true,"isVisible":true,"isLocked":false,"oldLayerName":null,"menuEntry":{},"id":"layer0","name":"Layer 0","src":emptyCanvasSrc(w,h)}
+            ]
+        };
+    }
     function localStorageLoad() {
         ////console.log("loading from localStorage");
         ////console.log('JSON.parse(localStorage.getItem("lpe-cache") ?? "{}") === ',JSON.parse(localStorage.getItem("lpe-cache") ?? "{}"));
@@ -185,7 +197,10 @@ const FileManager = (() => {
 
             img.onload = function() {
                 //create a new pixel with the images dimentions
-                Startup.newPixel(this.width, this.height);
+                Startup.newPixel({
+                    canvasWidth: this.width,
+                    canvasHeight: this.height
+                });
                 EditorState.switchMode('Advanced');
 
                 //draw the image onto the canvas
@@ -218,7 +233,7 @@ const FileManager = (() => {
         }
         
         function _parseLPE(dictionary) {
-            Startup.newPixel(dictionary['canvasWidth'], dictionary['canvasHeight'], dictionary, true);
+            Startup.newPixel(dictionary, true);
         }
     }
     function loadFromLPE(dictionary) {
@@ -361,20 +376,42 @@ const FileManager = (() => {
         }
         return dictionary;
     }
+    function emptyCanvasSrc(w,h) {
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        return canvas.toDataURL();
+    }
+    function toggleCache(elm){
+        console.log('elm === ',elm);
+        FileManager.cacheEnabled = !FileManager.cacheEnabled;
+        localStorage.setItem("lpe-cache-enabled",FileManager.cacheEnabled ? "1" : "0");
+        elm.textContent = cacheBtnText(FileManager.cacheEnabled);
+    }
+    function cacheBtnText(cacheEnabled) {
+        return `${cacheEnabled ? "Disable" : "Enable"} auto-cache`;
+    }
+
+    const cacheEnabled = !!Number(localStorage.getItem("lpe-cache-enabled"));
+    document.getElementById("auto-cache-button").textContent = cacheBtnText(cacheEnabled);
 
     return {
+        cacheEnabled,
         loadFromLPE,
+        toggleCache,
         getProjectData,
         localStorageReset,
         localStorageCheck,
         localStorageSave,
         localStorageLoad,
         upgradeLPE,
+        defaultLPE,
         saveProject,
         openProject,
         exportProject,
         openPixelExportWindow,
         openSaveProjectWindow,
         open
-    }
+    };
 })();

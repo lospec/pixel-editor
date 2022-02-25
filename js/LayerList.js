@@ -71,7 +71,7 @@ const LayerList = (() => {
         // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
         if (saveHistory) {
             new HistoryState().AddLayer(newLayer, index);
-            FileManager.localStorageSave();
+            if(FileManager.cacheEnabled)FileManager.localStorageSave();
         }
     
         return newLayer;
@@ -155,7 +155,7 @@ const LayerList = (() => {
             currFile.layers[i].isSelected = i===selectedIdx;
         });
 
-        FileManager.localStorageSave();
+        if(FileManager.cacheEnabled)FileManager.localStorageSave();
 
     }
     /** Saves the layer that is being moved when the dragging starts

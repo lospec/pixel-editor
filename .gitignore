@@ -5,3 +5,5 @@ build
 node_modules
 .idea
 .history
+*.css
+*.map

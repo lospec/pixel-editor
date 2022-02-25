@@ -12,7 +12,7 @@ class LineTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to draw a line");
         this.addTutorialKey("Right drag", " to resize the brush");
         this.addTutorialKey("+ or -", " to resize the brush");
-        this.addTutorialImg("/images/ToolTutorials/line-tutorial.gif");
+        this.addTutorialImg("/line-tutorial.gif");
     }
 
     onStart(mousePos) {

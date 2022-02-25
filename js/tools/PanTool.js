@@ -10,7 +10,7 @@ class PanTool extends Tool {
         this.addTutorialKey("P", " to select the lasso selection tool");
         this.addTutorialKey("Left drag", " to move the viewport");
         this.addTutorialKey("Space + drag", " to move the viewport");
-        this.addTutorialImg("/images/ToolTutorials/pan-tutorial.gif");
+        this.addTutorialImg("/pan-tutorial.gif");
     }
 
     onStart(mousePos, target) {

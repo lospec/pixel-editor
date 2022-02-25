@@ -17,10 +17,7 @@ const Startup = (() => {
         var height = Util.getValue('size-height' + splashPostfix);
         var selectedPalette = Util.getText('palette-button' + splashPostfix);
     
-        newPixel({
-            canvasWidth: width,
-            canvasHeight: height,
-        });
+        newPixel(FileManager.defaultLPE(width,height));
         resetInput();
     
         //track google event
@@ -34,8 +31,8 @@ const Startup = (() => {
      * @param {*} skipModeConfirm If skipModeConfirm == true, then the mode switching confirmation will be skipped
      */
     function newPixel (fileContent = null, skipModeConfirm = false) {    
-        //console.log('called newPixel');   
-        //console.trace();
+        console.log('called newPixel');   
+        console.trace();
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
 
@@ -75,14 +72,14 @@ const Startup = (() => {
         //console.group('called initLayers');
         //console.log('currFile.layers === ',currFile.layers);
 
-        const width = lpe.canvasWidth;
-        const height = lpe.canvasHeight;
+        const width = lpe.canvasWidth = Number(lpe.canvasWidth);
+        const height = lpe.canvasHeight = Number(lpe.canvasHeight);
         clearLayers();
 
         // debugger;
         //
         currFile.canvasSize = [width, height];
-
+        console.log('lpe === ',lpe);
         if( lpe.layers && lpe.layers.length ) {
             currFile.currentLayer = new Layer(width, height, `pixel-canvas`,"","layer-li-template");
             currFile.currentLayer.canvas.style.zIndex = 2;
@@ -215,7 +212,8 @@ const Startup = (() => {
             x = presetProperties.width;
             y = presetProperties.height;
         }
-        newPixel(x, y);
+        
+        newPixel(FileManager.defaultLPE(x,y));
     }
 
     function splashEditorMode(mode) {

@@ -25,7 +25,7 @@ class EllipseTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to draw an ellipse");
         this.addTutorialKey("Right drag", " to resize the brush");
         this.addTutorialKey("+ or -", " to resize the brush");
-        this.addTutorialImg("/images/ToolTutorials/ellipse-tutorial.gif");
+        this.addTutorialImg("/ellipse-tutorial.gif");
     }
 
     changeFillType() {

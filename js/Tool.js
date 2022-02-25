@@ -162,6 +162,6 @@ class Tool {
     
 	onEnd(mousePos, mouseTarget) {
         this.endMousePos = mousePos;
-        FileManager.localStorageSave();
+        if(FileManager.cacheEnabled)FileManager.localStorageSave();
 	}
 }

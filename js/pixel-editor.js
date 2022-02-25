@@ -77,6 +77,9 @@ window.onload = function () {
     ToolManager.currentTool().updateCursor();
 	// Apply checkboxes
 
+    ////console.log('window.location.pathname === ',window.location.pathname);
+
+    ////console.log('window.location === ',window.location);
     let args = window.location.pathname.split('/');
     let paletteSlug = args[2];
     let dimensions = args[3];
@@ -93,22 +96,29 @@ window.onload = function () {
                     //palette loaded successfully
                     palettes[paletteSlug] = data;
                     palettes[paletteSlug].specified = true;
+                    ////console.log('palettes[paletteSlug] === ',palettes[paletteSlug]);
                     //refresh list of palettes
                     document.getElementById('palette-menu-splash').refresh();
-                    
+                    console.log('paletteSlug === ',paletteSlug);
+                    console.log('dimensions === ',dimensions);
                     //if the dimensions were specified
                     if (dimensions && dimensions.length >= 3 && dimensions.includes('x')) {
                         let width = dimensions.split('x')[0];
                         let height = dimensions.split('x')[1];
                         const layers = [];
-                        let selectedLayer;
-                        Startup.newPixel({
-                            canvasWidth: width,
-                            canvasHeight: height,
-                            selectedLayer,
-                            colors: data.colors.map(n=>"#"+n),
-                            layers
-                        });
+                        let selectedLayer = 0;
+                        // if(prefill && prefillWidth){ // TODO
+                        //     layers.push({
+                        //         id: "layer0",
+                        //         name: "Layer 0",
+                        //         prefillWidth,
+                        //         prefill
+                        //     });
+                        //     selectedLayer = 0;
+                        // }
+                        let _lpe = FileManager.defaultLPE(width, height, (data.colors ?? []).map(n=>"#"+n));
+                        console.log('_lpe === ',_lpe);
+                        Startup.newPixel(_lpe);
                     }
                     //dimensions were not specified -- show splash screen with palette preselected
                     else {
@@ -123,7 +133,7 @@ window.onload = function () {
                     Dialogue.showDialogue('splash', false);
                 });
     } else {
-        if(FileManager.localStorageCheck()) {
+        if(FileManager.cacheEnabled && FileManager.localStorageCheck()) {
             //load cached document
             const lpe = FileManager.localStorageLoad();
             

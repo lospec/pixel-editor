@@ -247,7 +247,7 @@ class Layer {
         this.menuEntry.classList.add("selected-layer");
         currFile.currentLayer = this;
 
-        FileManager.localStorageSave();
+        if(FileManager.cacheEnabled)FileManager.localStorageSave();
     }
 
     toggleLock() {

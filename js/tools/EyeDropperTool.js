@@ -14,7 +14,7 @@ class EyeDropperTool extends Tool {
         this.addTutorialKey("Aòt + left drag", " to preview the picked colour");
         this.addTutorialKey("Left click", " to select a colour");
         this.addTutorialKey("Alt + click", " to select a colour");
-        this.addTutorialImg("/images/ToolTutorials/eyedropper-tutorial.gif");
+        this.addTutorialImg("/eyedropper-tutorial.gif");
     }
 
     onStart(mousePos, target) {
