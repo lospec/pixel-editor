@@ -35,9 +35,7 @@ const Startup = (() => {
         console.trace();
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
-        if (lpe && !lpe.colors) {
-            lpe.colors = ["#000000"];
-        }
+
         initLayers(lpe);
         initPalette();
 
