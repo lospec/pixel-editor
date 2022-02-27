@@ -246,6 +246,10 @@ class Layer {
         this.menuEntry.classList.add("selected-layer");
         currFile.currentLayer = this;
 
+        if(currFile.VFXLayer) { // only refresh z after init
+            LayerList.refreshZ();
+        }
+
         if(FileManager.cacheEnabled)FileManager.localStorageSave();
     }
 

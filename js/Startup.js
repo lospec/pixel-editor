@@ -83,7 +83,6 @@ const Startup = (() => {
         console.log('lpe === ',lpe);
         if( lpe.layers && lpe.layers.length ) {
             currFile.currentLayer = new Layer(width, height, `pixel-canvas`,"","layer-li-template");
-            currFile.currentLayer.canvas.style.zIndex = 2;
             currFile.sublayers.push(currFile.currentLayer);
 
             let selectedIdx = lpe.selectedLayer ?? 0;
@@ -95,7 +94,6 @@ const Startup = (() => {
                 if (layerData != null) {
                     // Setting id
                     let createdLayer = LayerList.addLayer(layerData.id, false, layerData.name);
-                    createdLayer.canvas.style.zIndex = (_i+1) * 10;
                     if(i===selectedIdx)createdLayer.selectLayer();
                     // Setting name
                     createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
@@ -121,7 +119,6 @@ const Startup = (() => {
 
         } else {
             currFile.currentLayer = new Layer(width, height, `pixel-canvas`,"");
-            currFile.currentLayer.canvas.style.zIndex = 2;
             currFile.sublayers.push(currFile.currentLayer);
             
             const defaultLayerId = "layer0";
@@ -148,6 +145,8 @@ const Startup = (() => {
         currFile.sublayers.push(currFile.TMPLayer);
         currFile.sublayers.push(currFile.pixelGrid);
         currFile.sublayers.push(currFile.VFXLayer);
+
+        LayerList.refreshZ();
     }
 
     function initPalette() {

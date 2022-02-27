@@ -211,21 +211,12 @@ const LayerList = (() => {
         }
     
         let layerIndex = currFile.layers.indexOf(currFile.currentLayer);
-        let toDuplicate = currFile.currentLayer;
-        let menuEntries = layerList.children;
     
-        // Increasing z-indexes of the layers above
-        const menuItemSize = getMenuEntryIndex(menuEntries, toDuplicate.menuEntry);
-
-        for (let i = 0; i < menuItemSize; i += 1) {
-            LayerList.getLayerByID(menuEntries[i].id).canvas.style.zIndex = 2 * (menuItemSize - i);
-        }
     
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");
         // Setting up the new canvas
         currFile.canvasView.append(newCanvas);
-        newCanvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex) + 2;
         newCanvas.classList.add("drawingCanvas");
     
         if (!layerListEntry) return //console.warn('skipping adding layer because no document');
@@ -253,6 +244,9 @@ const LayerList = (() => {
         newLayer.context.putImageData(currFile.currentLayer.context.getImageData(
             0, 0, currFile.canvasSize[0], currFile.canvasSize[1]), 0, 0);
         newLayer.updateLayerPreview();
+
+        LayerList.refreshZ();
+
         // Basically "if I'm not adding a layer because redo() is telling meto do so", then I can save the history
         if (saveHistory) {
             new HistoryState().DuplicateLayer(newLayer, currFile.currentLayer);
@@ -414,7 +408,27 @@ const LayerList = (() => {
     function isRenamingLayer() {
         return renamingLayer;
     }
+    function refreshZ() {
+        try{
+            let selectedZIndex = 0;
+            let maxZ = 0;
+            currFile.layers.forEach((layer, i) => {
+                const _i = currFile.layers.length - i;
+                let z = (_i+1) * 10;
+                if(maxZ < z)maxZ = z;
+                layer.canvas.style.zIndex = z;
+                if(layer.isSelected){
+                    selectedZIndex = z;
+                }
+            });
+            currFile.checkerBoard.canvas.style.zIndex = 1;
+            currFile.pixelGrid.canvas.style.zIndex = 2;
+            currFile.TMPLayer.canvas.style.zIndex = selectedZIndex + 1;
+            currFile.VFXLayer.canvas.style.zIndex = maxZ + 10;
+        }catch(e){}
+    }
     return {
+        refreshZ,
         addLayer,
         mergeLayers,
         getLayerByID,
