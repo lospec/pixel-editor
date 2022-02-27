@@ -5,7 +5,7 @@ const LayerList = (() => {
     let renamingLayer = false;
     let dragStartLayer;
     Events.on("mousedown", layerList, openOptionsMenu);
-    Events.on('click',"add-layer-button", addLayer, false);
+    Events.on('click',"add-layer-button", addLayerClick, false);
     Events.onCustom("switchedToAdvanced", showLayerList);
     Events.onCustom("switchedToBasic", hideLayerList);
 
@@ -28,15 +28,16 @@ const LayerList = (() => {
         layerList.style.display = "none";
         document.getElementById('layer-button').style.display = 'none';
     }
+    function addLayerClick(id, saveHistory = true, layerName) {
+        addLayer(...arguments);
+        currFile.layers[currFile.layers.length-1].selectLayer();
+    }
     function addLayer(id, saveHistory = true, layerName) {
-
         let index = currFile.layers.length;
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");
         // Setting up the new canvas
         currFile.canvasView.append(newCanvas);
-        Layer.maxZIndex+=2;
-        newCanvas.style.zIndex = Layer.maxZIndex;
         newCanvas.classList.add("drawingCanvas");
     
         if (!layerListEntry) return //console.warn('skipping adding layer because no document');
@@ -73,6 +74,11 @@ const LayerList = (() => {
             new HistoryState().AddLayer(newLayer, index);
             if(FileManager.cacheEnabled)FileManager.localStorageSave();
         }
+
+        currFile.layers.forEach((layer, i) => {
+            const _i = currFile.layers.length - i;
+            layer.canvas.style.zIndex = (_i+1) * 10;
+        })
     
         return newLayer;
     }
@@ -115,27 +121,7 @@ const LayerList = (() => {
      * @param {*} event 
      */
     function layerDragEnd(event) {
-        // let oldIndex = event.oldDraggableIndex;
-        // let newIndex = event.newDraggableIndex;
-
-        // let movedZIndex = dragStartLayer.canvas.style.zIndex;
-
-        // if (oldIndex > newIndex)
-        // {
-        //     for (let i=newIndex; i<oldIndex; i++) {
-        //         getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i + 1].id).canvas.style.zIndex;
-        //     }
-        // }
-        // else
-        // {
-        //     for (let i=newIndex; i>oldIndex; i--) {
-        //         getLayerByID(layerList.children[i].id).canvas.style.zIndex = getLayerByID(layerList.children[i - 1].id).canvas.style.zIndex;
-        //     }
-        // }
-
-        // getLayerByID(layerList.children[oldIndex].id).canvas.style.zIndex = movedZIndex;
         Events.simulateMouseEvent(window, "mouseup");
-
         
         const tempLayerCache = currFile.layers.reduce((r,n,i) => {
             r[n.id] = n;
@@ -155,6 +141,10 @@ const LayerList = (() => {
             currFile.layers[i].isSelected = i===selectedIdx;
         });
 
+        currFile.layers.forEach((layer, i) => {
+            const _i = currFile.layers.length - i;
+            layer.canvas.style.zIndex = (_i+1) * 10;
+        });
         if(FileManager.cacheEnabled)FileManager.localStorageSave();
 
     }
@@ -225,10 +215,11 @@ const LayerList = (() => {
         let menuEntries = layerList.children;
     
         // Increasing z-indexes of the layers above
-        for (let i=getMenuEntryIndex(menuEntries, toDuplicate.menuEntry) - 1; i>=0; i--) {
-            LayerList.getLayerByID(menuEntries[i].id).canvas.style.zIndex++;
+        const menuItemSize = getMenuEntryIndex(menuEntries, toDuplicate.menuEntry);
+
+        for (let i = 0; i < menuItemSize; i += 1) {
+            LayerList.getLayerByID(menuEntries[i].id).canvas.style.zIndex = 2 * (menuItemSize - i);
         }
-        Layer.maxZIndex+=2;
     
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");
@@ -268,8 +259,7 @@ const LayerList = (() => {
         }
     }
     function clearLayers() {
-        //console.log('currFile.layers === ',currFile.layers);
-
+        
         currFile.layers.forEach(()=>deleteLayer());
         //console.log('currFile.layers.length === ',currFile.layers.length);
         for(let i = 0; i < currFile.layers.length;i++){

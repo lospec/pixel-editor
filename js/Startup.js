@@ -27,16 +27,18 @@ const Startup = (() => {
 
     /** Creates a new, empty file
      * 
-     * @param {*} fileContent If fileContent != null, then the newPixel is being called from the open menu
+     * @param {*} lpe If lpe != null, then the newPixel is being called from the open menu
      * @param {*} skipModeConfirm If skipModeConfirm == true, then the mode switching confirmation will be skipped
      */
-    function newPixel (fileContent = null, skipModeConfirm = false) {    
+    function newPixel (lpe = null, skipModeConfirm = false) {    
         console.log('called newPixel');   
         console.trace();
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
-
-        initLayers(fileContent);
+        if (lpe && !lpe.colors) {
+            lpe.colors = ["#000000"];
+        }
+        initLayers(lpe);
         initPalette();
 
         // Closing the "New Pixel dialogue"
@@ -47,9 +49,8 @@ const Startup = (() => {
         // The user is now able to export the Pixel
         document.getElementById('export-button').classList.remove('disabled');
 
-        // Now, if I opened an LPE file
-        if (fileContent != null) {
-            FileManager.loadFromLPE(fileContent);
+        if (lpe != null) {
+            FileManager.loadFromLPE(lpe);
         }
         ////console.log('ColorModule.getCurrentPalette() === ',ColorModule.getCurrentPalette());
         
@@ -61,10 +62,12 @@ const Startup = (() => {
         ////console.trace();
     }
     function clearLayers() {
-        for(let i = 0; i < currFile.layers.length;i++) {
+        console.dir(currFile.layers);
+        for(let i = currFile.layers.length-1; i >= 0;i--) {
             currFile.layers[i].delete(i);
         }
-        for(let i = 0; i < currFile.sublayers.length;i++) {
+        console.dir(currFile.layers);
+        for(let i = currFile.sublayers.length-1; i >= 0;i--) {
             currFile.sublayers[i].delete(i);
         }
     }
@@ -89,10 +92,12 @@ const Startup = (() => {
 
             lpe.layers.forEach((layerData, i) => {
                 //console.log('lpe.layers[i] === ', i);
+                const _i = lpe.layers.length - i;
                 let layerImage = layerData.src;
                 if (layerData != null) {
                     // Setting id
                     let createdLayer = LayerList.addLayer(layerData.id, false, layerData.name);
+                    createdLayer.canvas.style.zIndex = (_i+1) * 10;
                     if(i===selectedIdx)createdLayer.selectLayer();
                     // Setting name
                     createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;

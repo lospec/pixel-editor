@@ -8,7 +8,6 @@
  */
 class Layer {
     static layerCount = 1;
-    static maxZIndex = 3;
     
     static unusedIDs = [];
     static currentID = 1;

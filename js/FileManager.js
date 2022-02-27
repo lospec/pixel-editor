@@ -159,6 +159,13 @@ const FileManager = (() => {
                 {"canvas":{},"context":{"mozImageSmoothingEnabled":false},"isSelected":true,"isVisible":true,"isLocked":false,"oldLayerName":null,"menuEntry":{},"id":"layer0","name":"Layer 0","src":emptyCanvasSrc(w,h)}
             ]
         };
+
+        function emptyCanvasSrc(w,h) {
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            return canvas.toDataURL();
+        }
     }
     function localStorageLoad() {
         ////console.log("loading from localStorage");
@@ -279,7 +286,6 @@ const FileManager = (() => {
         let dictionary = {};
         // sorting layers by increasing z-index
         let layersCopy = currFile.layers.filter(n=>!!n.menuEntry).slice();
-        // layersCopy.sort((a, b) => (a.canvas.style.zIndex > b.canvas.style.zIndex) ? 1 : -1);
         dictionary['canvasWidth'] = currFile.canvasSize[0];
         dictionary['canvasHeight'] = currFile.canvasSize[1];
         dictionary['editorMode'] = EditorState.getCurrentMode();
@@ -375,13 +381,6 @@ const FileManager = (() => {
             },[]);
         }
         return dictionary;
-    }
-    function emptyCanvasSrc(w,h) {
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        return canvas.toDataURL();
     }
     function toggleCache(elm){
         console.log('elm === ',elm);
