@@ -6,6 +6,7 @@ const LayerList = (() => {
     let dragStartLayer;
     Events.on("mousedown", layerList, openOptionsMenu);
     Events.on('click',"add-layer-button", addLayerClick, false);
+    Events.on('click',"add-reference-button", addReferenceClick, false);
     Events.onCustom("switchedToAdvanced", showLayerList);
     Events.onCustom("switchedToBasic", hideLayerList);
 
@@ -27,6 +28,10 @@ const LayerList = (() => {
         }
         layerList.style.display = "none";
         document.getElementById('layer-button').style.display = 'none';
+    }
+    function addReferenceClick(id, saveHistory = true, layerName) {
+        addLayer(...arguments);
+        currFile.layers[currFile.layers.length-1].selectLayer();
     }
     function addLayerClick(id, saveHistory = true, layerName) {
         addLayer(...arguments);
@@ -156,14 +161,6 @@ const LayerList = (() => {
         dragStartLayer = getLayerByID(layerList.children[event.oldIndex].id);
     }
     function getLayerByID(id) {
-        //console.log(`getLayerByID(${id})`);
-        // for (let i=0; i<currFile.layers.length; i++) {
-        //     if (currFile.layers[i].hasCanvas()) {
-        //         if (currFile.layers[i].menuEntry.id == id) {
-        //             return currFile.layers[i];
-        //         }
-        //     }
-        // }
         let ret;
         for (let i=0; i<currFile.layers.length; i++) {
             if (currFile.layers[i].hasCanvas()) {
@@ -172,8 +169,6 @@ const LayerList = (() => {
                 }
             }
         }
-        //console.log('ret === ',ret);
-
         return ret ?? null;
     }
     function getLayerByName(name) {
@@ -200,18 +195,8 @@ const LayerList = (() => {
         renamingLayer = true;
     }
     function duplicateLayer(event, saveHistory = true) {
-        function getMenuEntryIndex(list, entry) {
-            for (let i=0; i<list.length; i++) {
-                if (list[i] === entry) {
-                    return i;
-                }
-            }
-        
-            return -1;
-        }
     
         let layerIndex = currFile.layers.indexOf(currFile.currentLayer);
-    
     
         // Creating a new canvas
         let newCanvas = document.createElement("canvas");

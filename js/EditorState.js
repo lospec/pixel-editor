@@ -18,8 +18,6 @@ const EditorState = (() => {
         //switch to advanced mode
         if (newMode == 'Advanced') {
             Events.emit("switchedToAdvanced");
-            // Hide the palette menu
-            document.getElementById('colors-menu').style.right = '200px'
     
             pixelEditorMode = 'Advanced';
             document.getElementById("switch-mode-button").innerHTML = 'Switch to basic mode';

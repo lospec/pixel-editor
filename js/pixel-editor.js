@@ -5,7 +5,9 @@
 
 //=include data/consts.js
 //=include data/palettes.js
-
+// str.split(`//=include `).slice(1).map(n=>{
+//     return `<script src="${jsPath}/${n.split('\n')[0]}"></script>`;
+// });
 /** UTILITY AND INPUT **/
 //=include Util.js
 //=include Events.js

@@ -14,3 +14,11 @@ $baseselected: lighten($basecolor, 15%); 				//color(selectedTool, background), 
 $baseselectedhover: lighten($basecolor, 25%); //color(subbutton, background, hover)
 $indent: darken($basecolor, 5%); //color(indent)
 	$indenttext: lighten($basecolor, 50%); //color(indent, foreground)
+
+
+:root{
+    --layers-width: 206px;
+    --palette-height: 38%;
+    --top-nav-height: 48px;
+    --drag-bar-size: var(--top-nav-height);
+}

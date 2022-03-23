@@ -85,9 +85,9 @@
 
 #canvas-view {
 	bottom: 0px;
-	left: 48px;
-	right: 48px;
-	top: 48px;
+	left: var(--top-nav-height);
+	right: var(--top-nav-height);
+	top: var(--top-nav-height);
 	cursor: default;
 	position: fixed;
 	display: block;
@@ -97,9 +97,9 @@
 	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4);
 	position: fixed;
 	bottom: 0px;
-	left: 48px;
-	right: 48px;
-	top: 48px;
+	left: var(--top-nav-height);
+	right: var(--top-nav-height);
+	top: var(--top-nav-height);
 	display: block;
 	pointer-events: none;
 }

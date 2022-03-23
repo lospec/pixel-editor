@@ -1,3 +1,4 @@
+let DEBUG_ARR = [];
 const Startup = (() => {
     let splashPostfix = '';
 
@@ -31,10 +32,12 @@ const Startup = (() => {
      * @param {*} skipModeConfirm If skipModeConfirm == true, then the mode switching confirmation will be skipped
      */
     function newPixel (lpe = null, skipModeConfirm = false) {    
-        console.log('called newPixel');   
+        DEBUG_ARR.push('called Startup -> newPixel');
         console.trace();
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
+
+        lpe = FileManager.upgradeLPE(lpe);
 
         initLayers(lpe);
         initPalette();
@@ -60,6 +63,7 @@ const Startup = (() => {
         ////console.trace();
     }
     function clearLayers() {
+        DEBUG_ARR.push('called Startup -> clearLayers');
         console.dir(currFile.layers);
         for(let i = currFile.layers.length-1; i >= 0;i--) {
             currFile.layers[i].delete(i);
@@ -70,6 +74,7 @@ const Startup = (() => {
         }
     }
     function initLayers(lpe) {
+        DEBUG_ARR.push('called Startup -> initLayers');
         //console.group('called initLayers');
         //console.log('currFile.layers === ',currFile.layers);
 
@@ -150,6 +155,7 @@ const Startup = (() => {
     }
 
     function initPalette() {
+        DEBUG_ARR.push('called Startup -> initPalette');
         // Get selected palette
         let selectedPalette = Util.getText('palette-button' + splashPostfix);
 
@@ -197,6 +203,7 @@ const Startup = (() => {
     }
 
     function resetInput() {
+        DEBUG_ARR.push('called Startup -> resetInput');
         //reset new form
         Util.setValue('size-width', 64);
         Util.setValue('size-height', 64);
@@ -206,6 +213,7 @@ const Startup = (() => {
     }
 
     function newFromTemplate(preset, x, y) {
+        DEBUG_ARR.push('called Startup -> newFromTemplate');
         if (preset != '') {
             const presetProperties = PresetModule.propertiesOf(preset);
             Util.setText('palette-button-splash', presetProperties.palette);
@@ -219,6 +227,7 @@ const Startup = (() => {
     }
 
     function splashEditorMode(mode) {
+        DEBUG_ARR.push('called Startup -> splashEditorMode');
         editorMode = mode;
     }
 

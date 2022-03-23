@@ -13,6 +13,16 @@ const ColorModule = (() => {
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
+
+    // const resizeObserver = new ResizeObserver(function(mutations) {
+    //     console.log('mutations:', mutations);
+    //     const h = mutations[0].contentRect.height;
+    //     colorMenuResized(h);
+    // });
+    // resizeObserver.observe(document.getElementById('colors-menu'), {attributes:true});
+    // function colorMenuResized(h) {
+    //     document.getElementById('layers-menu').style.height = `calc(100% + ${h}px - var(--top-nav-height))`;
+    // }
     
     // Making the colours in the HTML menu sortable
     new Sortable(document.getElementById("colors-menu"), {
@@ -21,7 +31,6 @@ const ColorModule = (() => {
         draggable: ".draggable-colour",
         onEnd: function() {Events.simulateMouseEvent(window, "mouseup");}
     });
-
     /** Changes all of one color to another after being changed from the color picker
      * 
      * @param {*} colorHexElement The element that has been changed
@@ -94,18 +103,25 @@ const ColorModule = (() => {
      * 
      * @param {*} e The event that triggered the callback
      */
-    function clickedColor (e){
+    function clickedColor (e) {
         //left clicked color
         if (e.which == 1) {
             // remove current color selection
+            const currentSelectedColorButton = document.querySelector('#colors-menu li.selected .color-button');
+            const selectedColor = currentSelectedColorButton.style.backgroundColor;
+            const clickedColor = e.target.style.backgroundColor;
             document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
     
             //set current color
-            updateCurrentColor(Color.cssToHex(e.target.style.backgroundColor));
+            updateCurrentColor(Color.cssToHex(clickedColor));
     
             //make color selected
             e.target.parentElement.classList.add('selected');
     
+            if(selectedColor === clickedColor) {
+                e.target.parentElement.lastChild.classList.add('hidden');
+                e.target.jscolor.show();
+            }
         } 
         //right clicked color
         else if (e.which == 3) { 
@@ -251,7 +267,6 @@ const ColorModule = (() => {
     
             //loop through colors
             for (var i = 0; i < colors.length; i++) {
-                //////console.log(color,'=',colors[i].jscolor.toString());
     
                 if (color == colors[i].jscolor.toString()) {
                     //set color to the color button
@@ -334,7 +349,11 @@ const ColorModule = (() => {
     }
 
     function getCurrentPalette() {
-        return currentPalette;
+        let ret = [...currentPalette];
+        if(ret.length === 0) {
+            ret = [...document.querySelectorAll(".color-button")].map(n=>n.style.backgroundColor);
+        }
+        return ret;
     }
 
     function resetPalette() {
@@ -346,7 +365,6 @@ const ColorModule = (() => {
      * @param {*} paletteColors The colours of the palette
      */
     function createColorPalette(paletteColors) {
-        ////console.log("creating palette");
         //remove current palette
         while (colorsMenu.childElementCount > 1)
             colorsMenu.children[0].remove();
@@ -358,7 +376,6 @@ const ColorModule = (() => {
         for (var i = 0; i < paletteColors.length; i++) {
             var newColor = new Color("hex", paletteColors[i]);
             var newColorElement = ColorModule.addColor(newColor.hex);
-            ////console.log('newColor.hex === ',newColor.hex);
             var newColRgb = newColor.rgb;
 
             var lightestColorRgb = lightestColor.rgb;
@@ -383,7 +400,6 @@ const ColorModule = (() => {
         //set as current color
         updateCurrentColor(darkestColor.hex);
 
-        ////console.log('getCurrentPalette() === ',getCurrentPalette());
     }
 
     /** Creates the palette with the colours used in all the layers
@@ -423,7 +439,6 @@ const ColorModule = (() => {
         //create palette from colors array
         createColorPalette(colorPaletteArray);
 
-        ////console.log("Done 2");
     }
 
     function updateCurrentColor(color, refLayer) {

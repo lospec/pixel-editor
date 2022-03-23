@@ -1,35 +1,56 @@
-
 #colors-menu {
-	right: 200px;
-	width: 48px;
+	width:var(--layers-width);
 	display: flex;
 	justify-content: flex-start;
-	flex-direction: column;
+	flex-direction: row;
 	list-style-type: none;
-	top: 48px;
-	bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+	height: var(--palette-height);
 	padding: 0;
 	margin: 0;
 	background-color: $basecolor;
 	box-sizing: border-box;
-	position: fixed;
+    align-items: flex-start;
 	z-index: 1120;
+    overflow-y: scroll;
+    resize: vertical;
 
 	li {
-		width: 48px;
-		flex-basis: 48px;
+		width: var(--top-nav-height);
+		height: var(--top-nav-height);
+		flex-basis: var(--top-nav-height);
 
-		&:not(.noshrink) {
-			flex-grow: 1;
-		}
 		&.noshrink {
 			flex-grow: 0;
 			flex-shrink: 0;
 		}
 	}
+
+    svg {
+        margin-top: 4px;
+    }
+    
+	&::-webkit-scrollbar {
+		background: #232125;
+		width: 1em;
+	}
+	&::-webkit-scrollbar-track {
+		margin-top: -0.125em;
+		width: 1em;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #332f35;
+		border-radius: 0.25em;
+		border: solid 0.125em #232125; //same color as scrollbar back to fake padding
+	}
+	&::-webkit-scrollbar-corner {
+		background: #232125;
+	}
+	scrollbar-color: #332f35 #232125;
+	scroll-behavior: smooth;
 }
-
-
 
 //added when the color is a duplicate of another
 #duplicate-color-warning {
@@ -118,14 +139,14 @@
 		content: "";
 		display: block;
 		position: absolute;
-		top: -3px;
-		left: -3px;
+		top: 0px;
+		left: 0px;
 		border: solid 3px #fff;
 		width: 100%;
 		height: 100%;
-		border-radius: 4px;
-		box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.15);
+		box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.15) inset;
 		z-index: 10;
+        box-sizing: border-box;
 	} //inner outline
 	&.selected button::after {
 		content: "";
@@ -149,7 +170,9 @@
 	background: $basehover;
 }
 
-
+.jscolor-wrap {
+    z-index: 10000 !important;
+}
 
 .jscolor-picker-bottom {
 	display: none;
@@ -172,7 +195,6 @@
 		margin-left: 5px;
 	}
 }
-
 
 .delete-color-button {
 	background: none;

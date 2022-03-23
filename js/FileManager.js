@@ -128,10 +128,14 @@ const FileManager = (() => {
     function localStorageSave() {
         const lpeStr = getProjectData();
         const lpe = JSON.parse(lpeStr);
-        //console.log('LPE saved === ',lpe);
+        console.log('BEFORE JSON.stringify(lpe.colors,null,4) === ',JSON.stringify(lpe.colors,null,4));
+        console.log([...ColorModule.getCurrentPalette()]);
+        if(lpe.colors.length < 1)lpe.colors = [...ColorModule.getCurrentPalette()];
         if(lpe.colors.length < 1)lpe.colors.push("#000000");
+        console.log('AFTER JSON.stringify(lpe.colors,null,4) === ',JSON.stringify(lpe.colors,null,4));
         if(!lpe.canvasWidth)lpe.canvasWidth = 16;
         if(!lpe.canvasHeight)lpe.canvasHeight = 16;
+        console.log('LPE saved === ',lpe);
         localStorage.setItem("lpe-cache", JSON.stringify(lpe));
     }
     function localStorageReset() {
@@ -185,6 +189,7 @@ const FileManager = (() => {
                 // If it's a Lospec Pixel Editor tm file, I load the project
                 if (extension == 'lpe') {
                     openProject();
+                    // openFile();
                 }
                 else {
                     openFile();
@@ -204,6 +209,7 @@ const FileManager = (() => {
 
             img.onload = function() {
                 //create a new pixel with the images dimentions
+                console.log('this === ',this);
                 Startup.newPixel({
                     canvasWidth: this.width,
                     canvasHeight: this.height
@@ -224,23 +230,26 @@ const FileManager = (() => {
         fileReader.readAsDataURL(browseHolder.files[0]);
     }
     function openProject(lpeData) {
-        
+        console.log('lpeData === ',lpeData);
         // Getting all the data
         if(lpeData){
             _parseLPE(lpeData);
         } else {
-            let file = uri ?? browseHolder.files[0];
+            let file = browseHolder.files[0];
             let reader = new FileReader();
-            reader.readAsText(file, "UTF-8");
             // Converting the data to a json object and creating a new pixel (see _newPixel.js for more)
             reader.onload = function (e) {
+                console.log('this === ',this);
+                console.log('e === ',e);
                 let dictionary = JSON.parse(e.target.result);
+                console.log('FileManager.js => openProject => loaded lpe dictionary === ',dictionary);
                 _parseLPE(dictionary);
             }
+            reader.readAsText(file, "UTF-8");
         }
         
         function _parseLPE(dictionary) {
-            Startup.newPixel(dictionary, true);
+            Startup.newPixel(dictionary);
         }
     }
     function loadFromLPE(dictionary) {
@@ -248,38 +257,11 @@ const FileManager = (() => {
 
         //console.log('dictionary === ',dictionary);
 
-        dictionary = FileManager.upgradeLPE(dictionary);
-
         EditorState.switchMode(dictionary.editorMode ?? 'Advanced');
 
-        // I add every layer the file had in it
-        // dictionary.layers.forEach((layerData,i)=>{
-        //     let layerImage = layerData.src;
-        //     if (layerData != null) {
-        //         // Setting id
-        //         let createdLayer = LayerList.addLayer(layerData.id, false, layerData.name);
-        //         // Setting name
-        //         createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
-
-        //         // Adding the image (I can do that because they're sorted by increasing z-index)
-        //         let img = new Image();
-        //         img.onload = function() {
-        //             createdLayer.context.drawImage(img, 0, 0);
-        //             createdLayer.updateLayerPreview();
-        //         };
-
-        //         img.src = layerImage;
-
-        //         // Setting visibility and lock options
-        //         if (!layerData.isVisible) {
-        //             createdLayer.hide();
-        //         }
-        //         if (layerData.isLocked) {
-        //             createdLayer.lock();
-        //         }
-        //     }
-        // })
         if(dictionary.colors)ColorModule.createColorPalette(dictionary.colors);
+
+        // Startup.newPixel(dictionary);
     }
     function getProjectData() {
         // use a dictionary
@@ -355,7 +337,7 @@ const FileManager = (() => {
         browsePaletteHolder.value = null;
     }
     function upgradeLPE(dictionary) {
-        ////console.log('dictionary === ',dictionary);
+        console.log('dictionary === ',dictionary);
         if(dictionary.color0 && !dictionary.colors) {
             dictionary.colors = [];
             let colorIdx = 0;
@@ -364,8 +346,9 @@ const FileManager = (() => {
                 delete dictionary[`color${colorIdx}`];
                 colorIdx++;
             }
+            console.log('Object.keys(dictionary) === ',Object.keys(dictionary));
             dictionary.layers = Object.keys(dictionary).reduce((r,k,i)=>{
-                if(k.slice(0,5) === "layer"){
+                if(k.slice(0,5) === "layer" && dictionary[k]){
                     if(dictionary[k].isSelected){
                         dictionary.selectedLayer = r.length;
                     }
@@ -379,7 +362,9 @@ const FileManager = (() => {
                 }
                 return r;
             },[]);
+            console.log('dictionary.layers === ',dictionary.layers);
         }
+        console.log('dictionary === ',dictionary);
         return dictionary;
     }
     function toggleCache(elm){
@@ -395,7 +380,7 @@ const FileManager = (() => {
     const cacheEnabled = !!Number(localStorage.getItem("lpe-cache-enabled"));
     document.getElementById("auto-cache-button").textContent = cacheBtnText(cacheEnabled);
 
-    return {
+    const ret = {
         cacheEnabled,
         loadFromLPE,
         toggleCache,
@@ -413,4 +398,14 @@ const FileManager = (() => {
         openSaveProjectWindow,
         open
     };
+    Object.keys(ret).forEach(k=>{
+        if(typeof ret[k] === "function"){
+            const orig = ret[k];
+            ret[k] = function() {
+                DEBUG_ARR.push(`called FileManager -> ${k}`);
+                return orig.call(this,...arguments);
+            }
+        }
+    })
+    return ret;
 })();
