@@ -6,6 +6,7 @@ const FileManager = (() => {
 
     Events.on('change', browseHolder, loadFile);
     Events.on('change', browsePaletteHolder, loadPalette);
+    Events.on('click', 'export-confirm', exportProject);
 
     function openSaveProjectWindow() {
         //create name
@@ -36,7 +37,6 @@ const FileManager = (() => {
         }
     
         Util.setValue('export-file-name', fileName);
-        Events.on("click", "export-confirm", exportProject);
         Dialogue.showDialogue('export', false);
     }
 
