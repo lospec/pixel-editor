@@ -27,10 +27,11 @@ const FileManager = (() => {
 
     function openPixelExportWindow() {
         let selectedPalette = Util.getText('palette-button');
+
     
         if (selectedPalette != 'Choose a palette...'){
             var paletteAbbreviation = palettes[selectedPalette].name;
-            var fileName = 'pixel-'+paletteAbbreviation+'-'+canvasSize[0]+'x'+canvasSize[1]+'.png';
+            var fileName = 'pixel-'+paletteAbbreviation+'-'+currFile.canvasSize[0]+'x'+currFile.canvasSize[1]+'.png';
         } else {
             var fileName = 'pixel-'+currFile.canvasSize[0]+'x'+currFile.canvasSize[1]+'.png';
             selectedPalette = 'none';
