@@ -69,7 +69,3 @@ If you have any trouble, see this page: https://help.github.com/en/articles/crea
 Some feature might be hidden by default. Functions to enable/disable them are available inside global `featureToggles` and operate on a `window.localStorage`.
 
 For example use `featureToggles.enableEllipseTool()` to make ellipse tool button visible. Then `featureToggles.disableEllipseTool()` to hide it.
-
-## License
-
-This software may not be resold, redistributed, rehosted or otherwise conveyed to a third party.
