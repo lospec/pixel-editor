@@ -2,7 +2,7 @@ class File {
     // Canvas, canvas state
     canvasSize = [];
     zoom = 7;
-    canvasView = document.getElementById("canvas-view") ?? document.createElement("canvas");
+    canvasView = document.getElementById("canvas-view") ?? document.createElement("div");
     inited = false;
 
     // Layers
