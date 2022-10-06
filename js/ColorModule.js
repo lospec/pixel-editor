@@ -7,12 +7,14 @@ const ColorModule = (() => {
     // Reference to the HTML palette
     const coloursList = document.getElementById("palette-list");
     // Reference to the colours menu
-    const colorsMenu = document.getElementById("colors-menu");
+    let colorsMenu = document.getElementById("colors-menu");
      
     // Binding events to callbacks
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
+
+    Events.on("wheel", "colors-menu", resizeSquares);
 
     // const resizeObserver = new ResizeObserver(function(mutations) {
     //     console.log('mutations:', mutations);
@@ -31,6 +33,26 @@ const ColorModule = (() => {
         draggable: ".draggable-colour",
         onEnd: function() {Events.simulateMouseEvent(window, "mouseup");}
     });
+
+    function resizeSquares(event) {
+        for (let i=0; i< coloursList.children.length; i++) {
+            let width = parseInt(coloursList.children[i].style.width.replace("px", ""), 10);
+            let newWidth = (width - 2 * Math.sign(event.deltaY)) + "px";
+
+           /* coloursList.children[i].setAttribute("style", "width: " +  (width - 2 * Math.sign(event.deltaY)) + "px");
+            coloursList.children[i].setAttribute("style", "height: " +  (width - 2 * Math.sign(event.deltaY)) + "px");*/
+
+            coloursList.children[i].setAttribute("style", "width: 500px");
+            coloursList.children[i].style.width = '500px';
+            coloursList.children[i].setAttribute("style", "height: 500px");
+            coloursList.children[i].style.height = '500px';
+
+        }
+
+        let width = coloursList.children[0].style.width;
+        console.log(width);
+    }
+
     /** Changes all of one color to another after being changed from the color picker
      * 
      * @param {*} colorHexElement The element that has been changed
