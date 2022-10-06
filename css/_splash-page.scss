@@ -3,11 +3,12 @@
 #splash {
 	width:100% !important;
 	height:100%!important;
-	position:fixed;
+	position:static;
 	margin-top:-20px;
 
 	background-color: #232125 !important;
 	opacity: 1 !important;
+	z-index:1300;
 
 	#splash-input {
 		width:74%;
