@@ -130,4 +130,8 @@ class Util {
     static cursorInCanvas(canvasSize, mousePos) {
         return mousePos[0] >= 0 && mousePos[1] >= 0 && canvasSize[0] > mousePos[0] && canvasSize[1] > mousePos[1];
     }
+
+    static getFileExtension(fileName) {
+        return (fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName).toLowerCase();
+    }
 }

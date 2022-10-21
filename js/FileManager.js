@@ -3,9 +3,11 @@ const FileManager = (() => {
     // Binding the browse holder change event to file loading
     const browseHolder = document.getElementById('open-image-browse-holder');
     const browsePaletteHolder = document.getElementById('load-palette-browse-holder');
+    const importImageHolder = document.getElementById('import-image-browse-holder');
 
     Events.on('change', browseHolder, loadFile);
     Events.on('change', browsePaletteHolder, loadPalette);
+    Events.on('change', importImageHolder, loadImage);
     Events.on('click', 'export-confirm', exportProject);
 
     function openSaveProjectWindow() {
@@ -270,11 +272,74 @@ const FileManager = (() => {
         browsePaletteHolder.value = null;
     }
 
+    /**
+     * Displays the import image window to allow for configurations
+     * to be made be the image is imported.
+     */
+    function openImportImageWindow() {
+        Events.on("click", "select-image", () => document.getElementById('import-image-browse-holder')?.click());
+        Events.on("click", "import-image-confirm", importImage);
+        Dialogue.showDialogue('import-image', false);
+    }
+
+    /**
+     * Loads the image and draws it to the current canvas layer. Called when
+     * the import image window is finalized.
+     */
+    function importImage() {
+        if (!importImageHolder.files || importImageHolder.files.length === 0) {
+            alert('Please select a file before attempting to import.')
+            return;
+        }
+
+        var fileReader = new FileReader();
+
+        // Once the image has been loaded draw the image to the current layer at the top right.
+        fileReader.onload = function(e) {
+            var img = new Image();
+            img.onload = () => {
+                let shouldResizeCanvas = document.getElementById('import-image-match-size').checked;
+
+                // Resize the canvas to the image size if the flag was set to true.
+                if (shouldResizeCanvas) {
+                    currFile.resizeCanvas(null, { x: img.width, y: img.height }, null, false);
+                }
+
+                currFile.currentLayer.context.drawImage(img, 0, 0)
+
+                Dialogue.closeDialogue();
+            };
+            img.src = e.target.result;
+        };
+        
+        fileReader.readAsDataURL(importImageHolder.files[0]);
+    }
+
+    /**
+     * Called when the import image holder file input fires an onchange event.
+     */
+    function loadImage() {
+        if (importImageHolder.files && importImageHolder.files[0]) {
+            let fileName = document.getElementById("import-image-browse-holder").value;
+            let extension = Util.getFileExtension(fileName);
+            
+            // Display the file name in the window.
+            document.getElementById('import-image-name').innerText = importImageHolder.files[0].name;
+
+            // Checking if the extension is supported
+            if (extension !== 'png') {
+                alert('Only PNG files are currently allowed to be imported at this time.')
+                importImageHolder.value = null;
+            }
+        }
+    }
+
     return {
         saveProject,
         exportProject,
         openPixelExportWindow,
         openSaveProjectWindow,
+        openImportImageWindow,
         open
     }
 })();
