@@ -277,8 +277,14 @@ const FileManager = (() => {
      * to be made be the image is imported.
      */
     function openImportImageWindow() {
+        // Reset window values.
+        importImageHolder.value = null;
+        document.getElementById('import-image-match-size').checked = false;
+        document.getElementById('import-image-name').innerText = "";
+
         Events.on("click", "select-image", () => document.getElementById('import-image-browse-holder')?.click());
         Events.on("click", "import-image-confirm", importImage);
+        
         Dialogue.showDialogue('import-image', false);
     }
 
