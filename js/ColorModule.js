@@ -410,30 +410,6 @@ const ColorModule = (() => {
 
             addColor(layersPaletteArray[i]);
         }
-
-        return;
-
-        // Compare the current layer colors to the current palette and add any layer colors that aren't in the palette.
-        let mergedPalette = [...currentPalette];
-
-        for (let i = 0; i < layersPaletteArray.length; i++) {
-            let isNewPaletteColor = true;
-
-            for (let j = 0; j < currentPalette.length; j++) {
-                // If the layer color matches an existing palette color skip it so it isn't added again.
-                if (layersPaletteArray[i] === mergedPalette[j]) {
-                    isNewPaletteColor = false;
-                    break;                    
-                }
-            }   
-
-            if (isNewPaletteColor) {
-                mergedPalette.push(layersPaletteArray[i]);
-            }
-        }
-
-        // Recreate the palette using the merged colors array.
-        createColorPalette(mergedPalette);
     }
 
     /**
