@@ -301,6 +301,8 @@ const FileManager = (() => {
 
             Events.on("click", "select-image", () => document.getElementById('import-image-browse-holder')?.click());
             Events.on("click", "import-image-confirm", importImage);
+
+            this.isImportWindowInitialized = true;
         }
         
         Dialogue.showDialogue('import-image', false);
