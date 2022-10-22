@@ -3,9 +3,11 @@ const FileManager = (() => {
     // Binding the browse holder change event to file loading
     const browseHolder = document.getElementById('open-image-browse-holder');
     const browsePaletteHolder = document.getElementById('load-palette-browse-holder');
+    const importImageHolder = document.getElementById('import-image-browse-holder');
 
     Events.on('change', browseHolder, loadFile);
     Events.on('change', browsePaletteHolder, loadPalette);
+    Events.on('change', importImageHolder, loadImage);
     Events.on('click', 'export-confirm', exportProject);
 
     function openSaveProjectWindow() {
@@ -270,11 +272,121 @@ const FileManager = (() => {
         browsePaletteHolder.value = null;
     }
 
+    currentImportPivotElement = undefined;
+    currentImportPivotPosition = 'middle';
+    isImportWindowInitialized = false;
+
+    /**
+     * Displays the import image window to allow for configurations
+     * to be made be the image is imported.
+     */
+    function openImportImageWindow() {
+        // Reset window values.
+        importImageHolder.value = null;
+
+        document.getElementById('import-image-match-size').checked = false;
+        document.getElementById('import-image-update-palette').checked = false;
+        document.getElementById('import-image-name').innerText = "";
+
+        // Workaround to prevent events from firing twice for the import window.
+        if (!this.isImportWindowInitialized) {
+            // Getting the pivot buttons and setting the default pivot selection.
+            let pivotButtons = document.getElementsByClassName("pivot-button");
+            this.currentImportPivotElement = document.querySelector('.import-image-location-pivot .rc-selected-pivot');
+
+            // Add event handlers for each pivot.
+            for (let i=0; i < pivotButtons.length; i++) {
+                Events.on("click", pivotButtons[i], onImportPivotChanged.bind(this));
+            }
+
+            Events.on("click", "select-image", () => document.getElementById('import-image-browse-holder')?.click());
+            Events.on("click", "import-image-confirm", importImage);
+
+            this.isImportWindowInitialized = true;
+        }
+        
+        Dialogue.showDialogue('import-image', false);
+    }
+
+    /**
+     * Loads the image and draws it to the current canvas layer. Called when
+     * the import image window is finalized.
+     */
+    function importImage() {
+        if (!importImageHolder.files || importImageHolder.files.length === 0) {
+            alert('Please select a file before attempting to import.')
+            return;
+        }
+
+        var fileReader = new FileReader();
+
+        // Once the image has been loaded draw the image to the current layer at the top right.
+        fileReader.onload = (e) => {
+            var img = new Image();
+
+            img.onload = () => {
+                let shouldResizeCanvas = document.getElementById('import-image-match-size').checked;
+                let shouldImportColors = document.getElementById('import-image-update-palette').checked;
+
+                // Resize the canvas to the image size if the flag was set to true.
+                if (shouldResizeCanvas) {
+                    currFile.resizeCanvas(null, { x: img.width, y: img.height }, null, false);
+                }
+
+                // Calculate pivot offset and draw the imported image. Ensure the pivot position accounts for the imported images dimensions.
+                let offset = Util.getPivotPosition(this.currentImportPivotPosition, currFile.canvasSize[0], currFile.canvasSize[1], img.width, img.height);
+                currFile.currentLayer.context.drawImage(img, offset.x, offset.y);
+
+                if (shouldImportColors) {
+                    ColorModule.updatePaletteFromLayers();
+                }
+
+                Dialogue.closeDialogue();
+            };
+            img.src = e.target.result;
+        };
+        
+        fileReader.readAsDataURL(importImageHolder.files[0]);
+    }
+
+    /**
+     * Called when the import image holder file input fires an onchange event.
+     */
+    function loadImage() {
+        if (importImageHolder.files && importImageHolder.files[0]) {
+            let fileName = document.getElementById("import-image-browse-holder").value;
+            let extension = Util.getFileExtension(fileName);
+            
+            // Display the file name in the window.
+            document.getElementById('import-image-name').innerText = importImageHolder.files[0].name;
+
+            // Checking if the extension is supported
+            if (extension !== 'png') {
+                alert('Only PNG files are currently allowed to be imported at this time.')
+                importImageHolder.value = null;
+            }
+        }
+    }
+
+    /**
+     * Called when the selected pivot for the import image is changed.
+     * @param {*} event The event for the selected pivot.
+     */
+    function onImportPivotChanged(event) {
+        this.currentImportPivotPosition = event.target.getAttribute("value");
+
+        // Setting the selected class
+        this.currentImportPivotElement.classList.remove("rc-selected-pivot");
+        this.currentImportPivotElement = event.target;
+        this.currentImportPivotElement.classList.add("rc-selected-pivot");
+    }
+
     return {
         saveProject,
         exportProject,
         openPixelExportWindow,
         openSaveProjectWindow,
+        openImportImageWindow,
         open
     }
 })();

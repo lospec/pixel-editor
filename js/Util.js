@@ -130,4 +130,77 @@ class Util {
     static cursorInCanvas(canvasSize, mousePos) {
         return mousePos[0] >= 0 && mousePos[1] >= 0 && canvasSize[0] > mousePos[0] && canvasSize[1] > mousePos[1];
     }
+
+    static getFileExtension(fileName) {
+        return (fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName).toLowerCase();
+    }
+
+    static getCanvasBorders() {
+
+    }
+
+    /**
+     * Determines the x and y offset for drawing images at a specific point 'topleft', 'middle', etc.
+     * 
+     * @param {*} pivot A string representing the position of the pivot 'topleft', 'middle', etc.
+     * @param {*} width Width of the bounds often represents the canvas width.
+     * @param {*} height Height of the bounds often represents the canvas height.
+     * @param {*} imageWidth Substracts the offset from calculated x position of the pivot. Defaults to 0.
+     * @param {*} imageHeight Subtracts the offset from the calculated y position of the pivot. Defaults to 0.
+     * 
+     * @returns Object containing the x and y offset for the pivot.
+     */
+    static getPivotPosition(pivot, width, height, imageWidth = 0, imageHeight = 0) {
+        let position = {
+            x: 0,
+            y: 0
+        };
+
+        let centerX = width / 2;
+        let centerY = height / 2;
+
+        switch (pivot)
+        {
+            case 'topleft':
+                position.x = 0;
+                position.y = 0;
+                break;
+            case 'top':
+                position.x = centerX - (imageWidth / 2);
+                position.y = 0;
+                break;
+            case 'topright':
+                position.x = width - imageWidth;
+                position.y = 0;
+                break;
+            case 'left':
+                position.x = 0;
+                position.y = centerY - (imageHeight / 2);
+                break;
+            case 'middle':
+                position.x = centerX - (imageWidth / 2);
+                position.y = centerY - (imageHeight / 2);
+                break;
+            case 'right':
+                position.x = width - imageWidth;
+                position.y = centerY - (imageHeight / 2);
+                break;
+            case 'bottomleft':
+                position.x = 0;
+                position.y = height - imageHeight;
+                break;
+            case 'bottom':
+                position.x = centerX - (imageWidth / 2);
+                position.y = height - imageHeight;
+                break;
+            case 'bottomright':
+                position.x = width - imageWidth
+                position.y = height - imageHeight;
+                break;
+            default:
+                break;
+        }
+
+        return position;
+    }
 }

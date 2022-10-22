@@ -197,6 +197,7 @@ const ColorModule = (() => {
         //add # at beginning if not present
         if (newColor.charAt(0) != '#')
             newColor = '#' + newColor;
+        
         currentPalette.push(newColor);
         //create list item
         const listItem = document.createElement('li');   
@@ -388,18 +389,45 @@ const ColorModule = (() => {
      * 
      */
     function createPaletteFromLayers() {
+        //create array out of colors object
+        let colorPaletteArray = getLayerColors();
+
+        //create palette from colors array
+        createColorPalette(colorPaletteArray);
+    }
+
+    /**
+     * Scan the layers for any colors that are not currently in the palette. If any colors
+     * are found they should be added as new colors for the palette.
+     */
+    function updatePaletteFromLayers() {
+        let layersPaletteArray = getLayerColors();
+
+        for (let i = 0; i < layersPaletteArray.length; i++) {
+            if (currentPalette.indexOf(layersPaletteArray[i]) !== -1) {
+                continue;
+            }
+
+            addColor(layersPaletteArray[i]);
+        }
+    }
+
+    /**
+     * Iterates each layer and grab each unique color.
+     * @returns Array of colors used within the current layers.
+     */
+    function getLayerColors() {
         let colors = {};
         let nColors = 0;
         //create array out of colors object
         let colorPaletteArray = [];
 
-        for (let i=0; i<currFile.layers.length; i++) {
+        for (let i = 0; i < currFile.layers.length; i++) {
             if (currFile.layers[i].hasCanvas()) {
-                let imageData = currFile.layers[i].context.getImageData(
-                    0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
+                let imageData = currFile.layers[i].context.getImageData(0, 0, currFile.canvasSize[0], currFile.canvasSize[1]).data;
                 let dataLength = imageData.length;
 
-                for (let j=0; j<dataLength; j += 4) {
+                for (let j=0; j < dataLength; j += 4) {
                     if (!Util.isPixelEmpty(imageData[j])) {
                         let color = imageData[j]+','+imageData[j + 1]+','+imageData[j + 2];
                         
@@ -407,6 +435,7 @@ const ColorModule = (() => {
                             colorPaletteArray.push('#' + new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).hex);
                             colors[color] = new Color("rgb", imageData[j], imageData[j + 1], imageData[j + 2]).rgb;
                             nColors++;
+
                             //don't allow more than 256 colors to be added
                             if (nColors >= Settings.getCurrSettings().maxColorsOnImportedImage) {
                                 alert('The image loaded seems to have more than '+Settings.getCurrSettings().maxColorsOnImportedImage+' colors.');
@@ -418,10 +447,7 @@ const ColorModule = (() => {
             }
         }
 
-        //create palette from colors array
-        createColorPalette(colorPaletteArray);
-
-        console.log("Done 2");
+        return colorPaletteArray;
     }
 
     function updateCurrentColor(color, refLayer) {
@@ -446,6 +472,7 @@ const ColorModule = (() => {
         resetPalette,
         createColorPalette,
         createPaletteFromLayers,
+        updatePaletteFromLayers,
         updateCurrentColor,
     }
 })();
