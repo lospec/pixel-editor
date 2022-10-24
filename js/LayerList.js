@@ -63,6 +63,7 @@ const LayerList = (() => {
         // Creating a layer object
         let newLayer = new Layer(currFile.canvasSize[0], currFile.canvasSize[1], newCanvas, toAppend);
         newLayer.context.fillStyle = currFile.currentLayer.context.fillStyle;
+        newLayer.context.willReadFrequently = true;
         newLayer.copyData(currFile.currentLayer);
     
         // currFile.layers.splice(index, 0, newLayer);

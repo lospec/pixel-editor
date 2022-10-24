@@ -73,6 +73,9 @@ const FileManager = (() => {
             let emptyCanvas = document.createElement("canvas");
             let layersCopy = currFile.layers.slice();
 
+            exportCanvas.getContext("2d").willReadFrequently = true;
+            emptyCanvas.getContext("2d").willReadFrequently = true;
+
             exportCanvas.width = currFile.canvasSize[0];
             exportCanvas.height = currFile.canvasSize[1];
 
