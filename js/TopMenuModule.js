@@ -43,6 +43,9 @@ const TopMenuModule = (() => {
                     case 'Open':
                         Events.on('click', currSubmenuButton, FileManager.open);
                         break;
+                    case 'Import':
+                        Events.on('click', currSubmenuButton, FileManager.openImportImageWindow);
+                        break;
                     case 'Export':
                         Events.on('click', currSubmenuButton, FileManager.openPixelExportWindow);
                         break;

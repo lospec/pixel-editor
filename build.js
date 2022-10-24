@@ -34,7 +34,7 @@ function copy_logs() {
 }
 
 function render_js(){
-    gulp.src('./js/*.js')
+    gulp.src('./js/pixel-editor.js')
         .pipe(include({includePaths: [
             'js',
             '!js/_*.js',

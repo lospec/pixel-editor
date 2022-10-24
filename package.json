@@ -34,5 +34,6 @@
     "cross-env": "7.0.3",
     "reload": "^3.2.0",
     "wait-cli": "^1.0.0"
-  }
+  },
+  "license": "GPL-3.0-only"
 }

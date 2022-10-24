@@ -1,0 +1,18 @@
+#import-image {
+    ul {
+        list-style-type: none;
+        margin: 15px 0;
+        padding: 0;
+    }
+
+    .import-image-file {
+        button {
+            margin: 0;
+        }
+    }
+
+    .import-image-location-pivot {
+        display: flex;
+        align-items: center;
+    }
+}

@@ -1,0 +1,44 @@
+<div id="import-image" class="import-image">
+	<button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
+	
+	<h1>Import Image</h1>
+
+	<p>Imports image into the current selected layer.</p>
+
+	<div class="import-image-file">
+		<button class="default" id="select-image">Select image</button>
+		<span id="import-image-name"></span>
+	</div>
+
+	<ul role="group">
+		<li>
+			<span><input type="checkbox" id="import-image-match-size"/> Match canvas to image size</span>
+		</li>
+		<li>
+			<span><input type="checkbox" id="import-image-update-palette"/> Append palette with image colors</span>
+		</li>
+	</ul>
+
+	<h2>Canvas Location</h2>
+
+	<p>If matching to image size canvas location is ignored.</p>
+
+	<!--PIVOTS-->
+	<div class="import-image-location-pivot">
+		<span id = "pivot-menu">
+			<button class="pivot-button" value="topleft">{{svg "arrows/topleft.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="top">{{svg "arrows/top.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="topright">{{svg "arrows/topright.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="left">{{svg "arrows/left.svg" width="20" height="20"}}</button>
+			<button class="pivot-button rc-selected-pivot" value="middle">{{svg "arrows/middle.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="right">{{svg "arrows/right.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="bottomleft">{{svg "arrows/bottomleft.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="bottom">{{svg "arrows/bottom.svg" width="20" height="20"}}</button>
+			<button class="pivot-button" value="bottomright">{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
+		</span>
+	</div>
+
+	<div class="popup-actions">
+		<button class="default" id="import-image-confirm">Import</button>
+	</div>
+</div>
