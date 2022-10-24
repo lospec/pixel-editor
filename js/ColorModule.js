@@ -11,11 +11,6 @@ const ColorModule = (() => {
     // Square size
     const minSquareSize = 38;
     let squareSize = colorsMenu.children[0].getBoundingClientRect().width;
-    // Buttons
-    let addButton = document.getElementById("cm-add");
-    let removeButton = document.getElementById("cm-remove");
-    let zoomInButton = document.getElementById("cm-zoomin");
-    let zoomOutButton = document.getElementById("cm-zoomout");
      
     // Binding events to callbacks
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
@@ -23,21 +18,11 @@ const ColorModule = (() => {
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
 
     Events.on("wheel", "colors-menu", resizeSquares);
-    Events.on("click", addButton, addColorButtonEvent);
-    Events.on("click", removeButton, deleteColor, undefined);
-    Events.on("click", zoomInButton, resizeSquares, {altKey:true, deltaY: -1.0});
-    Events.on("click", zoomOutButton, resizeSquares, {altKey:true, deltaY: 1.0});
+    Events.on("click", document.getElementById("cm-add"), addColorButtonEvent);
+    Events.on("click", document.getElementById("cm-remove"), deleteColor, undefined);
+    Events.on("click", document.getElementById("cm-zoomin"), resizeSquares, {altKey:true, deltaY: -1.0});
+    Events.on("click", document.getElementById("cm-zoomout"), resizeSquares, {altKey:true, deltaY: 1.0});
 
-    // const resizeObserver = new ResizeObserver(function(mutations) {
-    //     console.log('mutations:', mutations);
-    //     const h = mutations[0].contentRect.height;
-    //     colorMenuResized(h);
-    // });
-    // resizeObserver.observe(document.getElementById('colors-menu'), {attributes:true});
-    // function colorMenuResized(h) {
-    //     document.getElementById('layers-menu').style.height = `calc(100% + ${h}px - var(--top-nav-height))`;
-    // }
-    
     // Making the colours in the HTML menu sortable
     new Sortable(document.getElementById("colors-menu"), {
         animation:100,
@@ -145,8 +130,13 @@ const ColorModule = (() => {
             e.target.parentElement.classList.add('selected');
     
             if(selectedColor === clickedColor) {
-                e.target.parentElement.lastChild.classList.add('hidden');
-                e.target.jscolor.show();
+                if (EditorState.getCurrentMode() == "Basic") {
+                    e.target.parentElement.lastChild.classList.add('hidden');
+                    e.target.jscolor.show();
+                }
+                else {
+                    Dialogue.showDialogue("palette-block");
+                }
             }
         } 
         //right clicked color
@@ -162,6 +152,11 @@ const ColorModule = (() => {
      * 
      */
     function addColorButtonEvent() {
+        if (EditorState.getCurrentMode() == "Advanced") {
+            Dialogue.showDialogue("palette-block");
+            return;
+        }
+
         //generate random color
         const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
 
@@ -275,6 +270,7 @@ const ColorModule = (() => {
                 Dialogue.showDialogue("palette-block", false);
         });
 
+        colorsMenu.children[0].classList.add('selected');
         return listItem;
     }
 
@@ -284,7 +280,6 @@ const ColorModule = (() => {
      *                  that should be removed.
      */
     function deleteColor (color) {
-        let currentSelectedColorButton;
         if (!color) 
             color = getSelectedColor();
 
