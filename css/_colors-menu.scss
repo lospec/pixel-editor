@@ -210,3 +210,29 @@
 		}
 	}
 }
+
+#colors-menu-settings {
+	width: 100%;
+	padding: 0px 0px 0px 0px;
+	position:relative;
+	top:0px;
+
+	button {
+		position:relative;
+
+		left:0px;
+		margin-left:0px;
+		padding: 2px;
+		height:30px;
+		width:45.7%;
+		color: $basetext;
+		background: $basecolor;
+		border:none;
+
+		&:hover {
+			color: $basehovertext;
+			background-color: $basehover;
+			cursor:pointer;
+		}
+	}
+}

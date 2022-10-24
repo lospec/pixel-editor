@@ -8,6 +8,14 @@ const ColorModule = (() => {
     const coloursList = document.getElementById("palette-list");
     // Reference to the colours menu
     let colorsMenu = document.getElementById("colors-menu");
+    // Square size
+    const minSquareSize = 38;
+    let squareSize = colorsMenu.children[0].getBoundingClientRect().width;
+    // Buttons
+    let addButton = document.getElementById("cm-add");
+    let removeButton = document.getElementById("cm-remove");
+    let zoomInButton = document.getElementById("cm-zoomin");
+    let zoomOutButton = document.getElementById("cm-zoomout");
      
     // Binding events to callbacks
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
@@ -15,6 +23,10 @@ const ColorModule = (() => {
     document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
 
     Events.on("wheel", "colors-menu", resizeSquares);
+    Events.on("click", addButton, addColorButtonEvent);
+    Events.on("click", removeButton, deleteColor, undefined);
+    Events.on("click", zoomInButton, resizeSquares, {altKey:true, deltaY: -1.0});
+    Events.on("click", zoomOutButton, resizeSquares, {altKey:true, deltaY: 1.0});
 
     // const resizeObserver = new ResizeObserver(function(mutations) {
     //     console.log('mutations:', mutations);
@@ -35,22 +47,14 @@ const ColorModule = (() => {
     });
 
     function resizeSquares(event) {
-        for (let i=0; i< coloursList.children.length; i++) {
-            let width = parseInt(coloursList.children[i].style.width.replace("px", ""), 10);
-            let newWidth = (width - 2 * Math.sign(event.deltaY)) + "px";
+        if (!event.altKey)  return;
 
-           /* coloursList.children[i].setAttribute("style", "width: " +  (width - 2 * Math.sign(event.deltaY)) + "px");
-            coloursList.children[i].setAttribute("style", "height: " +  (width - 2 * Math.sign(event.deltaY)) + "px");*/
+        squareSize = Math.max(minSquareSize, (squareSize - 3 * Math.sign(event.deltaY)));
 
-            coloursList.children[i].setAttribute("style", "width: 500px");
-            coloursList.children[i].style.width = '500px';
-            coloursList.children[i].setAttribute("style", "height: 500px");
-            coloursList.children[i].style.height = '500px';
-
+        for (let i=0; i< colorsMenu.children.length; i++) {
+            colorsMenu.children[i].style.width = squareSize + 'px';
+            colorsMenu.children[i].style.height = squareSize + 'px';
         }
-
-        let width = coloursList.children[0].style.width;
-        console.log(width);
     }
 
     /** Changes all of one color to another after being changed from the color picker
@@ -167,6 +171,8 @@ const ColorModule = (() => {
         //add new color and make it selected
         let addedColor = addColor(newColor);
         addedColor.classList.add('selected');
+        addedColor.style.width = squareSize + "px";
+        addedColor.style.height = squareSize + "px";
         updateCurrentColor(newColor);
 
         //add history state
@@ -278,6 +284,10 @@ const ColorModule = (() => {
      *                  that should be removed.
      */
     function deleteColor (color) {
+        let currentSelectedColorButton;
+        if (!color) 
+            color = getSelectedColor();
+
         const logStyle = 'background: #913939; color: white; padding: 5px;';
 
         //if color is a string, then find the corresponding button
@@ -476,6 +486,11 @@ const ColorModule = (() => {
         }
     }
 
+    function getSelectedColor() {
+        const currentSelectedColorButton = document.querySelector('#colors-menu li.selected .color-button');
+        return currentSelectedColorButton.jscolor.toString();
+    }
+
     return {
         getCurrentPalette,
         addColor,
@@ -486,5 +501,6 @@ const ColorModule = (() => {
         createColorPalette,
         createPaletteFromLayers,
         updateCurrentColor,
+        getSelectedColor,
     }
 })();
