@@ -12,7 +12,7 @@ class BrushTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to draw a stroke");
         this.addTutorialKey("Right drag", " to resize the brush");
         this.addTutorialKey("+ or -", " to resize the brush");
-        this.addTutorialImg("/brush-tutorial.gif");
+        this.addTutorialImg("brush-tutorial.gif");
     }
 
     onStart(mousePos, cursorTarget) {

@@ -121,11 +121,11 @@ const ColorModule = (() => {
             const currentSelectedColorButton = document.querySelector('#colors-menu li.selected .color-button');
             const selectedColor = currentSelectedColorButton.style.backgroundColor;
             const clickedColor = e.target.style.backgroundColor;
+
             document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
     
             //set current color
             updateCurrentColor(Color.cssToHex(clickedColor));
-    
             //make color selected
             e.target.parentElement.classList.add('selected');
     
@@ -141,10 +141,15 @@ const ColorModule = (() => {
         } 
         //right clicked color
         else if (e.which == 3) { 
-            //hide edit color button (to prevent it from showing)
-            e.target.parentElement.lastChild.classList.add('hidden');
-            //show color picker
-            e.target.jscolor.show();
+            if (EditorState.getCurrentMode() == "Basic") {
+                //hide edit color button (to prevent it from showing)
+                e.target.parentElement.lastChild.classList.add('hidden');
+                //show color picker
+                e.target.jscolor.show();
+            }
+            else {
+                Dialogue.showDialogue("palette-block");
+            }
         }
     }
 
@@ -496,6 +501,11 @@ const ColorModule = (() => {
         for (let i=0; i<currFile.layers.length; i++) {
             currFile.layers[i].context.fillStyle = color;
             currFile.layers[i].context.strokeStyle = color;
+        }
+
+        for (let i=0; i<currFile.sublayers.length; i++) {
+            currFile.sublayers[i].context.fillStyle = color;
+            currFile.sublayers[i].context.strokeStyle = color;
         }
     }
 

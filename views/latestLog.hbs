@@ -1,52 +1,20 @@
-Heyo! New pixel editor update, with some very requested changes. After the code refactoring, adding features
- is way easier: I introduced some more selection tools, the ellipse tool and an info bar in the top menu :)
-
-<h2>Lasso tool</h2>
-Finally! With the lasso tool you're not forced to select rectangular areas anymore. Have fun selecting, cutting, 
-copying and pasting any kind of selection with  pixel-perfect precision.
-
-</br><img src="/lassoselect-tutorial.gif"/>
-
-<h2>Magic wand</h2>
-In addition to the lasso tool, we added a new selection tool: the magic wand. You can use it to select 
-contiguous areas of the same colour! If you need to exactly select the pixels of a certain colour, you're
- probably going to find the magic wand useful.
-
-</br><img src="/magicwand-tutorial.gif"/>
-
-<h2>Ellipse tool</h2>
-I added a cute friend for the rectangle tool: with the ellipse tool you'll be able to draw circles and 
-ellipses of all sizes. The tool works similarly to the rectangle tool: select it to draw empty ellipses, 
-click on the ellipse button again to draw filled ellipses.
-
-</br><img src="/ellipse-tutorial.gif"/>
-
-<h2>Tool tutorials</h2>
-I know what you're thinking, "wow those gifs are so cute, that guy must have put a lot of love in them". 
-Well, I'm glad you like them, and I have good news for you: there are more! Move the cursor on a tool 
-button: after a little a small tutorial explaining how to use the tool will appear. Hope it's useful for 
-everyone who's new to the editor!
-
-</br><img src="/tool-tutorials.gif"/>
-
-<h2>Top bar info</h2>
-Depending on the tool you're using, you'll notice that the top right part of the editor will slightly change. 
-When using a resizable tool (eraser, brush, rectangle, ellipse, line), it's now possible to select a precise 
-size by typing it in the input field that appears when you select it. More features that make use of the 
-top bar are planned.
-
-<h2>Bug fixes and minor details</h2>
+Hi! Been a while after the last update, the lack of contributors slowed down the support a bit. You may have seen 
+it from the Lospec homepage, but this editor has been liberated and released under the GPL-3.0 license! This 
+probably incentivized more contributors to help with development. I want to thank them for their work.
 <ul>
-    <li>Squares in the splash page are now...well...actual squares</li>
-    <li>Using the mouse when a dialogue popup is open will no longer edit the canvas</li>
-    <li>For coders: the selection system has been uniformed</li>
-    <li>Tool buttons have been shrinked to make room for more</li>
+    <li><a href="https://github.com/NSSure">NSSure</a> added the ability to import images in the editor. Very 
+        useful if you need to have a reference layer!</li>
+    <li><a href="https://github.com/blueprismo">Blueprismo</a> added a Dockerfile to the repository, making the
+        editor even more accessible.</li>
+    <li><a href="https://github.com/hacknorris-aka-penguin">hacknorris-aka-penguin</a> and 
+        <a href="https://github.com/matthewd673">matthewd673</a> fixed a few bugs we had.</li>
 </ul>
+In addition, we had a pretty big contribution by <a href="https://github.com/jbrundage">Jaman</a>. He did some 
+needed refactoring that will help us with development. In addition, he kindly added a new palette layout so that 
+big palettes aren't too stretched out, like it happened with the previous vertical layout.
+</br>
+<img src="palettegrid.gif"/>
 
-<h2>End of log</h2>
-You've reached the end of this log, congrats. Special thanks to Jaman on Discord, who's helping us and 
-who found a quite nasty bug in the selectiont tools. Hope to see you soon in a new log!</br>
-- <a href="https://github.com/unsettledgames">Unsettled</a>
-</br></br>
-P.S.: we're always looking for contributors! Join the <a href="https://discord.com/invite/QjsgTQM">Lospec discord</a> to get in touch 
-or have a look at the <a href="https://github.com/lospec/pixel-edior">editor repository</a>!
+</br>
+Lastly, I would also like to thank all the people who submitted feature suggestions and bug reports on Github, they 
+are very welcome and we will try to address as many as possible of them.

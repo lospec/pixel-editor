@@ -15,7 +15,7 @@ class LassoSelectionTool extends SelectionTool {
         this.addTutorialKey("CTRL+C", " to copy a selection")
         this.addTutorialKey("CTRL+V", " to paste a selection")
         this.addTutorialKey("CTRL+X", " to cut a selection")
-        this.addTutorialImg("/lassoselect-tutorial.gif");
+        this.addTutorialImg("lassoselect-tutorial.gif");
     }
 
     onStart(mousePos, mouseTarget) {

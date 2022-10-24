@@ -23,7 +23,7 @@ class RectangleTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to draw a rectangle");
         this.addTutorialKey("Right drag", " to resize the brush");
         this.addTutorialKey("+ or -", " to resize the brush");
-        this.addTutorialImg("/rectangle-tutorial.gif");
+        this.addTutorialImg("rectangle-tutorial.gif");
     }
 
     changeFillType() {

@@ -25,7 +25,7 @@ class EllipseTool extends ResizableTool {
         this.addTutorialKey("Left drag", " to draw an ellipse");
         this.addTutorialKey("Right drag", " to resize the brush");
         this.addTutorialKey("+ or -", " to resize the brush");
-        this.addTutorialImg("/ellipse-tutorial.gif");
+        this.addTutorialImg("ellipse-tutorial.gif");
     }
 
     changeFillType() {
@@ -45,11 +45,11 @@ class EllipseTool extends ResizableTool {
     }
 
     onStart(mousePos, mouseTarget) {
-        super.onStart(mousePos);
-
-        if (mouseTarget.className != "drawingCanvas")
+        if (mouseTarget.className != "drawingCanvas") {
             return;
+        }
 
+        super.onStart(mousePos);
         // Putting the tmp layer on top of everything
         currFile.TMPLayer.canvas.style.zIndex = parseInt(currFile.currentLayer.canvas.style.zIndex, 10) + 1;
 
@@ -65,7 +65,7 @@ class EllipseTool extends ResizableTool {
             currFile.TMPLayer.context);
 	}
 
-    /** Finishes drawing the rect, decides the end coordinates and moves the preview rectangle to the
+    /** Finishes drawing the ellipse, decides the end coordinates and moves the preview ellipse to the
      *  current layer
      * 
      * @param {*} mousePos The position of the mouse when the user stopped dragging
