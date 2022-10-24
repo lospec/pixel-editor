@@ -15,7 +15,7 @@ const ColorModule = (() => {
     // Binding events to callbacks
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
-    document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
+    document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent);
 
     Events.on("wheel", "colors-menu", resizeSquares);
     Events.on("click", document.getElementById("cm-add"), addColorButtonEvent);
@@ -152,11 +152,6 @@ const ColorModule = (() => {
      * 
      */
     function addColorButtonEvent() {
-        if (EditorState.getCurrentMode() == "Advanced") {
-            Dialogue.showDialogue("palette-block");
-            return;
-        }
-
         //generate random color
         const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
 
@@ -172,11 +167,6 @@ const ColorModule = (() => {
 
         //add history state
         new HistoryState().AddColor(addedColor.firstElementChild.jscolor.toString());
-
-        //show color picker
-        addedColor.firstElementChild.jscolor.show();
-        //hide edit button
-        addedColor.lastChild.classList.add('hidden');
     }
 
     /** Adds the colors that have been added through the advanced-mode color picker to the 
@@ -271,7 +261,8 @@ const ColorModule = (() => {
                 Dialogue.showDialogue("palette-block", false);
         });
 
-        colorsMenu.children[0].classList.add('selected');
+        if (!document.querySelector('#colors-menu li.selected'))
+            colorsMenu.children[0].classList.add('selected');
         return listItem;
     }
 
@@ -492,9 +483,7 @@ const ColorModule = (() => {
             }
         }
 
-        //create palette from colors array
-        createColorPalette(colorPaletteArray);
-
+        return colorPaletteArray;
     }
 
     function updateCurrentColor(color, refLayer) {

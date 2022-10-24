@@ -212,10 +212,11 @@
 }
 
 #colors-menu-settings {
-	width: 100%;
+	width: 98%;
 	padding: 0px 0px 0px 0px;
 	position:relative;
 	top:0px;
+	background: $basecolor;
 
 	button {
 		position:relative;
@@ -224,7 +225,7 @@
 		margin-left:0px;
 		padding: 2px;
 		height:30px;
-		width:45.7%;
+		width:49%;
 		color: $basetext;
 		background: $basecolor;
 		border:none;
