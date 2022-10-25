@@ -39,8 +39,10 @@ const Input = (() => {
     }
 
     function getCursorPosition(e) {
-        var x;
-        var y;
+        if (!currFile.currentLayer)
+            return [-1,-1];
+        let x;
+        let y;
         
         if (e.pageX != undefined && e.pageY != undefined) {
             x = e.pageX;
@@ -82,8 +84,15 @@ const Input = (() => {
         }
         else if (!Dialogue.isOpen()){
             switch (keyboardEvent.keyCode) {
+                // + and -
+                case 43, 187:
+                    Events.emit("zoomin", undefined, 'in');
+                    break;
+                case 45, 189:
+                    Events.emit("zoomout", undefined, 'out');
+                    break;
                 //pencil tool - 1, b
-                case 49: case 66:
+                case 98: case 66:
                     Events.emit("tool-shortcut", "brush");
                     break;
                 // copy tool c

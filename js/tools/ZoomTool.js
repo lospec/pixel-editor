@@ -1,3 +1,5 @@
+// TODO: make this similar to the rect, press once to zoom in, press twice to zoomout
+
 class ZoomTool extends ResizableTool {
     constructor (name, options, switchFunc) {
         super(name, options, switchFunc);
@@ -5,13 +7,31 @@ class ZoomTool extends ResizableTool {
         Events.on('click', this.mainButton, switchFunc, this);
         Events.on('click', this.biggerButton, this.setZoomIn.bind(this));
         Events.on('click', this.smallerButton, this.setZoomOut.bind(this));
+        Events.on('mousemove', window, this.setMousePos.bind(this));
+
+        Events.onCustom('zoomin', this.zoom.bind(this));
+        Events.onCustom('zoomout', this.zoom.bind(this));
 
         this.mode = 'in';
+        this.currMousePos = [-1, -1];
     }
 
     onStart(mousePos, target) {
         if (target.className != 'drawingCanvas')
             return;
+        
+        this.zoom(mousePos, this.mode);
+    }
+
+    onMouseWheel(mousePos, mode) {
+        this.zoom(mousePos, mode);
+    }
+
+    zoom(mousePos, mode) {
+        if (mousePos[0] == undefined) {
+            mode = mousePos[1];
+            mousePos = this.currMousePos;
+        }
         
         // Computing current width and height
         let oldWidth = currFile.canvasSize[0] * currFile.zoom;
@@ -21,12 +41,12 @@ class ZoomTool extends ResizableTool {
 
         //change zoom level
         //if you want to zoom out, and the zoom isnt already at the smallest level
-        if (this.mode == 'out' && currFile.zoom > MIN_ZOOM_LEVEL) {
+        if (mode == 'out' && currFile.zoom > MIN_ZOOM_LEVEL) {
             zoomed = true;
             this.zoomOut(oldWidth, oldHeight, mousePos);
         }
         //if you want to zoom in
-        else if (this.mode == 'in' && currFile.zoom + Math.ceil(currFile.zoom/10) < window.innerHeight/4) {
+        else if (mode == 'in' && currFile.zoom + Math.ceil(currFile.zoom/10) < window.innerHeight/4) {
             zoomed = true;
             this.zoomIn(oldWidth, oldHeight, mousePos);
         }
@@ -40,11 +60,11 @@ class ZoomTool extends ResizableTool {
         if (zoomed) {
             if (currFile.zoom <= 7)
                 currFile.pixelGrid.disablePixelGrid();
-            else if (currFile.zoom >= 20 && this.mode == 'in') {
+            else if (currFile.zoom >= 20 && mode == 'in') {
                 currFile.pixelGrid.enablePixelGrid();
                 currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
             }
-            else if (prevZoom >= 20 && this.mode == 'out') {
+            else if (prevZoom >= 20 && mode == 'out') {
                 currFile.pixelGrid.enablePixelGrid();
                 currFile.pixelGrid.repaintPixelGrid((currFile.zoom - prevZoom) * 0.6);
             }
@@ -108,5 +128,10 @@ class ZoomTool extends ResizableTool {
 
     setZoomOut() {
         this.mode = 'out';
+    }
+
+    setMousePos(event) {
+        if (this && this.currMousePos)
+            this.currMousePos = Input.getCursorPosition(event);
     }
 }
