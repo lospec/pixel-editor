@@ -54,6 +54,14 @@
 	<li><button id="eyedropper-button">{{svg "eyedropper.svg" width="24" height="24"}}</button></li>
 
 	<li><button id="pan-button">{{svg "pan.svg" width="24" height="24"}}</button></li>
+
+	<li class = "expanded">
+		<button id="zoom-button">{{svg "zoom.svg" width="24" height="24"}}</button>
+		<ul class="size-buttons">
+			<button title="Zoom in" id="zoom-bigger-button" class="tools-menu-sub-button">{{svg "plus.svg" width="12" height="12"}}</button>
+			<button title="Zoom out" id="zoom-smaller-button" class="tools-menu-sub-button">{{svg "minus.svg" width="12" height="12"}}</button>
+		</ul>
+	</li>
 </ul>
 
 <div id="tool-tutorial" class="fade-in">

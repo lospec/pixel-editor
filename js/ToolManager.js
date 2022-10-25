@@ -11,7 +11,7 @@ const ToolManager = (() => {
     
     tools["eyedropper"] = new EyeDropperTool("eyedropper", {type: 'cursor', style: 'crosshair'}, switchTool);
     tools["pan"] = new PanTool("pan", {type: 'custom'}, switchTool);
-    tools["zoom"] = new ZoomTool("zoom", {type:'custom'});
+    tools["zoom"] = new ZoomTool("zoom", {type:'custom'}, switchTool);
 
     tools["moveselection"] = new MoveSelectionTool("moveselection", 
         {type:'cursor', style:'crosshair'}, switchTool, tools["brush"]);
