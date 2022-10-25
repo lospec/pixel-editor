@@ -696,7 +696,7 @@ const ColorPicker = (() => {
                 }
                 break;
             default:
-                console.log("How did you select the " + currentPickingMode + ", hackerman?");
+                ////console.log("How did you select the " + currentPickingMode + ", hackerman?");
                 break;
         }
 

@@ -1,4 +1,3 @@
-
 #layer-properties-menu {
 	visibility: hidden;
 	margin: 0;
@@ -8,7 +7,7 @@
 	width: 120px;
 	text-align: center;
 
-	margin-right: 200px;
+	margin-right: var(--layers-width);
 	/*border:1px solid $basetext;*/
 	list-style: none;
 	position: relative;
@@ -72,19 +71,16 @@
 	}
 	scrollbar-color: #332f35 #232125;
 	scroll-behavior: smooth;
-	width:200px;
-	top: 48px;
-	bottom: 0;
-	right:0;
+	width:var(--layers-width);
 	padding: 0;
 	margin: 0;
 	background-color: $basecolor;
 	box-sizing: border-box;
-	position: fixed;
 	z-index: 1120;
 	list-style-type: none;
 	overflow-y:scroll;
 	overflow-x:hidden;
+    flex: 1;
 	#add-layer-button {
 		path {
 			fill: $baseicon;
@@ -109,6 +105,33 @@
 	}
 
 	#add-layer-button:hover {
+		color: $basehovertext;
+		background-color: $basehover;
+	}
+	#add-reference-button {
+		path {
+			fill: $baseicon;
+		}
+		svg {
+			position: relative;
+			margin-right: 10px;
+		}
+		position:relative;
+		justify-content: center;
+		display:none;
+		align-items:center;
+		margin-top:2px;
+		font-size: 1.2em;
+		color: $basetext;
+		height: 100%;
+		width: 100%;
+		padding: 17px;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	#add-reference-button:hover {
 		color: $basehovertext;
 		background-color: $basehover;
 	}

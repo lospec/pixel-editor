@@ -6,6 +6,18 @@
 	font-style: italic;
 }
 
+#new-pixel-inventory {
+	display: none;
+}
+
+#new-pixel-map {
+	display: none;
+}
+
+#new-voxel-world {
+	display: none;
+}
+
 .dimentions-x {
 	margin: -2px 7px;
 	path {
@@ -13,11 +25,9 @@
 	}
 }
 
-
 #no-palette-button {
 	display: none;
 }
-
 
 #editor-mode-info {
 	font-style: italic;

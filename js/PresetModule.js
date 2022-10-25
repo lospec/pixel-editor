@@ -6,7 +6,7 @@ const PresetModule = (() => {
     };
 
     function instrumentPresetMenu() {
-        console.info("Initializing presets..");
+        //console.info("Initializing presets..");
         // Add a button for all the presets available
         const presetsMenu = document.getElementById('preset-menu');
         Object.keys(presets).forEach((presetName,) => {
@@ -17,7 +17,7 @@ const PresetModule = (() => {
             presetsMenu.appendChild(button);
 
             button.addEventListener('click', () => {
-                console.log("Preset: " + presetName);
+                ////console.log("Preset: " + presetName);
                 //change dimentions on new pixel form
                 Util.setValue('size-width', presets[presetName].width);
                 Util.setValue('size-height', presets[presetName].height);

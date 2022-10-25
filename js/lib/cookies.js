@@ -127,7 +127,7 @@
                 decodedKey = decodeURIComponent(key);
             } catch (e) {
                 if (console && typeof console.error === 'function') {
-                    console.error('Could not decode cookie with key "' + key + '"', e);
+                    //console.error('Could not decode cookie with key "' + key + '"', e);
                 }
             }
             

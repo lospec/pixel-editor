@@ -1,5 +1,8 @@
+let DEBUG_ARR = [];
 const Startup = (() => {
     let splashPostfix = '';
+
+    let cacheIntervalIdx;
 
     Events.on('click', 'create-button', create, false);
     Events.on('click', 'create-button-splash', create, true);
@@ -15,7 +18,7 @@ const Startup = (() => {
         var height = Util.getValue('size-height' + splashPostfix);
         var selectedPalette = Util.getText('palette-button' + splashPostfix);
     
-        newPixel(width, height);
+        newPixel(FileManager.defaultLPE(width,height));
         resetInput();
     
         //track google event
@@ -25,15 +28,18 @@ const Startup = (() => {
 
     /** Creates a new, empty file
      * 
-     * @param {*} width Start width of the canvas
-     * @param {*} height Start height of the canvas
-     * @param {*} fileContent If fileContent != null, then the newPixel is being called from the open menu
+     * @param {*} lpe If lpe != null, then the newPixel is being called from the open menu
+     * @param {*} skipModeConfirm If skipModeConfirm == true, then the mode switching confirmation will be skipped
      */
-    function newPixel (width, height, fileContent = null) {       
+    function newPixel (lpe = null, skipModeConfirm = false) {    
+        DEBUG_ARR.push('called Startup -> newPixel');
+        console.trace();
         // The palette is empty, at the beginning
         ColorModule.resetPalette();
 
-        initLayers(width, height);
+        lpe = FileManager.upgradeLPE(lpe);
+
+        initLayers(lpe);
         initPalette();
 
         // Closing the "New Pixel dialogue"
@@ -44,66 +50,95 @@ const Startup = (() => {
         // The user is now able to export the Pixel
         document.getElementById('export-button').classList.remove('disabled');
 
-        // Now, if I opened an LPE file
-        if (fileContent != null) {
-            loadFromLPE(fileContent);
-            // Deleting the default layer
-            LayerList.deleteLayer(false);
-            // Selecting the new one
-            currFile.layers[1].selectLayer();
+        if (lpe != null) {
+            FileManager.loadFromLPE(lpe);
         }
-
-        EditorState.switchMode(EditorState.getCurrentMode());
+        ////console.log('ColorModule.getCurrentPalette() === ',ColorModule.getCurrentPalette());
+        
+        EditorState.switchMode(EditorState.getCurrentMode(), skipModeConfirm);
         // This is not the first Pixel anymore
         EditorState.created();
+
+        ////console.log('ColorModule.getCurrentPalette() === ',ColorModule.getCurrentPalette());
+        ////console.trace();
     }
-
-    function initLayers(width, height) {
-        // Setting the general canvasSize
-        currFile.canvasSize = [width, height];
-
-        // If this is the first pixel I'm creating since the app has started
-        if (EditorState.firstPixel()) {
-            // Creating the first layer
-            currFile.currentLayer = new Layer(width, height, 'pixel-canvas', "");
-            currFile.currentLayer.canvas.style.zIndex = 2;
+    function clearLayers() {
+        DEBUG_ARR.push('called Startup -> clearLayers');
+        console.dir(currFile.layers);
+        for(let i = currFile.layers.length-1; i >= 0;i--) {
+            currFile.layers[i].delete(i);
         }
-        else {
-            // Deleting all the extra layers and canvases, leaving only one
-            let nLayers = currFile.layers.length;
-            for (let i=2; i < currFile.layers.length - nAppLayers; i++) {
-                let currentEntry = currFile.layers[i].menuEntry;
-                let associatedLayer;
+        console.dir(currFile.layers);
+        for(let i = currFile.sublayers.length-1; i >= 0;i--) {
+            currFile.sublayers[i].delete(i);
+        }
+    }
+    function initLayers(lpe) {
+        DEBUG_ARR.push('called Startup -> initLayers');
+        //console.group('called initLayers');
+        //console.log('currFile.layers === ',currFile.layers);
 
-                if (currentEntry != null) {
-                    // Getting the associated layer
-                    associatedLayer = LayerList.getLayerByID(currentEntry.id);
+        const width = lpe.canvasWidth = Number(lpe.canvasWidth);
+        const height = lpe.canvasHeight = Number(lpe.canvasHeight);
+        clearLayers();
 
-                    // Deleting its canvas
-                    associatedLayer.canvas.remove();
+        // debugger;
+        //
+        currFile.canvasSize = [width, height];
+        console.log('lpe === ',lpe);
+        if( lpe.layers && lpe.layers.length ) {
+            currFile.currentLayer = new Layer(width, height, `pixel-canvas`,"","layer-li-template");
+            currFile.sublayers.push(currFile.currentLayer);
 
-                    // Adding the id to the unused ones
-                    Layer.unusedIDs.push(currentEntry.id);
-                    // Removing the entry from the menu
-                    currentEntry.remove();
+            let selectedIdx = lpe.selectedLayer ?? 0;
+
+            lpe.layers.forEach((layerData, i) => {
+                //console.log('lpe.layers[i] === ', i);
+                const _i = lpe.layers.length - i;
+                let layerImage = layerData.src;
+                if (layerData != null) {
+                    // Setting id
+                    let createdLayer = LayerList.addLayer(layerData.id, false, layerData.name);
+                    if(i===selectedIdx)createdLayer.selectLayer();
+                    // Setting name
+                    createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
+    
+                    // Adding the image (I can do that because they're sorted by increasing z-index)
+                    let img = new Image();
+                    img.onload = function() {
+                        createdLayer.context.drawImage(img, 0, 0);
+                        createdLayer.updateLayerPreview();
+                    };
+    
+                    img.src = layerImage;
+    
+                    // Setting visibility and lock options
+                    if (!layerData.isVisible) {
+                        createdLayer.hide();
+                    }
+                    if (layerData.isLocked) {
+                        createdLayer.lock();
+                    }
                 }
-            }
+            });
 
-            // Removing the old layers from the list
-            for (let i=2; i<nLayers - nAppLayers; i++) {
-                currFile.layers.splice(2, 1);
-            }
-
-            // Setting up the current layer
-            currFile.layers[1] = new Layer(width, height, currFile.layers[1].canvas, currFile.layers[1].menuEntry);
-            currFile.currentLayer = currFile.layers[1];
-            currFile.currentLayer.canvas.style.zIndex = 2;
+        } else {
+            currFile.currentLayer = new Layer(width, height, `pixel-canvas`,"");
+            currFile.sublayers.push(currFile.currentLayer);
+            
+            const defaultLayerId = "layer0";
+            const defaultLayerName = "Layer 0";
+            
+            let createdLayer = LayerList.addLayer(defaultLayerId, false, defaultLayerName);
+            createdLayer.selectLayer();
+            // Setting name
+            createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = defaultLayerName;
         }
 
         // Adding the checkerboard behind it
         currFile.checkerBoard = new Checkerboard(width, height, null);
         // Pixel grid
-        console.log("CREATED GRID");
+        ////console.log("CREATED GRID");
         currFile.pixelGrid = new PixelGrid(width, height, "pixel-grid");
 
         // Creating the vfx layer on top of everything
@@ -111,17 +146,16 @@ const Startup = (() => {
         // Tmp layer to draw previews on
         currFile.TMPLayer = new Layer(width, height, 'tmp-canvas');
 
-        if (EditorState.firstPixel()) {            
-            // Adding the first layer and the checkerboard to the list of layers
-            currFile.layers.push(currFile.checkerBoard);
-            currFile.layers.push(currFile.currentLayer);
-            currFile.layers.push(currFile.TMPLayer);
-            currFile.layers.push(currFile.pixelGrid);
-            currFile.layers.push(currFile.VFXLayer);
-        }
+        currFile.sublayers.push(currFile.checkerBoard);
+        currFile.sublayers.push(currFile.TMPLayer);
+        currFile.sublayers.push(currFile.pixelGrid);
+        currFile.sublayers.push(currFile.VFXLayer);
+
+        LayerList.refreshZ();
     }
 
     function initPalette() {
+        DEBUG_ARR.push('called Startup -> initPalette');
         // Get selected palette
         let selectedPalette = Util.getText('palette-button' + splashPostfix);
 
@@ -168,43 +202,8 @@ const Startup = (() => {
         }
     }
 
-    function loadFromLPE(fileContent) {
-        // I add every layer the file had in it
-        for (let i=0; i<fileContent['nLayers']; i++) {
-            let layerData = fileContent['layer' + i];
-            let layerImage = fileContent['layer' + i + 'ImageData'];
-
-            if (layerData != null) {
-                // Setting id
-                let createdLayer = LayerList.addLayer(layerData.id, false);
-                // Setting name
-                createdLayer.menuEntry.getElementsByTagName("p")[0].innerHTML = layerData.name;
-
-                // Adding the image (I can do that because they're sorted by increasing z-index)
-                let img = new Image();
-                img.onload = function() {
-                    createdLayer.context.drawImage(img, 0, 0);
-                    createdLayer.updateLayerPreview();
-
-                    if (i == (fileContent['nLayers'] - 1)) {
-                        ColorModule.createPaletteFromLayers();
-                    }
-                };
-
-                img.src = layerImage;
-
-                // Setting visibility and lock options
-                if (!layerData.isVisible) {
-                    createdLayer.hide();
-                }
-                if (layerData.isLocked) {
-                    createdLayer.lock();
-                }
-            }
-        }
-    }
-    
     function resetInput() {
+        DEBUG_ARR.push('called Startup -> resetInput');
         //reset new form
         Util.setValue('size-width', 64);
         Util.setValue('size-height', 64);
@@ -214,6 +213,7 @@ const Startup = (() => {
     }
 
     function newFromTemplate(preset, x, y) {
+        DEBUG_ARR.push('called Startup -> newFromTemplate');
         if (preset != '') {
             const presetProperties = PresetModule.propertiesOf(preset);
             Util.setText('palette-button-splash', presetProperties.palette);
@@ -222,10 +222,12 @@ const Startup = (() => {
             x = presetProperties.width;
             y = presetProperties.height;
         }
-        newPixel(x, y);
+        
+        newPixel(FileManager.defaultLPE(x,y));
     }
 
     function splashEditorMode(mode) {
+        DEBUG_ARR.push('called Startup -> splashEditorMode');
         editorMode = mode;
     }
 

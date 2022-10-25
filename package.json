@@ -28,7 +28,7 @@
     "nodemon": "^2.0.7",
     "open": "^8.0.6",
     "open-cli": "^6.0.1",
-    "sass": "^1.17.3"
+    "sass": "^1.49.7"
   },
   "devDependencies": {
     "cross-env": "7.0.3",

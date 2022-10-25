@@ -7,13 +7,22 @@ const ColorModule = (() => {
     // Reference to the HTML palette
     const coloursList = document.getElementById("palette-list");
     // Reference to the colours menu
-    const colorsMenu = document.getElementById("colors-menu");
+    let colorsMenu = document.getElementById("colors-menu");
+    // Square size
+    const minSquareSize = 38;
+    let squareSize = colorsMenu.children[0].getBoundingClientRect().width;
      
     // Binding events to callbacks
     document.getElementById('jscolor-hex-input').addEventListener('change',colorChanged, false);
     document.getElementById('jscolor-hex-input').addEventListener('input', colorChanged, false);
-    document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent, false);
-    
+    document.getElementById('add-color-button').addEventListener('click', addColorButtonEvent);
+
+    Events.on("wheel", "colors-menu", resizeSquares);
+    Events.on("click", document.getElementById("cm-add"), addColorButtonEvent);
+    Events.on("click", document.getElementById("cm-remove"), deleteColor, undefined);
+    Events.on("click", document.getElementById("cm-zoomin"), resizeSquares, {altKey:true, deltaY: -1.0});
+    Events.on("click", document.getElementById("cm-zoomout"), resizeSquares, {altKey:true, deltaY: 1.0});
+
     // Making the colours in the HTML menu sortable
     new Sortable(document.getElementById("colors-menu"), {
         animation:100,
@@ -21,6 +30,17 @@ const ColorModule = (() => {
         draggable: ".draggable-colour",
         onEnd: function() {Events.simulateMouseEvent(window, "mouseup");}
     });
+
+    function resizeSquares(event) {
+        if (!event.altKey)  return;
+
+        squareSize = Math.max(minSquareSize, (squareSize - 3 * Math.sign(event.deltaY)));
+
+        for (let i=0; i< colorsMenu.children.length; i++) {
+            colorsMenu.children[i].style.width = squareSize + 'px';
+            colorsMenu.children[i].style.height = squareSize + 'px';
+        }
+    }
 
     /** Changes all of one color to another after being changed from the color picker
      * 
@@ -57,7 +77,7 @@ const ColorModule = (() => {
             if (newColorHex == colors[i].jscolor.toString()) {
                 //if the color isnt the one that has the picker currently open
                 if (!colors[i].parentElement.classList.contains('jscolor-active')) {
-                    //console.log('%cColor is duplicate', colorCheckingStyle);
+                    //////console.log('%cColor is duplicate', colorCheckingStyle);
 
                     //show the duplicate color warning
                     duplicateColorWarning.style.visibility = 'visible';
@@ -94,25 +114,42 @@ const ColorModule = (() => {
      * 
      * @param {*} e The event that triggered the callback
      */
-    function clickedColor (e){
+    function clickedColor (e) {
         //left clicked color
         if (e.which == 1) {
             // remove current color selection
+            const currentSelectedColorButton = document.querySelector('#colors-menu li.selected .color-button');
+            const selectedColor = currentSelectedColorButton.style.backgroundColor;
+            const clickedColor = e.target.style.backgroundColor;
+
             document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
     
             //set current color
-            updateCurrentColor(Color.cssToHex(e.target.style.backgroundColor));
-    
+            updateCurrentColor(Color.cssToHex(clickedColor));
             //make color selected
             e.target.parentElement.classList.add('selected');
     
+            if(selectedColor === clickedColor) {
+                if (EditorState.getCurrentMode() == "Basic") {
+                    e.target.parentElement.lastChild.classList.add('hidden');
+                    e.target.jscolor.show();
+                }
+                else {
+                    Dialogue.showDialogue("palette-block");
+                }
+            }
         } 
         //right clicked color
         else if (e.which == 3) { 
-            //hide edit color button (to prevent it from showing)
-            e.target.parentElement.lastChild.classList.add('hidden');
-            //show color picker
-            e.target.jscolor.show();
+            if (EditorState.getCurrentMode() == "Basic") {
+                //hide edit color button (to prevent it from showing)
+                e.target.parentElement.lastChild.classList.add('hidden');
+                //show color picker
+                e.target.jscolor.show();
+            }
+            else {
+                Dialogue.showDialogue("palette-block");
+            }
         }
     }
 
@@ -129,15 +166,12 @@ const ColorModule = (() => {
         //add new color and make it selected
         let addedColor = addColor(newColor);
         addedColor.classList.add('selected');
+        addedColor.style.width = squareSize + "px";
+        addedColor.style.height = squareSize + "px";
         updateCurrentColor(newColor);
 
         //add history state
         new HistoryState().AddColor(addedColor.firstElementChild.jscolor.toString());
-
-        //show color picker
-        addedColor.firstElementChild.jscolor.show();
-        //hide edit button
-        addedColor.lastChild.classList.add('hidden');
     }
 
     /** Adds the colors that have been added through the advanced-mode color picker to the 
@@ -232,6 +266,8 @@ const ColorModule = (() => {
                 Dialogue.showDialogue("palette-block", false);
         });
 
+        if (!document.querySelector('#colors-menu li.selected'))
+            colorsMenu.children[0].classList.add('selected');
         return listItem;
     }
 
@@ -241,6 +277,9 @@ const ColorModule = (() => {
      *                  that should be removed.
      */
     function deleteColor (color) {
+        if (!color) 
+            color = getSelectedColor();
+
         const logStyle = 'background: #913939; color: white; padding: 5px;';
 
         //if color is a string, then find the corresponding button
@@ -252,7 +291,6 @@ const ColorModule = (() => {
     
             //loop through colors
             for (var i = 0; i < colors.length; i++) {
-                //console.log(color,'=',colors[i].jscolor.toString());
     
                 if (color == colors[i].jscolor.toString()) {
                     //set color to the color button
@@ -335,7 +373,11 @@ const ColorModule = (() => {
     }
 
     function getCurrentPalette() {
-        return currentPalette;
+        let ret = [...currentPalette];
+        if(ret.length === 0) {
+            ret = [...document.querySelectorAll(".color-button")].map(n=>n.style.backgroundColor);
+        }
+        return ret;
     }
 
     function resetPalette() {
@@ -347,7 +389,6 @@ const ColorModule = (() => {
      * @param {*} paletteColors The colours of the palette
      */
     function createColorPalette(paletteColors) {
-        console.log("creating palette");
         //remove current palette
         while (colorsMenu.childElementCount > 1)
             colorsMenu.children[0].remove();
@@ -359,7 +400,6 @@ const ColorModule = (() => {
         for (var i = 0; i < paletteColors.length; i++) {
             var newColor = new Color("hex", paletteColors[i]);
             var newColorElement = ColorModule.addColor(newColor.hex);
-
             var newColRgb = newColor.rgb;
 
             var lightestColorRgb = lightestColor.rgb;
@@ -383,6 +423,7 @@ const ColorModule = (() => {
 
         //set as current color
         updateCurrentColor(darkestColor.hex);
+
     }
 
     /** Creates the palette with the colours used in all the layers
@@ -457,10 +498,20 @@ const ColorModule = (() => {
         if (refLayer)
             color = refLayer.context.fillStyle;
         
-        for (let i=0; i<currFile.layers.length - 1; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
             currFile.layers[i].context.fillStyle = color;
             currFile.layers[i].context.strokeStyle = color;
         }
+
+        for (let i=0; i<currFile.sublayers.length; i++) {
+            currFile.sublayers[i].context.fillStyle = color;
+            currFile.sublayers[i].context.strokeStyle = color;
+        }
+    }
+
+    function getSelectedColor() {
+        const currentSelectedColorButton = document.querySelector('#colors-menu li.selected .color-button');
+        return currentSelectedColorButton.jscolor.toString();
     }
 
     return {
@@ -474,5 +525,6 @@ const ColorModule = (() => {
         createPaletteFromLayers,
         updatePaletteFromLayers,
         updateCurrentColor,
+        getSelectedColor,
     }
 })();

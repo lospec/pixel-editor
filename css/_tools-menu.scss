@@ -1,9 +1,9 @@
 
 #tools-menu {
 	left: 0;
-	width: 48px;
+	width: var(--top-nav-height);
 	list-style-type: none;
-	top: 48px;
+	top: var(--top-nav-height);
 	bottom: 0;
 	padding: 0;
 	margin: 0;
@@ -24,7 +24,7 @@
 	width: 100%;
 	padding: 0;
 	cursor: pointer;
-	height: 48px;
+	height: var(--top-nav-height);
 	z-index:0;
 }
 
@@ -73,7 +73,7 @@
 #tools-menu .size-buttons {
 	position:absolute;
 	display: none;
-	height:48px;
+	height:var(--top-nav-height);
 	left:8px;
 	z-index:-1;
 	background-color: $basecolor !important;
@@ -128,6 +128,8 @@
 
 .fade-out {
 	animation: fadeOut .1s forwards;
+    display: none !important;
+    /* TODO: Search Google for: "How to fade out and then set display none" */
 }
 
 .is-paused {
@@ -138,8 +140,8 @@
 #tool-tutorial {
 	display:inline-block;
 	position:absolute;
-	margin-left:48px;
-	margin-top:48px;
+	margin-left:var(--top-nav-height);
+	margin-top:var(--top-nav-height);
 	background-color: $basehover;
 	color:$basetext;
 	font-size:14px;

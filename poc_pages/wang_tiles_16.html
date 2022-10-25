@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title>Basic three.js template</title>
+    <style>
+        body { margin: 0; }
+        canvas {
+            /* position: fixed; */
+            /* top: 450px;
+            left: 450px; */
+            /* transform: scale(4); */
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+<!-- import the three.js library -->
+<img src="/images/wang_tilesets_32x32.png" style="display:none;" id="tiles_image">
+<img src="/images/icons_14x14.png" data-tile-width="14" data-tile-height="14" style="display:none;" id="icons_img1">
+<script src="/js/canvas_util.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/build/three.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/controls/OrbitControls.js"></script> -->
+<script>
+    // var scene = new THREE.Scene();
+    // var camera = new THREE.PerspectiveCamera( 
+    // 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    // var renderer = new THREE.WebGLRenderer();
+    // renderer.setSize( window.innerWidth, window.innerHeight );
+    // document.body.appendChild( renderer.domElement );
+    // camera.position.z = 5;
+
+    // const controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    //var cube = new THREE.Mesh( geometry, material );
+    //scene.add( cube );
+
+    const data = `
+        10000000
+        00100000
+        01110010
+        00100010
+        00000010
+        00111000
+        00000010
+        00000000
+        `
+            .replaceAll("\n","")
+            .replaceAll(" ","")
+            .replaceAll("\t","")
+            ;
+    const ASSET_CACHE = {};
+    const TOOL_ARR = [
+        // {name:"Pencil",hotkey:"B",art:{img: icons_img1,idx:0}},
+        {name:"Eraser",hotkey:"E",art:{img: icons_img1,idx:1}},
+        {name:"Rectangle",hotkey:"R",art:{img: icons_img1,idx:2}},
+        {name:"Ellipse",hotkey:"S",art:{img: icons_img1,idx:2}},
+        {name:"Line",hotkey:"S",art:{img: icons_img1,idx:2}},
+        {name:"Line",hotkey:"S",art:{img: icons_img1,idx:2}},
+    ];
+    window.onload = () => {
+        const columns = 8;
+        const tilesetsArr = imageChopper(tiles_image,32,32);
+        const tilesetsCanvasArrArr = tilesetsArr.map((canvas)=>{
+            return imageChopper(canvas,8,8);
+        });
+        ////console.log('tilesetsCanvasArrArr === ', tilesetsCanvasArrArr);
+        
+        ////console.log('data === ',data);
+        let i = 0;
+        const width = columns;
+        const height = 8;
+        const tileIndexArr = [];
+        for(let i = 0; i < data.length;i++) {
+            // debugger;
+            const x = i%width;
+            const y = Math.floor(i/width);
+            const v = data[i];
+            let binNum = -1;
+            if(v === "1") {
+                // if(i === 10)debugger;
+                const n = y > 0 ? data[i-width] : "0";
+                const e = x < (width-1) ? data[i+1] : "0";
+                const s = data[i+width];
+                const w = i > 0 ? data[i-1] : "0";
+                const binStr = `${w}${s}${e}${n}`;
+                binNum = parseInt(binStr,2);
+                ////console.log(v,`data[${i}]`,w,s,e,n,"= "+binNum);
+            }
+            tileIndexArr.push(binNum);
+        }
+        ////console.log('tileIndexArr === ',tileIndexArr);
+        const retCanvas = tilesToCanvas(tileIndexArr,columns,tilesetsCanvasArrArr[1]);
+        ////console.log('retCanvas === ',retCanvas);
+        document.body.appendChild(retCanvas);
+    }
+    function insertTools(arr){
+        arr.forEach((tool,i)=>{
+            if(!ASSET_CACHE[tool.art.img.src]){
+                ASSET_CACHE[tool.art.img.src] = imageChopper(
+                    tool.art.img,
+                    Number(tool.art.img.getAttribute("data-tile-width")),
+                    Number(tool.art.img.getAttribute("data-tile-height"))
+                );
+            }
+            tool.art.canvas = ASSET_CACHE[tool.art.img.src][tool.art.idx];
+            // const canvas = document.createElement('canvas');
+            // const w = 64;
+            // const h = 64;
+            // canvas.width = w;
+            // canvas.height = h;
+            // const ctx = canvas.getContext('2d');
+            const canvas = pixelButton(0,0,0,0,tool.art.canvas);
+            document.body.appendChild(canvas);
+        });
+        ////console.log('ASSET_CACHE === ',ASSET_CACHE);
+    }
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@ const Dialogue = (() => {
     let currentOpenDialogue = "";
     let dialogueOpen = true;
 
-    const popUpContainer = document.getElementById("pop-up-container");
+    const popUpContainer = document.getElementById("pop-up-container") ?? document.createElement("div");
     const cancelButtons = popUpContainer.getElementsByClassName('close-button');
 
     Events.onCustom("esc-pressed", closeDialogue);
@@ -31,6 +31,9 @@ const Dialogue = (() => {
      * @param {*} trackEvent Should I track the GA event?
      */
     function showDialogue (dialogueName, trackEvent) {
+
+        
+
         if (typeof trackEvent === 'undefined') trackEvent = true; 
 
         // Updating currently open dialogue
@@ -83,4 +86,4 @@ const Dialogue = (() => {
     }
 })();
 
-console.log("Dialog: " + Dialogue);
+////console.log("Dialog: " + Dialogue);

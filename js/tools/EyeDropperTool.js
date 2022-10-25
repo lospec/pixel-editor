@@ -86,7 +86,9 @@ class EyeDropperTool extends Tool {
         // Returned colour
         let selectedColor;
 
-        for (let i=1; i<currFile.layers.length-3; i++) {
+        for (let i=0; i<currFile.layers.length; i++) {
+            if(!currFile.layers[i].isVisible)continue;
+            
             // Getting the colour of the pixel in the cursorLocation
             tmpColour = currFile.layers[i].context.getImageData(Math.floor(cursorLocation[0]/currFile.zoom),Math.floor(cursorLocation[1]/currFile.zoom),1,1).data;
 

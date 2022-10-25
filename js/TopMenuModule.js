@@ -1,7 +1,7 @@
 const TopMenuModule = (() => {
 
-    const mainMenuItems = document.getElementById('main-menu').children;
-    let infoList = document.getElementById('editor-info');
+    const mainMenuItems = document.getElementById('main-menu')?.children ?? [];
+    let infoList = document.getElementById('editor-info') ?? document.createElement("div");
     let infoElements = {};
 
     initMenu();
@@ -116,7 +116,12 @@ const TopMenuModule = (() => {
     }
 
     function updateField(fieldId, value) {
-        document.getElementById(fieldId).value = value;
+        const elm = document.getElementById(fieldId);
+        if(elm) {
+            elm.value = value;
+        } else {
+            //console.warn('elm === ', elm);
+        }
     }
 
     function addInfoElement(fieldId, field) {

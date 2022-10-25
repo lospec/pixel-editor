@@ -163,7 +163,7 @@ const Input = (() => {
                     spacePressed = true;
                     break;
                 case 46:
-                    console.log("Pressed del");
+                    ////console.log("Pressed del");
                     Events.emit("del");
                     break;
             }

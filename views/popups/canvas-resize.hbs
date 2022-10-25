@@ -1,10 +1,10 @@
 <!--CANVAS RESIZE-->
-<div class="update" id = "resize-canvas">
+<div class="update" id="resize-canvas">
 	<button class="close-button">{{svg "x.svg" width="20" height="20"}}</button>
 	<h1>Resize canvas</h1>
 
 	<!--PIVOTS-->
-	<span id = "pivot-menu">
+	<span id="pivot-menu">
 		<button class="pivot-button" value="topleft">{{svg "arrows/topleft.svg" width="20" height="20"}}</button>
 		<button class="pivot-button" value="top">{{svg "arrows/top.svg" width="20" height="20"}}</button>
 		<button class="pivot-button" value="topright">{{svg "arrows/topright.svg" width="20" height="20"}}</button>
@@ -16,7 +16,7 @@
 		<button class="pivot-button" value="bottomright">{{svg "arrows/bottomright.svg" width="20" height="20"}}</button>
 	</span>
 	<!-- SIZE-->
-	<span id = "rc-size-menu">
+	<span id="rc-size-menu">
 		<h2>Size</h2>
 		<div>
 			<span>
@@ -31,7 +31,7 @@
 		</div>
 	</span>        
 	<!--BORDERS-->
-	<span id = "borders-menu">
+	<span id="borders-menu">
 		<h2>Borders offsets</h2>
 		<div>
 			<span>
@@ -54,6 +54,6 @@
 				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
 			</span>
 		</div>
-		<button id = "resize-canvas-confirm">Resize canvas</button>
+		<button id="resize-canvas-confirm">Resize canvas</button>
 	</span>            
 </div>
