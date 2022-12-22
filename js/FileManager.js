@@ -295,28 +295,42 @@ const FileManager = (() => {
     function loadPalette() {
         if (browsePaletteHolder.files && browsePaletteHolder.files[0]) {
             //make sure file is allowed filetype
-            var fileContentType = browsePaletteHolder.files[0].type;
-            if (fileContentType == 'image/png' || fileContentType == 'image/gif') {
+            let file = browsePaletteHolder.files[0];
+            var fileContentType =
+              file.type
+              || file.name.split('.').slice(-1)[0];
 
+            var fileReader = new FileReader();
+
+            let addPalette = (colors) => {
+                //add to palettes so that it can be loaded when they click okay
+                palettes['Loaded palette'] = {};
+                palettes['Loaded palette'].colors = colors;
+                Util.setText('palette-button', 'Loaded palette');
+                Util.setText('palette-button-splash', 'Loaded palette');
+                Util.toggle('palette-menu-splash');
+            }
+
+            switch (fileContentType) {
+              case 'image/png':
+              case 'image/gif':
                 //load file
-                var fileReader = new FileReader();
                 fileReader.onload = function(e) {
                     var img = new Image();
                     img.onload = function() {
-    
                         //draw image onto the temporary canvas
                         var loadPaletteCanvas = document.getElementById('load-palette-canvas-holder');
                         var loadPaletteContext = loadPaletteCanvas.getContext('2d');
-    
+
                         loadPaletteCanvas.width = img.width;
                         loadPaletteCanvas.height = img.height;
-    
+
                         loadPaletteContext.drawImage(img, 0, 0);
-    
+
                         //create array to hold found colors
                         var colorPalette = [];
                         var imagePixelData = loadPaletteContext.getImageData(0,0,this.width, this.height).data;
-    
+
                         //loop through pixels looking for colors to add to palette
                         for (var i = 0; i < imagePixelData.length; i += 4) {
                             const newColor = {r:imagePixelData[i],g:imagePixelData[i + 1],b:imagePixelData[i + 2]};
@@ -325,19 +339,74 @@ const FileManager = (() => {
                                 colorPalette.push(color);
                             }
                         }
-    
-                        //add to palettes so that it can be loaded when they click okay
-                        palettes['Loaded palette'] = {};
-                        palettes['Loaded palette'].colors = colorPalette;
-                        Util.setText('palette-button', 'Loaded palette');
-                        Util.setText('palette-button-splash', 'Loaded palette');
-                        Util.toggle('palette-menu-splash');
+
+                        addPalette(colorPalette);
                     };
                     img.src = e.target.result;
                 };
-                fileReader.readAsDataURL(browsePaletteHolder.files[0]);
+                break;
+              case 'gpl':
+                fileReader.onload = function() {
+                    file.text().then((content) => {
+                        let colorPalette = content.split(/\r?\n/)
+                            // Skip header line
+                            .slice(1)
+                            .map((line) => line.trim())
+                            .filter((line) => line != "")
+                            // discard comment lines
+                            .filter((line) => !line.startsWith('#'))
+                            // discard meta data lines
+                            .filter((line) => !line.includes(':'))
+                            .map((line) => {
+                                let components = line.split(/\s+/);
+
+                                if (components.length < 3) {
+                                    alert(`Invalid color specification ${line}.`);
+                                    return "#000000"
+                                }
+
+                                let [r, g, b, ...rest] = components;
+                                let color = {
+                                    r: parseInt(r),
+                                    g: parseInt(g),
+                                    b: parseInt(b),
+                                };
+
+                                if (isNaN(color.r) || isNaN(color.g) || isNaN(color.b)) {
+                                    alert(`Invalid color specification ${line}.`);
+                                    return "#000000"
+                                }
+
+                                return '#' + Color.rgbToHex(color);
+                            });
+
+                        addPalette(colorPalette);
+                    });
+                };
+                break;
+              case 'hex':
+                fileReader.onload = function() {
+                  file.text().then((content) => {
+                      let colorPalette = content.split(/\r?\n/)
+                          .map((line) => line.trim())
+                          .filter((line) => line != "")
+                          // discard comment lines
+                          .filter((line) => !line.startsWith('#'))
+                          .map((line) => {
+                            if (line.match(/[0-9A-Fa-f]{6}/)) {
+                              return '#' + line;
+                            }
+                            alert(`Invalid hex color ${line}.`);
+                            return '#000000';
+                          });
+                      addPalette(colorPalette);
+                  });
+                };
+                break;
+              default:
+                alert('Only PNG, GIF, .hex and .gpl files are supported at this time.');
             }
-            else alert('Only PNG and GIF files are supported at this time.');
+            fileReader.readAsDataURL(browsePaletteHolder.files[0]);
         }
 
         browsePaletteHolder.value = null;
