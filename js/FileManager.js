@@ -293,6 +293,13 @@ const FileManager = (() => {
         return JSON.stringify(dictionary);
     }
 
+    let fromMenu = false;
+
+    function openImportPaletteWindow() {
+        fromMenu = true;
+        document.getElementById('load-palette-browse-holder').click();
+    }
+
     function loadPalette() {
         if (browsePaletteHolder.files && browsePaletteHolder.files[0]) {
             let file = browsePaletteHolder.files[0];
@@ -326,12 +333,17 @@ const FileManager = (() => {
     }
 
     function addPalette(colors) {
-        //add to palettes so that it can be loaded when they click okay
-        palettes['Loaded palette'] = {};
-        palettes['Loaded palette'].colors = colors;
-        Util.setText('palette-button', 'Loaded palette');
-        Util.setText('palette-button-splash', 'Loaded palette');
-        Util.toggle('palette-menu-splash');
+        if (fromMenu) {
+            ColorModule.createColorPalette(colors, clearCurrent=false);
+        } else {
+            // From splash screen
+            // add to palettes so that it can be loaded when they click okay
+            palettes['Loaded palette'] = {};
+            palettes['Loaded palette'].colors = colors;
+            Util.setText('palette-button', 'Loaded palette');
+            Util.setText('palette-button-splash', 'Loaded palette');
+            Util.toggle('palette-menu-splash');
+        }
     }
 
     function loadPaletteFromImage(e) {
@@ -587,6 +599,7 @@ const FileManager = (() => {
         openPixelExportWindow,
         openSaveProjectWindow,
         openImportImageWindow,
+        openImportPaletteWindow,
         open
     }
 

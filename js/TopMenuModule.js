@@ -46,6 +46,9 @@ const TopMenuModule = (() => {
                     case 'Import':
                         Events.on('click', currSubmenuButton, FileManager.openImportImageWindow);
                         break;
+                    case 'Load palette':
+                        Events.on('click', currSubmenuButton, FileManager.openImportPaletteWindow);
+                        break;
                     case 'Export':
                         Events.on('click', currSubmenuButton, FileManager.openPixelExportWindow);
                         break;
