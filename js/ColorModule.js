@@ -388,10 +388,12 @@ const ColorModule = (() => {
      * 
      * @param {*} paletteColors The colours of the palette
      */
-    function createColorPalette(paletteColors) {
+    function createColorPalette(paletteColors, clearCurrent=true) {
         //remove current palette
-        while (colorsMenu.childElementCount > 1)
-            colorsMenu.children[0].remove();
+        if (clearCurrent) {
+            while (colorsMenu.childElementCount > 1)
+                colorsMenu.children[0].remove();
+        }
 
         var lightestColor = new Color("hex", '#000000');
         var darkestColor = new Color("hex", '#ffffff');
