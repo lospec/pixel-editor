@@ -17,6 +17,12 @@ const Startup = (() => {
         var width = Util.getValue('size-width' + splashPostfix);
         var height = Util.getValue('size-height' + splashPostfix);
         var selectedPalette = Util.getText('palette-button' + splashPostfix);
+        
+        //Checks whether width and height values are not invalid
+        if(width <= 0 || height <= 0) {
+            alert("Please enter valid width and height");
+            return;
+        }
     
         newPixel(FileManager.defaultLPE(width,height));
         resetInput();
