@@ -109,10 +109,17 @@ const PaletteBlock = (() => {
             endIndex = tmp;
         }
 
-        for (let i=startIndex; i<=endIndex; i++) {
-            coloursList.removeChild(coloursList.children[startIndex]);
+        if(coloursList.childElementCount > Math.abs(startIndex-endIndex)+1) {
+            for (let i=startIndex; i<=endIndex; i++) {
+                coloursList.removeChild(coloursList.children[startIndex]);
+            }
+            clearBorders();
+        } else if(coloursList.childElementCount > 1){
+            for (let i=startIndex; i<endIndex; i++) {
+                coloursList.removeChild(coloursList.children[startIndex]);
+            }
+            clearBorders();
         }
-        clearBorders();
     }
 
     /** Starts selecting a ramp. Saves the data needed to draw the outline.
