@@ -108,21 +108,19 @@ const PaletteBlock = (() => {
             startIndex = endIndex;
             endIndex = tmp;
         }
-        // If total colors in palette is more than colors selected -> remove all selected colors
-        if(coloursList.childElementCount > Math.abs(startIndex-endIndex)+1) {
-            for (let i=startIndex; i<=endIndex; i++) {
-                coloursList.removeChild(coloursList.children[startIndex]);
-            }
-            clearBorders();
-        } 
-        //else,if there is more than 1 color in palette & user wants to remove all colors -> Remove last color
-        else if(coloursList.childElementCount > 1){
-            coloursList.removeChild(coloursList.children[endIndex]);
-            clearBorders();
+        // If there is only 1 color in palette and user wants to remove it, do nothing
+        if(coloursList.childElementCount == 1) {
+            return;
         }
-
-        //To avoid removal of any color by just pressing remove button without selecting any color
-        currentSelection.startIndex=endIndex;
+    
+        // If user wants to remove all colors of palette, remove all colors except last one
+        if(coloursList.childElementCount == endIndex-startIndex+1) {
+            endIndex--;
+        }
+        for (let i=startIndex; i<=endIndex; i++) {
+            coloursList.removeChild(coloursList.children[startIndex]);
+        }
+        clearBorders();
     }
 
     /** Starts selecting a ramp. Saves the data needed to draw the outline.
