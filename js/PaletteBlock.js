@@ -108,7 +108,15 @@ const PaletteBlock = (() => {
             startIndex = endIndex;
             endIndex = tmp;
         }
-
+        // If there is only 1 color in palette and user wants to remove it, do nothing
+        if(coloursList.childElementCount == 1) {
+            return;
+        }
+    
+        // If user wants to remove all colors of palette, remove all colors except last one
+        if(coloursList.childElementCount == endIndex-startIndex+1) {
+            endIndex--;
+        }
         for (let i=startIndex; i<=endIndex; i++) {
             coloursList.removeChild(coloursList.children[startIndex]);
         }
