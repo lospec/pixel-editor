@@ -1,4 +1,25 @@
 <!-- Splash page -->
+<script>
+// Check if the key is not a number or the backspace key
+function checkInput(event) {
+  var key = event.keyCode;
+  if ((key < 48 || key > 57) && key !== 8) {
+	event.preventDefault();
+  }
+}
+
+//Disables the create button if the input is empty, lesser than 0 or greater than 5000
+function checkEmpty(height,width,button){
+	var heightvalue=document.getElementById(height.id).value;
+	var widthvalue= document.getElementById(width.id).value;
+	if(heightvalue=="" || heightvalue<1 || heightvalue>5000 || widthvalue=="" || widthvalue<1 || widthvalue>5000){
+		document.getElementById(button.id).disabled = true;
+	}else{
+		document.getElementById(button.id).disabled = false;
+	}
+}
+</script>
+
 <div id="splash">
 	<div id="splash-news">
 			<div id="latest-update">
@@ -25,7 +46,7 @@
 
 				<h2>Size</h2>
 				<div class="sp-np-entry">
-					<input id="size-width-splash" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+					<input id="size-width-splash" maxlength="4" onkeydown="checkInput(event);" onkeyup='checkEmpty(document.getElementById("size-height-splash"),document.getElementById("size-width-splash"),document.getElementById("create-button-splash"));' value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" maxlength="4" onkeydown="checkInput(event);" onkeyup='checkEmpty(document.getElementById("size-height-splash"),document.getElementById("size-width-splash"),document.getElementById("create-button-splash"));' value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
 				</div>
 				
 				<h2>Palette</h2>
