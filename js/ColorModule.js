@@ -158,14 +158,15 @@ const ColorModule = (() => {
      */
     function addColorButtonEvent() {
         //generate random color
-        const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
-
-        //remove current color selection
-        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
+        const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;  
 
         //add new color and make it selected
         let addedColor = addColor(newColor);
         addedColor.classList.add('selected');
+
+        //remove previous color selection
+        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
+
         addedColor.style.width = squareSize + "px";
         addedColor.style.height = squareSize + "px";
         updateCurrentColor(newColor);
