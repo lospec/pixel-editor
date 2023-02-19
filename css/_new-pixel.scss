@@ -31,6 +31,13 @@
 	font-size: 12px;
 }
 
+ 
+.size-input::-webkit-outer-spin-button,
+.size-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 #no-palette-button {
 	display: none;
 }
