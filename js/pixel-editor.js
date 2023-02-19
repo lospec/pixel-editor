@@ -87,14 +87,9 @@ window.onload = function () {
                 const maxCanvasSize = 5000;
                 if (e.target.value > maxCanvasSize) {
                     e.target.value = maxCanvasSize;
-                    // Display a simple error message to inform the user of the canvas size limit
-                    let canvasError = document.querySelector('.canvasError')
-                    canvasError.style.display = 'block';
                 }
             }, true);
         }
-        // let canvasWidth = canvasSizeInputs[0]
-        // canvasSizeInputs.addEventListener('size-input', validateInput)
     }
 
 	// Apply checkboxes
