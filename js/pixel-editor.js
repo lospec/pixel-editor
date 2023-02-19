@@ -72,13 +72,32 @@
 
 // Controls execution of this preset module
 PresetModule.instrumentPresetMenu();
-
+const canvasSizeInputs = null;
 //when the page is done loading, you can get ready to start
 window.onload = function () {
 	// First cursor update
     ToolManager.currentTool().updateCursor();
-	// Apply checkboxes
 
+    // select all inputs that affect canvas size in order to limit it
+    const canvasSizeInputs = document.querySelectorAll('.size-input')
+    if (canvasSizeInputs) {
+        // apply a listener to each input
+        for (let i = 0; i < canvasSizeInputs.length; i++) {
+            canvasSizeInputs[i].addEventListener('keyup', e => {
+                const maxCanvasSize = 5000;
+                if (e.target.value > maxCanvasSize) {
+                    e.target.value = maxCanvasSize;
+                    // Display a simple error message to inform the user of the canvas size limit
+                    let canvasError = document.querySelector('.canvasError')
+                    canvasError.style.display = 'block';
+                }
+            }, true);
+        }
+        // let canvasWidth = canvasSizeInputs[0]
+        // canvasSizeInputs.addEventListener('size-input', validateInput)
+    }
+
+	// Apply checkboxes
     ////console.log('window.location.pathname === ',window.location.pathname);
 
     ////console.log('window.location === ',window.location);
@@ -148,6 +167,10 @@ window.onload = function () {
         }
     }
 }
+
+function validateInput(canvasSize) {
+    console.log(canvasSize);
+}  
 
 //prevent user from leaving page with unsaved data
 // window.onbeforeunload = function() {

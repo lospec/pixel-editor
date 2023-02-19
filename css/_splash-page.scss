@@ -214,6 +214,9 @@
 		.sp-np-entry {
 			width:100%;
 			text-align:center;
+			.canvasError {
+				display: none;
+			}
 		}
 
 		input {

@@ -9,7 +9,8 @@
 	<div id="preset-menu" class="dropdown-menu"></div>
 
 	<h2>Size</h2>
-	<input id="size-width" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+	<h4 class="canvasError">Max canvas size is 5000px</h4>
+	<input id="size-width" class="size-input" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height" class="size-input" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
 	<h2>Palette</h2>
 	<button id="palette-button" class="dropdown-button">Choose a palette...</button>
 	<div id="palette-menu" class="dropdown-menu"><button id="no-palette-button">Empty Palette</button><button id="load-palette-button">Load palette...</button></div>

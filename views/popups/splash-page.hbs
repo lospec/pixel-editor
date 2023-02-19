@@ -25,7 +25,8 @@
 
 				<h2>Size</h2>
 				<div class="sp-np-entry">
-					<input id="size-width-splash" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" />{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" />
+					<h4 class="canvasError">Max canvas size is 5000px</h4>
+					<input id="size-width-splash" value="{{#if width}}{{width}}{{else}}64{{/if}}" autocomplete="off" class="size-input"/>{{svg "x.svg" width="16" height="16" class="dimentions-x"}}<input id="size-height-splash" value="{{#if height}}{{height}}{{else}}64{{/if}}" autocomplete="off" class="size-input"/>
 				</div>
 				
 				<h2>Palette</h2>
