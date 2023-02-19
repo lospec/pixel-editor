@@ -4,16 +4,19 @@
 	<h1>Scale sprite</h1>
 	<!-- SIZE-->
 	<h2>New size</h2>
+	<h4 class="max-canvas-size">Max canvas size is 3000 x 3000</h4>
 	<span id="rs-size-menu">
 		<div>
 			<span>
 				Width: <input id="rs-width" type="number" default="0" step="1" 
-				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"
+				class="size-input" type="number" min="0" max="5000"/>
 			</span>
 			
 			<span>
 				Height: <input id="rs-height" default="0" step="1" type="number" 
-				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"
+				class="size-input" type="number" min="0" max="5000"/>
 			</span>
 		</div>
 	</span>        

@@ -5,3 +5,6 @@ const MAX_Z_INDEX = 5000;
 const firstUserLayerIndex = 2;
 
 const MIN_ZOOM_LEVEL = 0.5;
+
+const MAX_CANVAS_SIZE = 3000;
+const MIN_CANVAS_SIZE = 0;

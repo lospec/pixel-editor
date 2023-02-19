@@ -84,9 +84,11 @@ window.onload = function () {
         // apply a listener to each input
         for (let i = 0; i < canvasSizeInputs.length; i++) {
             canvasSizeInputs[i].addEventListener('keyup', e => {
-                const maxCanvasSize = 5000;
-                if (e.target.value > maxCanvasSize) {
-                    e.target.value = maxCanvasSize;
+            
+                if (e.target.value > MAX_CANVAS_SIZE) {
+                    e.target.value = MAX_CANVAS_SIZE;
+                } else if (e.target.value < MIN_CANVAS_SIZE) {
+                    e.target.value = MIN_CANVAS_SIZE;
                 }
             }, true);
         }
@@ -162,10 +164,6 @@ window.onload = function () {
         }
     }
 }
-
-function validateInput(canvasSize) {
-    console.log(canvasSize);
-}  
 
 //prevent user from leaving page with unsaved data
 // window.onbeforeunload = function() {

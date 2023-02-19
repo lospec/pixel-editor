@@ -17,16 +17,21 @@
 	</span>
 	<!-- SIZE-->
 	<span id="rc-size-menu">
-		<h2>Size</h2>
+		<div>
+		<h2 style="text-align:initial">Size</h2>
+		<h4 class="max-canvas-size">Max canvas size is 3000 x 3000</h4>
+		</div>
 		<div>
 			<span>
 				Width: <input id="rc-width" type="number" default="0" step="1" 
-				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"
+				class="size-input" type="number" min="0" max="5000"/>
 			</span>
 			
 			<span>
 				Height: <input id="rc-height" default="0" step="1" type="number" 
-				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"/>
+				value="{{#if border}}{{border}}{{else}}0{{/if}}" autocomplete="off"
+				class="size-input" type="number" min="0" max="5000"/>
 			</span>
 		</div>
 	</span>        
