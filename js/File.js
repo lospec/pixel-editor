@@ -29,6 +29,8 @@ class File {
     keepRatio = true;
     // Used to store the current ratio
     currentRatio = undefined;
+    // User to store the previous ratio
+    prevRatio = undefined;
     // The currenty selected resizing algorithm (nearest-neighbor or bilinear-interpolation)
     currentAlgo = 'nearest-neighbor';
     // Current resize data
@@ -60,6 +62,7 @@ class File {
     
         document.getElementById("rc-width").value = currFile.canvasSize[0];
         document.getElementById("rc-height").value = currFile.canvasSize[1];
+        this.currentRatio = currFile.canvasSize[0] / currFile.canvasSize[1];
     
         Events.on("change", "rc-border-left", this.rcChangedBorder.bind(this));
         Events.on("change", "rc-border-right", this.rcChangedBorder.bind(this));
@@ -152,9 +155,6 @@ class File {
                 this.rcBorders.left + this.rcBorders.right;
         currFile.canvasSize[1] = parseInt(currFile.canvasSize[1]) + 
             this.rcBorders.top + this.rcBorders.bottom;
-
-        ////console.trace();
-        ////console.log(currFile.canvasSize);
 
         // Resize the canvases
         for (let i=0; i<currFile.layers.length; i++) {
@@ -369,8 +369,8 @@ class File {
         Events.on("change", "rs-width", this.changedWidth.bind(this));
         Events.on("change", "rs-height", this.changedHeight.bind(this));
         
-        Events.on("change", "rs-width-percentage", this.changedWidthPercentage.bind(this));
-        Events.on("change", "rs-height-percentage", this.changedHeightPercentage.bind(this));
+        Events.on("change", "rs-width-percentage", this.changedResizePercentage.bind(this));
+        Events.on("change", "rs-height-percentage", this.changedResizePercentage.bind(this));
 
         Events.on("click", "resize-sprite-confirm", this.resizeSprite.bind(this));
         Events.on("click", "rs-keep-ratio", this.toggleRatio.bind(this));
@@ -401,13 +401,13 @@ class File {
         // Updating values if the user didn't press enter
         switch (document.activeElement.id) {
             case "rs-width-percentage":
-                this.changedWidthPercentage();
+                this.changedResizePercentage();
                 break;
             case "rs-width":
                 this.changedWidth();
                 break;
             case "rs-height-percentage":
-                this.changedHeightPercentage();
+                this.changedResizePercentage();
                 break;
             case "rs-height":
                 this.changedHeight();
@@ -519,61 +519,51 @@ class File {
         this.data.heightPercentage = newHeightPerc;
     }
 
-    /**Fired when the input field for width percentage is changed. Updates the other input fields consequently
+    /**Fired when the input field for percentage is changed. Updates the other input fields consequently
      * 
      * @param {*} event 
      */
-    changedWidthPercentage(event) {
-        let oldValue = 100;
+
+    changedResizePercentage(event) {
+        const widthValue = currFile.canvasSize[0];
+        const heightValue = currFile.canvasSize[1];
+        const vectorMap = {
+            "rs-width-percentage": "width",
+            "rs-height-percentage": "height",
+            "width": "height",
+            "height": "width",
+            "oldwidthValue": widthValue,
+            "oldheightValue": heightValue
+        };
+
+        const currentVector = vectorMap[event.target.id];
+        const otherVector = vectorMap[currentVector]
+        
         let ratio;
-        let newWidth, newHeight, newHeightPerc;
+        let vectorSize, otherVectorSize
 
-        this.data.widthPercentage = event.target.value;
-        ratio = this.data.widthPercentage / oldValue;
+        this.data[`${currentVector}Percentage`] = event.target.value;
+        ratio = this.data[`${currentVector}Percentage`] / vectorMap[`old${currentVector}Value`];
 
-        newHeight = this.startData.height * ratio;
-        newHeightPerc = this.data.widthPercentage;
-        newWidth = this.startData.width * ratio;
+        if (this.startData[currentVector] * ratio > MAX_CANVAS_SIZE) {
+            vectorSize = MAX_CANVAS_SIZE;
+            event.target.value = this.data[`${currentVector}Percentage`] = (MAX_CANVAS_SIZE * 100) / this.startData[currentVector];
+            otherVectorSize = this.startData[otherVector] * ratio > MAX_CANVAS_SIZE ? MAX_CANVAS_SIZE : this.startData[otherVector];
+        } else {
+            vectorSize = this.startData[currentVector] * ratio;
+            otherVectorSize = this.startData[otherVector] * ratio;
+        }
 
         if (this.keepRatio) {
-            document.getElementById("rs-height-percentage").value = newHeightPerc;
-            this.data.heightPercentage = newHeightPerc;
+            document.getElementById(`rs-${otherVector}-percentage`).value = this.data[`${currentVector}Percentage`];
+            this.data[otherVector] = this.data[`${currentVector}Percentage`];
             
-            document.getElementById("rs-height").value = newHeight
-            this.data.height = newHeight;
+            document.getElementById(`rs-${otherVector}`).value = otherVectorSize;
+            this.data[otherVector] = otherVectorSize;
         }
 
-        document.getElementById("rs-width").value = newWidth;
-        this.data.width = newWidth;
-    }
-
-    /**Fired when the input field for height percentage is changed. Updates the other input fields consequently
-     * 
-     * @param {*} event 
-     */
-    changedHeightPercentage(event) {
-        let oldValue = this.data.heightPercentage;
-        let ratio;
-        let newHeight, newWidth, newWidthPerc;
-
-        this.data.heightPercentage = event.target.value;
-
-        ratio = this.data.heightPercentage / oldValue;
-
-        newWidth = this.startData.width * ratio;
-        newWidthPerc = this.data.heightPercentage;
-        newHeight = this.startData.height * ratio;
-
-        if (this.keepRatio) {
-            document.getElementById("rs-width-percentage").value = this.data.heightPercentage * currentRatio;
-            this.data.widthPercentage = newWidthPerc;
-
-            document.getElementById("rs-width").value = newWidth;
-            this.data.width = newWidth;
-        }
-
-        document.getElementById("rs-height").value = newHeight;
-        this.data.height = newHeight;
+        document.getElementById(`rs-${currentVector}`).value = vectorSize;
+        this.data[currentVector] = vectorSize;
     }
 
     /** Toggles the keepRatio value (fired by the checkbox in the pop up window)
