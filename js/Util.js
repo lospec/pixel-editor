@@ -203,4 +203,20 @@ class Util {
 
         return position;
     }
+
+    /**
+     * @param {*} any An input number validator
+     */
+    static numberValidator(param) {
+        if (typeof param == 'string') {
+            if (param.includes('.')) return false
+        } else if (typeof param == 'number') {
+            if (param.toString().includes('.')) return false
+        }
+        if (Number.isNaN(param)) return false
+        const num = parseInt(param)
+        if (param != num) return false
+        if (num && num > 0 && num <= 5000) return true
+        else return false
+    }   
 }

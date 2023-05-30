@@ -18,7 +18,7 @@ const Startup = (() => {
         var height = Util.getValue('size-height' + splashPostfix);
         var selectedPalette = Util.getText('palette-button' + splashPostfix);
         
-        if (!(validator(width) && validator(height))) {
+        if (!(Util.numberValidator(width) && Util.numberValidator(height))) {
             Util.setValue('size-width' + splashPostfix, 64);
             Util.setValue('size-height' + splashPostfix, 64);
             return;
@@ -31,14 +31,6 @@ const Startup = (() => {
         //track google event
         if (typeof ga !== 'undefined')
             ga('send', 'event', 'Pixel Editor New', selectedPalette, width+'/'+height); /*global ga*/
-    }
-
-    function validator(param) {
-        if (Number.isNaN(param) || param.includes('.')) return false
-        const num = parseInt(param)
-        if (param != num) return false
-        if (num && num > 0 && num <= 5000) return true
-        else return false
     }
 
     /** Creates a new, empty file

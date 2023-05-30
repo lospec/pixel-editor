@@ -17,6 +17,10 @@ class File {
     // Canvas resize attributes
     // Resize canvas pop up window
     resizeCanvasContainer = document.getElementById("resize-canvas");
+    rcBadWidth = 0
+    rcBadHeight = 0
+    rsBadWidth = 0
+    rsBadHeight = 0
     // Start pivot
     rcPivot = "middle";
     // Selected pivot button
@@ -86,8 +90,24 @@ class File {
     /** Fired when width or height are changed: updates the border offsets
      */
     rcChangedSize() {
-        let widthOffset = Math.abs(document.getElementById("rc-width").value) - currFile.canvasSize[0];
-        let heightOffset = Math.abs(document.getElementById("rc-height").value) - currFile.canvasSize[1];
+        let width = document.getElementById("rc-width").value
+        let height = document.getElementById("rc-height").value
+        
+        if (!(Util.numberValidator(width))) {
+            this.rcBadWidth++;
+            return;         
+        } else {
+            this.rcBadWidth = 0;
+        }
+        if (!(Util.numberValidator(height))) {
+            this.rcBadHeight++;
+            return;           
+        } else {
+            this.rcBadHeight = 0;
+        }
+
+        let widthOffset = Math.abs(width) - currFile.canvasSize[0];
+        let heightOffset = Math.abs(height) - currFile.canvasSize[1];
 
         let left = Math.round(widthOffset / 2);
         let right = widthOffset - left;
@@ -117,6 +137,9 @@ class File {
         let leftOffset = 0;
         let topOffset = 0;
         let copiedDataIndex = 0;
+
+        if (this.rcBadHeight != 0) return;
+        if (this.rcBadWidth != 0) return;
 
         // If I'm undoing and I'm not trimming, I manually put the values in the window
         if (size != null && customData == null) {
@@ -350,6 +373,10 @@ class File {
         this.startData.heightPercentage = 100;
         this.startData.widthPercentage = 100;
 
+        // reset bad inputs count
+        this.rsBadWidth = 0;
+        this.rsBadHeight = 0;
+
         // Opening the pop up now that it's ready
         Dialogue.showDialogue('resize-sprite');
     }
@@ -383,6 +410,9 @@ class File {
      * @param {*} ratio Keeps infos about the x ratio and y ratio
      */
     resizeSprite(event, ratio) {
+
+        if (this.rsBadHeight != 0) return;
+        if (this.rsBadWidth != 0) return;
         // Old data
         let oldWidth, oldHeight;
         // New data
@@ -477,14 +507,23 @@ class File {
      * @param {*} event 
      */
     changedWidth(event) {
+        let width = event.target.value
+
+        if (!(Util.numberValidator(width))) {
+            this.rsBadWidth++;
+            return;           
+        } else {
+            this.rsBadWidth = 0;
+        }
+
         let newHeight, newHeightPerc, newWidthPerc;
-        this.data.width = event.target.value;
+        this.data.width = width;
 
         newHeight = this.data.width / this.currentRatio;
         newHeightPerc = (newHeight * 100) / this.startData.height;
         newWidthPerc = (this.data.width * 100) / this.startData.width;
 
-        if (this.keepRatio) {
+        if (this.keepRatio && this.sh == 0) {
             document.getElementById("rs-height").value = newHeight;
             this.data.height = newHeight;
 
@@ -500,14 +539,23 @@ class File {
      * @param {*} event 
      */
     changedHeight(event) {
+        let height = event.target.value
+
+        if (!(Util.numberValidator(height))) {
+            this.rsBadHeight++;
+            return;           
+        } else {
+            this.rsBadHeight = 0;
+        }
+
         let newWidth, newWidthPerc, newHeightPerc;
-        this.data.height = event.target.value;
+        this.data.height = height;
 
         newWidth = this.data.height * this.currentRatio;
         newWidthPerc = (newWidth * 100) / this.startData.width;
         newHeightPerc = (this.data.height * 100) / this.startData.height;
 
-        if (this.keepRatio) {
+        if (this.keepRatio && this.sw == 0) {
             document.getElementById("rs-width").value = newWidth;
             this.data.width = newWidth;
 
