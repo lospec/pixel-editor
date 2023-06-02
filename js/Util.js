@@ -219,4 +219,16 @@ class Util {
         if (num && num > 0 && num <= 5000) return true
         else return false
     }   
+
+    /**
+     * @param {*} param An simple warning injection
+     * @param {*} kind A a string id to identify the warn element
+     */
+    static warnInjection(param, kind) {
+        if (!param) return;
+        const element = document.createElement('span')
+        element.setAttribute('id', kind)
+        element.textContent = param
+        return element
+    }   
 }

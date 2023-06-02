@@ -21,6 +21,11 @@ class File {
     rcBadHeight = 0
     rsBadWidth = 0
     rsBadHeight = 0
+
+    rcWidthWarned = false
+    rcHeightWarned = false
+    rsWidthWarned = false
+    rsHeightWarned = false
     // Start pivot
     rcPivot = "middle";
     // Selected pivot button
@@ -98,12 +103,22 @@ class File {
             return;         
         } else {
             this.rcBadWidth = 0;
+            if (this.rcWidthWarned) {
+                this.rcWidthWarned = false                
+                const widthWarn = Util.getElement("rc-width-warning")
+                widthWarn.remove()
+            }
         }
         if (!(Util.numberValidator(height))) {
             this.rcBadHeight++;
             return;           
         } else {
             this.rcBadHeight = 0;
+            if (this.rcHeightWarned) {
+                this.rcHeightWarned = false
+                const heightWarn = Util.getElement("rc-height-warning")
+                heightWarn.remove()
+            }
         }
 
         let widthOffset = Math.abs(width) - currFile.canvasSize[0];
@@ -138,8 +153,26 @@ class File {
         let topOffset = 0;
         let copiedDataIndex = 0;
 
-        if (this.rcBadHeight != 0) return;
-        if (this.rcBadWidth != 0) return;
+        if (this.rcBadHeight != 0) {
+            if (!this.rcHeightWarned) {
+                const heightElement = Util.getElement("rc-size-menu");
+                const warning = Util.warnInjection("Invalid Height!", "rc-height-warning");
+                heightElement.appendChild(warning);
+                this.rcHeightWarned = true
+                return;
+            }
+            return;
+        };
+        if (this.rcBadWidth != 0) {
+            if (!this.rcWidthWarned) {
+                const widthElement = Util.getElement("rc-size-menu");
+                const warning = Util.warnInjection("Invalid Width!", "rc-width-warning");
+                widthElement.appendChild(warning);          
+                this.rcWidthWarned = true    
+                return;
+            }
+            return;
+        };
 
         // If I'm undoing and I'm not trimming, I manually put the values in the window
         if (size != null && customData == null) {
@@ -411,8 +444,26 @@ class File {
      */
     resizeSprite(event, ratio) {
 
-        if (this.rsBadHeight != 0) return;
-        if (this.rsBadWidth != 0) return;
+        if (this.rsBadHeight != 0) {
+            if (!this.rsHeightWarned) {
+                const heightElement = Util.getElement("rs-size-menu");
+                const warning = Util.warnInjection("Invalid Height!", "rs-height-warning");
+                heightElement.appendChild(warning);
+                this.rsHeightWarned = true
+                return;
+            }
+            return;
+        };
+        if (this.rsBadWidth != 0) {
+            if (!this.rsWidthWarned) {
+                const widthElement = Util.getElement("rs-size-menu");
+                const warning = Util.warnInjection("Invalid Width!", "rs-width-warning");
+                widthElement.appendChild(warning);          
+                this.rsWidthWarned = true    
+                return;
+            }
+            return;
+        };
         // Old data
         let oldWidth, oldHeight;
         // New data
@@ -514,6 +565,11 @@ class File {
             return;           
         } else {
             this.rsBadWidth = 0;
+            if (this.rsWidthWarned) {
+                this.rsWidthWarned = false                
+                const widthWarn = Util.getElement("rs-width-warning")
+                widthWarn.remove()
+            }
         }
 
         let newHeight, newHeightPerc, newWidthPerc;
@@ -546,6 +602,11 @@ class File {
             return;           
         } else {
             this.rsBadHeight = 0;
+            if (this.rsHeightWarned) {
+                this.rsHeightWarned = false
+                const heightWarn = Util.getElement("rs-height-warning")
+                heightWarn.remove()
+            }
         }
 
         let newWidth, newWidthPerc, newHeightPerc;
