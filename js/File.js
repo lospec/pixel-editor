@@ -421,10 +421,14 @@ class File {
         document.getElementById("rs-width").value = currFile.canvasSize[0];
         document.getElementById("rs-height").value = currFile.canvasSize[1];
 
-        document.getElementById("rs-width-percentage").value = 100;
-        document.getElementById("rs-height-percentage").value = 100;
-
-        document.getElementById("rs-keep-ratio").checked = true;
+        const isChecked = document.getElementById("rs-keep-ratio").checked
+        if (isChecked) {
+            document.getElementById("rs-width-percentage").value = this.data.heightPercentage
+            document.getElementById("rs-height-percentage").value = this.data.heightPercentage        
+        } else {
+            document.getElementById("rs-width-percentage").value = 100;
+            document.getElementById("rs-height-percentage").value = 100;
+        }
 
         Events.on("change", "rs-width", this.changedWidth.bind(this));
         Events.on("change", "rs-height", this.changedHeight.bind(this));
@@ -546,8 +550,11 @@ class File {
             this.startData.height = currFile.canvasSize[1];
         }
 
-        this.startData.widthPercentage = 100;
-        this.startData.heightPercentage = 100;
+        if (!this.keepRatio) {
+            this.startData.widthPercentage = 100;
+            this.startData.heightPercentage = 100;            
+        }
+
 
         Dialogue.closeDialogue();
     }
