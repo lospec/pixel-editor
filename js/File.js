@@ -596,7 +596,7 @@ class File {
         newHeightPerc = (newHeight * 100) / this.startData.height;
         newWidthPerc = (this.data.width * 100) / this.startData.width;
 
-        if (this.keepRatio && this.sh == 0) {
+        if (this.keepRatio) {
             document.getElementById("rs-height").value = newHeight;
             this.data.height = newHeight;
 
@@ -633,7 +633,7 @@ class File {
         newWidthPerc = (newWidth * 100) / this.startData.width;
         newHeightPerc = (this.data.height * 100) / this.startData.height;
 
-        if (this.keepRatio && this.sw == 0) {
+        if (this.keepRatio) {
             document.getElementById("rs-width").value = newWidth;
             this.data.width = newWidth;
 
