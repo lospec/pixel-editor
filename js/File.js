@@ -34,7 +34,7 @@ class File {
     rcBorders = {left: 0, right: 0, top: 0, bottom: 0};
 
     // Sprite scaling attributes
-    // Should I keep the sprite ratio?
+    // Should I keep the sprite ratio? Yes
     keepRatio = true;
     // Used to store the current ratio
     currentRatio = undefined;
@@ -425,7 +425,7 @@ class File {
 
 
         if (this.kcrInit == 0) {
-            document.getElementById("rs-keep-ratio").checked = true
+            document.getElementById("rs-keep-ratio").checked = this.keepRatio;
             this.kcrInit++
         } {
             const isChecked = document.getElementById("rs-keep-ratio").checked
@@ -691,7 +691,7 @@ class File {
         newHeight = this.startData.height * ratio;
 
         if (this.keepRatio) {
-            document.getElementById("rs-width-percentage").value = this.data.heightPercentage * currentRatio;
+            document.getElementById("rs-width-percentage").value = newWidthPerc
             this.data.widthPercentage = newWidthPerc;
 
             document.getElementById("rs-width").value = newWidth;
