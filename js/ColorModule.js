@@ -158,14 +158,15 @@ const ColorModule = (() => {
      */
     function addColorButtonEvent() {
         //generate random color
-        const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;
-
-        //remove current color selection
-        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
+        const newColor = new Color("hsv", Math.floor(Math.random()*360), Math.floor(Math.random()*100), Math.floor(Math.random()*100)).hex;  
 
         //add new color and make it selected
         let addedColor = addColor(newColor);
         addedColor.classList.add('selected');
+
+        //remove previous color selection
+        document.querySelector('#colors-menu li.selected')?.classList.remove('selected');
+
         addedColor.style.width = squareSize + "px";
         addedColor.style.height = squareSize + "px";
         updateCurrentColor(newColor);
@@ -388,10 +389,12 @@ const ColorModule = (() => {
      * 
      * @param {*} paletteColors The colours of the palette
      */
-    function createColorPalette(paletteColors) {
+    function createColorPalette(paletteColors, clearCurrent=true) {
         //remove current palette
-        while (colorsMenu.childElementCount > 1)
-            colorsMenu.children[0].remove();
+        if (clearCurrent) {
+            while (colorsMenu.childElementCount > 1)
+                colorsMenu.children[0].remove();
+        }
 
         var lightestColor = new Color("hex", '#000000');
         var darkestColor = new Color("hex", '#ffffff');

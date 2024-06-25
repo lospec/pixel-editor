@@ -47,8 +47,9 @@ const ToolManager = (() => {
         if (!EditorState.documentCreated || Dialogue.isOpen())
             return;
 
-        const isHoveringMenuElement = !!mouseEvent.path.find(n=>n.id && n.id.includes("-menu"));
-        if(isHoveringMenuElement)return;
+        // Hovering a menu element
+        const path = mouseEvent.composedPath && mouseEvent.composedPath();
+        if (path && !!path.find(n=>n.id && n.id.includes("-menu"))) return;
 
         let mousePos = Input.getCursorPosition(mouseEvent);
         tools["zoom"].onMouseWheel(mousePos, mouseEvent.deltaY < 0 ? 'in' : 'out');
