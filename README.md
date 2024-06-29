@@ -1,8 +1,9 @@
-# Lospec Pixel Editor
+# -*DEPRECATED*- Lospec Pixel Editor
+
+**⚠ The Lospec Pixel Editor is no longer in development and is no longer accepting contributions.**  
+**It remains available at https://lospec.com/pixel-editor in it's current state, but may contain bugs.**
 
 This is a browser based software for creating pixel art
-
-The tool can be viewed online here: https://lospec.com/pixel-editor
 
 ## Before contributing
 
